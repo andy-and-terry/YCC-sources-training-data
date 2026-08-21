@@ -2,19 +2,43 @@
 
 Sample source files organized by programming language for model training.
 
+> **Note on scale:** This directory is a small, hand-authored illustrative
+> set (dozens of files). It is not a substitute for a real training corpus —
+> see the caveats below before relying on it for actual model training.
+
 | Language   | Files |
 |------------|-------|
-| Python     | `quicksort.py`, `linked_list.py`, `word_count.py` |
-| JavaScript | `quicksort.js`, `stack.js`, `debounce.js` |
-| TypeScript | `binary_search.ts`, `lru_cache.ts`, `result.ts` |
-| Java       | `QuickSort.java`, `BinaryTree.java` |
-| Go         | `quicksort.go`, `worker_pool.go` |
-| Rust       | `quicksort.rs`, `stack.rs` |
-| C++        | `quicksort.cpp`, `linked_list.cpp` |
-| Ruby       | `quicksort.rb`, `stack.rb` |
-| C#         | `QuickSort.cs`, `Stack.cs` |
-| Swift      | `quicksort.swift`, `stack.swift` |
-| Kotlin     | `QuickSort.kt`, `BinarySearch.kt` |
-| PHP        | `quicksort.php`, `stack.php` |
+| Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py` |
+| JavaScript | `quicksort.js`, `stack.js`, `debounce.js`, `merge_sort.js` |
+| TypeScript | `binary_search.ts`, `lru_cache.ts`, `result.ts`, `queue.ts` |
+| Java       | `QuickSort.java`, `BinaryTree.java`, `Fibonacci.java` |
+| Go         | `quicksort.go`, `worker_pool.go`, `queue.go` |
+| Rust       | `quicksort.rs`, `stack.rs`, `fibonacci.rs` |
+| C++        | `quicksort.cpp`, `linked_list.cpp`, `queue.cpp` |
+| Ruby       | `quicksort.rb`, `stack.rb`, `fibonacci.rb` |
+| C#         | `QuickSort.cs`, `Stack.cs`, `Queue.cs` |
+| Swift      | `quicksort.swift`, `stack.swift`, `fibonacci.swift` |
+| Kotlin     | `QuickSort.kt`, `BinarySearch.kt`, `Queue.kt` |
+| PHP        | `quicksort.php`, `stack.php`, `fibonacci.php` |
+| C          | `merge_sort.c`, `queue.c` |
+| Scala      | `QuickSort.scala`, `Palindrome.scala` |
+| Haskell    | `QuickSort.hs`, `Fibonacci.hs` |
+| R          | `bubble_sort.R`, `word_freq.R` |
+| Perl       | `word_count.pl`, `quicksort.pl` |
+| Lua        | `stack.lua`, `quicksort.lua` |
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
+
+## Caveats for actual model training
+
+- **This is not GB-scale, and shouldn't be grown to that scale by hand.**
+  Reaching gigabytes of text this way means hundreds of thousands of files;
+  authoring that many one at a time is impractical and mostly produces
+  repetitive, low-diversity content.
+- **Repetition hurts more than it helps.** Real code corpora (The Stack,
+  CodeSearchNet, StarCoder's training set, etc.) explicitly deduplicate
+  near-identical snippets, because training on many copies of the same
+  trivial pattern encourages memorization over generalization.
+- **For real training data, prefer:** an existing large, deduplicated,
+  license-filtered code corpus, or a curated set of real-world repository
+  code (with tests, docs, and project structure) at a realistic scale.
