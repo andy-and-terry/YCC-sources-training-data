@@ -12,5 +12,9 @@ Sample source files organized by programming language for model training.
 | Rust       | `quicksort.rs`, `stack.rs` |
 | C++        | `quicksort.cpp`, `linked_list.cpp` |
 | Ruby       | `quicksort.rb`, `stack.rb` |
+| C#         | `QuickSort.cs`, `Stack.cs` |
+| Swift      | `quicksort.swift`, `stack.swift` |
+| Kotlin     | `QuickSort.kt`, `BinarySearch.kt` |
+| PHP        | `quicksort.php`, `stack.php` |
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
