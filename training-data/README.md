@@ -200,6 +200,11 @@ Sample source files organized by programming language for model training.
 > existing `_start`/`syscall exit` convention. No NASM/`ld` toolchain
 > is available in this sandbox, so this batch is not assembled or
 > run-verified.
+>
+> Fortran (free-form `.f90`): 5 files (1 pre-existing + 4 new:
+> Fibonacci, a primality test, GCD via a recursive `contains` function,
+> and bubble sort). No `gfortran` toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
