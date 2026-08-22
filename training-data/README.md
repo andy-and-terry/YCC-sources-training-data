@@ -401,6 +401,12 @@ Sample source files organized by programming language for model training.
 > and an Excel-idiomatic `SumRange` iterating a `Range` object). No
 > Excel/VBA runtime is available in this sandbox, so this batch is not
 > run-verified.
+>
+> Verilog: 5 files (2 pre-existing + 3 new: a D flip-flop, a
+> combinational full adder, and a 4-bit shift register), mirroring the
+> VHDL top-up with the same set of standard digital-logic patterns. No
+> Verilog toolchain (e.g. Icarus Verilog) is available in this
+> sandbox, so this batch is not simulated or elaboration-verified.
 
 | Language   | Files |
 |------------|-------|
