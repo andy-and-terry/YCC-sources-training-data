@@ -486,6 +486,12 @@ Sample source files organized by programming language for model training.
 > custom `DivisionByZeroError` exception with `begin`/`rescue`). No
 > Crystal toolchain is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> D: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a `Point`
+> struct with `opBinary` operator overloading, a range-pipeline demo
+> using `filter`/`map`/`fold`, and a custom exception with
+> `try`/`catch`). No `dmd`/`ldc2` toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
