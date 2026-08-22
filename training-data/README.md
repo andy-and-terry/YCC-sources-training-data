@@ -349,6 +349,12 @@ Sample source files organized by programming language for model training.
 > test, and a pipeline demo using `Where-Object`/`ForEach-Object`/
 > `Measure-Object`). No `pwsh`/`powershell` is available in this
 > sandbox, so this batch is not run-verified.
+>
+> Prolog: 5 files (2 pre-existing + 3 new: a primality test, a
+> family-tree knowledge base with `grandparent`/`sibling` relations
+> derived via `findall`, and recursive list operations for sum and
+> max). No `swipl` is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
