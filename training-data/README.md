@@ -616,6 +616,11 @@ Sample source files organized by programming language for model training.
 > division, and a `Hashtable` demo with `Measure-Object -Average`). No
 > `pwsh`/`powershell` is available in this sandbox, so this batch is
 > not run-verified.
+>
+> Prolog: 10 files (5 pre-existing + 5 new: bubble sort via a
+> swap/pass relation, GCD, binary search, an `animal_facts` knowledge
+> base with `warm_blooded/1`, and recursive factorial). No `swipl` is
+> available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
