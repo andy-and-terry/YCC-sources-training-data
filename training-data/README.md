@@ -305,6 +305,11 @@ Sample source files organized by programming language for model training.
 > and a closures demo with a stateful counter and a `map` helper). No
 > Lua interpreter is available in this sandbox, so this batch is not
 > run-verified.
+>
+> MATLAB: 5 files (2 pre-existing + 3 new: a primality test, binary
+> search, and a matrix-operations demo covering `*`/`.*`, `trace`,
+> `det`, and `inv`). No MATLAB/Octave is available in this sandbox, so
+> this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
