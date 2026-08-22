@@ -355,6 +355,11 @@ Sample source files organized by programming language for model training.
 > derived via `findall`, and recursive list operations for sum and
 > max). No `swipl` is available in this sandbox, so this batch is not
 > run-verified.
+>
+> R: 5 files (2 pre-existing + 3 new: Fibonacci, a primality filter
+> via `Filter`, and a `data.frame` demo with a derived `grade` column,
+> `mean`, and sorting by `order`). No R/`Rscript` interpreter is
+> available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
