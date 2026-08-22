@@ -161,6 +161,14 @@ Sample source files organized by programming language for model training.
 > `Error`-conforming enums with `do`/`try`/`catch`, a singleton via
 > `static let shared` with a private initializer, and a struct-vs-class
 > value/reference semantics comparison.
+>
+> After Swift, the breadth-language target was lowered again, to 10
+> files per language going forward (existing larger batches are kept,
+> not trimmed). Kotlin landed at 12 files (6 pre-existing + 6 new:
+> bubble/insertion/selection sort, a linked list, a binary tree, and
+> two-sum) before this new floor took effect. No Kotlin
+> compiler/toolchain is available in this sandbox, so — like Swift and
+> C# — this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
