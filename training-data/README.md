@@ -675,6 +675,11 @@ Sample source files organized by programming language for model training.
 > search, a class-module `Point` sketch, and `On Error GoTo`-based
 > error handling for safe division). No Excel/VBA runtime is available
 > in this sandbox, so this batch is not run-verified.
+>
+> Verilog: 10 files (5 pre-existing + 5 new: a half adder, a JK
+> flip-flop, a 2-to-4 decoder, a 4-bit comparator, and a 3-state
+> traffic-light FSM). No Verilog toolchain is available in this
+> sandbox, so this batch is not simulated or elaboration-verified.
 
 | Language   | Files |
 |------------|-------|
