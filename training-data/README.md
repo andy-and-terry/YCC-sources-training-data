@@ -249,6 +249,10 @@ Sample source files organized by programming language for model training.
 > test using `Math.isqrt`, and a `struct Point` with operator
 > overloading and `to_s`). No Crystal toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> D: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test, and
+> binary search). No `dmd`/`ldc2` toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
