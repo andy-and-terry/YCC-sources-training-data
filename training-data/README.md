@@ -253,6 +253,11 @@ Sample source files organized by programming language for model training.
 > D: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test, and
 > binary search). No `dmd`/`ldc2` toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Dart: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test
+> using a collection-for expression, and a binary tree with an inorder
+> traversal). No Dart SDK is available in this sandbox, so this batch
+> is not run-verified.
 
 | Language   | Files |
 |------------|-------|
