@@ -218,6 +218,12 @@ Sample source files organized by programming language for model training.
 > handler pattern over `List<Account>`/`Set<Id>`. No Apex toolchain
 > (Salesforce org/CLI) is available in this sandbox, so this batch is
 > not compiler-verified.
+>
+> Awk: 5 files (2 pre-existing + 3 new: column average, CSV-to-TSV
+> conversion via `FS`/`OFS`, and a duplicate-line detector). Unlike
+> most of the recent breadth top-ups, `awk` *is* available in this
+> sandbox — all 5 files were run against sample input and produced
+> correct output.
 
 | Language   | Files |
 |------------|-------|
