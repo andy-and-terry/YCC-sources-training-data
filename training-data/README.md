@@ -710,6 +710,19 @@ Sample source files organized by programming language for model training.
 > subdirectory previously at the 5-file floor is now at 10 files (the
 > flagship 8 stay at 100+, PHP/Ruby at 50, Swift at 25, Kotlin at 12,
 > and Scala at 10).
+>
+> A third pass then set new targets: 100 files for the flagship
+> languages (already satisfied) and 50 files for everything else.
+> Swift went first: 51 files (25 pre-existing + 26 new), adding heap
+> sort, sieve of Eratosthenes, Kadane's max-subarray, anagram check,
+> Roman numerals, a trie, an LRU cache, Dijkstra, coin change, LCS,
+> observer/factory/builder patterns, topological sort, generics,
+> `Codable` JSON parsing, `NSRegularExpression`-based regex, KMP
+> string search, N-Queens, word frequency, `Result`-based validation,
+> lazy sequences, a `@propertyWrapper` demo, `async`/`await` with
+> `async let`, a `CustomStringConvertible` error enum, and a disjoint
+> set. No Swift toolchain is available in this sandbox, so this batch
+> is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
