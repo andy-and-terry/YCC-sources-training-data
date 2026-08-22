@@ -492,6 +492,11 @@ Sample source files organized by programming language for model training.
 > using `filter`/`map`/`fold`, and a custom exception with
 > `try`/`catch`). No `dmd`/`ldc2` toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Dart: 10 files (5 pre-existing + 5 new: bubble sort, GCD, an
+> abstract `Shape` class hierarchy, a `Future`/`async`/`await` demo
+> with `Future.wait`, and a null-safety demo using `?`/`??`). No Dart
+> SDK is available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
