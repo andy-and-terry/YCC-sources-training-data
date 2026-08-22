@@ -269,6 +269,11 @@ Sample source files organized by programming language for model training.
 > `Array`, and a `Maybe`-based safe-division/`filterMap` demo). No Elm
 > compiler is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Erlang: 5 files (2 pre-existing + 3 new: an accumulator-based
+> Fibonacci, a primality filter over a list comprehension, and a
+> 1-indexed tuple binary search). No Erlang/OTP toolchain is available
+> in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
