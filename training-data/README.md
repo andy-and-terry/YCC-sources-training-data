@@ -723,6 +723,21 @@ Sample source files organized by programming language for model training.
 > `async let`, a `CustomStringConvertible` error enum, and a disjoint
 > set. No Swift toolchain is available in this sandbox, so this batch
 > is not compiler-verified.
+>
+> Kotlin: 50 files (12 pre-existing + 38 new): heap sort, sieve of
+> Eratosthenes, Kadane's max-subarray, valid parentheses, Roman
+> numerals, a trie, an LRU cache via `LinkedHashMap`, Dijkstra, coin
+> change, LCS, observer pattern, a sealed-class `Shape` hierarchy,
+> `kotlinx.coroutines` (`async`/`await`, `Flow`), extension functions,
+> data classes, null safety, higher-order functions, a generic stack,
+> an exception hierarchy, a singleton `object`, tail-recursive
+> factorial, binary tree traversals, union-find, 0/1 knapsack, word
+> frequency, delegated properties, inline functions, a `when`
+> expression, a circular buffer, a builder pattern, simple JSON-like
+> parsing, topological sort, a segment tree, operator overloading,
+> cycle detection, a `PriorityQueue` demo, and an `enum class`. No
+> Kotlin toolchain is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
