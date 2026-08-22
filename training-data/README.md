@@ -169,6 +169,16 @@ Sample source files organized by programming language for model training.
 > two-sum) before this new floor took effect. No Kotlin
 > compiler/toolchain is available in this sandbox, so — like Swift and
 > C# — this batch is not compiler-verified.
+>
+> Scala: 10 files total (2 pre-existing + 8 new), landing exactly at
+> the new 10-file floor. Covers sorting/searching (bubble sort, merge
+> sort via pattern-matched list recursion, binary search), Fibonacci
+> with a `@tailrec` accumulator, and idiomatic Scala: `sealed trait` +
+> `case class` pattern matching over shapes, `Option`/`Some`/`None` for
+> safe division and `flatten`, higher-order functions (`map`/`filter`/
+> `foldLeft`, function composition), and a `trait` mixin (`with`) demo.
+> No Scala toolchain is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
