@@ -300,6 +300,11 @@ Sample source files organized by programming language for model training.
 > `isqrt`, binary search, and a `Point` struct with an overloaded `+`
 > and a custom `Base.show` method). No Julia toolchain is available in
 > this sandbox, so this batch is not run-verified.
+>
+> Lua: 5 files (2 pre-existing + 3 new: Fibonacci, a primality filter,
+> and a closures demo with a stateful counter and a `map` helper). No
+> Lua interpreter is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
