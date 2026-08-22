@@ -229,6 +229,11 @@ Sample source files organized by programming language for model training.
 > test, and a retry-with-exponential-backoff helper that wraps an
 > arbitrary command). `bash` is available in this sandbox — all 3 new
 > scripts were executed directly and produced correct output.
+>
+> Clojure: 5 files (2 pre-existing + 3 new: a lazy Fibonacci sequence
+> via `iterate`, a primality filter, and an `atom`-based counter using
+> `swap!`). No Clojure/JVM toolchain is available in this sandbox, so
+> this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
