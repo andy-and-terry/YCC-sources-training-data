@@ -573,6 +573,12 @@ Sample source files organized by programming language for model training.
 > `mapIt`/`foldl` pipeline, and a custom `DivisionByZeroError` with
 > `try`/`except`). No Nim toolchain is available in this sandbox, so
 > this batch is not compiler-verified.
+>
+> Nix: 10 files (5 pre-existing + 5 new: bubble sort via nested
+> `builtins.foldl'`/`genList`, an attrset-based `Point` addition,
+> binary search, string helpers, and recursive `factorial`/
+> `fibonacci`). No `nix`/`nix-instantiate` is available in this
+> sandbox, so this batch is not evaluation-verified.
 
 | Language   | Files |
 |------------|-------|
