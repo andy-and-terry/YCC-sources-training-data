@@ -463,6 +463,12 @@ Sample source files organized by programming language for model training.
 > stack, quicksort, and in-place string reversal). All 5 new files
 > were compiled with `gcc -std=c17 -Wall` (clean, no warnings) and run
 > directly, producing correct output.
+>
+> Clojure: 10 files (5 pre-existing + 5 new: binary search, merge
+> sort, a `defrecord Point` with a `point-add` helper, `->`/`->>`
+> threading-macro demos, and a `defmulti`/`defmethod` polymorphic
+> `area` dispatch). No Clojure/JVM toolchain is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
