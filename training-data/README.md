@@ -536,6 +536,12 @@ Sample source files organized by programming language for model training.
 > `(|Even|Odd|)` active pattern used in a `match`). No F#/dotnet
 > toolchain is available in this sandbox, so this batch is not
 > run-verified.
+>
+> GDScript: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a
+> `Shape` class with `Circle`/`Rectangle` inner classes, array
+> operations using lambda-based `filter`/`map`, and a dictionary
+> demo). No Godot engine is available in this sandbox, so this batch
+> is not run-verified.
 
 | Language   | Files |
 |------------|-------|
