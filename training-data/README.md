@@ -63,7 +63,16 @@ Sample source files organized by programming language for model training.
 | PL/SQL     | `factorial.sql`, `is_prime.sql` |
 | Apex       | `QuickSort.cls`, `Stack.cls` |
 
-Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go), and `gcd` (TypeScript, C#, Kotlin, Swift, PHP, C).
+| VHDL       | `counter.vhd` |
+| Verilog    | `counter.v`, `mux.v` |
+| GDScript   | `quicksort.gd`, `stack.gd` |
+| Vala       | `quicksort.vala`, `stack.vala` |
+| WebAssembly (WAT) | `add.wat`, `factorial.wat` |
+| Standard ML | `quicksort.sml`, `fibonacci.sml` |
+| Nix        | `factorial.nix`, `is_prime.nix` |
+| Vimscript  | `word_count.vim`, `is_prime.vim` |
+
+Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go), `gcd` (TypeScript, C#, Kotlin, Swift, PHP, C), and `merge_sort` (C#, Kotlin, Swift, PHP, Ruby).
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
