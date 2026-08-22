@@ -146,6 +146,21 @@ Sample source files organized by programming language for model training.
 > interfaces/polymorphism, the `match` expression (including `match
 > (true)` range dispatch), exception hierarchies, static properties,
 > and `preg_*` regex helpers.
+>
+> Starting with Swift, the breadth-language target was lowered further
+> to 25 files each (still real depth, just proportioned for languages
+> that aren't the flagship set). Swift: 25 files total. No Swift
+> compiler/toolchain is available in this sandbox, so — like the C#
+> batch — these are not compiler-verified; treat this batch with the
+> same added skepticism until someone runs them through `swiftc`.
+> Covers sorting/searching, a linked list and binary tree, union-find,
+> 0/1 knapsack, edit distance, two-sum, and valid-parentheses, plus
+> idiomatic Swift: protocols with default implementations via
+> `extension`, optional chaining, enums with associated values,
+> closures (including an escaping counter closure), a generic `Stack<Element>`,
+> `Error`-conforming enums with `do`/`try`/`catch`, a singleton via
+> `static let shared` with a private initializer, and a struct-vs-class
+> value/reference semantics comparison.
 
 | Language   | Files |
 |------------|-------|
