@@ -13,6 +13,11 @@ Sample source files organized by programming language for model training.
 > concurrency, a thread-safe counter, and RAII resource management. These
 > are still small hand-written files, not real production code, so treat
 > them the same way as everything else here per the caveats below.
+>
+> Going forward, depth passes are one language per batch. Python has an
+> extra round covering decorators (retry/rate-limit/memoize), context
+> managers, asyncio producer/consumer, a hand-rolled JSON parser, an
+> argparse CLI with subcommands, and a realistic exception hierarchy.
 
 | Language   | Files |
 |------------|-------|
