@@ -6,6 +6,14 @@ Sample source files organized by programming language for model training.
 > set (dozens of files). It is not a substitute for a real training corpus —
 > see the caveats below before relying on it for actual model training.
 
+> **Depth pass:** Python, JavaScript, TypeScript, Java, Go, Rust, C++, and
+> C# also have a few larger, more realistic examples beyond the basic
+> algorithm/data-structure samples — e.g. Dijkstra's algorithm, an LRU
+> cache, a generic repository pattern, a state machine, producer/consumer
+> concurrency, a thread-safe counter, and RAII resource management. These
+> are still small hand-written files, not real production code, so treat
+> them the same way as everything else here per the caveats below.
+
 | Language   | Files |
 |------------|-------|
 | Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py`, `binary_tree.py` |
