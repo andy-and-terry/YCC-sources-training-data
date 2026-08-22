@@ -449,6 +449,15 @@ Sample source files organized by programming language for model training.
 > line finder, line reversal, per-group field summation, and a
 > `cat -n`-style line numberer). All 5 new files were run against
 > sample input via `awk` and verified to produce correct output.
+>
+> Bash: 10 files (5 pre-existing + 5 new, though one attempt
+> accidentally overwrote the pre-existing `word_count.sh`; it was
+> restored from git and the intended new script kept under a different
+> name instead: binary search over a nameref array, an
+> associative-array word-frequency counter [`word_freq_assoc.sh`],
+> GCD, and a file-line-counter that reports missing files without
+> aborting the script). All 4 new runnable scripts were executed
+> directly and verified to produce correct output.
 
 | Language   | Files |
 |------------|-------|
