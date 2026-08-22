@@ -274,6 +274,12 @@ Sample source files organized by programming language for model training.
 > Fibonacci, a primality filter over a list comprehension, and a
 > 1-indexed tuple binary search). No Erlang/OTP toolchain is available
 > in this sandbox, so this batch is not run-verified.
+>
+> F#: 5 files (2 pre-existing + 3 new: a primality filter, a
+> discriminated-union `Shape` type with pattern-matched `area`, and an
+> `Option`-based safe-division/`List.choose` demo). No F#/dotnet
+> toolchain is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
