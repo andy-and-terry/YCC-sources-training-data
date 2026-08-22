@@ -392,6 +392,10 @@ Sample source files organized by programming language for model training.
 > Tcl: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
 > and GCD via Euclid's algorithm). No `tclsh` is available in this
 > sandbox, so this batch is not run-verified.
+>
+> Vala: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
+> and binary search). No `valac` toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
