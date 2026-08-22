@@ -585,6 +585,12 @@ Sample source files organized by programming language for model training.
 > `add:` method and custom `description`, and a `Blocks`-based
 > `IntTransform` demo). No Foundation framework is available in this
 > sandbox (only bare `clang`), so this batch is not compiler-verified.
+>
+> OCaml: 10 files (5 pre-existing + 5 new: in-place bubble sort, GCD,
+> a `point` record with `add_points`, a `shape` variant type with a
+> pattern-matched `area`, and a custom `Division_by_zero` exception
+> with `try`/`with`). No OCaml toolchain is available in this sandbox,
+> so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
