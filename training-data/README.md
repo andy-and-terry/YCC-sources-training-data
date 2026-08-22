@@ -285,6 +285,11 @@ Sample source files organized by programming language for model training.
 > Euclid's algorithm, and summing a `CREATE`d array via `CELLS`
 > addressing). No Forth toolchain (e.g. gforth) is available in this
 > sandbox, so this batch is not run-verified.
+>
+> GDScript: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> test, and a Godot-idiomatic `HealthComponent` using `signal` and
+> `.emit()`). No Godot engine is available in this sandbox, so this
+> batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
