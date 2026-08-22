@@ -754,6 +754,19 @@ Sample source files organized by programming language for model training.
 > `foldRight`, simple JSON stringification, and immutable
 > `Vector`/`Map` updates. No Scala toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> A fourth pass then began raising every remaining 10-file language to
+> 50, one language per batch, continuing until all are done. Ada went
+> first: 50 files (10 pre-existing + 40 new) covering sorting/
+> searching (heap sort, sieve of Eratosthenes, insertion/selection
+> sort, merge sort), DP (max-subarray, coin change, knapsack, edit
+> distance), core data structures (linked list, binary tree, stack,
+> queue, union-find), and idiomatic Ada: tagged types with overriding
+> `Area`, a package-based singleton counter, enumerations, and 2D
+> matrix multiplication. Two early files (`is_power_of_two.adb`,
+> `leap_year.adb`) referenced a nonexistent `Integer_Array` type and
+> were fixed in place before commit. No Ada toolchain is available in
+> this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
