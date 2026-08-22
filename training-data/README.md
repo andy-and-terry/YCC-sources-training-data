@@ -382,6 +382,12 @@ Sample source files organized by programming language for model training.
 > `Array`-based binary search, and an `option`-based safe-division
 > demo using `List.mapPartial`/`foldl`). No SML toolchain is available
 > in this sandbox, so this batch is not run-verified.
+>
+> Solidity: 5 files (2 pre-existing + 3 new: a `FibonacciLib` library,
+> an `Ownable` abstract contract with a modifier, and a
+> `SimpleAuction` contract covering bidding, pending-return
+> withdrawals, and events). No `solc` compiler is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
