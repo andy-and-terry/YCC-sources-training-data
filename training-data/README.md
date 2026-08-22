@@ -372,6 +372,11 @@ Sample source files organized by programming language for model training.
 > composition, `map`, and `fold-left`). No Scheme toolchain (Guile/MIT
 > Scheme) is available in this sandbox, so this batch is not
 > run-verified.
+>
+> Smalltalk: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> test, and a `MyPoint` class with an overloaded `+` and a custom
+> `printOn:`). No GNU Smalltalk (`gst`) is available in this sandbox,
+> so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
