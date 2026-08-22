@@ -234,6 +234,11 @@ Sample source files organized by programming language for model training.
 > via `iterate`, a primality filter, and an `atom`-based counter using
 > `swap!`). No Clojure/JVM toolchain is available in this sandbox, so
 > this batch is not run-verified.
+>
+> COBOL: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
+> and GCD via Euclid's algorithm, all in fixed-format COBOL with
+> `PERFORM VARYING`/`PERFORM UNTIL`). No `cobc` (GnuCOBOL) toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
