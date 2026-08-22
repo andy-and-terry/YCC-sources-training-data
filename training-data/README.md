@@ -360,6 +360,12 @@ Sample source files organized by programming language for model training.
 > via `Filter`, and a `data.frame` demo with a derived `grade` column,
 > `mean`, and sorting by `order`). No R/`Rscript` interpreter is
 > available in this sandbox, so this batch is not run-verified.
+>
+> Racket: 5 files (2 pre-existing + 3 new: a primality filter using
+> `for/and`, a recursive binary search over a vector, and a
+> `#:transparent` `point` struct with a `point-add` helper). No Racket
+> toolchain is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
