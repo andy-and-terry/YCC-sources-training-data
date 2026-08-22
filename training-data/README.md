@@ -54,7 +54,16 @@ Sample source files organized by programming language for model training.
 | Ada        | `quicksort.adb` |
 | Assembly (x86-64 NASM) | `sum.asm` |
 
-Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), and `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go).
+| Scheme     | `quicksort.scm`, `fibonacci.scm` |
+| Common Lisp | `quicksort.lisp`, `stack.lisp` |
+| Smalltalk  | `QuickSort.st`, `Stack.st` |
+| Forth      | `factorial.fs`, `is_prime.fs` |
+| Awk        | `word_count.awk`, `sum_column.awk` |
+| Elm        | `QuickSort.elm`, `IsPrime.elm` |
+| PL/SQL     | `factorial.sql`, `is_prime.sql` |
+| Apex       | `QuickSort.cls`, `Stack.cls` |
+
+Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go), and `gcd` (TypeScript, C#, Kotlin, Swift, PHP, C).
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
