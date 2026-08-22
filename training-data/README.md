@@ -120,6 +120,19 @@ Sample source files organized by programming language for model training.
 > `IDisposable`/`using`, generic constraints (`where T : IIdentifiable`),
 > nullable reference types, indexers, `yield return` iterators, C#
 > events/delegates, and `Span<T>`.
+>
+> That covers the 8 "main" languages. For the rest (everything below
+> beyond a handful of samples), the target is 50 files each rather than
+> ~100–115 — still real depth, just scoped smaller since these are
+> breadth languages, not flagship ones. Ruby went first: 50 files
+> total, all passing `ruby -c` syntax checks, several spot-run to
+> verify output. Covers sorting/searching, graph algorithms
+> (union-find, topological sort), DP (knapsack, coin change, edit
+> distance, LCS), a trie, and a batch of idiomatic Ruby: modules/mixins
+> (`Comparable`, `Enumerable`, `Singleton`), blocks/procs/lambdas,
+> `method_missing`, refinements, pattern matching (`case/in`), keyword
+> arguments, frozen/immutable objects, a custom lazy `Enumerator`, and
+> `Mutex`-synchronized threads.
 
 | Language   | Files |
 |------------|-------|
