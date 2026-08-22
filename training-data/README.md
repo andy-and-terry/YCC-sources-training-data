@@ -330,6 +330,10 @@ Sample source files organized by programming language for model training.
 > Fibonacci, a primality filter, and an `option`-based safe-division
 > demo using `filter_map`/`fold_left`). No OCaml toolchain is available
 > in this sandbox, so this batch is not compiler-verified.
+>
+> Pascal: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> test, and GCD via Euclid's algorithm). No `fpc` toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
