@@ -542,6 +542,11 @@ Sample source files organized by programming language for model training.
 > operations using lambda-based `filter`/`map`, and a dictionary
 > demo). No Godot engine is available in this sandbox, so this batch
 > is not run-verified.
+>
+> Groovy: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a
+> `Point` class with an overloaded `plus`, a `GString`/interpolation
+> demo, and `try`/`catch` for safe division). No Groovy toolchain is
+> available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
