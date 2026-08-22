@@ -258,6 +258,11 @@ Sample source files organized by programming language for model training.
 > using a collection-for expression, and a binary tree with an inorder
 > traversal). No Dart SDK is available in this sandbox, so this batch
 > is not run-verified.
+>
+> Elixir: 5 files (2 pre-existing + 3 new: a lazy Fibonacci sequence
+> via `Stream.unfold`, a primality filter, and tuple-based pattern
+> matching over shape variants). No Elixir/BEAM toolchain is available
+> in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
