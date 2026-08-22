@@ -224,6 +224,11 @@ Sample source files organized by programming language for model training.
 > most of the recent breadth top-ups, `awk` *is* available in this
 > sandbox — all 5 files were run against sample input and produced
 > correct output.
+>
+> Bash: 5 files (2 pre-existing + 3 new: bubble sort, a primality
+> test, and a retry-with-exponential-backoff helper that wraps an
+> arbitrary command). `bash` is available in this sandbox — all 3 new
+> scripts were executed directly and produced correct output.
 
 | Language   | Files |
 |------------|-------|
