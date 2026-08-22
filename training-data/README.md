@@ -388,6 +388,10 @@ Sample source files organized by programming language for model training.
 > `SimpleAuction` contract covering bidding, pending-return
 > withdrawals, and events). No `solc` compiler is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Tcl: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
+> and GCD via Euclid's algorithm). No `tclsh` is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
