@@ -366,6 +366,12 @@ Sample source files organized by programming language for model training.
 > `#:transparent` `point` struct with a `point-add` helper). No Racket
 > toolchain is available in this sandbox, so this batch is not
 > run-verified.
+>
+> Scheme: 5 files (2 pre-existing + 3 new: a primality filter, GCD via
+> Euclid's algorithm, and a higher-order-functions demo with function
+> composition, `map`, and `fold-left`). No Scheme toolchain (Guile/MIT
+> Scheme) is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
