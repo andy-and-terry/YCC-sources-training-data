@@ -320,6 +320,11 @@ Sample source files organized by programming language for model training.
 > `map`/`builtins.filter`/`builtins.foldl'`). No `nix`/
 > `nix-instantiate` is available in this sandbox, so this batch is not
 > evaluation-verified.
+>
+> Objective-C: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> test, and a `Person` class implementing a `Greetable` protocol). No
+> Foundation framework is available in this sandbox (only bare
+> `clang`), so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
