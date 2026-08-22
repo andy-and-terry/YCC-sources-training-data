@@ -558,6 +558,15 @@ Sample source files organized by programming language for model training.
 > metatable with `__add`/`__tostring`, a `coroutine.yield`-based
 > counter, and `pcall`-based error handling). No Lua interpreter is
 > available in this sandbox, so this batch is not run-verified.
+>
+> MATLAB: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a
+> struct-based `Point` addition, a cell-array demo iterating names
+> alongside a numeric `scores` array, and `try`/`catch` with a custom
+> error identifier). One early attempt accidentally overwrote the
+> pre-existing `fibonacci.m`; it was restored via `git checkout` and
+> the new struct demo was written to a separate file instead. No
+> MATLAB/Octave is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
