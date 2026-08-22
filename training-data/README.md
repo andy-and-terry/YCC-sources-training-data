@@ -72,6 +72,21 @@ Sample source files organized by programming language for model training.
 > `recover`, `context.WithTimeout` cancellation, an `sync.RWMutex`
 > cache exercised across ten goroutines, `encoding/json` struct tags,
 > a hand-rolled binary heap, and the functional-options pattern.
+>
+> Rust got the same large-batch treatment (100 files total, each
+> individually compiled with `rustc --edition 2021` — zero errors, only
+> two harmless "field/variant never used" warnings in demo-only structs,
+> fixed one real lint). Several spot-run to verify output. Same breadth
+> as the earlier batches, written with real ownership/borrowing rather
+> than clone-everywhere, plus Rust-specific idioms: `Result`/`?`
+> error propagation with a custom error enum implementing `Display` and
+> `std::error::Error`, `Rc<RefCell<>>` for a shared-ownership graph,
+> trait objects and default trait methods, iterator adapter chains
+> (`filter`/`map`/`partition`/`windows`), generic functions with trait
+> bounds, pattern matching over enums with struct variants and guards,
+> closures returned via `impl Fn`/`impl FnMut`, explicit lifetimes,
+> the newtype pattern with `From`/`Add`, and `mpsc` channels with
+> `thread::spawn`.
 
 | Language   | Files |
 |------------|-------|
