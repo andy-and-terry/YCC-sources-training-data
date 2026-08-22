@@ -621,6 +621,14 @@ Sample source files organized by programming language for model training.
 > swap/pass relation, GCD, binary search, an `animal_facts` knowledge
 > base with `warm_blooded/1`, and recursive factorial). No `swipl` is
 > available in this sandbox, so this batch is not run-verified.
+>
+> R: 10 files (5 pre-existing + 5 new: GCD, binary search, an S3
+> `Point` class with an operator method (`+.Point`) and a `print`
+> method, `sapply`/`Filter`/`Reduce`, and `tryCatch`-based error
+> handling). One attempt accidentally overwrote the pre-existing
+> `bubble_sort.R`; it was restored via `git checkout` and no
+> duplicate was written. No R/`Rscript` interpreter is available in
+> this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
