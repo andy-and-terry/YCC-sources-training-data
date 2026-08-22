@@ -693,6 +693,13 @@ Sample source files organized by programming language for model training.
 > `v:exception`-based error handling). `vim` is available in this
 > sandbox — all 5 new files were run via `vim -Nes` with `redir`
 > capturing output, and all produced correct output.
+>
+> WebAssembly (WAT): 10 files (5 pre-existing + 5 new: bubble sort and
+> binary search over a linear-memory `i32` array, max-of-array,
+> multiply, and a null-terminated `string_length`), continuing the
+> hand-written `block`/`loop`/`br_if` style. No `wat2wasm`/`wasmtime`
+> toolchain is available in this sandbox, so this batch is not
+> assembled or run-verified.
 
 | Language   | Files |
 |------------|-------|
