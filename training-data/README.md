@@ -8,12 +8,12 @@ Sample source files organized by programming language for model training.
 
 | Language   | Files |
 |------------|-------|
-| Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py` |
+| Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py`, `binary_tree.py` |
 | JavaScript | `quicksort.js`, `stack.js`, `debounce.js`, `merge_sort.js` |
 | TypeScript | `binary_search.ts`, `lru_cache.ts`, `result.ts`, `queue.ts` |
 | Java       | `QuickSort.java`, `BinaryTree.java`, `Fibonacci.java` |
-| Go         | `quicksort.go`, `worker_pool.go`, `queue.go` |
-| Rust       | `quicksort.rs`, `stack.rs`, `fibonacci.rs` |
+| Go         | `quicksort.go`, `worker_pool.go`, `queue.go`, `binary_tree.go` |
+| Rust       | `quicksort.rs`, `stack.rs`, `fibonacci.rs`, `binary_tree.rs` |
 | C++        | `quicksort.cpp`, `linked_list.cpp`, `queue.cpp` |
 | Ruby       | `quicksort.rb`, `stack.rb`, `fibonacci.rb` |
 | C#         | `QuickSort.cs`, `Stack.cs`, `Queue.cs` |
@@ -26,6 +26,11 @@ Sample source files organized by programming language for model training.
 | R          | `bubble_sort.R`, `word_freq.R` |
 | Perl       | `word_count.pl`, `quicksort.pl` |
 | Lua        | `stack.lua`, `quicksort.lua` |
+| Elixir     | `quicksort.exs`, `stack.exs` |
+| Dart       | `quicksort.dart`, `queue.dart` |
+| Clojure    | `quicksort.clj`, `word_count.clj` |
+| Bash       | `word_count.sh`, `backup.sh` |
+| Julia      | `quicksort.jl`, `fibonacci.jl` |
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
