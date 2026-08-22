@@ -497,6 +497,12 @@ Sample source files organized by programming language for model training.
 > abstract `Shape` class hierarchy, a `Future`/`async`/`await` demo
 > with `Future.wait`, and a null-safety demo using `?`/`??`). No Dart
 > SDK is available in this sandbox, so this batch is not run-verified.
+>
+> Elixir: 10 files (5 pre-existing + 5 new: bubble sort, GCD via
+> pattern-matched clauses, a `Point` defstruct with `add/2`, a `|>`
+> pipe-operator demo, and a `with` demo chaining safe-division
+> results). No Elixir/BEAM toolchain is available in this sandbox, so
+> this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
