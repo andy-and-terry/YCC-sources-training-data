@@ -610,6 +610,12 @@ Sample source files organized by programming language for model training.
 > record, `ZERO_DIVIDE` exception handling, and string reversal via
 > `SUBSTR`). No Oracle database is available in this sandbox, so this
 > batch is not run-verified.
+>
+> PowerShell: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a
+> `Point` class with `Add`/`ToString`, `try`/`catch` for safe
+> division, and a `Hashtable` demo with `Measure-Object -Average`). No
+> `pwsh`/`powershell` is available in this sandbox, so this batch is
+> not run-verified.
 
 | Language   | Files |
 |------------|-------|
