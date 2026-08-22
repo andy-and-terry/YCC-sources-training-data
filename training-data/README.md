@@ -295,6 +295,11 @@ Sample source files organized by programming language for model training.
 > filter, and a closure demo with a stateful counter plus
 > `collect`/`inject`). No Groovy toolchain is available in this
 > sandbox, so this batch is not run-verified.
+>
+> Julia: 5 files (2 pre-existing + 3 new: a primality filter using
+> `isqrt`, binary search, and a `Point` struct with an overloaded `+`
+> and a custom `Base.show` method). No Julia toolchain is available in
+> this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
