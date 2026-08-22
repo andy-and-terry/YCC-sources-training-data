@@ -530,6 +530,12 @@ Sample source files organized by programming language for model training.
 > statistics via `sum`/`maxval`/`minval`, factorial using a `contains`
 > function, and in-place string reversal). No `gfortran` toolchain is
 > available in this sandbox, so this batch is not compiler-verified.
+>
+> F#: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a `Point`
+> record with `addPoints`, a `|>` pipeline demo, and a custom
+> `(|Even|Odd|)` active pattern used in a `match`). No F#/dotnet
+> toolchain is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
