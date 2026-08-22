@@ -263,6 +263,12 @@ Sample source files organized by programming language for model training.
 > via `Stream.unfold`, a primality filter, and tuple-based pattern
 > matching over shape variants). No Elixir/BEAM toolchain is available
 > in this sandbox, so this batch is not run-verified.
+>
+> Elm: 5 files (2 pre-existing + 3 new: a tail-recursive Fibonacci
+> using an accumulator, a `Maybe`-returning binary search over
+> `Array`, and a `Maybe`-based safe-division/`filterMap` demo). No Elm
+> compiler is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
