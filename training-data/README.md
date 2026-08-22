@@ -310,6 +310,10 @@ Sample source files organized by programming language for model training.
 > search, and a matrix-operations demo covering `*`/`.*`, `trace`,
 > `det`, and `inv`). No MATLAB/Octave is available in this sandbox, so
 > this batch is not run-verified.
+>
+> Nim: 5 files (2 pre-existing + 3 new: Fibonacci, a primality filter,
+> and binary search). No Nim toolchain is available in this sandbox,
+> so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
