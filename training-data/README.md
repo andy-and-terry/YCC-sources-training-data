@@ -547,6 +547,12 @@ Sample source files organized by programming language for model training.
 > `Point` class with an overloaded `plus`, a `GString`/interpolation
 > demo, and `try`/`catch` for safe division). No Groovy toolchain is
 > available in this sandbox, so this batch is not run-verified.
+>
+> Julia: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a
+> multiple-dispatch `area` over `Circle`/`Rectangle <: Shape`, an
+> array-comprehension demo, and exception handling with `try`/`catch`
+> and a custom `DomainError`). No Julia toolchain is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
