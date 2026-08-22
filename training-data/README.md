@@ -767,6 +767,18 @@ Sample source files organized by programming language for model training.
 > `leap_year.adb`) referenced a nonexistent `Integer_Array` type and
 > were fixed in place before commit. No Ada toolchain is available in
 > this sandbox, so this batch is not compiler-verified.
+>
+> Assembly (x86-64 NASM) went next: 50 files (10 pre-existing + 40
+> new), extending the `_start`/`syscall exit` convention across
+> sorting (insertion sort), searching (linear index, second-largest),
+> bit tricks (popcount, lowest-set-bit isolation, XOR swap, rotate,
+> power-of-two check), arithmetic (LCM, digit sum, Collatz steps,
+> Armstrong number, integer square root via binary search), memory
+> ops (`rep movsb` copy, array fill/double/reverse), and control-flow
+> idioms (recursive function calls via `push`/`pop`/`call`/`ret`,
+> stack-frame locals, `cmovg` branchless max). No NASM/`ld` toolchain
+> is available in this sandbox, so this batch is not assembled or
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
