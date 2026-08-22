@@ -314,6 +314,12 @@ Sample source files organized by programming language for model training.
 > Nim: 5 files (2 pre-existing + 3 new: Fibonacci, a primality filter,
 > and binary search). No Nim toolchain is available in this sandbox,
 > so this batch is not compiler-verified.
+>
+> Nix: 5 files (2 pre-existing + 3 new: an accumulator-based Fibonacci,
+> GCD via Euclid's algorithm, and a list-operations demo using
+> `map`/`builtins.filter`/`builtins.foldl'`). No `nix`/
+> `nix-instantiate` is available in this sandbox, so this batch is not
+> evaluation-verified.
 
 | Language   | Files |
 |------------|-------|
