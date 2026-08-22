@@ -503,6 +503,12 @@ Sample source files organized by programming language for model training.
 > pipe-operator demo, and a `with` demo chaining safe-division
 > results). No Elixir/BEAM toolchain is available in this sandbox, so
 > this batch is not run-verified.
+>
+> Elm: 10 files (5 pre-existing + 5 new: GCD, merge sort, a `Point`
+> record with `addPoints`, a `Result`-based safe-division chain using
+> `Result.andThen`, and a list pipeline for even-square summation). No
+> Elm compiler is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
