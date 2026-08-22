@@ -239,6 +239,11 @@ Sample source files organized by programming language for model training.
 > and GCD via Euclid's algorithm, all in fixed-format COBOL with
 > `PERFORM VARYING`/`PERFORM UNTIL`). No `cobc` (GnuCOBOL) toolchain is
 > available in this sandbox, so this batch is not compiler-verified.
+>
+> Common Lisp: 5 files (2 pre-existing + 3 new: an iterative Fibonacci
+> using `loop`/`psetf`, a primality filter, and a recursive binary
+> search over a vector). No CL toolchain (SBCL/CLISP) is available in
+> this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
