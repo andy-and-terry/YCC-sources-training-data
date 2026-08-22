@@ -45,7 +45,16 @@ Sample source files organized by programming language for model training.
 | MATLAB     | `quicksort.m`, `fibonacci.m` |
 | Solidity   | `Counter.sol`, `SimpleStorage.sol` |
 
-Additional patterns added to existing languages this round: `hash_map` (TypeScript, C++, Go) and `palindrome` (Java, C#, Kotlin, Swift, PHP).
+| COBOL      | `factorial.cob`, `word_count.cob` |
+| Prolog     | `quicksort.pl`, `fibonacci.pl` |
+| D          | `quicksort.d`, `stack.d` |
+| Tcl        | `quicksort.tcl`, `word_count.tcl` |
+| VBA        | `QuickSort.bas`, `WordCount.bas` |
+| Pascal     | `quicksort.pas`, `stack.pas` |
+| Ada        | `quicksort.adb` |
+| Assembly (x86-64 NASM) | `sum.asm` |
+
+Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), and `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go).
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
