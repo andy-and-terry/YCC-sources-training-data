@@ -645,6 +645,13 @@ Sample source files organized by programming language for model training.
 > binary search, recursive factorial, and a collection demo using
 > `select:`/`collect:`/`inject:into:`). No GNU Smalltalk (`gst`) is
 > available in this sandbox, so this batch is not run-verified.
+>
+> Standard ML: 10 files (5 pre-existing + 5 new: bubble sort over an
+> `Array` using explicit recursive loops (SML has no `for` loop), GCD,
+> a `point` record type with `addPoints`, a `shape` datatype with a
+> pattern-matched `area`, and a custom `DivisionByZero` exception with
+> `handle`). No SML toolchain is available in this sandbox, so this
+> batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
