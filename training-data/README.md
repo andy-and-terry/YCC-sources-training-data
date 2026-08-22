@@ -634,6 +634,12 @@ Sample source files organized by programming language for model training.
 > vector, GCD, a `map`/`filter`/`foldl` demo, a hash-table demo, and
 > `with-handlers`-based exception handling). No Racket toolchain is
 > available in this sandbox, so this batch is not run-verified.
+>
+> Scheme: 10 files (5 pre-existing + 5 new: bubble sort, binary
+> search, recursive factorial, an association-list demo, and a
+> tail-recursive `sum-to` accumulator). No Scheme toolchain
+> (Guile/MIT Scheme) is available in this sandbox, so this batch is
+> not run-verified.
 
 | Language   | Files |
 |------------|-------|
