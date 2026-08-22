@@ -687,6 +687,12 @@ Sample source files organized by programming language for model training.
 > of standard digital-logic patterns. No VHDL toolchain (e.g. GHDL) is
 > available in this sandbox, so this batch is not simulated or
 > elaboration-verified.
+>
+> Vimscript: 10 files (5 pre-existing + 5 new: bubble sort, binary
+> search, a dict demo, recursive factorial, and `try`/`catch`/
+> `v:exception`-based error handling). `vim` is available in this
+> sandbox — all 5 new files were run via `vim -Nes` with `redir`
+> capturing output, and all produced correct output.
 
 | Language   | Files |
 |------------|-------|
