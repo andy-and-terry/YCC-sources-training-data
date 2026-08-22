@@ -553,6 +553,11 @@ Sample source files organized by programming language for model training.
 > array-comprehension demo, and exception handling with `try`/`catch`
 > and a custom `DomainError`). No Julia toolchain is available in this
 > sandbox, so this batch is not run-verified.
+>
+> Lua: 10 files (5 pre-existing + 5 new: binary search, GCD, a `Point`
+> metatable with `__add`/`__tostring`, a `coroutine.yield`-based
+> counter, and `pcall`-based error handling). No Lua interpreter is
+> available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
