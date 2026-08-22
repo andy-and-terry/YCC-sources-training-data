@@ -280,6 +280,11 @@ Sample source files organized by programming language for model training.
 > `Option`-based safe-division/`List.choose` demo). No F#/dotnet
 > toolchain is available in this sandbox, so this batch is not
 > run-verified.
+>
+> Forth: 5 files (2 pre-existing + 3 new: iterative Fibonacci, GCD via
+> Euclid's algorithm, and summing a `CREATE`d array via `CELLS`
+> addressing). No Forth toolchain (e.g. gforth) is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
