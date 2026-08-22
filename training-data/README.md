@@ -377,6 +377,11 @@ Sample source files organized by programming language for model training.
 > test, and a `MyPoint` class with an overloaded `+` and a custom
 > `printOn:`). No GNU Smalltalk (`gst`) is available in this sandbox,
 > so this batch is not run-verified.
+>
+> Standard ML: 5 files (2 pre-existing + 3 new: a primality filter, an
+> `Array`-based binary search, and an `option`-based safe-division
+> demo using `List.mapPartial`/`foldl`). No SML toolchain is available
+> in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
