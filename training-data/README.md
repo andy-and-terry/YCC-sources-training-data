@@ -480,6 +480,12 @@ Sample source files organized by programming language for model training.
 > helper, `mapcar`/`remove-if-not`/`reduce`, and `handler-case`-based
 > condition handling for safe division). No CL toolchain is available
 > in this sandbox, so this batch is not run-verified.
+>
+> Crystal: 10 files (5 pre-existing + 5 new: bubble sort, binary
+> search, GCD, a `Greetable` module included into `Person`, and a
+> custom `DivisionByZeroError` exception with `begin`/`rescue`). No
+> Crystal toolchain is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
