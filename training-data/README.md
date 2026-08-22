@@ -339,6 +339,11 @@ Sample source files organized by programming language for model training.
 > filter, and a regex demo covering email extraction and username
 > validation). `perl` is available in this sandbox — all 5 files were
 > run directly and produced correct output.
+>
+> PL/SQL: 5 files (2 pre-existing + 3 new: Fibonacci, GCD, and a
+> cursor-based demo iterating `employees` with `%TYPE`/`%NOTFOUND`).
+> No Oracle database is available in this sandbox, so this batch is
+> not run-verified.
 
 | Language   | Files |
 |------------|-------|
