@@ -422,6 +422,14 @@ Sample source files organized by programming language for model training.
 > Zig: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
 > and an optional-returning binary search). No Zig toolchain is
 > available in this sandbox, so this batch is not compiler-verified.
+>
+> C: 5 files (3 pre-existing + 2 new: a primality test and binary
+> search), reaching the 5-file floor. Both new files were compiled
+> with `gcc -std=c17 -Wall` (clean, no warnings) and run directly to
+> confirm correct output.
+>
+> That completes the breadth-language top-up pass: every language
+> subdirectory now has at least 5 files.
 
 | Language   | Files |
 |------------|-------|
