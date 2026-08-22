@@ -418,6 +418,10 @@ Sample source files organized by programming language for model training.
 > using explicit `block`/`loop`/`br_if` control flow). No
 > `wat2wasm`/`wasmtime` toolchain is available in this sandbox, so this
 > batch is not assembled or run-verified.
+>
+> Zig: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
+> and an optional-returning binary search). No Zig toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
