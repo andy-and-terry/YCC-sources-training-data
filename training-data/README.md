@@ -101,6 +101,25 @@ Sample source files organized by programming language for model training.
 > `static_assert`, `std::atomic` with `std::thread`, an LRU cache built
 > on `std::list`/`std::unordered_map` splicing, a `std::runtime_error`
 > exception hierarchy, `std::string_view`, and namespace organization.
+>
+> C# got the same large-batch treatment (100 files total) but with a
+> real caveat: **this sandbox has no C# compiler.** `apt`'s
+> `dotnet-sdk-8.0` package is stale (its dependencies 404), and
+> Microsoft's install script is blocked by this session's network
+> policy — installing one wasn't possible here. So unlike every other
+> language in this depth pass, these files are **not compiler-verified**,
+> only checked for balanced braces/parens/brackets (99/100 clean; the
+> 100th, `ValidParentheses.cs`, "fails" only because its own string
+> literals contain unbalanced bracket characters as test data — the
+> code itself is fine). Treat this batch with more skepticism than the
+> others until someone runs `dotnet build` on it. Same breadth as the
+> earlier batches, plus C#-specific idioms: LINQ (`GroupBy`/`Select`/
+> `Where`/`Sum`), `async`/`await` with retry-by-exception-filter,
+> pattern-matching `switch` expressions over `record` hierarchies,
+> `record ... with` non-destructive mutation, extension methods,
+> `IDisposable`/`using`, generic constraints (`where T : IIdentifiable`),
+> nullable reference types, indexers, `yield return` iterators, C#
+> events/delegates, and `Span<T>`.
 
 | Language   | Files |
 |------------|-------|
