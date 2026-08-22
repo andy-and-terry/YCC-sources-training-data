@@ -18,6 +18,21 @@ Sample source files organized by programming language for model training.
 > extra round covering decorators (retry/rate-limit/memoize), context
 > managers, asyncio producer/consumer, a hand-rolled JSON parser, an
 > argparse CLI with subcommands, and a realistic exception hierarchy.
+>
+> Python then got a large single-language batch (115 files total,
+> syntax-checked with `py_compile`) covering classic algorithms and data
+> structures in depth: sorting (bubble/insertion/selection/heap/counting/
+> radix/bucket/shell), searching and string matching (KMP, Rabin-Karp,
+> binary search variants), graph algorithms (Dijkstra, A*, Bellman-Ford,
+> Floyd-Warshall, Kruskal/Prim MST, topological sort, union-find), DP
+> (knapsack, coin change, LCS, LIS, edit distance, subset sum), classic
+> data structures (trie, segment tree, Fenwick tree, skip list, LFU/LRU
+> cache, disjoint set, doubly linked list, bloom filter), GoF design
+> patterns (singleton, factory, builder, strategy, command, visitor,
+> observer), and small ML/stats primitives (linear regression, k-means,
+> perceptron, gradient descent). Even at this volume it's still small
+> hand-written illustrative code, not a real corpus — see the caveats
+> below.
 
 | Language   | Files |
 |------------|-------|
