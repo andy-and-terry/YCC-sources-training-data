@@ -680,6 +680,13 @@ Sample source files organized by programming language for model training.
 > flip-flop, a 2-to-4 decoder, a 4-bit comparator, and a 3-state
 > traffic-light FSM). No Verilog toolchain is available in this
 > sandbox, so this batch is not simulated or elaboration-verified.
+>
+> VHDL: 10 files (5 pre-existing + 5 new: a half adder, a JK
+> flip-flop, a 2-to-4 decoder, an unsigned comparator, and a 3-state
+> traffic-light FSM), mirroring the Verilog top-up with the same set
+> of standard digital-logic patterns. No VHDL toolchain (e.g. GHDL) is
+> available in this sandbox, so this batch is not simulated or
+> elaboration-verified.
 
 | Language   | Files |
 |------------|-------|
