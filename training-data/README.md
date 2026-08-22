@@ -604,6 +604,12 @@ Sample source files organized by programming language for model training.
 > inner loop had an off-by-one bound that skipped the last pair
 > (caught by the run, fixed, and re-verified) before all 5 produced
 > correct output.
+>
+> PL/SQL: 10 files (5 pre-existing + 5 new: bubble sort and binary
+> search over a `TABLE OF NUMBER` collection type, a `point_rec`
+> record, `ZERO_DIVIDE` exception handling, and string reversal via
+> `SUBSTR`). No Oracle database is available in this sandbox, so this
+> batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
