@@ -524,6 +524,12 @@ Sample source files organized by programming language for model training.
 > restored via `git checkout` before committing. No Forth toolchain
 > (e.g. gforth) is available in this sandbox, so this batch is not
 > run-verified.
+>
+> Fortran (free-form `.f90`): 10 files (5 pre-existing + 5 new: binary
+> search, a `point` derived type with field-wise addition, array
+> statistics via `sum`/`maxval`/`minval`, factorial using a `contains`
+> function, and in-place string reversal). No `gfortran` toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
