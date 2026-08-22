@@ -133,6 +133,19 @@ Sample source files organized by programming language for model training.
 > `method_missing`, refinements, pattern matching (`case/in`), keyword
 > arguments, frozen/immutable objects, a custom lazy `Enumerator`, and
 > `Mutex`-synchronized threads.
+>
+> PHP went next: 50 files total, all passing `php -l` syntax checks, and
+> a broad set spot-run with the `php` CLI to confirm correct output.
+> Covers sorting/searching (quicksort, linear search, KMP string
+> matching), graph/DP staples (union-find, topological sort, Dijkstra,
+> 0/1 knapsack, coin change, edit distance, LCS), data structures
+> (binary tree, trie, linked list, binary min-heap, LRU cache), and
+> modern PHP idioms: traits, generators (`yield`), closures with `use
+> (&$var)`, first-class callable syntax (`func(...)`), readonly
+> properties, backed enums (`enum ... : string`) with `match`,
+> interfaces/polymorphism, the `match` expression (including `match
+> (true)` range dispatch), exception hierarchies, static properties,
+> and `preg_*` regex helpers.
 
 | Language   | Files |
 |------------|-------|
