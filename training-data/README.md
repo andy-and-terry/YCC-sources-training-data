@@ -670,6 +670,11 @@ Sample source files organized by programming language for model training.
 > factorial, and an `errordomain`-based exception demo with
 > `throws`/`try`/`catch`). No `valac` toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> VBA: 10 files (5 pre-existing + 5 new: bubble sort, GCD, binary
+> search, a class-module `Point` sketch, and `On Error GoTo`-based
+> error handling for safe division). No Excel/VBA runtime is available
+> in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
