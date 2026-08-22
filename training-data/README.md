@@ -781,12 +781,14 @@ Sample source files organized by programming language for model training.
 > run-verified.
 >
 > Awk: 50 files (10 pre-existing + 40 new): field filtering/
-> transformation, deduplication, CSV/JSON-ish conversion, GCD,
+> transformation, deduplication, CSV/JSON-ish/TSV conversion, GCD,
 > factorial, a Sieve-style primality range, a palindrome checker,
-> grouped averages, a histogram, and more field-processing idioms
-> (split, trim, swap, running total, count-by-key). All 40 new files
-> were run against sample input via `awk` and verified to produce
-> correct output.
+> grouped averages, a histogram, Celsius-to-Fahrenheit and leap-year
+> checks, and more field-processing idioms (split, trim, swap, running
+> total, count-by-key, longest word, field reversal). A first batch
+> undercounted at 30 new files; a follow-up batch added the remaining
+> 10 to reach 50. All 40 new files were run against sample input via
+> `awk` and verified to produce correct output.
 
 | Language   | Files |
 |------------|-------|
