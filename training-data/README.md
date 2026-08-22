@@ -458,6 +458,11 @@ Sample source files organized by programming language for model training.
 > GCD, and a file-line-counter that reports missing files without
 > aborting the script). All 4 new runnable scripts were executed
 > directly and verified to produce correct output.
+>
+> C: 10 files (5 pre-existing + 5 new: Fibonacci, a linked list, a
+> stack, quicksort, and in-place string reversal). All 5 new files
+> were compiled with `gcc -std=c17 -Wall` (clean, no warnings) and run
+> directly, producing correct output.
 
 | Language   | Files |
 |------------|-------|
