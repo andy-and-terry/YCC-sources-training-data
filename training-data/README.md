@@ -407,6 +407,11 @@ Sample source files organized by programming language for model training.
 > VHDL top-up with the same set of standard digital-logic patterns. No
 > Verilog toolchain (e.g. Icarus Verilog) is available in this
 > sandbox, so this batch is not simulated or elaboration-verified.
+>
+> Vimscript: 5 files (2 pre-existing + 3 new: Fibonacci, GCD, and a
+> list-operations demo using `map()`/`filter()`). `vim` is available
+> in this sandbox — all 3 new scripts were run via `vim -Nes` with
+> `redir` capturing output, and all produced correct output.
 
 | Language   | Files |
 |------------|-------|
