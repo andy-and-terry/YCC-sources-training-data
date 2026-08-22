@@ -1,0 +1,30 @@
+CREATE ARR 5 , 2 , 9 , 1 , 5 , 6 ,
+6 CONSTANT ARR-LEN
+VARIABLE TMP-A
+VARIABLE TMP-B
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+
+: MAYBE-SWAP ( i -- )
+  DUP ELEM @ TMP-A !
+  DUP 1+ ELEM @ TMP-B !
+  TMP-A @ TMP-B @ >
+  IF
+    DUP ELEM TMP-B @ SWAP !
+    DUP 1+ ELEM TMP-A @ SWAP !
+  THEN
+  DROP ;
+
+: BUBBLE-SORT ( -- )
+  ARR-LEN 0 DO
+    ARR-LEN 1- 0 DO
+      I MAYBE-SWAP
+    LOOP
+  LOOP ;
+
+: PRINT-ARR ( -- )
+  ARR-LEN 0 DO I ELEM @ . LOOP ;
+
+BUBBLE-SORT
+PRINT-ARR
+CR

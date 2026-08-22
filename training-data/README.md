@@ -515,6 +515,15 @@ Sample source files organized by programming language for model training.
 > list-comprehension even-squares demo, and `try`/`catch` for safe
 > division). No Erlang/OTP toolchain is available in this sandbox, so
 > this batch is not run-verified.
+>
+> Forth: 10 files (5 pre-existing + 5 new: bubble sort, binary search
+> — both using `VARIABLE`s rather than deep stack juggling to keep the
+> control flow legible, string length via `S"`, a stack-based `MAX2`
+> chain, and a squares loop). One early draft of `bubble_sort.fs`
+> accidentally overwrote `is_prime.fs`'s test value (7 -> 17); it was
+> restored via `git checkout` before committing. No Forth toolchain
+> (e.g. gforth) is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|

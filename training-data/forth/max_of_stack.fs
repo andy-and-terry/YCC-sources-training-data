@@ -1,0 +1,6 @@
+: MAX2 ( a b -- max ) 2DUP > IF DROP ELSE NIP THEN ;
+
+: MAX-OF-ARRAY ( -- max )
+  5 3 MAX2 8 MAX2 1 MAX2 9 MAX2 2 MAX2 ;
+
+MAX-OF-ARRAY . CR
