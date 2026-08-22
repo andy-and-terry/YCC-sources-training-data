@@ -779,6 +779,14 @@ Sample source files organized by programming language for model training.
 > stack-frame locals, `cmovg` branchless max). No NASM/`ld` toolchain
 > is available in this sandbox, so this batch is not assembled or
 > run-verified.
+>
+> Awk: 50 files (10 pre-existing + 40 new): field filtering/
+> transformation, deduplication, CSV/JSON-ish conversion, GCD,
+> factorial, a Sieve-style primality range, a palindrome checker,
+> grouped averages, a histogram, and more field-processing idioms
+> (split, trim, swap, running total, count-by-key). All 40 new files
+> were run against sample input via `awk` and verified to produce
+> correct output.
 
 | Language   | Files |
 |------------|-------|
