@@ -789,6 +789,19 @@ Sample source files organized by programming language for model training.
 > undercounted at 30 new files; a follow-up batch added the remaining
 > 10 to reach 50. All 40 new files were run against sample input via
 > `awk` and verified to produce correct output.
+>
+> Bash: 50 files (9 pre-existing + 41 new): sorting (selection/
+> insertion sort), string ops (reverse, palindrome, vowel count,
+> split, binary-to-decimal), data structures via associative arrays
+> (stack, queue, linked list, matrix transpose), and shell idioms
+> (`trap`, argument parsing, heredocs, process substitution, `read`
+> loops over files/CSV, background jobs with `wait`, `timeout`,
+> `case`). Two real bugs were caught by execution and fixed:
+> `insertion_sort.sh` and `count_vowels.sh` each used `((var++))` on a
+> variable starting at 0, whose exit status is "false" and silently
+> killed the script under `set -e` — both were switched to
+> `var=$((var + 1))` and re-verified. All 41 new scripts were executed
+> directly and confirmed to produce correct output.
 
 | Language   | Files |
 |------------|-------|
