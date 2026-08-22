@@ -664,6 +664,12 @@ Sample source files organized by programming language for model training.
 > `dict`-based scores demo, recursive factorial, and `catch`-based
 > error handling). No `tclsh` is available in this sandbox, so this
 > batch is not run-verified.
+>
+> Vala: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a `Point`
+> class with GObject-style properties and an `add` method, recursive
+> factorial, and an `errordomain`-based exception demo with
+> `throws`/`try`/`catch`). No `valac` toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
