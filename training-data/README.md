@@ -325,6 +325,11 @@ Sample source files organized by programming language for model training.
 > test, and a `Person` class implementing a `Greetable` protocol). No
 > Foundation framework is available in this sandbox (only bare
 > `clang`), so this batch is not compiler-verified.
+>
+> OCaml: 5 files (2 pre-existing + 3 new: an accumulator-based
+> Fibonacci, a primality filter, and an `option`-based safe-division
+> demo using `filter_map`/`fold_left`). No OCaml toolchain is available
+> in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
