@@ -509,6 +509,12 @@ Sample source files organized by programming language for model training.
 > `Result.andThen`, and a list pipeline for even-square summation). No
 > Elm compiler is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Erlang: 10 files (5 pre-existing + 5 new: bubble sort, GCD via
+> pattern-matched clauses, a `#point{}` record with `add_points/2`, a
+> list-comprehension even-squares demo, and `try`/`catch` for safe
+> division). No Erlang/OTP toolchain is available in this sandbox, so
+> this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
