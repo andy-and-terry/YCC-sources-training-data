@@ -652,6 +652,13 @@ Sample source files organized by programming language for model training.
 > pattern-matched `area`, and a custom `DivisionByZero` exception with
 > `handle`). No SML toolchain is available in this sandbox, so this
 > batch is not run-verified.
+>
+> Solidity: 10 files (5 pre-existing + 5 new: a minimal ERC-20 token
+> with `transfer`/`approve`/`transferFrom`, a `BinarySearchLib`
+> library, a `Pausable` abstract contract, a `Person[]` struct-array
+> demo, and Solidity 0.8.4+ custom `error` types with `revert`). No
+> `solc` compiler is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
