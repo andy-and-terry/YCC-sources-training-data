@@ -193,6 +193,13 @@ Sample source files organized by programming language for model training.
 > recursive factorial using `Long_Long_Integer`). No Ada toolchain
 > (`gnatmake`/`gcc -c -gnat`) is available in this sandbox, so this
 > batch is not compiler-verified.
+>
+> Assembly (x86-64 NASM): 5 files (1 pre-existing + 4 new: iterative
+> factorial, max-of-array scan, iterative Fibonacci, and in-place
+> string reversal via a two-pointer swap loop), all following the
+> existing `_start`/`syscall exit` convention. No NASM/`ld` toolchain
+> is available in this sandbox, so this batch is not assembled or
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
