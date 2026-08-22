@@ -211,6 +211,13 @@ Sample source files organized by programming language for model training.
 > all standard synchronous/combinational digital-logic patterns. No
 > VHDL toolchain (e.g. GHDL) is available in this sandbox, so this
 > batch is not simulated or elaboration-verified.
+>
+> Apex: 5 files (2 pre-existing + 3 new: Fibonacci, binary search, and
+> a linked-list reversal), plus a Salesforce-idiomatic
+> `AccountTriggerHandler` class showing the before/after-insert trigger
+> handler pattern over `List<Account>`/`Set<Id>`. No Apex toolchain
+> (Salesforce org/CLI) is available in this sandbox, so this batch is
+> not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
