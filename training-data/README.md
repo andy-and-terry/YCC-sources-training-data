@@ -596,6 +596,14 @@ Sample source files organized by programming language for model training.
 > search, a `TPoint` record with `AddPoints`, recursive factorial, and
 > string reversal). No `fpc` toolchain is available in this sandbox,
 > so this batch is not compiler-verified.
+>
+> Perl: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a hash
+> demo with sorted-key iteration and averaging, a `Point` package with
+> `new`/`add`/`to_string`, and `eval`/`$@`-based error handling). All 5
+> new files were run through the `perl` interpreter; the bubble-sort
+> inner loop had an off-by-one bound that skipped the last pair
+> (caught by the run, fixed, and re-verified) before all 5 produced
+> correct output.
 
 | Language   | Files |
 |------------|-------|
