@@ -396,6 +396,11 @@ Sample source files organized by programming language for model training.
 > Vala: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
 > and binary search). No `valac` toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> VBA: 5 files (2 pre-existing + 3 new: Fibonacci, a primality test,
+> and an Excel-idiomatic `SumRange` iterating a `Range` object). No
+> Excel/VBA runtime is available in this sandbox, so this batch is not
+> run-verified.
 
 | Language   | Files |
 |------------|-------|
