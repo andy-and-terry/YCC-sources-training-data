@@ -428,8 +428,16 @@ Sample source files organized by programming language for model training.
 > with `gcc -std=c17 -Wall` (clean, no warnings) and run directly to
 > confirm correct output.
 >
-> That completes the breadth-language top-up pass: every language
-> subdirectory now has at least 5 files.
+> That completed the first breadth-language top-up pass: every
+> language subdirectory reached at least 5 files. A second pass then
+> raised the target for these 5-file languages to 10, done one
+> language per batch, each individually committed and pushed.
+>
+> Ada: 10 files (5 pre-existing + 5 new: bubble sort, binary search, a
+> `Point` record with an overloaded `"+"`, exception handling via a
+> user-defined exception, and a generic `Stack_Pkg` package
+> instantiated for `Integer`). No Ada toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
