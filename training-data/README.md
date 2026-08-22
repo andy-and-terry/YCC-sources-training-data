@@ -412,6 +412,12 @@ Sample source files organized by programming language for model training.
 > list-operations demo using `map()`/`filter()`). `vim` is available
 > in this sandbox — all 3 new scripts were run via `vim -Nes` with
 > `redir` capturing output, and all produced correct output.
+>
+> WebAssembly (WAT): 5 files (2 pre-existing + 3 new: a primality test,
+> iterative Fibonacci, and GCD, all hand-written in the text format
+> using explicit `block`/`loop`/`br_if` control flow). No
+> `wat2wasm`/`wasmtime` toolchain is available in this sandbox, so this
+> batch is not assembled or run-verified.
 
 | Language   | Files |
 |------------|-------|
