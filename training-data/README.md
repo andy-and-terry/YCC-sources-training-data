@@ -474,6 +474,12 @@ Sample source files organized by programming language for model training.
 > array summation, string reversal via reference modification, and
 > max-of-array). No GnuCOBOL toolchain is available in this sandbox,
 > so this batch is not compiler-verified.
+>
+> Common Lisp: 10 files (5 pre-existing + 5 new: destructive bubble
+> sort via `rotatef`, GCD, a `defstruct point` with a `point-add`
+> helper, `mapcar`/`remove-if-not`/`reduce`, and `handler-case`-based
+> condition handling for safe division). No CL toolchain is available
+> in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|

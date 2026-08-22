@@ -1,0 +1,7 @@
+(let* ((numbers '(1 2 3 4 5))
+       (doubled (mapcar (lambda (x) (* x 2)) numbers))
+       (evens (remove-if-not #'evenp numbers))
+       (total (reduce #'+ numbers)))
+  (print doubled)
+  (print evens)
+  (print total))
