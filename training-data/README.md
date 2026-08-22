@@ -567,6 +567,12 @@ Sample source files organized by programming language for model training.
 > the new struct demo was written to a separate file instead. No
 > MATLAB/Octave is available in this sandbox, so this batch is not
 > run-verified.
+>
+> Nim: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a `Point`
+> object with an overloaded `+`, a `sequtils`-based `filterIt`/
+> `mapIt`/`foldl` pipeline, and a custom `DivisionByZeroError` with
+> `try`/`except`). No Nim toolchain is available in this sandbox, so
+> this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
