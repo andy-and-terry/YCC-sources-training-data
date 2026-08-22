@@ -41,6 +41,14 @@ Sample source files organized by programming language for model training.
 > few JS-specific idioms: an LRU cache and binary tree class, a `throttle`
 > helper alongside the existing `debounce`, a concurrency-limited promise
 > pool, and a retrying `fetch` wrapper with exponential backoff.
+>
+> TypeScript got the same large-batch treatment too (106 files total, all
+> individually type-checked in `--strict` mode). Same breadth as the
+> Python/JS batches, properly typed with generics, interfaces, and enums
+> throughout, plus TS-specific additions: discriminated unions with
+> exhaustiveness checking, a `Result<T, E>` type with `map`/`flatMap`,
+> and demos of utility types (`Partial`, `Pick`, `Readonly`) and mapped
+> conditional types.
 
 | Language   | Files |
 |------------|-------|
