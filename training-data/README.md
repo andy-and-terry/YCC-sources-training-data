@@ -591,6 +591,11 @@ Sample source files organized by programming language for model training.
 > pattern-matched `area`, and a custom `Division_by_zero` exception
 > with `try`/`with`). No OCaml toolchain is available in this sandbox,
 > so this batch is not compiler-verified.
+>
+> Pascal: 10 files (5 pre-existing + 5 new: bubble sort, binary
+> search, a `TPoint` record with `AddPoints`, recursive factorial, and
+> string reversal). No `fpc` toolchain is available in this sandbox,
+> so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
