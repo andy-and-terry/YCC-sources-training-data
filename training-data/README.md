@@ -87,6 +87,20 @@ Sample source files organized by programming language for model training.
 > closures returned via `impl Fn`/`impl FnMut`, explicit lifetimes,
 > the newtype pattern with `From`/`Add`, and `mpsc` channels with
 > `thread::spawn`.
+>
+> C++ got the same large-batch treatment (100 files total: 98 `.cpp` +
+> 2 `.hpp`, all compiled cleanly with `g++ -std=c++17 -pthread`; fixed
+> one real missing-include bug found during the sweep). Nine spot-run
+> to verify output. Same breadth as the earlier batches, plus
+> C++-specific idioms: `std::variant`/`std::visit` with `if constexpr`,
+> `std::optional` chaining, hand-written move semantics (move
+> constructor/assignment, `noexcept`, deleted copy), operator
+> overloading, class templates with a generic `Stack<T>` and a
+> generic `mapVector`, STL algorithm chains (`sort`/`accumulate`/
+> `transform`/`count_if`), `constexpr` compile-time evaluation with
+> `static_assert`, `std::atomic` with `std::thread`, an LRU cache built
+> on `std::list`/`std::unordered_map` splicing, a `std::runtime_error`
+> exception hierarchy, `std::string_view`, and namespace organization.
 
 | Language   | Files |
 |------------|-------|
