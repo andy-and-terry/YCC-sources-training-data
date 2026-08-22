@@ -700,6 +700,16 @@ Sample source files organized by programming language for model training.
 > hand-written `block`/`loop`/`br_if` style. No `wat2wasm`/`wasmtime`
 > toolchain is available in this sandbox, so this batch is not
 > assembled or run-verified.
+>
+> Zig: 10 files (5 pre-existing + 5 new: bubble sort, GCD, a `Point`
+> struct with an `add` method, a `MathError` error-set demo using
+> `catch |err|`, and recursive factorial). No Zig toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
+>
+> That completes the second breadth-language pass: every language
+> subdirectory previously at the 5-file floor is now at 10 files (the
+> flagship 8 stay at 100+, PHP/Ruby at 50, Swift at 25, Kotlin at 12,
+> and Scala at 10).
 
 | Language   | Files |
 |------------|-------|
