@@ -629,6 +629,11 @@ Sample source files organized by programming language for model training.
 > `bubble_sort.R`; it was restored via `git checkout` and no
 > duplicate was written. No R/`Rscript` interpreter is available in
 > this sandbox, so this batch is not run-verified.
+>
+> Racket: 10 files (5 pre-existing + 5 new: bubble sort over a mutable
+> vector, GCD, a `map`/`filter`/`foldl` demo, a hash-table demo, and
+> `with-handlers`-based exception handling). No Racket toolchain is
+> available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
