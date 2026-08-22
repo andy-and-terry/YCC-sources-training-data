@@ -444,6 +444,11 @@ Sample source files organized by programming language for model training.
 > extending the same `_start`/`syscall exit` convention. No NASM/`ld`
 > toolchain is available in this sandbox, so this batch is not
 > assembled or run-verified.
+>
+> Awk: 10 files (5 pre-existing + 5 new: a primality filter, longest-
+> line finder, line reversal, per-group field summation, and a
+> `cat -n`-style line numberer). All 5 new files were run against
+> sample input via `awk` and verified to produce correct output.
 
 | Language   | Files |
 |------------|-------|
