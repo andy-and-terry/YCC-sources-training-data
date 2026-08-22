@@ -640,6 +640,11 @@ Sample source files organized by programming language for model training.
 > tail-recursive `sum-to` accumulator). No Scheme toolchain
 > (Guile/MIT Scheme) is available in this sandbox, so this batch is
 > not run-verified.
+>
+> Smalltalk: 10 files (5 pre-existing + 5 new: bubble sort, GCD,
+> binary search, recursive factorial, and a collection demo using
+> `select:`/`collect:`/`inject:into:`). No GNU Smalltalk (`gst`) is
+> available in this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
