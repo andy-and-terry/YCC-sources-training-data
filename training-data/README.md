@@ -36,6 +36,16 @@ Sample source files organized by programming language for model training.
 | Objective-C| `Stack.m`, `QuickSort.m` |
 | Groovy     | `QuickSort.groovy`, `WordCount.groovy` |
 | OCaml      | `quicksort.ml`, `stack.ml` |
+| Erlang     | `quicksort.erl`, `stack.erl` |
+| Nim        | `quicksort.nim`, `stack.nim` |
+| Crystal    | `quicksort.cr`, `stack.cr` |
+| Racket     | `quicksort.rkt`, `fibonacci.rkt` |
+| PowerShell | `QuickSort.ps1`, `WordCount.ps1` |
+| Fortran    | `quicksort.f90` |
+| MATLAB     | `quicksort.m`, `fibonacci.m` |
+| Solidity   | `Counter.sol`, `SimpleStorage.sol` |
+
+Additional patterns added to existing languages this round: `hash_map` (TypeScript, C++, Go) and `palindrome` (Java, C#, Kotlin, Swift, PHP).
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
