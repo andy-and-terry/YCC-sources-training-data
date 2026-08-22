@@ -33,6 +33,14 @@ Sample source files organized by programming language for model training.
 > perceptron, gradient descent). Even at this volume it's still small
 > hand-written illustrative code, not a real corpus — see the caveats
 > below.
+>
+> JavaScript got the same large-batch treatment (108 files total, all
+> verified with `node --check`), covering the same breadth as the Python
+> batch — sorting/searching, string matching, graph algorithms, DP,
+> classic data structures, GoF patterns, and ML/stats primitives — plus a
+> few JS-specific idioms: an LRU cache and binary tree class, a `throttle`
+> helper alongside the existing `debounce`, a concurrency-limited promise
+> pool, and a retrying `fetch` wrapper with exponential backoff.
 
 | Language   | Files |
 |------------|-------|
