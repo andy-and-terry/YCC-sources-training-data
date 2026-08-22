@@ -579,6 +579,12 @@ Sample source files organized by programming language for model training.
 > binary search, string helpers, and recursive `factorial`/
 > `fibonacci`). No `nix`/`nix-instantiate` is available in this
 > sandbox, so this batch is not evaluation-verified.
+>
+> Objective-C: 10 files (5 pre-existing + 5 new: bubble sort over
+> `NSMutableArray`, GCD, binary search, a `MyPoint` class with an
+> `add:` method and custom `description`, and a `Blocks`-based
+> `IntTransform` demo). No Foundation framework is available in this
+> sandbox (only bare `clang`), so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
