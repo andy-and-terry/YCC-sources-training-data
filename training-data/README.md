@@ -290,6 +290,11 @@ Sample source files organized by programming language for model training.
 > test, and a Godot-idiomatic `HealthComponent` using `signal` and
 > `.emit()`). No Godot engine is available in this sandbox, so this
 > batch is not run-verified.
+>
+> Groovy: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> filter, and a closure demo with a stateful counter plus
+> `collect`/`inject`). No Groovy toolchain is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
