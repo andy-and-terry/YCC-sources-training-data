@@ -186,6 +186,13 @@ Sample source files organized by programming language for model training.
 > based safe-division demo with a list comprehension over
 > `Just`/`Nothing`) before this floor took effect. No GHC toolchain is
 > available in this sandbox, so this batch is not compiler-verified.
+>
+> With the floor now at 5 files, remaining under-target languages are
+> being topped up one at a time. Ada: 5 files (1 pre-existing + 4 new:
+> Fibonacci, primality test, GCD via Euclid's algorithm, and a
+> recursive factorial using `Long_Long_Integer`). No Ada toolchain
+> (`gnatmake`/`gcc -c -gnat`) is available in this sandbox, so this
+> batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
