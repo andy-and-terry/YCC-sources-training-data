@@ -438,6 +438,12 @@ Sample source files organized by programming language for model training.
 > user-defined exception, and a generic `Stack_Pkg` package
 > instantiated for `Integer`). No Ada toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Assembly (x86-64 NASM): 10 files (5 pre-existing + 5 new: bubble
+> sort, a primality test, GCD, binary search, and string length),
+> extending the same `_start`/`syscall exit` convention. No NASM/`ld`
+> toolchain is available in this sandbox, so this batch is not
+> assembled or run-verified.
 
 | Language   | Files |
 |------------|-------|
