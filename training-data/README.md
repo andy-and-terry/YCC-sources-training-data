@@ -738,6 +738,22 @@ Sample source files organized by programming language for model training.
 > cycle detection, a `PriorityQueue` demo, and an `enum class`. No
 > Kotlin toolchain is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Scala: 50 files (10 pre-existing + 40 new): heap sort, sieve of
+> Eratosthenes, Kadane's max-subarray, valid parentheses, two-sum, a
+> trie, Dijkstra, coin change, LCS, 0/1 knapsack, union-find,
+> topological sort, a binary tree, `for`-comprehensions, implicit
+> classes, `Future`/`for`-yield concurrency, `Either`-based error
+> handling, companion objects, a generic stack, pattern matching over
+> `Any`, `lazy val`, word frequency, Roman numerals, a builder
+> pattern, an exception hierarchy, `@tailrec` factorial, a circular
+> buffer, a segment tree, operator overloading via `case class`, a
+> `mutable.PriorityQueue`-based heap, `Enumeration`, cycle detection,
+> a linked list, GCD, `LazyList`-based infinite Fibonacci, partial
+> functions, `case object` traffic-light states, `foldLeft`/
+> `foldRight`, simple JSON stringification, and immutable
+> `Vector`/`Map` updates. No Scala toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
