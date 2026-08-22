@@ -179,6 +179,13 @@ Sample source files organized by programming language for model training.
 > `foldLeft`, function composition), and a `trait` mixin (`with`) demo.
 > No Scala toolchain is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> The breadth-language floor was lowered once more, to 5 files per
+> language. Haskell landed at 6 files (2 pre-existing + 4 new: bubble
+> sort, merge sort, a `Data.Array`-based binary search, and a `Maybe`-
+> based safe-division demo with a list comprehension over
+> `Just`/`Nothing`) before this floor took effect. No GHC toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
