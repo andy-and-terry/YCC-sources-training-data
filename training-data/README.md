@@ -31,6 +31,11 @@ Sample source files organized by programming language for model training.
 | Clojure    | `quicksort.clj`, `word_count.clj` |
 | Bash       | `word_count.sh`, `backup.sh` |
 | Julia      | `quicksort.jl`, `fibonacci.jl` |
+| F#         | `quicksort.fsx`, `fibonacci.fsx` |
+| Zig        | `quicksort.zig`, `stack.zig` |
+| Objective-C| `Stack.m`, `QuickSort.m` |
+| Groovy     | `QuickSort.groovy`, `WordCount.groovy` |
+| OCaml      | `quicksort.ml`, `stack.ml` |
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
