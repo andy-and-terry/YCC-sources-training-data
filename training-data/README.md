@@ -469,6 +469,11 @@ Sample source files organized by programming language for model training.
 > threading-macro demos, and a `defmulti`/`defmethod` polymorphic
 > `area` dispatch). No Clojure/JVM toolchain is available in this
 > sandbox, so this batch is not run-verified.
+>
+> COBOL: 10 files (5 pre-existing + 5 new: bubble sort, binary search,
+> array summation, string reversal via reference modification, and
+> max-of-array). No GnuCOBOL toolchain is available in this sandbox,
+> so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
