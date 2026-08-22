@@ -334,6 +334,11 @@ Sample source files organized by programming language for model training.
 > Pascal: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
 > test, and GCD via Euclid's algorithm). No `fpc` toolchain is
 > available in this sandbox, so this batch is not compiler-verified.
+>
+> Perl: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> filter, and a regex demo covering email extraction and username
+> validation). `perl` is available in this sandbox — all 5 files were
+> run directly and produced correct output.
 
 | Language   | Files |
 |------------|-------|
