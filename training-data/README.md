@@ -344,6 +344,11 @@ Sample source files organized by programming language for model training.
 > cursor-based demo iterating `employees` with `%TYPE`/`%NOTFOUND`).
 > No Oracle database is available in this sandbox, so this batch is
 > not run-verified.
+>
+> PowerShell: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> test, and a pipeline demo using `Where-Object`/`ForEach-Object`/
+> `Measure-Object`). No `pwsh`/`powershell` is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
