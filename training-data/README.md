@@ -659,6 +659,11 @@ Sample source files organized by programming language for model training.
 > demo, and Solidity 0.8.4+ custom `error` types with `revert`). No
 > `solc` compiler is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Tcl: 10 files (5 pre-existing + 5 new: bubble sort, binary search, a
+> `dict`-based scores demo, recursive factorial, and `catch`-based
+> error handling). No `tclsh` is available in this sandbox, so this
+> batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
