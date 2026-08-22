@@ -49,6 +49,16 @@ Sample source files organized by programming language for model training.
 > exhaustiveness checking, a `Result<T, E>` type with `map`/`flatMap`,
 > and demos of utility types (`Partial`, `Pick`, `Readonly`) and mapped
 > conditional types.
+>
+> Java got the same large-batch treatment (104 files total, all
+> successfully compiled together with `javac` and spot-run). Same
+> breadth as the earlier batches, one public class per file matching
+> Java's filename convention, plus Java-specific idioms: an `LruCache`
+> via `LinkedHashMap` access-order eviction, try-with-resources, Stream
+> pipelines with `Collectors.groupingBy`, `Optional` chaining, records
+> with compact constructors, a sealed interface with exhaustive `switch`
+> pattern matching, and an `AtomicLong`-based thread-safe counter
+> exercised across ten threads.
 
 | Language   | Files |
 |------------|-------|
