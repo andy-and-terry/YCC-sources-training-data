@@ -59,6 +59,19 @@ Sample source files organized by programming language for model training.
 > with compact constructors, a sealed interface with exhaustive `switch`
 > pattern matching, and an `AtomicLong`-based thread-safe counter
 > exercised across ten threads.
+>
+> Go got the same large-batch treatment (102 files total, all passing
+> `go vet` cleanly with several spot-run via `go run`). Same breadth as
+> the earlier batches — each file is its own `package main` with a
+> `func main()`, runnable individually as the existing Go files already
+> were (no `go.mod`, so `go build ./...` isn't meaningful here; `go run
+> <file>.go` is the intended way to exercise any one of them). Plus
+> Go-specific idioms: a fan-out/fan-in channel pipeline, `errors.Is`/
+> `errors.As` with a wrapped sentinel and a custom error type, a
+> generic `Stack[T]` with a generic `Map` function, `defer`/`panic`/
+> `recover`, `context.WithTimeout` cancellation, an `sync.RWMutex`
+> cache exercised across ten goroutines, `encoding/json` struct tags,
+> a hand-rolled binary heap, and the functional-options pattern.
 
 | Language   | Files |
 |------------|-------|
