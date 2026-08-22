@@ -205,6 +205,12 @@ Sample source files organized by programming language for model training.
 > Fibonacci, a primality test, GCD via a recursive `contains` function,
 > and bubble sort). No `gfortran` toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> VHDL: 5 files (1 pre-existing + 4 new: a D flip-flop, a 4-to-1
+> multiplexer, a combinational full adder, and a 4-bit shift register),
+> all standard synchronous/combinational digital-logic patterns. No
+> VHDL toolchain (e.g. GHDL) is available in this sandbox, so this
+> batch is not simulated or elaboration-verified.
 
 | Language   | Files |
 |------------|-------|
