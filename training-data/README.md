@@ -244,6 +244,11 @@ Sample source files organized by programming language for model training.
 > using `loop`/`psetf`, a primality filter, and a recursive binary
 > search over a vector). No CL toolchain (SBCL/CLISP) is available in
 > this sandbox, so this batch is not run-verified.
+>
+> Crystal: 5 files (2 pre-existing + 3 new: Fibonacci, a primality
+> test using `Math.isqrt`, and a `struct Point` with operator
+> overloading and `to_s`). No Crystal toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
