@@ -802,6 +802,22 @@ Sample source files organized by programming language for model training.
 > killed the script under `set -e` — both were switched to
 > `var=$((var + 1))` and re-verified. All 41 new scripts were executed
 > directly and confirmed to produce correct output.
+>
+> C: 50 files (10 pre-existing + 40 new): sorting (bubble/insertion/
+> selection/heap sort), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), data structures (trie,
+> Dijkstra, union-find, binary tree, LRU cache, dynamic array,
+> circular buffer, queue), and idiomatic C: function pointers,
+> `typedef struct`, enums, file I/O (`fopen`/`fgets`), bit
+> manipulation, variadic functions (`stdarg.h`), and a reversed singly
+> linked list. All 40 new files were compiled with `gcc -std=c17
+> -Wall` and run directly. Two real bugs were caught and fixed:
+> `roman_numerals.c` called `strcat` before `<string.h>` was included
+> (implicit-declaration risk on 64-bit); `queue_array.c` printed three
+> `dequeue()` calls as `printf` arguments, whose evaluation order C
+> leaves unspecified — GCC evaluated right-to-left, printing `3 2 1`
+> instead of `1 2 3`, so the calls were sequenced into local variables
+> before printing.
 
 | Language   | Files |
 |------------|-------|
