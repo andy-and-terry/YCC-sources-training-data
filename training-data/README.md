@@ -996,6 +996,18 @@ Sample source files organized by programming language for model training.
 > object, custom `iterator`s, and `enum`/`case` pattern matching. No
 > Nim toolchain is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Nix: 51 files (10 pre-existing + 41 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, Kadane's max-subarray,
+> coin change, 0/1 knapsack, edit distance, union-find, a trie
+> (attrset-based), binary search, N-Queens, and topological sort,
+> alongside Nix-idiomatic demos: lazy evaluation (`builtins.trace`),
+> `rec` attribute sets, `with` expressions, function composition, and
+> pattern-matching function arguments with defaults
+> (`{ name, greeting ? "Hello" }`). All algorithms are expressed
+> purely functionally since Nix has no mutation or loops. No Nix
+> toolchain is available in this sandbox, so this batch is not
+> evaluation-verified.
 
 | Language   | Files |
 |------------|-------|
