@@ -1,0 +1,14 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. COUNTDIGITS.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 N PIC 9(9) VALUE 12345.
+       01 COUNT PIC 9(2) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM UNTIL N = 0
+               DIVIDE N BY 10 GIVING N
+               ADD 1 TO COUNT
+           END-PERFORM
+           DISPLAY "DIGITS: " COUNT
+           STOP RUN.

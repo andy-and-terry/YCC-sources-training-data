@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. FACTORIALTABLE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 FACT-TABLE.
+           05 FACT-VAL PIC 9(9) OCCURS 6 TIMES.
+       01 I PIC 9(2).
+
+       PROCEDURE DIVISION.
+           MOVE 1 TO FACT-VAL(1)
+           PERFORM VARYING I FROM 2 BY 1 UNTIL I > 6
+               COMPUTE FACT-VAL(I) = FACT-VAL(I - 1) * (I - 1)
+           END-PERFORM
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
+               DISPLAY FACT-VAL(I)
+           END-PERFORM
+           STOP RUN.

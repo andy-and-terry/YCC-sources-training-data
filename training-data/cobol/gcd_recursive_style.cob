@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GCDRECURSIVESTYLE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 A PIC 9(4) VALUE 48.
+       01 B PIC 9(4) VALUE 18.
+       01 TEMP PIC 9(4).
+
+       PROCEDURE DIVISION.
+           PERFORM COMPUTE-GCD UNTIL B = 0
+           DISPLAY "GCD: " A
+           STOP RUN.
+
+       COMPUTE-GCD.
+           COMPUTE TEMP = FUNCTION MOD(A, B)
+           MOVE B TO A
+           MOVE TEMP TO B.

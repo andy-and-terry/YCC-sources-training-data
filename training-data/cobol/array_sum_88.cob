@@ -1,0 +1,18 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ARRAYSTATUS.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 STATUS-CODE PIC 9(2) VALUE 0.
+           88 SUCCESS VALUE 0.
+           88 NOT-FOUND VALUE 1.
+           88 ERROR-OCCURRED VALUE 2.
+
+       PROCEDURE DIVISION.
+           MOVE 1 TO STATUS-CODE
+           IF NOT-FOUND
+               DISPLAY "STATUS: NOT FOUND"
+           END-IF
+           IF SUCCESS
+               DISPLAY "STATUS: SUCCESS"
+           END-IF
+           STOP RUN.

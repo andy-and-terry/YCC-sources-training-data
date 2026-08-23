@@ -1,0 +1,23 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ARRAYAVERAGE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 ARR.
+           05 ARR-ITEM PIC 9(3) OCCURS 6 TIMES.
+       01 I PIC 9(2).
+       01 TOTAL PIC 9(5) VALUE 0.
+       01 AVERAGE PIC 9(3)V99.
+
+       PROCEDURE DIVISION.
+           MOVE 5 TO ARR-ITEM(1)
+           MOVE 3 TO ARR-ITEM(2)
+           MOVE 8 TO ARR-ITEM(3)
+           MOVE 1 TO ARR-ITEM(4)
+           MOVE 9 TO ARR-ITEM(5)
+           MOVE 2 TO ARR-ITEM(6)
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
+               ADD ARR-ITEM(I) TO TOTAL
+           END-PERFORM
+           COMPUTE AVERAGE = TOTAL / 6
+           DISPLAY "AVERAGE: " AVERAGE
+           STOP RUN.

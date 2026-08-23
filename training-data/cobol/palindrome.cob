@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PALINDROME.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 SOURCE-STR PIC X(7) VALUE "RACECAR".
+       01 LEN PIC 9(2) VALUE 7.
+       01 I PIC 9(2).
+       01 IS-PALIN PIC X VALUE "Y".
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > LEN / 2
+               IF SOURCE-STR(I:1) NOT = SOURCE-STR(LEN - I + 1:1)
+                   MOVE "N" TO IS-PALIN
+               END-IF
+           END-PERFORM
+           DISPLAY "PALINDROME: " IS-PALIN
+           STOP RUN.

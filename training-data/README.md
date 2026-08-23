@@ -828,6 +828,19 @@ Sample source files organized by programming language for model training.
 > One rewrite of `binary_search.clj` reproduced the existing file
 > byte-for-byte (no-op). No Clojure/JVM toolchain is available in this
 > sandbox, so this batch is not run-verified.
+>
+> COBOL: 50 files (10 pre-existing + 40 new): sorting (insertion/
+> selection), array stats (min/max/average/second-largest), string
+> ops (palindrome, vowel count, length via `FUNCTION TRIM`/`LENGTH`,
+> `STRING`/`INSPECT`), math (LCM, leap year, power, digit sum,
+> Armstrong numbers, GCD), a `SEARCH ... INDEXED BY` table lookup, `88`
+> condition-name levels, `REDEFINES`, and `PERFORM ... THRU`. Several
+> files were caught and fixed before commit: a `DISPLAY` with an
+> inline arithmetic expression (moved to a `COMPUTE` first), a `SEARCH`
+> missing `INDEXED BY`/`SET`, and a bogus external `CALL` to a
+> nonexistent subprogram (rewritten as a self-contained iterative
+> factorial). No GnuCOBOL toolchain is available in this sandbox, so
+> this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|

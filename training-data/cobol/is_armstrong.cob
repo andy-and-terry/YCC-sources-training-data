@@ -1,0 +1,22 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ISARMSTRONG.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 N PIC 9(9) VALUE 153.
+       01 ORIGINAL PIC 9(9).
+       01 SUM-VAL PIC 9(9) VALUE 0.
+       01 DIGIT PIC 9(2).
+       01 IS-ARM PIC X VALUE "N".
+
+       PROCEDURE DIVISION.
+           MOVE N TO ORIGINAL
+           PERFORM UNTIL N = 0
+               COMPUTE DIGIT = FUNCTION MOD(N, 10)
+               COMPUTE SUM-VAL = SUM-VAL + DIGIT * DIGIT * DIGIT
+               DIVIDE N BY 10 GIVING N
+           END-PERFORM
+           IF SUM-VAL = ORIGINAL
+               MOVE "Y" TO IS-ARM
+           END-IF
+           DISPLAY "ARMSTRONG: " IS-ARM
+           STOP RUN.

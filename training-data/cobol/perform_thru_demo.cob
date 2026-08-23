@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFORMTHRU.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 TOTAL PIC 9(5) VALUE 0.
+       01 I PIC 9(3) VALUE 1.
+
+       PROCEDURE DIVISION.
+           PERFORM ADD-STEP THRU ADD-STEP-EXIT UNTIL I > 10.
+           DISPLAY "TOTAL: " TOTAL
+           STOP RUN.
+
+       ADD-STEP.
+           ADD I TO TOTAL.
+           ADD 1 TO I.
+       ADD-STEP-EXIT.
+           EXIT.

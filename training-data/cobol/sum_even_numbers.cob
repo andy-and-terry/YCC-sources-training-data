@@ -1,0 +1,15 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SUMEVENNUMBERS.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 I PIC 9(3).
+       01 TOTAL PIC 9(5) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 20
+               IF FUNCTION MOD(I, 2) = 0
+                   ADD I TO TOTAL
+               END-IF
+           END-PERFORM
+           DISPLAY "TOTAL: " TOTAL
+           STOP RUN.
