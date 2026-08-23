@@ -937,6 +937,16 @@ Sample source files organized by programming language for model training.
 > sequence expressions, records with `with`, and custom exceptions.
 > No F#/.NET toolchain is available in this sandbox, so this batch is
 > not compiler-verified.
+>
+> GDScript: 51 files (10 pre-existing + 41 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack), union-find, a binary tree, a trie, an LRU
+> cache, a circular buffer, KMP search, N-Queens, topological sort,
+> and Dijkstra's algorithm, alongside GDScript/Godot-idiomatic demos:
+> custom `signal`s with `emit`/`connect`, inner `class` inheritance,
+> `enum` with `match`, lambda closures (`func(n): return ...`), and
+> static typing annotations. No Godot toolchain is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
