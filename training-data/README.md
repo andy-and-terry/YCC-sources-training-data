@@ -887,6 +887,15 @@ Sample source files organized by programming language for model training.
 > exceptions, typed structs with `@spec`, and lazy `Stream` pipelines.
 > No Elixir/BEAM toolchain is available in this sandbox, so this
 > batch is not run-verified.
+>
+> Elm: 50 files (10 pre-existing + 40 new): sorting (bubble,
+> insertion, selection), sieve of Eratosthenes, DP (max-subarray,
+> coin change, 0/1 knapsack), union-find, a binary tree, a trie, KMP
+> search, Dijkstra's algorithm, and topological sort, alongside Elm-
+> idiomatic demos: custom types with pattern matching, `Maybe`/
+> `Result` chaining, record update syntax, generic `Stack`/`Queue`
+> type aliases, and the `|>` pipeline operator. No Elm toolchain is
+> available in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
