@@ -860,6 +860,14 @@ Sample source files organized by programming language for model training.
 > regex, operator-overloaded structs, and a circular buffer. No
 > Crystal toolchain is available in this sandbox, so this batch is
 > not compiler-verified.
+>
+> D: 50 files (10 pre-existing + 40 new): sorting, sieve of
+> Eratosthenes, DP (max-subarray, coin change, 0/1 knapsack), union-
+> find, a binary tree, `enum`, a `class Stack(T)` template, `DList`-
+> based queue, interfaces, `immutable` arrays, UFCS (`n.square()`),
+> associative arrays, and a circular buffer. No D toolchain
+> (dmd/ldc2) is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
