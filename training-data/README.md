@@ -986,6 +986,16 @@ Sample source files organized by programming language for model training.
 > functions, `containers.Map`-based structures, and a `switch true`
 > pattern. No MATLAB/Octave toolchain is available in this sandbox,
 > so this batch is not run-verified.
+>
+> Nim: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside Nim-idiomatic
+> demos: generic procs (`proc genericMax[T]`), a generic `Stack[T]`
+> object, custom `iterator`s, and `enum`/`case` pattern matching. No
+> Nim toolchain is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
