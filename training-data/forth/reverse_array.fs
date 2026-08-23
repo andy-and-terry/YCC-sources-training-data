@@ -1,0 +1,24 @@
+CREATE ARR 1 , 2 , 3 , 4 , 5 ,
+5 CONSTANT ARR-LEN
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+
+: REVERSE-ARRAY ( -- )
+  0 ARR-LEN 1-
+  BEGIN
+    2DUP <
+  WHILE
+    2DUP ELEM SWAP ELEM
+    DUP @ >R
+    DUP @ OVER !
+    R> SWAP !
+    1+ SWAP 1- SWAP
+  REPEAT
+  2DROP ;
+
+: PRINT-ARR ( -- )
+  ARR-LEN 0 DO I ELEM @ . LOOP ;
+
+REVERSE-ARRAY
+PRINT-ARR
+CR

@@ -1,0 +1,13 @@
+: COLLATZ-STEPS ( n -- steps )
+  0 SWAP
+  BEGIN
+    DUP 1 >
+  WHILE
+    DUP 2 MOD 0=
+    IF 2 / ELSE 3 * 1+ THEN
+    SWAP 1+ SWAP
+  REPEAT
+  DROP ;
+
+27 COLLATZ-STEPS .
+CR

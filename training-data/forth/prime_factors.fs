@@ -1,0 +1,16 @@
+: PRIME-FACTORS ( n -- )
+  2
+  BEGIN
+    OVER 1 >
+  WHILE
+    BEGIN
+      2DUP MOD 0=
+    WHILE
+      DUP . OVER SWAP / SWAP
+    REPEAT
+    1+
+  REPEAT
+  2DROP ;
+
+60 PRIME-FACTORS
+CR

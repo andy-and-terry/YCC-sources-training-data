@@ -1,0 +1,10 @@
+: POWER-OF-TWO? ( n -- flag )
+  DUP 0> IF
+    DUP 1- AND 0=
+  ELSE
+    DROP FALSE
+  THEN ;
+
+16 POWER-OF-TWO? .
+18 POWER-OF-TWO? .
+CR

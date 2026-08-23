@@ -906,6 +906,16 @@ Sample source files organized by programming language for model training.
 > `receive`, advanced pattern matching, and custom exception handling
 > via `throw`/`catch`. No Erlang/OTP toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Forth: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection), sieve of Eratosthenes, Kadane's max-subarray, two-sum,
+> valid parentheses, GCD/LCM, leap year, power, digit sum, power-of-
+> two, Armstrong number, binary-to-decimal, palindrome check, Roman
+> numerals, anagram check, FizzBuzz, Collatz sequence, prime
+> factorization, and a handful of stack-manipulation and word-
+> definition demos idiomatic to Forth (`.S`, `RECURSE`, `VARIABLE`/
+> `CONSTANT`). No Forth toolchain (gforth) is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|

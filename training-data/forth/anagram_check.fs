@@ -1,0 +1,32 @@
+CREATE COUNTS-A 26 CELLS ALLOT
+CREATE COUNTS-B 26 CELLS ALLOT
+
+: CLEAR-COUNTS ( addr -- )
+  26 0 DO 0 OVER I CELLS + ! LOOP DROP ;
+
+: TALLY ( addr len counts -- )
+  -ROT
+  OVER + SWAP
+  BEGIN
+    2DUP <
+  WHILE
+    DUP C@ [CHAR] a -
+    CELLS 2 PICK + DUP @ 1+ SWAP !
+    1+
+  REPEAT
+  2DROP DROP ;
+
+: ANAGRAM? ( addr1 len1 addr2 len2 -- flag )
+  COUNTS-B CLEAR-COUNTS
+  COUNTS-A CLEAR-COUNTS
+  COUNTS-B TALLY
+  COUNTS-A TALLY
+  TRUE
+  26 0 DO
+    COUNTS-A I CELLS + @
+    COUNTS-B I CELLS + @
+    <> IF DROP FALSE THEN
+  LOOP ;
+
+S" listen" S" silent" ANAGRAM? .
+CR

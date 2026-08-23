@@ -1,0 +1,12 @@
+: DIGIT-SUM ( n -- sum )
+  0 SWAP
+  BEGIN
+    DUP 0>
+  WHILE
+    DUP 10 MOD ROT + SWAP
+    10 /
+  REPEAT
+  DROP ;
+
+12345 DIGIT-SUM .
+CR

@@ -1,0 +1,14 @@
+CREATE ARR 4 , 2 , 7 , 1 , 9 , 5 ,
+6 CONSTANT ARR-LEN
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+
+: LINEAR-SEARCH ( target -- idx )
+  ARR-LEN 0 DO
+    I ELEM @ OVER =
+    IF DROP I UNLOOP EXIT THEN
+  LOOP
+  DROP -1 ;
+
+7 LINEAR-SEARCH .
+CR

@@ -1,0 +1,11 @@
+CREATE BUF 32 ALLOT
+
+: REVERSE-STRING ( addr len -- )
+  BUF SWAP DUP >R
+  0 DO
+    DUP I - 1- C@ OVER I + C!
+  LOOP DROP
+  BUF R> TYPE ;
+
+S" hello" REVERSE-STRING
+CR

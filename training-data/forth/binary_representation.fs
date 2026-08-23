@@ -1,0 +1,16 @@
+: PRINT-BINARY ( n -- )
+  DUP 0= IF DROP ." 0" EXIT THEN
+  BEGIN
+    DUP 0>
+  WHILE
+    DUP 2 MOD SWAP 2 /
+  REPEAT
+  DROP
+  BEGIN
+    DEPTH 0>
+  WHILE
+    .
+  REPEAT ;
+
+13 PRINT-BINARY
+CR

@@ -1,0 +1,10 @@
+: PERFECT-NUMBER? ( n -- flag )
+  DUP 0 SWAP
+  1 OVER 1- 1+ 1 DO
+    DUP I MOD 0= IF I + THEN
+  LOOP
+  SWAP =
+  ;
+
+28 PERFECT-NUMBER? .
+CR

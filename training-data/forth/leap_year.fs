@@ -1,0 +1,9 @@
+: LEAP-YEAR? ( year -- flag )
+  DUP 4 MOD 0= SWAP
+  DUP 100 MOD 0= SWAP 400 MOD 0= OR
+  AND ;
+
+2000 LEAP-YEAR? .
+1900 LEAP-YEAR? .
+2024 LEAP-YEAR? .
+CR

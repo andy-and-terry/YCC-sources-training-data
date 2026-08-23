@@ -1,0 +1,18 @@
+: PALINDROME? ( addr len -- flag )
+  2DUP + 1-
+  SWAP DROP >R
+  0 R> OVER SWAP
+  TRUE -ROT
+  BEGIN
+    2DUP <
+  WHILE
+    2>R
+    DUP C@ R> C@ = 0= IF 2R> 2DROP FALSE -ROT UNLOOP EXIT THEN
+    2R>
+    1+ SWAP 1- SWAP
+  REPEAT
+  2DROP ROT ROT 2DROP ;
+
+S" racecar" PALINDROME? .
+S" hello" PALINDROME? .
+CR

@@ -1,0 +1,16 @@
+CREATE ARR 4 , 8 , 15 , 16 , 23 , 42 ,
+6 CONSTANT ARR-LEN
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+
+: CONTAINS? ( target -- flag )
+  FALSE SWAP
+  ARR-LEN 0 DO
+    DUP I ELEM @ =
+    IF ROT DROP TRUE SWAP THEN
+  LOOP
+  DROP ;
+
+16 CONTAINS? .
+99 CONTAINS? .
+CR
