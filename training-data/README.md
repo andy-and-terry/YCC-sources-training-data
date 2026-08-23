@@ -927,6 +927,16 @@ Sample source files organized by programming language for model training.
 > `ELEMENTAL`, module procedure overloading, optional arguments, and
 > pointer manipulation. No Fortran toolchain (gfortran) is available
 > in this sandbox, so this batch is not compiler-verified.
+>
+> F#: 52 files (10 pre-existing + 42 new): sorting (insertion, merge,
+> selection), sieve of Eratosthenes, DP (max-subarray, coin change,
+> 0/1 knapsack), union-find, a binary tree, a trie, an LRU cache, a
+> circular buffer, KMP search, N-Queens, topological sort, and
+> Dijkstra's algorithm, alongside F#-idiomatic demos: discriminated
+> unions, active patterns, computation expressions (`option { }`),
+> sequence expressions, records with `with`, and custom exceptions.
+> No F#/.NET toolchain is available in this sandbox, so this batch is
+> not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
