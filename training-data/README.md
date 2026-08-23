@@ -1029,6 +1029,16 @@ Sample source files organized by programming language for model training.
 > a `COMPARABLE` module signature, labeled/optional arguments, and
 > the `|>` pipeline operator. No OCaml toolchain is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Pascal: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a pointer-based
+> binary tree and trie, an LRU cache, a circular buffer, KMP search,
+> N-Queens, and topological sort, alongside Pascal-idiomatic demos:
+> `set of Char`, pointer-based linked lists, nested procedures,
+> `enum`/`case`, and record types with fixed-size array fields. No
+> Pascal toolchain (fpc) is available in this sandbox, so this batch
+> is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
