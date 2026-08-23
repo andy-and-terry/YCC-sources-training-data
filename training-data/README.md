@@ -976,6 +976,16 @@ Sample source files organized by programming language for model training.
 > demos: metatable-based OOP with inheritance (`__index` chaining),
 > closures, and variadic functions (`...`). No Lua toolchain is
 > available in this sandbox, so this batch is not run-verified.
+>
+> MATLAB: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a trie, an LRU
+> cache, a circular buffer, KMP search, N-Queens, and topological
+> sort, alongside MATLAB-idiomatic demos: `classdef` OOP, anonymous
+> functions with `arrayfun`, vectorized/logical indexing, nested
+> functions, `containers.Map`-based structures, and a `switch true`
+> pattern. No MATLAB/Octave toolchain is available in this sandbox,
+> so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
