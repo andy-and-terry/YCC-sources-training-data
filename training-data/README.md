@@ -1008,6 +1008,17 @@ Sample source files organized by programming language for model training.
 > purely functionally since Nix has no mutation or loops. No Nix
 > toolchain is available in this sandbox, so this batch is not
 > evaluation-verified.
+>
+> Objective-C: 50 files (10 pre-existing + 40 new): sorting
+> (insertion, selection, merge), sieve of Eratosthenes, DP (max-
+> subarray, coin change, 0/1 knapsack), union-find, a binary tree, a
+> trie, a circular buffer, KMP search, N-Queens, topological sort,
+> and Dijkstra's algorithm, alongside Objective-C-idiomatic demos:
+> categories (`NSString (Reversed)`), delegate protocols, KVC (`setValue:forKey:`),
+> lightweight generics (`Stack<ObjectType>`), `NS_ENUM`, and
+> `@try`/`@catch` exception handling. clang is present but the
+> Foundation framework is unavailable on this Linux sandbox, so this
+> batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
