@@ -1,0 +1,10 @@
+(defun matrix-multiply (a b)
+  (let* ((rows (length a)) (cols (length (first b))) (inner (length b))
+         (result (make-array (list rows cols) :initial-element 0)))
+    (dotimes (i rows)
+      (dotimes (j cols)
+        (dotimes (k inner)
+          (incf (aref result i j) (* (aref a i k) (aref b k j))))))
+    result))
+
+(print (matrix-multiply #2A((1 2) (3 4)) #2A((5 6) (7 8))))

@@ -841,6 +841,17 @@ Sample source files organized by programming language for model training.
 > nonexistent subprogram (rewritten as a self-contained iterative
 > factorial). No GnuCOBOL toolchain is available in this sandbox, so
 > this batch is not compiler-verified.
+>
+> Common Lisp: 50 files (10 pre-existing + 40 new): sorting, sieve of
+> Eratosthenes, DP (max-subarray, coin change, 0/1 knapsack), union-
+> find, a `defstruct`-based binary tree, `defgeneric`/`defmethod`
+> polymorphism, closures, `multiple-value-bind`, `dolist`/`dotimes`,
+> `sort` with `:key`, keyword arguments, association lists, property
+> lists, `format` directives, and tail recursion. A first draft of
+> `sum_digits.lisp` used a malformed `loop ... sum ... do` clause
+> combination; it was rewritten with an explicit accumulator before
+> commit. No CL toolchain (SBCL/CLISP) is available in this sandbox,
+> so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
