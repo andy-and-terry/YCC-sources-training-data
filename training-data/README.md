@@ -868,6 +868,14 @@ Sample source files organized by programming language for model training.
 > associative arrays, and a circular buffer. No D toolchain
 > (dmd/ldc2) is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Dart: 50 files (10 pre-existing + 40 new): sorting, sieve of
+> Eratosthenes, DP (max-subarray, coin change, 0/1 knapsack), union-
+> find, `enum`, mixins, `async*`/`Stream`, extension methods, named/
+> optional parameters, an abstract `Shape` hierarchy, cascade
+> notation, pattern-matching `switch` expressions, and record types
+> (`(int, int)`). No Dart SDK is available in this sandbox, so this
+> batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
