@@ -896,6 +896,16 @@ Sample source files organized by programming language for model training.
 > `Result` chaining, record update syntax, generic `Stack`/`Queue`
 > type aliases, and the `|>` pipeline operator. No Elm toolchain is
 > available in this sandbox, so this batch is not compiler-verified.
+>
+> Erlang: 50 files (10 pre-existing + 40 new): sorting (merge,
+> insertion, selection), sieve of Eratosthenes, DP (max-subarray,
+> coin change, 0/1 knapsack, edit distance), union-find, a binary
+> tree, a trie, an LRU cache, a circular buffer, KMP search, N-
+> Queens, topological sort, and Dijkstra's algorithm, alongside
+> Erlang-idiomatic demos: `gen_server`, `spawn`/message passing with
+> `receive`, advanced pattern matching, and custom exception handling
+> via `throw`/`catch`. No Erlang/OTP toolchain is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
