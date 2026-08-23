@@ -957,6 +957,16 @@ Sample source files organized by programming language for model training.
 > metaprogramming, safe navigation (`?.`/`?:`), ranges, and default
 > arguments. No Groovy toolchain is available in this sandbox, so
 > this batch is not run-verified.
+>
+> Julia: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside Julia-
+> idiomatic demos: multiple dispatch over an abstract type hierarchy,
+> broadcasting (`.^`, `.+`), macros (`@square`), parametric generic
+> structs, and matrix operations. No Julia toolchain is available in
+> this sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
