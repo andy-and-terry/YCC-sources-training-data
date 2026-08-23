@@ -916,6 +916,17 @@ Sample source files organized by programming language for model training.
 > definition demos idiomatic to Forth (`.S`, `RECURSE`, `VARIABLE`/
 > `CONSTANT`). No Forth toolchain (gforth) is available in this
 > sandbox, so this batch is not run-verified.
+>
+> Fortran: 56 files (10 pre-existing + 46 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance, LCS), union-find, a binary
+> tree, a generic `int_stack`/`int_queue` derived type, a circular
+> buffer, KMP search, N-Queens, topological sort, and Dijkstra's
+> algorithm, alongside Fortran-idiomatic demos: abstract derived
+> types with deferred procedures, operator overloading, `WHERE`/
+> `ELEMENTAL`, module procedure overloading, optional arguments, and
+> pointer manipulation. No Fortran toolchain (gfortran) is available
+> in this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
