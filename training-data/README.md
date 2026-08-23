@@ -876,6 +876,17 @@ Sample source files organized by programming language for model training.
 > notation, pattern-matching `switch` expressions, and record types
 > (`(int, int)`). No Dart SDK is available in this sandbox, so this
 > batch is not run-verified.
+>
+> Elixir: 62 files (10 pre-existing + 52 new): sorting (insertion,
+> merge, heap), sieve of Eratosthenes, DP (max-subarray, coin change,
+> 0/1 knapsack, edit distance, LCS), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside Elixir-
+> idiomatic demos: `GenServer`, `Agent`, `Task.async`/`await`,
+> protocols, behaviours, comprehensions, guard clauses, custom
+> exceptions, typed structs with `@spec`, and lazy `Stream` pipelines.
+> No Elixir/BEAM toolchain is available in this sandbox, so this
+> batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
