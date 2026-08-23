@@ -852,6 +852,14 @@ Sample source files organized by programming language for model training.
 > combination; it was rewritten with an explicit accumulator before
 > commit. No CL toolchain (SBCL/CLISP) is available in this sandbox,
 > so this batch is not run-verified.
+>
+> Crystal: 50 files (10 pre-existing + 40 new): sorting, sieve of
+> Eratosthenes, DP (max-subarray, coin change, 0/1 knapsack), union-
+> find, a binary tree, a generic `Stack(T)`, `enum`, `Deque`-based
+> queue, `NamedTuple`, `spawn`/`Channel` concurrency, `Proc` objects,
+> regex, operator-overloaded structs, and a circular buffer. No
+> Crystal toolchain is available in this sandbox, so this batch is
+> not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
