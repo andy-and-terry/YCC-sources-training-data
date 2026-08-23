@@ -818,6 +818,16 @@ Sample source files organized by programming language for model training.
 > leaves unspecified — GCC evaluated right-to-left, printing `3 2 1`
 > instead of `1 2 3`, so the calls were sequenced into local variables
 > before printing.
+>
+> Clojure: 50 files (10 pre-existing + 40 new): sorting, sieve of
+> Eratosthenes, max-subarray, GCD/LCM, valid parentheses, two-sum,
+> coin change, 0/1 knapsack, union-find, a binary tree, `defprotocol`/
+> `defrecord`, lazy Fibonacci, destructuring, `reduce`/`group-by`/
+> `every?`/`some`/`into`, nested-map access via `get-in`/`assoc-in`,
+> `loop`/`recur`, and a topological sort built from `reduce`+`fnil`.
+> One rewrite of `binary_search.clj` reproduced the existing file
+> byte-for-byte (no-op). No Clojure/JVM toolchain is available in this
+> sandbox, so this batch is not run-verified.
 
 | Language   | Files |
 |------------|-------|
