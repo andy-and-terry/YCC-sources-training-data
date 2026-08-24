@@ -1,0 +1,6 @@
+/*The blue button*/
+.bluebutton {
+    border: 2px solid rgb(0, 0, 139);
+    background-color: rgb(137, 207, 240);
+    color: rgb(255, 255, 255);
+}
