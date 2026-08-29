@@ -1,0 +1,5 @@
+CREATE OR REPLACE FUNCTION word_count(p_text IN VARCHAR2) RETURN NUMBER IS
+BEGIN
+    RETURN REGEXP_COUNT(TRIM(p_text), '\S+');
+END word_count;
+/

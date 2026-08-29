@@ -1048,6 +1048,17 @@ Sample source files organized by programming language for model training.
 > idiomatic demos: `local` vs `my` scoping, `wantarray` context
 > awareness, anonymous subs, and package-based OOP. Verified by
 > direct execution with `perl`.
+>
+> PL/SQL: 54 files (10 pre-existing + 44 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, KMP search,
+> N-Queens, and a table-backed topological sort/Dijkstra, alongside
+> Oracle PL/SQL-idiomatic demos: `PACKAGE`/`PACKAGE BODY` with
+> package-level state, `BULK COLLECT`, `%ROWTYPE`, `PRAGMA
+> AUTONOMOUS_TRANSACTION`, cursors, and a table-driven trigger. No
+> Oracle database instance is available in this sandbox (only a
+> non-running PostgreSQL `psql` client, a different SQL dialect), so
+> this batch is not execution-verified.
 
 | Language   | Files |
 |------------|-------|
