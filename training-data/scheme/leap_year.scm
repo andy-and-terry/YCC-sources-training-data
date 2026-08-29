@@ -1,0 +1,10 @@
+(define (leap-year? year)
+  (or (and (= 0 (remainder year 4)) (not (= 0 (remainder year 100))))
+      (= 0 (remainder year 400))))
+
+(display (leap-year? 2000))
+(newline)
+(display (leap-year? 1900))
+(newline)
+(display (leap-year? 2024))
+(newline)

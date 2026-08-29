@@ -1,0 +1,27 @@
+(define (build-lps pattern)
+  (define n (string-length pattern))
+  (define lps (make-vector n 0))
+  (let loop ((len 0) (i 1))
+    (if (< i n)
+        (cond
+          ((char=? (string-ref pattern i) (string-ref pattern len))
+           (vector-set! lps i (+ len 1))
+           (loop (+ len 1) (+ i 1)))
+          ((not (= len 0)) (loop (vector-ref lps (- len 1)) i))
+          (else (vector-set! lps i 0) (loop 0 (+ i 1))))))
+  lps)
+
+(define (kmp-search text pattern)
+  (define lps (build-lps pattern))
+  (define n (string-length text))
+  (define m (string-length pattern))
+  (let loop ((i 0) (j 0))
+    (cond
+      ((>= i n) -1)
+      ((char=? (string-ref text i) (string-ref pattern j))
+       (if (= (+ j 1) m) (- (+ i 1) m) (loop (+ i 1) (+ j 1))))
+      ((> j 0) (loop i (vector-ref lps (- j 1))))
+      (else (loop (+ i 1) 0)))))
+
+(display (kmp-search "abxabcabcaby" "abcaby"))
+(newline)

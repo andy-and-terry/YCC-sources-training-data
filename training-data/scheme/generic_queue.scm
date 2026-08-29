@@ -1,0 +1,20 @@
+(define (make-queue) (cons '() '()))
+
+(define (enqueue! q item)
+  (set-cdr! q (cons item (cdr q))))
+
+(define (dequeue! q)
+  (if (null? (car q))
+      (begin (set-car! q (reverse (cdr q))) (set-cdr! q '())))
+  (let ((front (car (car q))))
+    (set-car! q (cdr (car q)))
+    front))
+
+(define q (make-queue))
+(enqueue! q 1)
+(enqueue! q 2)
+(enqueue! q 3)
+(display (dequeue! q))
+(newline)
+(display (dequeue! q))
+(newline)
