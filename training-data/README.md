@@ -1152,6 +1152,16 @@ Sample source files organized by programming language for model training.
 > `regexp`-based pattern extraction, and the `after`/`vwait`
 > event loop. No Tcl toolchain (tclsh) is available in this sandbox,
 > so this batch is not execution-verified.
+>
+> Vala: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens, and
+> topological sort, alongside Vala-idiomatic demos: GObject `signal`s
+> with closures, `interface`s, generic classes (`Box<T>`), and
+> `errordomain`-based exception handling. No Vala toolchain (valac)
+> is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
