@@ -1091,6 +1091,16 @@ Sample source files organized by programming language for model training.
 > (`sapply`/`lapply`/`Map`), vectorized operations, and closures with
 > `<<-`. No R toolchain is available in this sandbox, so this batch
 > is not execution-verified.
+>
+> Racket: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside Racket-
+> idiomatic demos: `define-syntax-rule` macros, `racket/match`
+> pattern matching, transparent immutable `struct`s, and tail-call
+> optimized loops via named `let`. No Racket toolchain is available
+> in this sandbox, so this batch is not execution-verified.
 
 | Language   | Files |
 |------------|-------|
