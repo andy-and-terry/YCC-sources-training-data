@@ -1142,6 +1142,16 @@ Sample source files organized by programming language for model training.
 > access control, a Merkle proof verifier, and gas-optimized
 > `unchecked` loops. No Solidity toolchain (solc) is available in
 > this sandbox, so this batch is not compiler-verified.
+>
+> Tcl: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree
+> (dict-based), a trie, an LRU cache, a circular buffer, KMP search,
+> N-Queens, topological sort, and Dijkstra's algorithm, alongside
+> Tcl-idiomatic demos: `namespace eval` with `variable` state,
+> `regexp`-based pattern extraction, and the `after`/`vwait`
+> event loop. No Tcl toolchain (tclsh) is available in this sandbox,
+> so this batch is not execution-verified.
 
 | Language   | Files |
 |------------|-------|
