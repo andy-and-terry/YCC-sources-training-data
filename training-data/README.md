@@ -1195,6 +1195,18 @@ Sample source files organized by programming language for model training.
 > `package body` utility function. No VHDL toolchain (ghdl) is
 > available in this sandbox, so this batch is not
 > simulation-verified.
+>
+> Vimscript: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens, and
+> topological sort, alongside Vimscript-idiomatic demos: lambda
+> expressions and `Funcref`s, dictionary-functions with `dict`/
+> `self`, `autocmd`/`augroup`, and `substitute()` with `\=` expression
+> replacement. Verified by direct execution with `vim -Nes`; two real
+> bugs were caught and fixed — `count` is a read-only builtin
+> function name and cannot be used as a variable, and a lambda
+> couldn't close over a script-local `Funcref` inside `map()`.
 
 | Language   | Files |
 |------------|-------|
