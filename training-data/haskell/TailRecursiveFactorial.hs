@@ -1,0 +1,8 @@
+factorial :: Integer -> Integer
+factorial n = go n 1
+  where
+    go 0 acc = acc
+    go k acc = go (k - 1) (k * acc)
+
+main :: IO ()
+main = print (factorial 20)

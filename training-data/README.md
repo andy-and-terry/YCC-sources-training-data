@@ -1231,6 +1231,20 @@ Sample source files organized by programming language for model training.
 > Zig-idiomatic demos: comptime generics, tagged unions, error unions,
 > optional types, and defer/errdefer. No Zig toolchain is available in
 > this sandbox, so this batch is not compiler-verified.
+>
+> Haskell: 50 files (6 pre-existing + 44 new): sorting (insertion,
+> selection, heap), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance, LCS), classic data structures
+> (union-find, binary tree, trie, LRU cache, generic stack, circular
+> buffer), string/array algorithms (valid parentheses, two-sum, Roman
+> numerals, palindrome check, word frequency, KMP search, N-Queens,
+> anagram check), math utilities (GCD/LCM, leap year, power function,
+> Armstrong number, power-of-two check, digit sum, binary-to-decimal),
+> topological sort, Dijkstra's algorithm, and Haskell-idiomatic demos:
+> typeclasses, the Maybe monad, Functor/Applicative, lazy infinite
+> lists, record syntax, and guards/pattern matching. No GHC toolchain
+> is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
