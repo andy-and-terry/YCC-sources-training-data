@@ -1059,6 +1059,17 @@ Sample source files organized by programming language for model training.
 > Oracle database instance is available in this sandbox (only a
 > non-running PostgreSQL `psql` client, a different SQL dialect), so
 > this batch is not execution-verified.
+>
+> PowerShell: 50 files (10 pre-existing + 40 new): sorting
+> (insertion, selection, merge), sieve of Eratosthenes, DP (max-
+> subarray, coin change, 0/1 knapsack, edit distance), union-find, a
+> binary tree, a trie, an LRU cache, a circular buffer, KMP search,
+> N-Queens, topological sort, and Dijkstra's algorithm, alongside
+> PowerShell-idiomatic demos: `class`-based OOP, the `|` pipeline
+> with `Where-Object`/`ForEach-Object`/`Measure-Object`,
+> `[PSCustomObject]` with `ScriptMethod`, and parameter splatting
+> (`@params`). No PowerShell toolchain (pwsh) is available in this
+> sandbox, so this batch is not execution-verified.
 
 | Language   | Files |
 |------------|-------|
