@@ -1111,6 +1111,17 @@ Sample source files organized by programming language for model training.
 > quasiquote/unquote-splicing, and mutable pairs via
 > `set-car!`/`set-cdr!`. No Scheme toolchain (guile/mit-scheme) is
 > available in this sandbox, so this batch is not execution-verified.
+>
+> Smalltalk: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> circular buffer, KMP search, N-Queens, topological sort, and
+> Dijkstra's algorithm, alongside Smalltalk-idiomatic demos: class
+> inheritance/polymorphism with `subclass:`, block closures, cascaded
+> messages (`;`), `collect:`/`select:`/`inject:into:`, and
+> `on:do:` exception handling. No Smalltalk toolchain
+> (gst/Squeak) is available in this sandbox, so this batch is not
+> execution-verified.
 
 | Language   | Files |
 |------------|-------|
