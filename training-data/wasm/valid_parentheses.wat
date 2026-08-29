@@ -1,0 +1,38 @@
+(module
+  (memory (export "memory") 1)
+
+  (func $is_valid (export "is_valid") (param $base i32) (param $len i32) (result i32)
+    (local $i i32)
+    (local $sp i32)
+    (local $c i32)
+    (local $top i32)
+    (local.set $sp (i32.const 0))
+    (local.set $i (i32.const 0))
+    (block $invalid (result i32)
+      (loop $loop (result i32)
+        (if (result i32) (i32.ge_s (local.get $i) (local.get $len))
+          (then (select (i32.const 1) (i32.const 0) (i32.eqz (local.get $sp))))
+          (else
+            (local.set $c (i32.load8_u (i32.add (local.get $base) (local.get $i))))
+            (if (i32.or (i32.eq (local.get $c) (i32.const 40))
+                  (i32.or (i32.eq (local.get $c) (i32.const 91)) (i32.eq (local.get $c) (i32.const 123))))
+              (then
+                (i32.store8 (i32.add (i32.const 5000) (local.get $sp)) (local.get $c))
+                (local.set $sp (i32.add (local.get $sp) (i32.const 1))))
+              (else
+                (if (i32.or (i32.eq (local.get $c) (i32.const 41))
+                      (i32.or (i32.eq (local.get $c) (i32.const 93)) (i32.eq (local.get $c) (i32.const 125))))
+                  (then
+                    (if (i32.eqz (local.get $sp))
+                      (then (br $invalid (i32.const 0))))
+                    (local.set $sp (i32.sub (local.get $sp) (i32.const 1)))
+                    (local.set $top (i32.load8_u (i32.add (i32.const 5000) (local.get $sp))))
+                    (if (i32.and (i32.eq (local.get $c) (i32.const 41)) (i32.ne (local.get $top) (i32.const 40)))
+                      (then (br $invalid (i32.const 0))))
+                    (if (i32.and (i32.eq (local.get $c) (i32.const 93)) (i32.ne (local.get $top) (i32.const 91)))
+                      (then (br $invalid (i32.const 0))))
+                    (if (i32.and (i32.eq (local.get $c) (i32.const 125)) (i32.ne (local.get $top) (i32.const 123)))
+                      (then (br $invalid (i32.const 0))))))))
+            (local.set $i (i32.add (local.get $i) (i32.const 1)))
+            (br $loop))))))
+)

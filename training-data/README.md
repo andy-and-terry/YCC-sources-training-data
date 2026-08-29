@@ -1207,6 +1207,17 @@ Sample source files organized by programming language for model training.
 > bugs were caught and fixed — `count` is a read-only builtin
 > function name and cannot be used as a variable, and a lambda
 > couldn't close over a script-local `Funcref` inside `map()`.
+>
+> WebAssembly (WAT): 52 files (10 pre-existing + 42 new): sorting
+> (insertion, selection, sieve of Eratosthenes), DP (max-subarray,
+> coin change, 0/1 knapsack, edit distance), union-find, valid
+> parentheses (byte-addressed stack in linear memory), KMP search,
+> N-Queens, topological sort (via DFS visit), and Dijkstra's
+> algorithm, alongside WAT-idiomatic demos: a `funcref` `table` with
+> `call_indirect`, mutable `global`s, multi-value returns, and
+> `memory.grow`/`memory.size`. No WAT toolchain (wat2wasm/wasmtime) is
+> available in this sandbox, so this batch is not
+> instantiation-verified.
 
 | Language   | Files |
 |------------|-------|
