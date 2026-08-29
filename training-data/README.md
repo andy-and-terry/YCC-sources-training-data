@@ -1070,6 +1070,16 @@ Sample source files organized by programming language for model training.
 > `[PSCustomObject]` with `ScriptMethod`, and parameter splatting
 > (`@params`). No PowerShell toolchain (pwsh) is available in this
 > sandbox, so this batch is not execution-verified.
+>
+> Prolog: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, Kadane's max-subarray,
+> coin change, 0/1 knapsack, edit distance, union-find (via
+> `dynamic`/`assertz`), a binary search tree, N-Queens (via
+> `permutation`), topological sort, and KMP-style substring search,
+> alongside Prolog-idiomatic demos: family-relationship facts/rules,
+> cuts and backtracking control, unification-based pattern matching,
+> a DCG, and `findall`/`setof`. No Prolog toolchain (swipl/gprolog) is
+> available in this sandbox, so this batch is not execution-verified.
 
 | Language   | Files |
 |------------|-------|
