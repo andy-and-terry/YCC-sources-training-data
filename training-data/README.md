@@ -1183,6 +1183,18 @@ Sample source files organized by programming language for model training.
 > and a simple testbench driving the ALU with `$display`. No Verilog
 > toolchain (iverilog) is available in this sandbox, so this batch is
 > not simulation-verified.
+>
+> VHDL: 56 files (10 pre-existing + 46 new): the same combinational
+> and sequential building blocks as the Verilog batch — ripple-carry
+> and carry-lookahead adders, an ALU, comparators, encoders/decoders,
+> latches/flip-flops, counters, a FIFO, a register file, dual-port
+> RAM, an LFSR/CRC — alongside VHDL-idiomatic demos: `entity`/
+> `architecture` with structural `component`/`port map`
+> instantiation, `generic` parameters, `generate` statements, Moore
+> and Mealy FSMs with enumerated state types, and a `package`/
+> `package body` utility function. No VHDL toolchain (ghdl) is
+> available in this sandbox, so this batch is not
+> simulation-verified.
 
 | Language   | Files |
 |------------|-------|
