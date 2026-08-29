@@ -1039,6 +1039,15 @@ Sample source files organized by programming language for model training.
 > `enum`/`case`, and record types with fixed-size array fields. No
 > Pascal toolchain (fpc) is available in this sandbox, so this batch
 > is not compiler-verified.
+>
+> Perl: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside Perl-
+> idiomatic demos: `local` vs `my` scoping, `wantarray` context
+> awareness, anonymous subs, and package-based OOP. Verified by
+> direct execution with `perl`.
 
 | Language   | Files |
 |------------|-------|
