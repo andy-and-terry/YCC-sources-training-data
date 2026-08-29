@@ -1132,6 +1132,16 @@ Sample source files organized by programming language for model training.
 > with opaque ascription (`:>`), datatype pattern matching, and
 > option chaining. No SML toolchain (sml/mlton) is available in this
 > sandbox, so this batch is not compiler-verified.
+>
+> Solidity: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection), sieve of Eratosthenes, DP (max-subarray, 0/1 knapsack),
+> union-find, N-Queens, and math utilities as `library` pure
+> functions, alongside Solidity/EVM-idiomatic demos: custom errors
+> with `revert`, `modifier`-based access control and reentrancy
+> guards, events, `receive`/`fallback`, inline `assembly`, role-based
+> access control, a Merkle proof verifier, and gas-optimized
+> `unchecked` loops. No Solidity toolchain (solc) is available in
+> this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
