@@ -1218,6 +1218,19 @@ Sample source files organized by programming language for model training.
 > `memory.grow`/`memory.size`. No WAT toolchain (wat2wasm/wasmtime) is
 > available in this sandbox, so this batch is not
 > instantiation-verified.
+>
+> Zig: 52 files (10 pre-existing + 42 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), classic data structures
+> (union-find, binary tree, trie, LRU cache, generic stack/queue,
+> circular buffer), string/array algorithms (valid parentheses,
+> two-sum, Roman numerals, palindrome check, word frequency, KMP
+> search, N-Queens, anagram check), math utilities (GCD/LCM, leap
+> year, power function, Armstrong number, power-of-two check, digit
+> sum, binary-to-decimal), topological sort, Dijkstra's algorithm, and
+> Zig-idiomatic demos: comptime generics, tagged unions, error unions,
+> optional types, and defer/errdefer. No Zig toolchain is available in
+> this sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
