@@ -1162,6 +1162,16 @@ Sample source files organized by programming language for model training.
 > `errordomain`-based exception handling. No Vala toolchain (valac)
 > is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> VBA: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, KMP search,
+> N-Queens, and a Dictionary-backed topological sort, alongside
+> VBA-idiomatic demos: `Collection`/`Scripting.Dictionary`, `On Error
+> GoTo` error handling, `Optional` arguments, `With` statements,
+> `Type` user-defined types, and `Enum`/`Select Case`. No VBA host
+> (Excel/Access) is available in this sandbox, so this batch is not
+> execution-verified.
 
 | Language   | Files |
 |------------|-------|
