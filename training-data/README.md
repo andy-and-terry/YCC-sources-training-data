@@ -1172,6 +1172,17 @@ Sample source files organized by programming language for model training.
 > `Type` user-defined types, and `Enum`/`Select Case`. No VBA host
 > (Excel/Access) is available in this sandbox, so this batch is not
 > execution-verified.
+>
+> Verilog: 55 files (10 pre-existing + 45 new): combinational and
+> sequential building blocks — ripple-carry and carry-lookahead
+> adders, an ALU, comparators, encoders/decoders, latches/flip-flops,
+> counters (up/down, ring, Johnson, saturating), a FIFO, a
+> register file, dual-port RAM, an LFSR/CRC, and a UART transmitter —
+> alongside Verilog-idiomatic demos: `parameter`/`generate` blocks,
+> Moore and Mealy FSMs, a 2-FF synchronizer, a round-robin arbiter,
+> and a simple testbench driving the ALU with `$display`. No Verilog
+> toolchain (iverilog) is available in this sandbox, so this batch is
+> not simulation-verified.
 
 | Language   | Files |
 |------------|-------|
