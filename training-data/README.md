@@ -1122,6 +1122,16 @@ Sample source files organized by programming language for model training.
 > `on:do:` exception handling. No Smalltalk toolchain
 > (gst/Squeak) is available in this sandbox, so this batch is not
 > execution-verified.
+>
+> SML: 50 files (10 pre-existing + 40 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside SML-
+> idiomatic demos: `signature`/`structure`/`functor` module system
+> with opaque ascription (`:>`), datatype pattern matching, and
+> option chaining. No SML toolchain (sml/mlton) is available in this
+> sandbox, so this batch is not compiler-verified.
 
 | Language   | Files |
 |------------|-------|
