@@ -1245,6 +1245,21 @@ Sample source files organized by programming language for model training.
 > lists, record syntax, and guards/pattern matching. No GHC toolchain
 > is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> Apex: 50 files (6 pre-existing + 44 new): sorting (insertion,
+> selection, merge, bubble), sieve of Eratosthenes, DP (max-subarray,
+> coin change, 0/1 knapsack, edit distance), classic data structures
+> (union-find, binary tree, trie, LRU cache, generic stack/queue,
+> circular buffer), string/array algorithms (valid parentheses,
+> two-sum, Roman numerals, palindrome check, word frequency, KMP
+> search, N-Queens, anagram check), math utilities (GCD/LCM, leap
+> year, power function, Armstrong number, power-of-two check, digit
+> sum, binary-to-decimal), topological sort, Dijkstra's algorithm,
+> BFS, and Apex-idiomatic demos: interfaces, custom exceptions,
+> properties (get/set), inner classes, enums with switch-on, and
+> collection operations (List/Set/Map). No Apex/Salesforce toolchain
+> is available in this sandbox, so this batch is not
+> compiler-verified.
 
 | Language   | Files |
 |------------|-------|
