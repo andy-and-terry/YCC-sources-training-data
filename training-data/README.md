@@ -1080,6 +1080,17 @@ Sample source files organized by programming language for model training.
 > cuts and backtracking control, unification-based pattern matching,
 > a DCG, and `findall`/`setof`. No Prolog toolchain (swipl/gprolog) is
 > available in this sandbox, so this batch is not execution-verified.
+>
+> R: 51 files (10 pre-existing + 41 new): sorting (insertion,
+> selection, merge), sieve of Eratosthenes, DP (max-subarray, coin
+> change, 0/1 knapsack, edit distance), union-find, a binary tree, a
+> trie, an LRU cache, a circular buffer, KMP search, N-Queens,
+> topological sort, and Dijkstra's algorithm, alongside R-idiomatic
+> demos: S4 classes (`setClass`/`setGeneric`), reference classes
+> (`setRefClass`) with reference semantics, the apply family
+> (`sapply`/`lapply`/`Map`), vectorized operations, and closures with
+> `<<-`. No R toolchain is available in this sandbox, so this batch
+> is not execution-verified.
 
 | Language   | Files |
 |------------|-------|
