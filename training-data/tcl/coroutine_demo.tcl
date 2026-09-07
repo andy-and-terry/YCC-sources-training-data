@@ -1,8 +1,8 @@
 proc counter {} {
     set i 0
     while {1} {
-        incr i
         yield $i
+        incr i
     }
 }
 

@@ -4,9 +4,6 @@ let max_sliding_window nums k =
   let front = ref 0 and back = ref 0 in
   let result = ref [] in
   for i = 0 to n - 1 do
-    while !front < !back && deque.(!back - 1) < 0 do
-      ignore deque
-    done;
     if !front < !back && deque.(!front) <= i - k then incr front;
     while !front < !back && nums.(deque.(!back - 1)) <= nums.(i) do
       decr back

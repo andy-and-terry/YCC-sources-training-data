@@ -12,8 +12,8 @@ def rabin_karp(text : String, pattern : String) : Array(Int32)
   pattern_hash = 0_u64
   text_hash = 0_u64
   (0...m).each do |i|
-    pattern_hash = (pattern_hash * base + pattern.byte_at(i)) % modulus
-    text_hash = (text_hash * base + text.byte_at(i)) % modulus
+    pattern_hash = (pattern_hash * base + pattern.byte_at(i).to_u64) % modulus
+    text_hash = (text_hash * base + text.byte_at(i).to_u64) % modulus
   end
 
   (0..(n - m)).each do |i|
@@ -21,8 +21,9 @@ def rabin_karp(text : String, pattern : String) : Array(Int32)
       matches << i
     end
     if i < n - m
-      text_hash = (text_hash + modulus - (text.byte_at(i) * high_order) % modulus) % modulus
-      text_hash = (text_hash * base + text.byte_at(i + m)) % modulus
+      leading = text.byte_at(i).to_u64
+      text_hash = (text_hash + modulus - (leading * high_order) % modulus) % modulus
+      text_hash = (text_hash * base + text.byte_at(i + m).to_u64) % modulus
     end
   end
 
