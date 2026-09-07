@@ -1260,6 +1260,50 @@ Sample source files organized by programming language for model training.
 > collection operations (List/Set/Map). No Apex/Salesforce toolchain
 > is available in this sandbox, so this batch is not
 > compiler-verified.
+>
+> A fifth pass then added roughly 200 more files in one large run
+> spanning every language folder at once (12 parallel batches of 5
+> languages each), rather than the previous one-language-per-batch
+> cadence. Each of the 20 languages already at a 100+/60+-file
+> "flagship" or near-flagship tier (cpp, csharp, elixir, fortran,
+> fsharp, and the 15 remaining 50-file languages from ada through
+> forth alphabetically) got 4 new files; the other 40 languages got 3
+> each, for exactly 200 new files (80 + 120), verified by rechecking
+> post-hoc that every language's file count grew by precisely its
+> assigned amount. Every folder was first inspected (full file listing
+> plus several sample reads) to avoid duplicating an existing
+> concept/filename, then topped up with algorithms and data structures
+> not yet present anywhere in that folder — Tarjan's/Kosaraju's SCC,
+> Kruskal's/Prim's MST, the Z-algorithm, Rabin-Karp search, longest
+> increasing subsequence, matrix chain multiplication, subset sum,
+> AVL trees, Fenwick/BIT trees, segment trees, extended Euclidean/
+> modular exponentiation/Miller-Rabin, run-length encoding, quickselect,
+> sliding-window maximum, priority queues/binary heaps, and GoF
+> patterns (decorator, adapter, state, observer, template method,
+> memento) — plus a language-specific idiom per folder where one was
+> still missing (e.g. Ada task rendezvous, Elixir ETS tables and
+> `Task.async`, Rust `Drop`/RAII, Swift actors, Clojure STM refs and
+> transducers, D contracts, Vala async/yield, Zig arena allocators,
+> Prolog CLP(FD), PL/SQL `CONNECT BY`/pipelined functions, PowerShell
+> JSON/CSV conversion, F# `MailboxProcessor` and units of measure).
+> Verilog/VHDL got new digital-logic building blocks instead (Gray-code
+> counter, popcount, leading-zero counter) rather than forced
+> algorithm ports. Every file with an available toolchain in this
+> sandbox was compiled/run and verified (Python, JavaScript, TypeScript
+> in `--strict` mode, C, C++, Go via `go vet`, Rust, Java, Ruby, Perl,
+> PHP, Bash, Awk, Vimscript, and — installed specifically for this
+> pass — GnuCOBOL, SBCL, and SWI-Prolog); languages without an
+> available toolchain were hand-traced against the existing files'
+> conventions instead. Several real bugs were caught and fixed during
+> verification: a Bash quicksort recursing on the literal string `arr`
+> instead of its nameref parameter, `((i++))` on a zero-valued counter
+> silently aborting two other Bash scripts under `set -e`, a Vimscript
+> loop variable shadowing the builtin `count()` function, a Prolog
+> `bfs/3` clause whose unconstrained arity-3 head accidentally matched
+> its own internal recursive calls (infinite recursion), a C# Tarjan
+> implementation refactored off static fields into an instance class
+> so it can be reused, and a fixed-format COBOL `COMPUTE` statement
+> that ran past column 72.
 
 | Language   | Files |
 |------------|-------|
