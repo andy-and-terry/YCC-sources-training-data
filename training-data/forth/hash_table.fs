@@ -1,0 +1,51 @@
+CREATE KEYS 8 CELLS ALLOT
+CREATE VALS 8 CELLS ALLOT
+8 CONSTANT TABLE-SIZE
+VARIABLE CUR-KEY
+VARIABLE CUR-VAL
+
+: INIT-TABLE ( -- )
+  TABLE-SIZE 0 DO
+    -1 I CELLS KEYS + !
+  LOOP ;
+
+: HASH ( key -- slot ) TABLE-SIZE MOD ;
+: KEY-ADDR ( slot -- addr ) CELLS KEYS + ;
+: VAL-ADDR ( slot -- addr ) CELLS VALS + ;
+
+: SLOT-BUSY? ( slot -- slot flag )
+  DUP KEY-ADDR @ DUP -1 <> SWAP CUR-KEY @ <> AND ;
+
+: PUT ( key value -- )
+  CUR-VAL !
+  CUR-KEY !
+  CUR-KEY @ HASH
+  BEGIN
+    SLOT-BUSY?
+  WHILE
+    1+ TABLE-SIZE MOD
+  REPEAT
+  DUP KEY-ADDR CUR-KEY @ SWAP !
+  VAL-ADDR CUR-VAL @ SWAP ! ;
+
+: GET ( key -- value found? )
+  CUR-KEY !
+  CUR-KEY @ HASH
+  BEGIN
+    DUP KEY-ADDR @ -1 <>
+  WHILE
+    DUP KEY-ADDR @ CUR-KEY @ = IF
+      VAL-ADDR @ TRUE EXIT
+    THEN
+    1+ TABLE-SIZE MOD
+  REPEAT
+  DROP 0 FALSE ;
+
+INIT-TABLE
+5 100 PUT
+13 200 PUT
+21 300 PUT
+5 GET . .
+13 GET . .
+99 GET . .
+CR

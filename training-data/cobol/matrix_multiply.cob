@@ -33,7 +33,8 @@
                PERFORM VARYING J FROM 1 BY 1 UNTIL J > 2
                    MOVE 0 TO TOTAL-VAL
                    PERFORM VARYING K FROM 1 BY 1 UNTIL K > 3
-                       COMPUTE TOTAL-VAL = TOTAL-VAL + A-COL(I, K) * B-COL(K, J)
+                       COMPUTE TOTAL-VAL = TOTAL-VAL
+                           + A-COL(I, K) * B-COL(K, J)
                    END-PERFORM
                    MOVE TOTAL-VAL TO RESULT-COL(I, J)
                END-PERFORM
