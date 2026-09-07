@@ -14,7 +14,7 @@
        01 I PIC 9(2).
        01 J PIC 9(2).
        01 K PIC 9(2).
-       01 SUM PIC 9(4).
+       01 TOTAL-VAL PIC 9(4).
 
        PROCEDURE DIVISION.
            MOVE 1 TO A-COL(1, 1)
@@ -31,11 +31,11 @@
            MOVE 12 TO B-COL(3, 2)
            PERFORM VARYING I FROM 1 BY 1 UNTIL I > 2
                PERFORM VARYING J FROM 1 BY 1 UNTIL J > 2
-                   MOVE 0 TO SUM
+                   MOVE 0 TO TOTAL-VAL
                    PERFORM VARYING K FROM 1 BY 1 UNTIL K > 3
-                       COMPUTE SUM = SUM + A-COL(I, K) * B-COL(K, J)
+                       COMPUTE TOTAL-VAL = TOTAL-VAL + A-COL(I, K) * B-COL(K, J)
                    END-PERFORM
-                   MOVE SUM TO RESULT-COL(I, J)
+                   MOVE TOTAL-VAL TO RESULT-COL(I, J)
                END-PERFORM
            END-PERFORM
            PERFORM VARYING I FROM 1 BY 1 UNTIL I > 2

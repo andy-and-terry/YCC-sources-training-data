@@ -6,7 +6,7 @@
            05 ARR-ITEM PIC 9(3) OCCURS 8 TIMES.
        01 STACK-LOW PIC 9(2) OCCURS 12 TIMES.
        01 STACK-HIGH PIC 9(2) OCCURS 12 TIMES.
-       01 TOP PIC 9(2) VALUE 0.
+       01 STACK-TOP PIC 9(2) VALUE 0.
        01 LOW PIC 9(2).
        01 HIGH PIC 9(2).
        01 I PIC 9(2).
@@ -24,13 +24,13 @@
            MOVE 2 TO ARR-ITEM(6)
            MOVE 7 TO ARR-ITEM(7)
            MOVE 4 TO ARR-ITEM(8)
-           ADD 1 TO TOP
-           MOVE 1 TO STACK-LOW(TOP)
-           MOVE 8 TO STACK-HIGH(TOP)
-           PERFORM UNTIL TOP = 0
-               MOVE STACK-LOW(TOP) TO LOW
-               MOVE STACK-HIGH(TOP) TO HIGH
-               SUBTRACT 1 FROM TOP
+           ADD 1 TO STACK-TOP
+           MOVE 1 TO STACK-LOW(STACK-TOP)
+           MOVE 8 TO STACK-HIGH(STACK-TOP)
+           PERFORM UNTIL STACK-TOP = 0
+               MOVE STACK-LOW(STACK-TOP) TO LOW
+               MOVE STACK-HIGH(STACK-TOP) TO HIGH
+               SUBTRACT 1 FROM STACK-TOP
                IF LOW < HIGH
                    MOVE ARR-ITEM(HIGH) TO PIVOT-VAL
                    MOVE LOW TO I
@@ -49,14 +49,14 @@
                    MOVE TEMP TO ARR-ITEM(HIGH)
                    MOVE I TO PIVOT-INDEX
                    IF PIVOT-INDEX > LOW + 1
-                       ADD 1 TO TOP
-                       MOVE LOW TO STACK-LOW(TOP)
-                       COMPUTE STACK-HIGH(TOP) = PIVOT-INDEX - 1
+                       ADD 1 TO STACK-TOP
+                       MOVE LOW TO STACK-LOW(STACK-TOP)
+                       COMPUTE STACK-HIGH(STACK-TOP) = PIVOT-INDEX - 1
                    END-IF
                    IF PIVOT-INDEX < HIGH - 1
-                       ADD 1 TO TOP
-                       COMPUTE STACK-LOW(TOP) = PIVOT-INDEX + 1
-                       MOVE HIGH TO STACK-HIGH(TOP)
+                       ADD 1 TO STACK-TOP
+                       COMPUTE STACK-LOW(STACK-TOP) = PIVOT-INDEX + 1
+                       MOVE HIGH TO STACK-HIGH(STACK-TOP)
                    END-IF
                END-IF
            END-PERFORM
