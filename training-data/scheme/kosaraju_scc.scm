@@ -1,0 +1,62 @@
+(define graph '((a . (b)) (b . (c)) (c . (a d)) (d . (e)) (e . (f)) (f . (d))))
+
+(define (neighbors g node)
+  (let ((entry (assq node g)))
+    (if entry (cdr entry) '())))
+
+(define (all-nodes g) (map car g))
+
+(define (dfs-finish g node visited order)
+  (if (member node visited)
+      (cons visited order)
+      (let* ((visited1 (cons node visited))
+             (result (fold-finish g (neighbors g node) visited1 order)))
+        (cons (car result) (append (cdr result) (list node))))))
+
+(define (fold-finish g nodes visited order)
+  (if (null? nodes)
+      (cons visited order)
+      (let ((result (dfs-finish g (car nodes) visited order)))
+        (fold-finish g (cdr nodes) (car result) (cdr result)))))
+
+(define (finish-order g)
+  (reverse (cdr (fold-finish g (all-nodes g) '() '()))))
+
+(define (add-edge alist u v)
+  (let ((entry (assq u alist)))
+    (cons (cons u (cons v (cdr entry)))
+          (filter (lambda (e) (not (eq? (car e) u))) alist))))
+
+(define (reverse-graph g)
+  (fold-left (lambda (acc pair)
+               (fold-left (lambda (acc2 v) (add-edge acc2 v (car pair))) acc (cdr pair)))
+             (map (lambda (n) (cons n '())) (all-nodes g))
+             g))
+
+(define (dfs-collect g node visited acc)
+  (if (member node visited)
+      (cons visited acc)
+      (let* ((visited1 (cons node visited))
+             (acc1 (cons node acc)))
+        (fold-collect g (neighbors g node) visited1 acc1))))
+
+(define (fold-collect g nodes visited acc)
+  (if (null? nodes)
+      (cons visited acc)
+      (let ((result (dfs-collect g (car nodes) visited acc)))
+        (fold-collect g (cdr nodes) (car result) (cdr result)))))
+
+(define (kosaraju g)
+  (let ((rg (reverse-graph g)))
+    (let loop ((nodes (finish-order g)) (visited '()) (sccs '()))
+      (if (null? nodes)
+          (reverse sccs)
+          (if (member (car nodes) visited)
+              (loop (cdr nodes) visited sccs)
+              (let* ((result (dfs-collect rg (car nodes) visited '()))
+                     (new-visited (car result))
+                     (component (cdr result)))
+                (loop (cdr nodes) new-visited (cons component sccs))))))))
+
+(display (kosaraju graph))
+(newline)

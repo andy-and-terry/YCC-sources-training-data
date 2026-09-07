@@ -1,0 +1,21 @@
+(define (lis-length lst)
+  (define vec (list->vector lst))
+  (define n (vector-length vec))
+  (define lengths (make-vector n 1))
+  (let loop-i ((i 1))
+    (if (< i n)
+        (begin
+          (let loop-j ((j 0))
+            (if (< j i)
+                (begin
+                  (if (and (< (vector-ref vec j) (vector-ref vec i))
+                           (> (+ (vector-ref lengths j) 1) (vector-ref lengths i)))
+                      (vector-set! lengths i (+ (vector-ref lengths j) 1)))
+                  (loop-j (+ j 1)))))
+          (loop-i (+ i 1)))))
+  (if (= n 0) 0 (apply max (vector->list lengths))))
+
+(display (lis-length '(10 9 2 5 3 7 101 18)))
+(newline)
+(display (lis-length '(0 1 0 3 2 3)))
+(newline)
