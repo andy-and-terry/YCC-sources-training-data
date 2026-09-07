@@ -22,8 +22,8 @@ quicksort() {
     arr[i + 1]=${arr[high]}
     arr[high]=$temp
     local pivot_index=$((i + 1))
-    quicksort arr "$low" "$((pivot_index - 1))"
-    quicksort arr "$((pivot_index + 1))" "$high"
+    quicksort "$1" "$low" "$((pivot_index - 1))"
+    quicksort "$1" "$((pivot_index + 1))" "$high"
 }
 
 numbers=(5 2 9 1 5 6 3)
