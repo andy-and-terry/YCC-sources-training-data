@@ -12,7 +12,7 @@ quicksort() {
     local i=$((low - 1))
     for ((j = low; j < high; j++)); do
         if ((arr[j] <= pivot)); then
-            ((i++))
+            i=$((i + 1))
             local temp=${arr[i]}
             arr[i]=${arr[j]}
             arr[j]=$temp

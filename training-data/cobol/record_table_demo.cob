@@ -1,0 +1,28 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. RECORDTABLEDEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 EMPLOYEE-TABLE.
+           05 EMPLOYEE-ENTRY OCCURS 3 TIMES.
+               10 EMP-ID PIC 9(3).
+               10 EMP-NAME PIC X(10).
+               10 EMP-SALARY PIC 9(5).
+       01 I PIC 9(2).
+       01 TOTAL-SALARY PIC 9(6) VALUE 0.
+
+       PROCEDURE DIVISION.
+           MOVE 101 TO EMP-ID(1)
+           MOVE "ALICE" TO EMP-NAME(1)
+           MOVE 50000 TO EMP-SALARY(1)
+           MOVE 102 TO EMP-ID(2)
+           MOVE "BOB" TO EMP-NAME(2)
+           MOVE 60000 TO EMP-SALARY(2)
+           MOVE 103 TO EMP-ID(3)
+           MOVE "CAROL" TO EMP-NAME(3)
+           MOVE 55000 TO EMP-SALARY(3)
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 3
+               DISPLAY EMP-ID(I) " " EMP-NAME(I) " " EMP-SALARY(I)
+               ADD EMP-SALARY(I) TO TOTAL-SALARY
+           END-PERFORM
+           DISPLAY "TOTAL: " TOTAL-SALARY
+           STOP RUN.

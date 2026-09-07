@@ -30,6 +30,7 @@ fn main() {
     let guard = Guard {
         handles: vec![FileHandle::new("c.txt"), FileHandle::new("d.txt")],
     };
+    println!("guard holds {} handles", guard.handles.len());
     drop(guard);
     println!("guard dropped early");
 }
