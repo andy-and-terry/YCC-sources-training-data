@@ -3,18 +3,18 @@ function! RleEncode(s)
     return ''
   endif
   let result = ''
-  let count = 1
+  let cnt = 1
   let prev = a:s[0]
   for c in a:s[1:]
     if c == prev
-      let count += 1
+      let cnt += 1
     else
-      let result .= prev . count
+      let result .= prev . cnt
       let prev = c
-      let count = 1
+      let cnt = 1
     endif
   endfor
-  let result .= prev . count
+  let result .= prev . cnt
   return result
 endfunction
 

@@ -1,16 +1,26 @@
 using System;
 using System.Collections.Generic;
 
-class TarjanSccDemo
+class TarjanSolver
 {
-    static int index = 0;
-    static Stack<int> stack = new Stack<int>();
-    static Dictionary<int, int> indices = new Dictionary<int, int>();
-    static Dictionary<int, int> lowLink = new Dictionary<int, int>();
-    static HashSet<int> onStack = new HashSet<int>();
-    static List<List<int>> components = new List<List<int>>();
+    private readonly Dictionary<int, List<int>> graph;
+    private readonly Dictionary<int, int> indices = new();
+    private readonly Dictionary<int, int> lowLink = new();
+    private readonly HashSet<int> onStack = new();
+    private readonly Stack<int> stack = new();
+    private readonly List<List<int>> components = new();
+    private int index = 0;
 
-    static void StrongConnect(int v, Dictionary<int, List<int>> graph)
+    public TarjanSolver(Dictionary<int, List<int>> graph) => this.graph = graph;
+
+    public List<List<int>> FindSccs(IEnumerable<int> nodes)
+    {
+        foreach (int v in nodes)
+            if (!indices.ContainsKey(v)) StrongConnect(v);
+        return components;
+    }
+
+    private void StrongConnect(int v)
     {
         indices[v] = index;
         lowLink[v] = index;
@@ -22,7 +32,7 @@ class TarjanSccDemo
         {
             if (!indices.ContainsKey(w))
             {
-                StrongConnect(w, graph);
+                StrongConnect(w);
                 lowLink[v] = Math.Min(lowLink[v], lowLink[w]);
             }
             else if (onStack.Contains(w))
@@ -44,14 +54,10 @@ class TarjanSccDemo
             components.Add(component);
         }
     }
+}
 
-    static List<List<int>> FindSccs(Dictionary<int, List<int>> graph, IEnumerable<int> nodes)
-    {
-        foreach (int v in nodes)
-            if (!indices.ContainsKey(v)) StrongConnect(v, graph);
-        return components;
-    }
-
+class TarjanSccDemo
+{
     static void Main()
     {
         var graph = new Dictionary<int, List<int>>
@@ -63,7 +69,7 @@ class TarjanSccDemo
             [4] = new List<int>()
         };
 
-        var sccs = FindSccs(graph, new[] { 0, 1, 2, 3, 4 });
+        var sccs = new TarjanSolver(graph).FindSccs(new[] { 0, 1, 2, 3, 4 });
         foreach (var component in sccs)
             Console.WriteLine(string.Join(",", component));
     }
