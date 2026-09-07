@@ -8,14 +8,14 @@ async int fetch_value(int value, uint delay_ms) {
     return value;
 }
 
+MainLoop loop;
+
 async void run() {
     int a = yield fetch_value(1, 30);
     int b = yield fetch_value(2, 10);
     stdout.printf("%d\n", a + b);
     loop.quit();
 }
-
-MainLoop loop;
 
 void main() {
     loop = new MainLoop();
