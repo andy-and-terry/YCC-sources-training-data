@@ -1,11 +1,11 @@
 function rod_cutting(prices::Vector{Int}, n::Int)
     dp = zeros(Int, n + 1)
-    for length in 1:n
+    for len in 1:n
         best = -1
-        for cut in 1:length
-            best = max(best, prices[cut] + dp[length - cut + 1])
+        for cut in 1:len
+            best = max(best, prices[cut] + dp[len - cut + 1])
         end
-        dp[length + 1] = best
+        dp[len + 1] = best
     end
     return dp[n + 1]
 end
