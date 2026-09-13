@@ -7,7 +7,8 @@ set myVar 42
 puts [info exists myVar]
 
 puts [info args greet]
-puts [info default greet greeting defaultValue]
+info default greet greeting defaultValue
+puts $defaultValue
 
 puts [info procs greet]
 puts [info body greet]
