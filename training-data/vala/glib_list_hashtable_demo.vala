@@ -4,7 +4,7 @@ void main() {
     list.append("Bob");
     list.append("Cleo");
 
-    foreach (unowned string name in list) {
+    foreach (string name in list) {
         stdout.printf("%s\n", name);
     }
     stdout.printf("count: %u\n", list.length());

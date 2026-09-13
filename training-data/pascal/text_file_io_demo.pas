@@ -1,7 +1,7 @@
 program TextFileIODemo;
 
 var
-  f: TextFile;
+  f: Text;
   line: string;
 begin
   Assign(f, 'demo_output.txt');

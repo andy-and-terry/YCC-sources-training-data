@@ -26,6 +26,6 @@ void main() {
     var child = new Child("leaf");
     parent.adopt(child);
 
-    stdout.printf("%s -> %s\n", parent.name, parent.child.name);
-    stdout.printf("%s -> %s\n", child.name, child.parent.name);
+    stdout.printf("%s -> %s\n", parent.name, parent.child!.name);
+    stdout.printf("%s -> %s\n", child.name, child.parent!.name);
 }
