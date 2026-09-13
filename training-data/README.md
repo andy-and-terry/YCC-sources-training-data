@@ -1305,6 +1305,50 @@ Sample source files organized by programming language for model training.
 > so it can be reused, and a fixed-format COBOL `COMPUTE` statement
 > that ran past column 72.
 
+> A sixth pass added 307 more files across all 60 language folders at
+> once (12 parallel batches of 5 languages each, one sub-agent per
+> batch), continuing the every-folder-at-once cadence of the fifth
+> pass rather than a single-language depth pass. Every folder got 4-6
+> new files (most got exactly 5); csharp, go, and typescript — already
+> among the largest folders — got 4. As in the fifth pass, every
+> folder was inspected (fresh `ls`, not just a point-in-time snapshot)
+> before writing, to avoid duplicating an existing concept or
+> filename. New content: classic algorithms not yet present anywhere
+> in a given folder — AVL trees, segment trees, monotonic-stack
+> next-greater-element, quickselect, rod cutting, word break,
+> Manacher's/expand-around-center longest palindromic substring,
+> number-of-islands grid flood-fill, matrix exponentiation for
+> Fibonacci, Chinese remainder theorem, bipartite checks, and more —
+> plus the remaining GoF patterns (composite, memento, chain of
+> responsibility, prototype, flyweight, state, template method) in
+> languages that already had some but not all of the set. Digital
+> logic folders (Verilog/VHDL) got new hardware building blocks
+> instead (carry-save adder, comparator tree, CDC handshake
+> synchronizer, bidirectional Gray-code counter, SPI shift-register
+> master, memory-mapped register bank) rather than forced algorithm
+> ports. Each batch also added one or two language-specific idioms per
+> folder where a gap was found, e.g. Ada protected objects, Erlang
+> supervisor/maps/bit-syntax parsing, Haskell hand-rolled State/Writer
+> monads and a parser-combinator sketch, Swift `@resultBuilder`,
+> Python structural pattern matching and `asyncio.Queue` backpressure,
+> Rust `impl Iterator for` a custom type, Prolog CLP(FD) sudoku and
+> backtracking graph coloring, Solidity ERC-721/escrow/staking/Merkle-
+> airdrop contracts, Zig `std.testing`/`std.mem`/comptime formatting,
+> and Nix's fixed-point overlay pattern. Every file with an available
+> toolchain in this sandbox was compiled/run and verified after the
+> fact (Python, JavaScript, Ruby, PHP, Perl, Bash, Awk, C, C++, Rust,
+> Go, Java, Vimscript, plus GnuCOBOL, SBCL, and Clojure — installed
+> specifically for this pass, same as the fifth); languages without a
+> toolchain were hand-checked against each folder's existing
+> conventions (brace/paren/`end`-keyword balance, indentation, naming
+> case) instead. A handful of small mistakes were caught and fixed
+> during the pass itself: a Nim closure illegally capturing a `var`
+> parameter (rewritten to pass the grid explicitly), a Smalltalk
+> temporary-variable declaration placed mid-method (moved to the top,
+> as Smalltalk requires), and two Vala files using an `unowned`
+> `foreach` binding and non-null member access where the compiler
+> would actually require the plain/`!`-asserted forms.
+
 | Language   | Files |
 |------------|-------|
 | Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py`, `binary_tree.py` |
