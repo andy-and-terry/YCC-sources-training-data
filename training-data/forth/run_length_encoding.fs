@@ -1,0 +1,22 @@
+VARIABLE CUR-CHAR
+VARIABLE RUN-COUNT
+
+: RUN-LENGTH-ENCODE ( addr len -- )
+  DUP 0= IF 2DROP EXIT THEN
+  OVER C@ CUR-CHAR !
+  0 RUN-COUNT !
+  0 DO
+    DUP I + C@ CUR-CHAR @ =
+    IF
+      1 RUN-COUNT +!
+    ELSE
+      CUR-CHAR @ EMIT RUN-COUNT @ .
+      DUP I + C@ CUR-CHAR !
+      1 RUN-COUNT !
+    THEN
+  LOOP
+  CUR-CHAR @ EMIT RUN-COUNT @ .
+  DROP ;
+
+S" aaabccccd" RUN-LENGTH-ENCODE
+CR

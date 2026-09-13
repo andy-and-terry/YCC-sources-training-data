@@ -1,0 +1,14 @@
+VARIABLE STR-ADDR
+VARIABLE ACC
+
+: PARSE-NUM ( addr len -- n )
+  SWAP STR-ADDR !
+  0 ACC !
+  0 DO
+    STR-ADDR @ I + C@ [CHAR] 0 -
+    ACC @ 10 * + ACC !
+  LOOP
+  ACC @ ;
+
+S" 42" PARSE-NUM . CR
+S" 12345" PARSE-NUM . CR
