@@ -12,4 +12,4 @@ has_subset_sum(Nums, Target) :-
 :- (has_subset_sum([3, 34, 4, 12, 5, 2], 9) -> writeln(true) ; writeln(false)).
 :- (has_subset_sum([3, 34, 4, 12, 5, 2], 10) -> writeln(true) ; writeln(false)).
 :- (has_subset_sum([3, 34, 4, 12, 5, 2], 40) -> writeln(true) ; writeln(false)).
-:- (has_subset_sum([3, 34, 4, 12, 5, 2], 11) -> writeln(true) ; writeln(false)).
+:- (has_subset_sum([3, 34, 4, 12, 5, 2], 13) -> writeln(true) ; writeln(false)).

@@ -1,52 +1,55 @@
 mutable struct SegmentTree
     n::Int
+    arr::Vector{Int}
     tree::Vector{Int}
-    SegmentTree(data::Vector{Int}) = build(data)
 end
 
-function build(data::Vector{Int})
+function SegmentTree(data::Vector{Int})
     n = length(data)
-    tree = zeros(Int, 2 * n)
-    for i in 1:n
-        tree[n + i] = data[i]
-    end
-    for i in (n - 1):-1:1
-        tree[i] = tree[2 * i] + tree[2 * i + 1]
-    end
-    st = SegmentTree(n, tree)
+    tree = zeros(Int, 4 * n)
+    st = SegmentTree(n, data, tree)
+    build!(st, 1, 1, n)
     return st
 end
 
-function update!(st::SegmentTree, index::Int, value::Int)
-    i = index + st.n
-    st.tree[i] = value
-    while i > 1
-        i = div(i, 2)
-        st.tree[i] = st.tree[2 * i] + st.tree[2 * i + 1]
+function build!(st::SegmentTree, node::Int, start::Int, stop::Int)
+    if start == stop
+        st.tree[node] = st.arr[start]
+        return
     end
+    mid = div(start + stop, 2)
+    build!(st, 2 * node, start, mid)
+    build!(st, 2 * node + 1, mid + 1, stop)
+    st.tree[node] = st.tree[2 * node] + st.tree[2 * node + 1]
 end
 
-function query(st::SegmentTree, left::Int, right::Int)
-    l = left + st.n
-    r = right + st.n
-    total = 0
-    while l < r
-        if isodd(l)
-            total += st.tree[l]
-            l += 1
-        end
-        if isodd(r)
-            r -= 1
-            total += st.tree[r]
-        end
-        l = div(l, 2)
-        r = div(r, 2)
+function update!(st::SegmentTree, node::Int, start::Int, stop::Int, index::Int, value::Int)
+    if start == stop
+        st.tree[node] = value
+        return
     end
-    return total
+    mid = div(start + stop, 2)
+    if index <= mid
+        update!(st, 2 * node, start, mid, index, value)
+    else
+        update!(st, 2 * node + 1, mid + 1, stop, index, value)
+    end
+    st.tree[node] = st.tree[2 * node] + st.tree[2 * node + 1]
+end
+
+function query(st::SegmentTree, node::Int, start::Int, stop::Int, l::Int, r::Int)
+    if r < start || stop < l
+        return 0
+    end
+    if l <= start && stop <= r
+        return st.tree[node]
+    end
+    mid = div(start + stop, 2)
+    return query(st, 2 * node, start, mid, l, r) + query(st, 2 * node + 1, mid + 1, stop, l, r)
 end
 
 data = [1, 3, 5, 7, 9, 11]
 st = SegmentTree(data)
-println(query(st, 1, 4))
-update!(st, 1, 10)
-println(query(st, 1, 4))
+println(query(st, 1, 1, st.n, 2, 4))
+update!(st, 1, 1, st.n, 2, 10)
+println(query(st, 1, 1, st.n, 2, 4))
