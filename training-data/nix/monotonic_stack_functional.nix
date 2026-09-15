@@ -4,27 +4,30 @@ let
   nextGreaterElements = nums:
     let
       n = builtins.length nums;
-      indices = builtins.genList (i: i) n;
+
+      # stack is a list of indices with the head as the top of the stack;
+      # pops indices whose value is smaller than nums[i], recording each
+      # popped index's answer along the way
+      popWhileSmaller = i: stack: results:
+        if stack == [ ] then
+          { stack = stack; results = results; }
+        else
+          let top = builtins.head stack; in
+          if builtins.elemAt nums top < builtins.elemAt nums i then
+            popWhileSmaller i (builtins.tail stack) (results // { ${toString top} = builtins.elemAt nums i; })
+          else
+            { stack = stack; results = results; };
 
       go = i: stack: results:
         if i >= n then
           builtins.foldl' (acc: idx: acc // { ${toString idx} = -1; }) results stack
         else
-          let
-            popped = builtins.foldl'
-              (acc: top:
-                if acc.continue && builtins.elemAt nums top < builtins.elemAt nums i then
-                  { continue = true; stack = acc.stack; results = acc.results // { ${toString top} = builtins.elemAt nums i; }; }
-                else
-                  { continue = false; stack = acc.stack ++ [ top ]; results = acc.results; })
-              { continue = true; stack = [ ]; results = results; }
-              stack;
-          in
-            go (i + 1) (popped.stack ++ [ i ]) popped.results;
+          let popped = popWhileSmaller i stack results; in
+          go (i + 1) ([ i ] ++ popped.stack) popped.results;
 
       finalMap = go 0 [ ] { };
     in
-      map (i: finalMap.${toString i}) indices;
+      builtins.genList (i: finalMap.${toString i}) n;
 
   nums = [ 2 1 2 4 3 ];
 in
