@@ -1,4 +1,6 @@
 defmodule FenwickTree do
+  import Bitwise
+
   def new(size), do: %{size: size, tree: Map.new(1..size, fn i -> {i, 0} end)}
 
   def add(%{size: size, tree: tree}, index, delta) do
@@ -23,8 +25,6 @@ defmodule FenwickTree do
       prefix_sum(fenwick, right)
     end
   end
-
-  import Bitwise
 end
 
 values = [1, 3, 5, 7, 9, 11]
