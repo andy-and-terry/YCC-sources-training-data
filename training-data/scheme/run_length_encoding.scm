@@ -1,0 +1,20 @@
+(define (run-length-encode s)
+  (define n (string-length s))
+  (define (encode i acc)
+    (if (= i n)
+        (reverse acc)
+        (let loop ((j (+ i 1)) (count 1))
+          (if (and (< j n) (char=? (string-ref s j) (string-ref s i)))
+              (loop (+ j 1) (+ count 1))
+              (encode j (cons (list (string-ref s i) count) acc))))))
+  (encode 0 '()))
+
+(define (run-length-decode pairs)
+  (apply string-append
+         (map (lambda (p) (make-string (cadr p) (car p))) pairs)))
+
+(define encoded (run-length-encode "aaabbbcccaad"))
+(display encoded)
+(newline)
+(display (run-length-decode encoded))
+(newline)
