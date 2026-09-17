@@ -1,0 +1,25 @@
+(define (word-break? s dict)
+  (let ((n (string-length s)))
+    (let ((dp (make-vector (+ n 1) #f)))
+      (vector-set! dp 0 #t)
+      (let i-loop ((i 1))
+        (if (<= i n)
+            (begin
+              (let j-loop ((j 0))
+                (if (< j i)
+                    (begin
+                      (if (and (vector-ref dp j)
+                               (member (substring s j i) dict))
+                          (vector-set! dp i #t))
+                      (j-loop (+ j 1)))))
+              (i-loop (+ i 1)))))
+      (vector-ref dp n))))
+
+(define dict '("scheme" "is" "fun" "lang"))
+
+(display (word-break? "schemeisfun" dict))
+(newline)
+(display (word-break? "schemelang" dict))
+(newline)
+(display (word-break? "nope" dict))
+(newline)
