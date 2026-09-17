@@ -1381,8 +1381,29 @@ Sample source files organized by programming language for model training.
 > fully completed 34 folders at ~12 files each before being cut off; a
 > second wave of 5 sub-agents then picked up the remaining folders,
 > including topping up three that the first wave left partial (cobol,
-> vala, perl). See the next entry for the second wave's tally once it
-> lands.
+> vala, perl). That second wave landed 7 more folders at ~12 files each
+> (kotlin, nix, pascal, powershell, rust, vhdl, zig) before hitting the
+> same rate limit again; rust files were individually compiled with
+> `rustc --edition 2021` (clean). By this point another concurrent run of
+> this same scheduled batch task had independently landed and merged its
+> own pass (see the next changelog entry below), so this branch had
+> diverged — rebasing wave 2's commit onto the updated base surfaced 10
+> add/add conflicts where both runs had independently picked the same
+> concept for the same language (e.g. `kotlin/FenwickTree.kt`,
+> `rust/avl_tree.rs`); each was resolved by keeping the already-merged
+> version and dropping the duplicate, so no content was lost on either
+> side. A third wave of 3 sub-agents then topped up the folders still
+> behind the rest of this pass's batch size by ~7 files each: cobol,
+> commonlisp, fortran, fsharp, julia, lua, matlab, objectivec, ocaml,
+> prolog, sml, solidity, vba, vimscript, and wasm (perl and vala were
+> already at or past target from the concurrent run and were left
+> alone). Vimscript's new files were run-verified with `vim -Nes` +
+> `redir` (all correct output); the rest of this wave had no toolchain
+> available in this sandbox and were hand-checked instead, including a
+> brace/paren-balance pass and, where feasible, hand-tracing the
+> algorithm against a worked example. One transcription glitch (a stray
+> non-ASCII character in place of an operator in a draft of
+> `julia/bellman_ford.jl`) was caught and fixed before finishing.
 > A seventh pass added 300 more files across all 60 language folders at
 > once (12 parallel sub-agents, 5 languages each, ~5 new files per
 > language), continuing the every-folder-at-once cadence. This pass was
