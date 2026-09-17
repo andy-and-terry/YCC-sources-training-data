@@ -11,7 +11,7 @@ function Invoke-CountingSortByDigit([int[]]$arr, [int]$place) {
     $count = New-Object int[] 10
 
     foreach ($v in $arr) {
-        $digit = [math]::Floor($v / $place) % 10
+        $digit = [int]([math]::Floor($v / $place) % 10)
         $count[$digit]++
     }
 
@@ -20,7 +20,7 @@ function Invoke-CountingSortByDigit([int[]]$arr, [int]$place) {
     }
 
     for ($i = $arr.Length - 1; $i -ge 0; $i--) {
-        $digit = [math]::Floor($arr[$i] / $place) % 10
+        $digit = [int]([math]::Floor($arr[$i] / $place) % 10)
         $count[$digit]--
         $output[$count[$digit]] = $arr[$i]
     }

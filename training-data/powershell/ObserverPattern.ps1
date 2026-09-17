@@ -9,22 +9,22 @@ class Subject {
         [void]$this.Observers.Add($observer)
     }
 
-    [void] Notify([string]$event) {
+    [void] Notify([string]$eventName) {
         foreach ($observer in $this.Observers) {
-            $observer.Update($event)
+            $observer.Update($eventName)
         }
     }
 }
 
 class EmailNotifier {
-    [void] Update([string]$event) {
-        "Email: received event '$event'"
+    [void] Update([string]$eventName) {
+        "Email: received event '$eventName'"
     }
 }
 
 class LogNotifier {
-    [void] Update([string]$event) {
-        "Log: recorded event '$event'"
+    [void] Update([string]$eventName) {
+        "Log: recorded event '$eventName'"
     }
 }
 

@@ -34,7 +34,7 @@ class DoublyLinkedList {
         }
     }
 
-    [array] ToArrayForward() {
+    [object[]] ToArrayForward() {
         $result = @()
         $node = $this.Head
         while ($null -ne $node) {
@@ -44,7 +44,7 @@ class DoublyLinkedList {
         return $result
     }
 
-    [array] ToArrayBackward() {
+    [object[]] ToArrayBackward() {
         $result = @()
         $node = $this.Tail
         while ($null -ne $node) {

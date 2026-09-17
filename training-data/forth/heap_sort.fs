@@ -1,0 +1,61 @@
+CREATE ARR 6 , 3 , 8 , 1 , 9 , 2 ,
+6 CONSTANT ARR-LEN
+VARIABLE TMP1
+VARIABLE TMP2
+VARIABLE HSIZE
+VARIABLE ROOT-I
+VARIABLE LEFT-I
+VARIABLE RIGHT-I
+VARIABLE LARGEST-I
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+
+: SWAP-ELEM ( i j -- )
+  OVER ELEM @ TMP1 !
+  DUP ELEM @ TMP2 !
+  ELEM TMP1 @ SWAP !
+  ELEM TMP2 @ SWAP ! ;
+
+: SIFT-DOWN ( root size -- )
+  HSIZE !
+  ROOT-I !
+  BEGIN
+    ROOT-I @ LARGEST-I !
+    ROOT-I @ 2* 1+ LEFT-I !
+    LEFT-I @ 1+ RIGHT-I !
+    LEFT-I @ HSIZE @ < IF
+      LEFT-I @ ELEM @ LARGEST-I @ ELEM @ > IF
+        LEFT-I @ LARGEST-I !
+      THEN
+    THEN
+    RIGHT-I @ HSIZE @ < IF
+      RIGHT-I @ ELEM @ LARGEST-I @ ELEM @ > IF
+        RIGHT-I @ LARGEST-I !
+      THEN
+    THEN
+    LARGEST-I @ ROOT-I @ <>
+  WHILE
+    ROOT-I @ LARGEST-I @ SWAP-ELEM
+    LARGEST-I @ ROOT-I !
+  REPEAT ;
+
+: BUILD-HEAP ( -- )
+  ARR-LEN 2 / 0 DO
+    ARR-LEN 2 / 1- I - ARR-LEN SIFT-DOWN
+  LOOP ;
+
+: HEAP-SORT ( -- )
+  BUILD-HEAP
+  ARR-LEN 1 DO
+    0 ARR-LEN I - SWAP-ELEM
+    0 ARR-LEN I - SIFT-DOWN
+  LOOP ;
+
+: PRINT-ARR ( -- )
+  ARR-LEN 0 DO
+    I ELEM @ .
+  LOOP ;
+
+HEAP-SORT
+PRINT-ARR
+CR
