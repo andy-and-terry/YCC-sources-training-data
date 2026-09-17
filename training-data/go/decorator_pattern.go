@@ -7,28 +7,28 @@ type coffee interface {
 	description() string
 }
 
-type simpleCoffee struct{}
+type plainCoffee struct{}
 
-func (simpleCoffee) cost() float64        { return 2.0 }
-func (simpleCoffee) description() string { return "Coffee" }
+func (plainCoffee) cost() float64        { return 2.0 }
+func (plainCoffee) description() string { return "coffee" }
 
 type milkDecorator struct {
 	wrapped coffee
 }
 
 func (m milkDecorator) cost() float64        { return m.wrapped.cost() + 0.5 }
-func (m milkDecorator) description() string { return m.wrapped.description() + " + Milk" }
+func (m milkDecorator) description() string { return m.wrapped.description() + " + milk" }
 
 type sugarDecorator struct {
 	wrapped coffee
 }
 
 func (s sugarDecorator) cost() float64        { return s.wrapped.cost() + 0.25 }
-func (s sugarDecorator) description() string { return s.wrapped.description() + " + Sugar" }
+func (s sugarDecorator) description() string { return s.wrapped.description() + " + sugar" }
 
 func main() {
-	var order coffee = simpleCoffee{}
+	var order coffee = plainCoffee{}
 	order = milkDecorator{wrapped: order}
 	order = sugarDecorator{wrapped: order}
-	fmt.Printf("%s: $%.2f\n", order.description(), order.cost())
+	fmt.Printf("%s = %.2f\n", order.description(), order.cost())
 }

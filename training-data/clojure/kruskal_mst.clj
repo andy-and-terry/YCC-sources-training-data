@@ -10,20 +10,23 @@
         root))))
 
 (defn uf-union! [uf a b]
-  (swap! uf assoc (uf-find uf a) (uf-find uf b)))
+  (let [ra (uf-find uf a)
+        rb (uf-find uf b)]
+    (when (not= ra rb)
+      (swap! uf assoc ra rb)
+      true)))
 
 (defn kruskal [n edges]
   (let [uf (make-uf n)
-        sorted (sort-by #(nth % 2) edges)]
-    (reduce (fn [mst [u v w]]
-              (let [ru (uf-find uf u)
-                    rv (uf-find uf v)]
-                (if (= ru rv)
-                  mst
-                  (do (uf-union! uf ru rv)
-                      (conj mst [u v w])))))
-            []
-            sorted)))
+        sorted-edges (sort-by #(nth % 2) edges)]
+    (reduce
+     (fn [mst [u v w]]
+       (if (uf-union! uf u v)
+         (conj mst [u v w])
+         mst))
+     []
+     sorted-edges)))
 
-(def edges [[0 1 1] [0 2 3] [1 2 4] [1 3 2] [2 3 5]])
+(def edges [[0 1 10] [0 2 6] [0 3 5] [1 3 15] [2 3 4]])
+
 (println (kruskal 4 edges))

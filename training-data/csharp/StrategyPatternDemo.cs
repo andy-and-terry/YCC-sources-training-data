@@ -1,39 +1,43 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 interface ISortStrategy
 {
-    List<int> Sort(List<int> data);
+    void Sort(List<int> data);
 }
 
-class AscendingStrategy : ISortStrategy
+class AscendingSortStrategy : ISortStrategy
 {
-    public List<int> Sort(List<int> data) => data.OrderBy(x => x).ToList();
+    public void Sort(List<int> data) => data.Sort();
 }
 
-class DescendingStrategy : ISortStrategy
+class DescendingSortStrategy : ISortStrategy
 {
-    public List<int> Sort(List<int> data) => data.OrderByDescending(x => x).ToList();
+    public void Sort(List<int> data) => data.Sort((a, b) => b.CompareTo(a));
 }
 
 class Sorter
 {
     private ISortStrategy strategy;
+
     public Sorter(ISortStrategy strategy) => this.strategy = strategy;
+
     public void SetStrategy(ISortStrategy strategy) => this.strategy = strategy;
-    public List<int> Execute(List<int> data) => strategy.Sort(data);
+
+    public void Sort(List<int> data) => strategy.Sort(data);
 }
 
 class StrategyPatternDemo
 {
     static void Main()
     {
-        var data = new List<int> { 5, 2, 8, 1, 9 };
-        var sorter = new Sorter(new AscendingStrategy());
-        Console.WriteLine(string.Join(",", sorter.Execute(data)));
+        var data = new List<int> { 5, 3, 8, 1, 9 };
+        var sorter = new Sorter(new AscendingSortStrategy());
+        sorter.Sort(data);
+        Console.WriteLine(string.Join(", ", data));
 
-        sorter.SetStrategy(new DescendingStrategy());
-        Console.WriteLine(string.Join(",", sorter.Execute(data)));
+        sorter.SetStrategy(new DescendingSortStrategy());
+        sorter.Sort(data);
+        Console.WriteLine(string.Join(", ", data));
     }
 }

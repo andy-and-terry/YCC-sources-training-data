@@ -14,6 +14,7 @@ def word_break(s, word_dict):
 
 
 def word_break_segments(s, word_dict):
+    """Return one valid segmentation if s can be broken, else None."""
     words = set(word_dict)
     n = len(s)
     dp = [None] * (n + 1)
@@ -29,8 +30,7 @@ def word_break_segments(s, word_dict):
 
 
 if __name__ == "__main__":
-    dictionary = ["leet", "code", "leetcode", "sand", "and", "sandbox"]
+    dictionary = ["leet", "code", "sand", "and", "cats", "dog"]
     print(word_break("leetcode", dictionary))
-    print(word_break("leetsandbox", dictionary))
-    print(word_break("leetcat", dictionary))
-    print(word_break_segments("sandbox", dictionary))
+    print(word_break("catsandog", dictionary + ["sand"]))
+    print(word_break_segments("leetcode", dictionary))

@@ -1349,6 +1349,40 @@ Sample source files organized by programming language for model training.
 > `foreach` binding and non-null member access where the compiler
 > would actually require the plain/`!`-asserted forms.
 
+> A seventh pass, run via a dozen parallel sub-agents (5 language folders
+> each), added roughly 12 new files to most folders at once, aiming to push
+> every folder meaningfully further per run rather than the ~5-file cadence
+> of prior multi-language passes. New content followed the same menu as
+> before — additional sorting algorithms (heap/shell/counting/radix/bucket
+> where not already present), graph algorithms (Dijkstra, Bellman-Ford,
+> Floyd-Warshall, cycle detection, bipartite checks, Kruskal's MST, BFS/DFS),
+> DP (edit distance, LCS, LIS, subset sum, rod cutting, word break),
+> data structures (AVL tree, segment tree, Fenwick/BIT tree, doubly linked
+> list, LRU cache, trie, bloom filter), the remaining GoF patterns not yet
+> present per folder (adapter, decorator, facade, proxy, composite,
+> prototype, state, template method, chain of responsibility, memento,
+> factory, observer, strategy, visitor, builder, command, singleton), and
+> one or two language-specific idioms per folder (e.g. Clojure `reify`/
+> `add-watch`, Haskell hand-rolled Reader monad and Semigroup/Monoid
+> instances, Python structural-typing `Protocol`s, TypeScript async
+> generators, Elixir `Supervisor`, Racket `parameterize`, R S3 classes,
+> Scheme `define-record-type`). Verilog got hardware building blocks
+> instead of algorithm ports (a 4-bit adder-subtractor, array multiplier,
+> restoring divider, BCD counter/converter, address decoder, clock gate
+> cell, majority voter, one-hot decoder, reset synchronizer, PISO shift
+> register, UART receiver). Every file with an available toolchain in this
+> sandbox was verified after the fact: Python (`py_compile`), Ruby
+> (`ruby -c`), JavaScript (`node --check`), PHP (`php -l`), C/C++ (`gcc`/
+> `g++ -Wall`), Go (`go vet`), Java (`javac`), Perl (`perl -c`), and Awk/
+> Bash/Vimscript (executed directly against sample input) — all came back
+> clean. Languages without a toolchain here were hand-checked against each
+> folder's existing conventions instead. This pass ran up against a
+> session-wide rate limit partway through: the first wave (12 sub-agents)
+> fully completed 34 folders at ~12 files each before being cut off; a
+> second wave of 5 sub-agents then picked up the remaining folders,
+> including topping up three that the first wave left partial (cobol,
+> vala, perl). See the next entry for the second wave's tally once it
+> lands.
 > A seventh pass added 300 more files across all 60 language folders at
 > once (12 parallel sub-agents, 5 languages each, ~5 new files per
 > language), continuing the every-folder-at-once cadence. This pass was

@@ -1,34 +1,26 @@
 interface ModernPrinter {
-  print(text: string): string;
+  printDocument(text: string): void;
 }
 
+// Legacy interface with an incompatible method signature.
 class LegacyPrinter {
-  printLegacy(text: string): string {
-    return `[LEGACY] ${text.toUpperCase()}`;
+  printOldFormat(payload: { content: string; uppercase: boolean }): void {
+    const text = payload.uppercase ? payload.content.toUpperCase() : payload.content;
+    console.log(`[legacy] ${text}`);
   }
 }
 
 class LegacyPrinterAdapter implements ModernPrinter {
-  constructor(private readonly legacy: LegacyPrinter) {}
+  constructor(private legacy: LegacyPrinter) {}
 
-  print(text: string): string {
-    return this.legacy.printLegacy(text);
+  printDocument(text: string): void {
+    this.legacy.printOldFormat({ content: text, uppercase: false });
   }
 }
 
-class NativePrinter implements ModernPrinter {
-  print(text: string): string {
-    return `[NATIVE] ${text}`;
-  }
+function render(printer: ModernPrinter, text: string): void {
+  printer.printDocument(text);
 }
 
-function renderAll(printers: ModernPrinter[], text: string): string[] {
-  return printers.map((p) => p.print(text));
-}
-
-const printers: ModernPrinter[] = [
-  new NativePrinter(),
-  new LegacyPrinterAdapter(new LegacyPrinter()),
-];
-
-console.log(renderAll(printers, "hello world"));
+const adapted: ModernPrinter = new LegacyPrinterAdapter(new LegacyPrinter());
+render(adapted, "hello from the adapter pattern");

@@ -1,40 +1,52 @@
 #include <iostream>
-#include <limits>
 #include <vector>
+#include <queue>
+#include <climits>
 
-const int INF = std::numeric_limits<int>::max();
+using Edge = std::pair<int, int>;  // (neighbor, weight)
 
-int primMST(const std::vector<std::vector<int>>& graph) {
+int primMst(const std::vector<std::vector<Edge>>& graph) {
     int n = static_cast<int>(graph.size());
-    std::vector<int> key(n, INF);
-    std::vector<bool> inMST(n, false);
-    key[0] = 0;
-    int total = 0;
+    std::vector<bool> inMst(n, false);
+    std::vector<int> key(n, INT_MAX);
+    std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>> pq;
 
-    for (int count = 0; count < n; count++) {
-        int u = -1;
-        for (int v = 0; v < n; v++) {
-            if (!inMST[v] && (u == -1 || key[v] < key[u])) u = v;
-        }
-        inMST[u] = true;
-        total += key[u];
-        for (int v = 0; v < n; v++) {
-            if (graph[u][v] && !inMST[v] && graph[u][v] < key[v]) {
-                key[v] = graph[u][v];
+    key[0] = 0;
+    pq.push({0, 0});
+    int totalWeight = 0;
+
+    while (!pq.empty()) {
+        auto [w, u] = pq.top();
+        pq.pop();
+        if (inMst[u]) continue;
+        inMst[u] = true;
+        totalWeight += w;
+
+        for (auto [v, weight] : graph[u]) {
+            if (!inMst[v] && weight < key[v]) {
+                key[v] = weight;
+                pq.push({weight, v});
             }
         }
     }
-    return total;
+    return totalWeight;
 }
 
 int main() {
-    std::vector<std::vector<int>> graph = {
-        {0, 2, 0, 6, 0},
-        {2, 0, 3, 8, 5},
-        {0, 3, 0, 0, 7},
-        {6, 8, 0, 0, 9},
-        {0, 5, 7, 9, 0},
+    int n = 5;
+    std::vector<std::vector<Edge>> graph(n);
+    auto addEdge = [&](int u, int v, int w) {
+        graph[u].push_back({v, w});
+        graph[v].push_back({u, w});
     };
-    std::cout << primMST(graph) << std::endl;
+    addEdge(0, 1, 2);
+    addEdge(0, 3, 6);
+    addEdge(1, 2, 3);
+    addEdge(1, 3, 8);
+    addEdge(1, 4, 5);
+    addEdge(2, 4, 7);
+    addEdge(3, 4, 9);
+
+    std::cout << primMst(graph) << std::endl;
     return 0;
 }

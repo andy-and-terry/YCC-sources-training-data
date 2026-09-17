@@ -1,0 +1,30 @@
+CREATE ARR 4 , 2 , 2 , 8 , 3 , 3 , 1 , 9 , 0 ,
+9 CONSTANT ARR-LEN
+10 CONSTANT RANGE
+CREATE COUNTS RANGE CELLS ALLOT
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+: CNT ( v -- addr ) CELLS COUNTS + ;
+
+: INIT-COUNTS ( -- )
+  RANGE 0 DO 0 I CNT ! LOOP ;
+
+: COUNT-VALUES ( -- )
+  ARR-LEN 0 DO
+    I ELEM @ CNT DUP @ 1+ SWAP !
+  LOOP ;
+
+: PRINT-SORTED ( -- )
+  RANGE 0 DO
+    I CNT @ 0 DO
+      J .
+    LOOP
+  LOOP ;
+
+: COUNTING-SORT ( -- )
+  INIT-COUNTS
+  COUNT-VALUES
+  PRINT-SORTED ;
+
+COUNTING-SORT
+CR

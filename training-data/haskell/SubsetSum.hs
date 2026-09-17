@@ -1,14 +1,11 @@
 import qualified Data.Set as Set
 
-canSum :: [Int] -> Int -> Bool
-canSum nums target = target `Set.member` reachable
+hasSubsetSum :: [Int] -> Int -> Bool
+hasSubsetSum nums target = Set.member target (foldl step (Set.singleton 0) nums)
   where
-    reachable = foldl step (Set.singleton 0) nums
-    step acc num = Set.union acc (Set.map (+ num) (Set.filter (\s -> s + num <= target) acc))
+    step sums x = Set.union sums (Set.map (+ x) (Set.filter (\s -> s + x <= target) sums))
 
 main :: IO ()
 main = do
-  let nums = [3, 34, 4, 12, 5, 2]
-  print (canSum nums 9)
-  print (canSum nums 10)
-  print (canSum nums 21)
+  print (hasSubsetSum [3, 34, 4, 12, 5, 2] 9)
+  print (hasSubsetSum [3, 34, 4, 12, 5, 2] 10)

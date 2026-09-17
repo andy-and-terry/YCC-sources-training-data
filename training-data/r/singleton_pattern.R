@@ -1,16 +1,24 @@
-make_singleton <- local({
+# A singleton via a closure-backed factory: repeated calls to
+# get_instance() always return the same underlying environment.
+make_singleton_factory <- function() {
   instance <- NULL
 
   function() {
     if (is.null(instance)) {
-      cat("creating new instance\n")
-      instance <<- list(id = 1, created = TRUE)
+      instance <<- new.env()
+      instance$created_at <- Sys.time()
+      instance$count <- 0
     }
     instance
   }
-})
+}
 
-s1 <- make_singleton()
-s2 <- make_singleton()
-print(identical(s1, s2))
-print(s1$id)
+get_instance <- make_singleton_factory()
+
+a <- get_instance()
+b <- get_instance()
+a$count <- a$count + 1
+b$count <- b$count + 1
+
+print(identical(a, b))
+print(a$count)

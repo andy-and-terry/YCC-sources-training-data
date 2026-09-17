@@ -5,7 +5,7 @@ module uart_receiver #(
     input wire rst_n,
     input wire rx_serial,
     output reg [7:0] rx_data,
-    output reg rx_done
+    output reg rx_valid
 );
 
 localparam IDLE = 0, START = 1, DATA = 2, STOP = 3;
@@ -17,31 +17,25 @@ reg [15:0] clk_count;
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         state <= IDLE;
-        rx_done <= 1'b0;
+        rx_valid <= 1'b0;
         clk_count <= 0;
         bit_index <= 0;
-        shift_reg <= 8'b0;
-        rx_data <= 8'b0;
     end else begin
-        rx_done <= 1'b0;
         case (state)
             IDLE: begin
-                if (rx_serial == 1'b0) begin
+                rx_valid <= 1'b0;
+                if (!rx_serial) begin
                     clk_count <= 0;
                     state <= START;
                 end
             end
             START: begin
-                if (clk_count == (CLKS_PER_BIT - 1) / 2) begin
-                    if (rx_serial == 1'b0) begin
-                        clk_count <= 0;
-                        bit_index <= 0;
-                        state <= DATA;
-                    end else begin
-                        state <= IDLE;
-                    end
-                end else begin
+                if (clk_count < (CLKS_PER_BIT - 1) / 2) begin
                     clk_count <= clk_count + 1;
+                end else begin
+                    clk_count <= 0;
+                    bit_index <= 0;
+                    state <= DATA;
                 end
             end
             DATA: begin
@@ -63,7 +57,7 @@ always @(posedge clk or negedge rst_n) begin
                 end else begin
                     clk_count <= 0;
                     rx_data <= shift_reg;
-                    rx_done <= 1'b1;
+                    rx_valid <= 1'b1;
                     state <= IDLE;
                 end
             end

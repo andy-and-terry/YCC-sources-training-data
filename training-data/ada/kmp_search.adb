@@ -1,7 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Kmp_Search is
-   type Int_Array is array (Natural range <>) of Integer;
+   type Int_Array is array (Natural range <>) of Natural;
 
    function Build_Lps (Pattern : String) return Int_Array is
       M   : constant Natural := Pattern'Length;
@@ -14,7 +14,7 @@ procedure Kmp_Search is
             Len := Len + 1;
             Lps (I) := Len;
             I := I + 1;
-         elsif Len /= 0 then
+         elsif Len > 0 then
             Len := Lps (Len - 1);
          else
             Lps (I) := 0;
@@ -24,11 +24,12 @@ procedure Kmp_Search is
       return Lps;
    end Build_Lps;
 
-   function Kmp_Find (Text, Pattern : String) return Integer is
-      N    : constant Natural := Text'Length;
-      M    : constant Natural := Pattern'Length;
-      Lps  : constant Int_Array := Build_Lps (Pattern);
-      I, J : Natural := 0;
+   function Find (Text, Pattern : String) return Integer is
+      N   : constant Natural := Text'Length;
+      M   : constant Natural := Pattern'Length;
+      Lps : constant Int_Array := Build_Lps (Pattern);
+      I   : Natural := 0;
+      J   : Natural := 0;
    begin
       while I < N loop
          if Text (Text'First + I) = Pattern (Pattern'First + J) then
@@ -37,15 +38,15 @@ procedure Kmp_Search is
             if J = M then
                return I - J;
             end if;
-         elsif J /= 0 then
+         elsif J > 0 then
             J := Lps (J - 1);
          else
             I := I + 1;
          end if;
       end loop;
       return -1;
-   end Kmp_Find;
+   end Find;
 begin
-   Put_Line (Kmp_Find ("ababcababcabc", "abcabc")'Image);
-   Put_Line (Kmp_Find ("hello world", "xyz")'Image);
+   Put_Line (Integer'Image (Find ("abxabcabcaby", "abcaby")));
+   Put_Line (Integer'Image (Find ("hello world", "xyz")));
 end Kmp_Search;

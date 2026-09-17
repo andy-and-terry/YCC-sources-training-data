@@ -1,28 +1,21 @@
 Object subclass: AppConfig [
     AppConfig class [ | instance | ]
-    | settings |
 
     AppConfig class >> default [
-        instance isNil ifTrue: [ instance := super new initSettings ].
+        instance isNil ifTrue: [ instance := self basicNew initialize ].
         ^instance
     ]
 
-    initSettings [
-        settings := Dictionary new.
-        settings at: #theme put: 'dark'.
-        ^self
-    ]
+    | settings |
+    initialize [ settings := Dictionary new. ^self ]
 
-    settingAt: key [
-        ^settings at: key ifAbsent: [ nil ]
-    ]
-
-    settingAt: key put: value [
-        settings at: key put: value
-    ]
+    at: key put: value [ settings at: key put: value ]
+    at: key [ ^settings at: key ifAbsent: [ nil ] ]
 ]
 
-Transcript showCr: (AppConfig default settingAt: #theme).
-AppConfig default settingAt: #theme put: 'light'.
-Transcript showCr: (AppConfig default settingAt: #theme).
-Transcript showCr: (AppConfig default == AppConfig default) printString.
+| a b |
+a := AppConfig default.
+a at: #theme put: 'dark'.
+b := AppConfig default.
+Transcript showCr: (b at: #theme).
+Transcript showCr: (a == b) printString.

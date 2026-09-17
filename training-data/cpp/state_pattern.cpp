@@ -1,56 +1,54 @@
 #include <iostream>
 #include <memory>
-#include <string>
 
-class TrafficLightContext;
+class TrafficLight;
 
-class LightState {
+class State {
 public:
-    virtual void next(TrafficLightContext& ctx) = 0;
+    virtual void handle(TrafficLight& light) = 0;
     virtual std::string name() const = 0;
-    virtual ~LightState() = default;
+    virtual ~State() = default;
 };
 
-class TrafficLightContext {
+class TrafficLight {
 public:
-    explicit TrafficLightContext(std::unique_ptr<LightState> state) : state(std::move(state)) {}
+    explicit TrafficLight(std::unique_ptr<State> initial) : state_(std::move(initial)) {}
 
-    void setState(std::unique_ptr<LightState> newState) { state = std::move(newState); }
-    void next() { state->next(*this); }
-    std::string name() const { return state->name(); }
+    void setState(std::unique_ptr<State> state) { state_ = std::move(state); }
+    void next() { state_->handle(*this); }
+    std::string current() const { return state_->name(); }
 
 private:
-    std::unique_ptr<LightState> state;
+    std::unique_ptr<State> state_;
 };
 
-class RedState : public LightState {
+class RedState : public State {
 public:
-    void next(TrafficLightContext& ctx) override;
+    void handle(TrafficLight& light) override;
     std::string name() const override { return "Red"; }
 };
 
-class GreenState : public LightState {
+class GreenState : public State {
 public:
-    void next(TrafficLightContext& ctx) override;
+    void handle(TrafficLight& light) override;
     std::string name() const override { return "Green"; }
 };
 
-class YellowState : public LightState {
+class YellowState : public State {
 public:
-    void next(TrafficLightContext& ctx) override;
+    void handle(TrafficLight& light) override;
     std::string name() const override { return "Yellow"; }
 };
 
-void RedState::next(TrafficLightContext& ctx) { ctx.setState(std::make_unique<GreenState>()); }
-void GreenState::next(TrafficLightContext& ctx) { ctx.setState(std::make_unique<YellowState>()); }
-void YellowState::next(TrafficLightContext& ctx) { ctx.setState(std::make_unique<RedState>()); }
+void RedState::handle(TrafficLight& light) { light.setState(std::make_unique<GreenState>()); }
+void GreenState::handle(TrafficLight& light) { light.setState(std::make_unique<YellowState>()); }
+void YellowState::handle(TrafficLight& light) { light.setState(std::make_unique<RedState>()); }
 
 int main() {
-    TrafficLightContext light(std::make_unique<RedState>());
+    TrafficLight light(std::make_unique<RedState>());
     for (int i = 0; i < 4; i++) {
-        std::cout << light.name() << " ";
+        std::cout << light.current() << std::endl;
         light.next();
     }
-    std::cout << std::endl;
     return 0;
 }

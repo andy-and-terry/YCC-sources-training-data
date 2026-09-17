@@ -2,34 +2,37 @@
 
 class DataProcessor {
 public:
-    void run() {
-        readData();
-        process();
-        writeData();
+    void process() {
+        loadData();
+        transformData();
+        saveData();
     }
     virtual ~DataProcessor() = default;
 
 protected:
-    virtual void readData() { std::cout << "reading raw data" << std::endl; }
-    virtual void process() = 0;
-    virtual void writeData() { std::cout << "writing result" << std::endl; }
+    virtual void loadData() { std::cout << "loading raw data" << std::endl; }
+    virtual void transformData() = 0;
+    virtual void saveData() { std::cout << "saving result" << std::endl; }
 };
 
 class CsvProcessor : public DataProcessor {
 protected:
-    void process() override { std::cout << "processing as CSV" << std::endl; }
+    void transformData() override { std::cout << "transforming CSV rows" << std::endl; }
 };
 
 class JsonProcessor : public DataProcessor {
 protected:
-    void readData() override { std::cout << "reading JSON payload" << std::endl; }
-    void process() override { std::cout << "processing as JSON" << std::endl; }
+    void loadData() override { std::cout << "loading JSON document" << std::endl; }
+    void transformData() override { std::cout << "flattening JSON fields" << std::endl; }
 };
 
 int main() {
     CsvProcessor csv;
-    csv.run();
+    csv.process();
+
+    std::cout << "---" << std::endl;
+
     JsonProcessor json;
-    json.run();
+    json.process();
     return 0;
 }

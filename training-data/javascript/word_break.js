@@ -11,11 +11,9 @@ function wordBreak(s, wordDict) {
       }
     }
   }
-
   return dp[s.length];
 }
 
-console.log(wordBreak("leetcode", ["leet", "code"]));
-console.log(wordBreak("applepenapple", ["apple", "pen"]));
-console.log(wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"]));
+console.log(wordBreak('leetcode', ['leet', 'code']));
+console.log(wordBreak('catsandog', ['cats', 'dog', 'sand', 'and', 'cat']));
 module.exports = { wordBreak };

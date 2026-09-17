@@ -1,41 +1,44 @@
 defmodule FenwickTree do
   import Bitwise
 
-  def new(size), do: %{size: size, tree: Map.new(1..size, fn i -> {i, 0} end)}
+  defstruct tree: %{}, size: 0
 
-  def add(%{size: size, tree: tree}, index, delta) do
-    updated =
-      Stream.iterate(index + 1, &(&1 + (&1 &&& -&1)))
-      |> Enum.take_while(&(&1 <= size))
-      |> Enum.reduce(tree, fn i, acc -> Map.update!(acc, i, &(&1 + delta)) end)
-
-    %{size: size, tree: updated}
+  def new(size) do
+    tree = for i <- 1..size, into: %{}, do: {i, 0}
+    %__MODULE__{tree: tree, size: size}
   end
 
-  def prefix_sum(%{tree: tree}, index) do
-    Stream.iterate(index + 1, &(&1 - (&1 &&& -&1)))
-    |> Enum.take_while(&(&1 > 0))
-    |> Enum.reduce(0, fn i, acc -> acc + Map.get(tree, i, 0) end)
+  def add(%__MODULE__{} = ft, index, delta) do
+    tree = do_add(ft.tree, index + 1, ft.size, delta)
+    %{ft | tree: tree}
   end
 
-  def range_sum(fenwick, left, right) do
-    if left > 0 do
-      prefix_sum(fenwick, right) - prefix_sum(fenwick, left - 1)
-    else
-      prefix_sum(fenwick, right)
-    end
+  defp do_add(tree, i, size, _delta) when i > size, do: tree
+
+  defp do_add(tree, i, size, delta) do
+    tree = Map.update(tree, i, delta, &(&1 + delta))
+    do_add(tree, i + (i &&& -i), size, delta)
+  end
+
+  def prefix_sum(%__MODULE__{} = ft, index), do: do_sum(ft.tree, index + 1, 0)
+
+  defp do_sum(_tree, i, total) when i <= 0, do: total
+
+  defp do_sum(tree, i, total) do
+    do_sum(tree, i - (i &&& -i), total + Map.get(tree, i, 0))
+  end
+
+  def range_sum(ft, left, right) do
+    prefix_sum(ft, right) - if(left > 0, do: prefix_sum(ft, left - 1), else: 0)
   end
 end
 
-values = [1, 3, 5, 7, 9, 11]
+ft = FenwickTree.new(6)
 
-fenwick =
-  values
-  |> Enum.with_index(1)
-  |> Enum.reduce(FenwickTree.new(length(values)), fn {v, i}, acc ->
-    FenwickTree.add(acc, i - 1, v)
-  end)
+ft =
+  [1, 3, 5, 7, 9, 11]
+  |> Enum.with_index()
+  |> Enum.reduce(ft, fn {v, i}, acc -> FenwickTree.add(acc, i, v) end)
 
-IO.inspect(FenwickTree.range_sum(fenwick, 1, 3))
-fenwick = FenwickTree.add(fenwick, 1, 10)
-IO.inspect(FenwickTree.range_sum(fenwick, 1, 3))
+IO.inspect(FenwickTree.range_sum(ft, 1, 3))
+IO.inspect(FenwickTree.prefix_sum(ft, 5))

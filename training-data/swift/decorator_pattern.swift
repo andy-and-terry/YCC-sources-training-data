@@ -3,13 +3,13 @@ protocol Coffee {
     func description() -> String
 }
 
-struct PlainCoffee: Coffee {
+struct SimpleCoffee: Coffee {
     func cost() -> Double { 2.0 }
-    func description() -> String { "Coffee" }
+    func description() -> String { "coffee" }
 }
 
 class CoffeeDecorator: Coffee {
-    private let wrapped: Coffee
+    let wrapped: Coffee
 
     init(_ wrapped: Coffee) {
         self.wrapped = wrapped
@@ -21,16 +21,16 @@ class CoffeeDecorator: Coffee {
 
 final class MilkDecorator: CoffeeDecorator {
     override func cost() -> Double { super.cost() + 0.5 }
-    override func description() -> String { super.description() + " + Milk" }
+    override func description() -> String { "\(super.description()) with milk" }
 }
 
 final class SugarDecorator: CoffeeDecorator {
     override func cost() -> Double { super.cost() + 0.25 }
-    override func description() -> String { super.description() + " + Sugar" }
+    override func description() -> String { "\(super.description()) with sugar" }
 }
 
-var order: Coffee = PlainCoffee()
-order = MilkDecorator(order)
-order = SugarDecorator(order)
+var drink: Coffee = SimpleCoffee()
+drink = MilkDecorator(drink)
+drink = SugarDecorator(drink)
 
-print("\(order.description()): $\(order.cost())")
+print("\(drink.description()) costs \(drink.cost())")

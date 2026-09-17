@@ -1,8 +1,6 @@
 public class FactoryPattern {
     interface Shape {
         double area();
-
-        String name();
     }
 
     static class Circle implements Shape {
@@ -15,46 +13,32 @@ public class FactoryPattern {
         public double area() {
             return Math.PI * radius * radius;
         }
-
-        public String name() {
-            return "Circle";
-        }
     }
 
-    static class Rectangle implements Shape {
-        private final double width, height;
+    static class Square implements Shape {
+        private final double side;
 
-        Rectangle(double width, double height) {
-            this.width = width;
-            this.height = height;
+        Square(double side) {
+            this.side = side;
         }
 
         public double area() {
-            return width * height;
-        }
-
-        public String name() {
-            return "Rectangle";
+            return side * side;
         }
     }
 
     static class ShapeFactory {
-        static Shape create(String kind, double... dims) {
-            switch (kind) {
-                case "circle":
-                    return new Circle(dims[0]);
-                case "rectangle":
-                    return new Rectangle(dims[0], dims[1]);
-                default:
-                    throw new IllegalArgumentException("unknown shape: " + kind);
-            }
+        static Shape create(String kind, double param) {
+            return switch (kind) {
+                case "circle" -> new Circle(param);
+                case "square" -> new Square(param);
+                default -> throw new IllegalArgumentException("unknown shape: " + kind);
+            };
         }
     }
 
     public static void main(String[] args) {
-        Shape circle = ShapeFactory.create("circle", 2.0);
-        Shape rect = ShapeFactory.create("rectangle", 3.0, 4.0);
-        System.out.printf("%s area=%.2f%n", circle.name(), circle.area());
-        System.out.printf("%s area=%.2f%n", rect.name(), rect.area());
+        System.out.println(ShapeFactory.create("circle", 2).area());
+        System.out.println(ShapeFactory.create("square", 3).area());
     }
 }

@@ -1,20 +1,15 @@
-from collections import deque, defaultdict
+from collections import deque
 
 
-def is_bipartite(num_nodes, edges):
-    graph = defaultdict(list)
-    for u, v in edges:
-        graph[u].append(v)
-        graph[v].append(u)
-
+def is_bipartite(graph):
+    """graph: dict of node -> list of neighbors. Returns True if 2-colorable."""
     color = {}
 
-    for start in range(num_nodes):
+    for start in graph:
         if start in color:
             continue
         color[start] = 0
         queue = deque([start])
-
         while queue:
             node = queue.popleft()
             for neighbor in graph[node]:
@@ -28,7 +23,8 @@ def is_bipartite(num_nodes, edges):
 
 
 if __name__ == "__main__":
-    even_cycle = [(0, 1), (1, 2), (2, 3), (3, 0)]
-    odd_cycle = [(0, 1), (1, 2), (2, 0)]
-    print(is_bipartite(4, even_cycle))
-    print(is_bipartite(3, odd_cycle))
+    bipartite_graph = {0: [1, 3], 1: [0, 2], 2: [1, 3], 3: [0, 2]}
+    odd_cycle_graph = {0: [1, 2], 1: [0, 2], 2: [0, 1]}
+
+    print(is_bipartite(bipartite_graph))
+    print(is_bipartite(odd_cycle_graph))

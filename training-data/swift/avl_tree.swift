@@ -1,8 +1,8 @@
 final class AVLNode {
     var value: Int
-    var height: Int = 1
     var left: AVLNode?
     var right: AVLNode?
+    var height: Int = 1
 
     init(_ value: Int) {
         self.value = value
@@ -16,8 +16,9 @@ final class AVLTree {
         node?.height ?? 0
     }
 
-    private func balanceFactor(_ node: AVLNode) -> Int {
-        height(node.left) - height(node.right)
+    private func balanceFactor(_ node: AVLNode?) -> Int {
+        guard let node = node else { return 0 }
+        return height(node.left) - height(node.right)
     }
 
     private func updateHeight(_ node: AVLNode) {
@@ -91,14 +92,14 @@ final class AVLTree {
         return result
     }
 
-    var rootHeight: Int {
+    var heightOfTree: Int {
         height(root)
     }
 }
 
-let tree = AVLTree()
+let avl = AVLTree()
 for value in [10, 20, 30, 40, 50, 25] {
-    tree.insert(value)
+    avl.insert(value)
 }
-print(tree.inorder())
-print("height:", tree.rootHeight)
+print(avl.inorder())      // sorted: [10, 20, 25, 30, 40, 50]
+print(avl.heightOfTree)   // stays balanced (log n), not a degenerate chain

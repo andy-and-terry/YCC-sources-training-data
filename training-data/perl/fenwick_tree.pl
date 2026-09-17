@@ -10,28 +10,23 @@ sub new {
 
 sub update {
     my ($self, $index, $delta) = @_;
-    my $i = $index + 1;
-    while ($i <= $self->{size}) {
+    for (my $i = $index + 1; $i <= $self->{size}; $i += $i & (-$i)) {
         $self->{tree}[$i] += $delta;
-        $i += $i & (-$i);
     }
 }
 
 sub prefix_sum {
     my ($self, $index) = @_;
     my $sum = 0;
-    my $i = $index + 1;
-    while ($i > 0) {
+    for (my $i = $index + 1; $i > 0; $i -= $i & (-$i)) {
         $sum += $self->{tree}[$i];
-        $i -= $i & (-$i);
     }
     return $sum;
 }
 
 sub range_sum {
     my ($self, $left, $right) = @_;
-    my $lower = $left > 0 ? $self->prefix_sum($left - 1) : 0;
-    return $self->prefix_sum($right) - $lower;
+    return $self->prefix_sum($right) - ($left > 0 ? $self->prefix_sum($left - 1) : 0);
 }
 
 package main;

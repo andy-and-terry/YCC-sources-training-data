@@ -1,38 +1,39 @@
+"""typing.Protocol: structural ("duck") typing checked statically.
+
+Any object exposing a matching `speak()` method satisfies `Speaker`,
+with no explicit inheritance required.
+"""
+
 from typing import Protocol, runtime_checkable
 
 
 @runtime_checkable
-class SupportsArea(Protocol):
-    def area(self) -> float:
+class Speaker(Protocol):
+    def speak(self) -> str:
         ...
 
 
-class Circle:
-    def __init__(self, radius: float):
-        self.radius = radius
-
-    def area(self) -> float:
-        return 3.14159 * self.radius ** 2
+class Dog:
+    def speak(self) -> str:
+        return "Woof!"
 
 
-class Square:
-    def __init__(self, side: float):
-        self.side = side
-
-    def area(self) -> float:
-        return self.side ** 2
+class Robot:
+    def speak(self) -> str:
+        return "BEEP BOOP"
 
 
-class NotAShape:
+class Rock:
     pass
 
 
-def total_area(shapes: list) -> float:
-    return sum(shape.area() for shape in shapes)
+def announce(speaker: Speaker) -> None:
+    print(speaker.speak())
 
 
 if __name__ == "__main__":
-    shapes = [Circle(2), Square(3)]
-    print(round(total_area(shapes), 2))
-    print(isinstance(Circle(1), SupportsArea))
-    print(isinstance(NotAShape(), SupportsArea))
+    for candidate in [Dog(), Robot(), Rock()]:
+        if isinstance(candidate, Speaker):
+            announce(candidate)
+        else:
+            print(f"{type(candidate).__name__} does not implement Speaker")

@@ -1,27 +1,29 @@
 using System;
 
-interface ITarget
+interface IModernPrinter
 {
-    string Request();
+    void Print(string text);
 }
 
 class LegacyPrinter
 {
-    public string PrintLegacy() => "legacy output";
+    public void PrintLegacy(string text) => Console.WriteLine($"[legacy] {text}");
 }
 
-class PrinterAdapter : ITarget
+class LegacyPrinterAdapter : IModernPrinter
 {
     private readonly LegacyPrinter legacy;
-    public PrinterAdapter(LegacyPrinter legacy) => this.legacy = legacy;
-    public string Request() => $"adapted: {legacy.PrintLegacy()}";
+
+    public LegacyPrinterAdapter(LegacyPrinter legacy) => this.legacy = legacy;
+
+    public void Print(string text) => legacy.PrintLegacy(text);
 }
 
 class AdapterPatternDemo
 {
     static void Main()
     {
-        ITarget target = new PrinterAdapter(new LegacyPrinter());
-        Console.WriteLine(target.Request());
+        IModernPrinter printer = new LegacyPrinterAdapter(new LegacyPrinter());
+        printer.Print("Hello via adapter");
     }
 }

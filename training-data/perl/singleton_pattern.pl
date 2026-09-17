@@ -1,28 +1,31 @@
 use strict;
 use warnings;
 
-package Singleton;
+package Config;
 
 my $instance;
 
 sub instance {
-    my $class = shift;
-    $instance //= bless { count => 0 }, $class;
+    my ($class) = @_;
+    $instance //= bless { settings => {} }, $class;
     return $instance;
 }
 
-sub increment {
-    my $self = shift;
-    $self->{count}++;
-    return $self->{count};
+sub set {
+    my ($self, $key, $value) = @_;
+    $self->{settings}{$key} = $value;
+}
+
+sub get {
+    my ($self, $key) = @_;
+    return $self->{settings}{$key};
 }
 
 package main;
 
-my $a = Singleton->instance();
-my $b = Singleton->instance();
-$a->increment();
-$a->increment();
-$b->increment();
-print $a->{count}, "\n";
+my $a = Config->instance;
+$a->set('env', 'production');
+
+my $b = Config->instance;
+print $b->get('env'), "\n";
 print(($a == $b) ? "same instance\n" : "different instance\n");

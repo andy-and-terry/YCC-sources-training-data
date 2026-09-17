@@ -1,45 +1,46 @@
 class AvlNode {
     int value
-    AvlNode left, right
     int height = 1
+    AvlNode left
+    AvlNode right
 
-    AvlNode(int v) { value = v }
+    AvlNode(int v) {
+        value = v
+    }
 }
 
 class AvlTree {
-    static int height(AvlNode node) {
+    AvlNode root
+
+    int height(AvlNode node) {
         return node == null ? 0 : node.height
     }
 
-    static int balanceFactor(AvlNode node) {
+    int balanceFactor(AvlNode node) {
         return node == null ? 0 : height(node.left) - height(node.right)
     }
 
-    static void updateHeight(AvlNode node) {
-        node.height = 1 + Math.max(height(node.left), height(node.right))
-    }
-
-    static AvlNode rotateRight(AvlNode y) {
+    AvlNode rotateRight(AvlNode y) {
         AvlNode x = y.left
         AvlNode t2 = x.right
         x.right = y
         y.left = t2
-        updateHeight(y)
-        updateHeight(x)
+        y.height = Math.max(height(y.left), height(y.right)) + 1
+        x.height = Math.max(height(x.left), height(x.right)) + 1
         return x
     }
 
-    static AvlNode rotateLeft(AvlNode x) {
+    AvlNode rotateLeft(AvlNode x) {
         AvlNode y = x.right
         AvlNode t2 = y.left
         y.left = x
         x.right = t2
-        updateHeight(x)
-        updateHeight(y)
+        x.height = Math.max(height(x.left), height(x.right)) + 1
+        y.height = Math.max(height(y.left), height(y.right)) + 1
         return y
     }
 
-    static AvlNode insert(AvlNode node, int value) {
+    AvlNode insert(AvlNode node, int value) {
         if (node == null) return new AvlNode(value)
         if (value < node.value) {
             node.left = insert(node.left, value)
@@ -49,7 +50,7 @@ class AvlTree {
             return node
         }
 
-        updateHeight(node)
+        node.height = 1 + Math.max(height(node.left), height(node.right))
         int balance = balanceFactor(node)
 
         if (balance > 1 && value < node.left.value) return rotateRight(node)
@@ -65,17 +66,25 @@ class AvlTree {
         return node
     }
 
-    static void inorder(AvlNode node, List result) {
-        if (node == null) return
-        inorder(node.left, result)
-        result << node.value
-        inorder(node.right, result)
+    void insert(int value) {
+        root = insert(root, value)
+    }
+
+    List<Integer> inorder() {
+        def result = []
+        def visit
+        visit = { AvlNode node ->
+            if (node == null) return
+            visit(node.left)
+            result << node.value
+            visit(node.right)
+        }
+        visit(root)
+        return result
     }
 }
 
-AvlNode root = null
-[10, 20, 30, 40, 50, 25].each { root = AvlTree.insert(root, it) }
-def result = []
-AvlTree.inorder(root, result)
-println result
-println "root=${root.value} height=${root.height}"
+def tree = new AvlTree()
+[10, 20, 30, 40, 50, 25].each { tree.insert(it) }
+println tree.inorder()
+println tree.height(tree.root)

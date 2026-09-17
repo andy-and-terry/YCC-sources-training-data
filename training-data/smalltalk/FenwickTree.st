@@ -1,24 +1,24 @@
 Object subclass: FenwickTree [
-    | tree size |
-    FenwickTree class >> onSize: n [
+    | tree n |
+    FenwickTree class >> new: size [
         | t |
         t := super new.
-        t initSize: n.
+        t setSize: size.
         ^t
     ]
 
-    initSize: n [
-        size := n.
+    setSize: size [
+        n := size.
         tree := Array new: n + 1 withAll: 0.
     ]
 
-    update: index delta: delta [
+    update: index by: delta [
         | i |
         i := index + 1.
-        [ i <= size ] whileTrue: [
+        [ i <= n ] whileTrue: [
             tree at: i put: (tree at: i) + delta.
             i := i + (i bitAnd: i negated).
-        ]
+        ].
     ]
 
     prefixSum: index [
@@ -32,14 +32,15 @@ Object subclass: FenwickTree [
         ^sum
     ]
 
-    rangeSum: l to: r [
-        ^(self prefixSum: r) - (l = 0 ifTrue: [ 0 ] ifFalse: [ self prefixSum: l - 1 ])
+    rangeSum: left to: right [
+        left = 0 ifTrue: [ ^self prefixSum: right ].
+        ^(self prefixSum: right) - (self prefixSum: left - 1)
     ]
 ]
 
 | ft values |
-ft := FenwickTree onSize: 6.
-values := #(1 3 5 7 9 11).
-1 to: values size do: [ :i | ft update: i - 1 delta: (values at: i) ].
-Transcript showCr: (ft prefixSum: 3) printString.
-Transcript showCr: (ft rangeSum: 1 to: 4) printString.
+values := #(3 2 -1 6 5 4 -3 3 7 2).
+ft := FenwickTree new: values size.
+values doWithIndex: [ :v :i | ft update: i - 1 by: v ].
+Transcript showCr: (ft rangeSum: 0 to: 5) printString.
+Transcript showCr: (ft rangeSum: 3 to: 7) printString.

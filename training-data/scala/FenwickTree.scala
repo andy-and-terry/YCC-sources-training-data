@@ -1,33 +1,37 @@
 class FenwickTree(n: Int) {
   private val tree = Array.fill(n + 1)(0)
 
-  def update(i: Int, delta: Int): Unit = {
-    var idx = i + 1
-    while (idx < tree.length) {
-      tree(idx) += delta
-      idx += idx & (-idx)
+  def update(index: Int, delta: Int): Unit = {
+    var i = index + 1
+    while (i <= n) {
+      tree(i) += delta
+      i += i & (-i)
     }
   }
 
-  def prefixSum(i: Int): Int = {
-    var idx = i + 1
+  def prefixSum(index: Int): Int = {
+    var i = index + 1
     var sum = 0
-    while (idx > 0) {
-      sum += tree(idx)
-      idx -= idx & (-idx)
+    while (i > 0) {
+      sum += tree(i)
+      i -= i & (-i)
     }
     sum
   }
 
-  def rangeSum(l: Int, r: Int): Int = prefixSum(r) - (if (l == 0) 0 else prefixSum(l - 1))
+  def rangeSum(left: Int, right: Int): Int = prefixSum(right) - (if (left == 0) 0 else prefixSum(left - 1))
 }
 
-object FenwickTreeDemo {
+object FenwickTree {
   def main(args: Array[String]): Unit = {
-    val arr = Array(1, 3, 5, 7, 9, 11)
-    val fenwick = new FenwickTree(arr.length)
-    arr.zipWithIndex.foreach { case (v, i) => fenwick.update(i, v) }
-    println(fenwick.prefixSum(3))
-    println(fenwick.rangeSum(1, 4))
+    val values = Array(3, 2, -1, 6, 5, 4, -3, 3, 7, 2)
+    val tree = new FenwickTree(values.length)
+    values.zipWithIndex.foreach { case (v, i) => tree.update(i, v) }
+
+    println(tree.rangeSum(0, 5))
+    println(tree.rangeSum(3, 7))
+
+    tree.update(2, 10)
+    println(tree.rangeSum(0, 5))
   }
 }

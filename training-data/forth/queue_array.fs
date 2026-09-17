@@ -1,0 +1,42 @@
+CREATE Q 5 CELLS ALLOT
+5 CONSTANT CAPACITY
+VARIABLE FRONT
+VARIABLE COUNT
+
+: SLOT ( i -- addr ) CELLS Q + ;
+
+: INIT-QUEUE ( -- )
+  0 FRONT !
+  0 COUNT ! ;
+
+: FULL? ( -- flag ) COUNT @ CAPACITY = ;
+: EMPTY? ( -- flag ) COUNT @ 0= ;
+
+: ENQUEUE ( value -- )
+  FULL?
+  IF
+    DROP
+  ELSE
+    FRONT @ COUNT @ + CAPACITY MOD SLOT !
+    1 COUNT +!
+  THEN ;
+
+: DEQUEUE ( -- value found? )
+  EMPTY?
+  IF
+    0 FALSE
+  ELSE
+    FRONT @ SLOT @
+    FRONT @ 1+ CAPACITY MOD FRONT !
+    -1 COUNT +!
+    TRUE
+  THEN ;
+
+INIT-QUEUE
+10 ENQUEUE 20 ENQUEUE 30 ENQUEUE
+DEQUEUE . .
+DEQUEUE . .
+40 ENQUEUE
+DEQUEUE . .
+DEQUEUE . .
+CR

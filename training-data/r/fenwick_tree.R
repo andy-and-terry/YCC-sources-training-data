@@ -1,36 +1,37 @@
-new_fenwick <- function(n) {
-  list(n = n, tree = numeric(n + 1))
+make_fenwick <- function(size) {
+  list(tree = numeric(size + 1), size = size)
 }
 
-fenwick_update <- function(fen, index, delta) {
-  i <- index
-  while (i <= fen$n) {
-    fen$tree[i] <- fen$tree[i] + delta
-    i <- i + (i & (-i))
+fenwick_add <- function(fw, index, delta) {
+  i <- index + 1
+  while (i <= fw$size) {
+    fw$tree[i] <- fw$tree[i] + delta
+    i <- i + bitwAnd(i, -i)
   }
-  fen
+  fw
 }
 
-fenwick_prefix_sum <- function(fen, index) {
+fenwick_prefix_sum <- function(fw, index) {
+  i <- index + 1
   total <- 0
-  i <- index
   while (i > 0) {
-    total <- total + fen$tree[i]
-    i <- i - (i & (-i))
+    total <- total + fw$tree[i]
+    i <- i - bitwAnd(i, -i)
   }
   total
 }
 
-fenwick_range_sum <- function(fen, left, right) {
-  fenwick_prefix_sum(fen, right) - fenwick_prefix_sum(fen, left - 1)
+fenwick_range_sum <- function(fw, left, right) {
+  if (left > 0) {
+    fenwick_prefix_sum(fw, right) - fenwick_prefix_sum(fw, left - 1)
+  } else {
+    fenwick_prefix_sum(fw, right)
+  }
 }
 
-values <- c(3, 2, -1, 6, 5, 4, -3, 3, 7, 2)
-fen <- new_fenwick(length(values))
+values <- c(1, 3, 5, 7, 9, 11)
+fw <- make_fenwick(length(values))
 for (i in seq_along(values)) {
-  fen <- fenwick_update(fen, i, values[i])
+  fw <- fenwick_add(fw, i - 1, values[i])
 }
-
-print(fenwick_range_sum(fen, 1, 5))
-fen <- fenwick_update(fen, 3, 10)
-print(fenwick_range_sum(fen, 1, 5))
+print(fenwick_range_sum(fw, 1, 3))
