@@ -1,4 +1,4 @@
-public class FactoryPattern {
+public class FactoryPattern_v2 {
     interface Shape {
         double area();
 
