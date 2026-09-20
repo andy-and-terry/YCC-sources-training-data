@@ -30,7 +30,9 @@ public class VirtualThreadDemo {
                 total += future.get();
             }
             System.out.println("total: " + total);
-            System.out.println("running on virtual thread: " + Thread.currentThread().isVirtual());
+
+            Future<Boolean> onVirtualThread = executor.submit(() -> Thread.currentThread().isVirtual());
+            System.out.println("task ran on virtual thread: " + onVirtualThread.get());
         }
     }
 }
