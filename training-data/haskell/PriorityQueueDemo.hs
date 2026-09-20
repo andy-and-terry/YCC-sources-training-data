@@ -34,7 +34,7 @@ fromList = foldr insert Leaf
 
 toSortedList :: (Ord a) => Heap a -> [a]
 toSortedList Leaf = []
-toSortedList h@(Node {}) =
+toSortedList h =
   case findMin h of
     Nothing -> []
     Just x -> x : toSortedList (deleteMin h)
