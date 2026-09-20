@@ -31,7 +31,7 @@ insert() {
     fi
     local cur=$root
     while true; do
-        if ((value < node_value[cur])); then
+        if ((value < node_value[$cur])); then
             if [[ -z "${node_left[$cur]}" ]]; then
                 new_node "$value"
                 node_left[$cur]=$last_new_id

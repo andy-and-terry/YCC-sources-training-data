@@ -1,0 +1,32 @@
+(defparameter *graph*
+  '((:a (:b . 4) (:c . 1))
+    (:b (:d . 1))
+    (:c (:b . 2) (:d . 5))
+    (:d)))
+
+(defun neighbors (graph node)
+  (cdr (assoc node graph)))
+
+(defun dijkstra (graph start)
+  (let ((dist (make-hash-table)))
+    (dolist (entry graph)
+      (setf (gethash (car entry) dist) most-positive-fixnum))
+    (setf (gethash start dist) 0)
+    (let ((unvisited (mapcar #'car graph)))
+      (loop while unvisited do
+        (let* ((current (reduce (lambda (a b)
+                                   (if (< (gethash a dist) (gethash b dist)) a b))
+                                 unvisited))
+               (current-dist (gethash current dist)))
+          (setf unvisited (remove current unvisited))
+          (dolist (edge (neighbors graph current))
+            (let* ((neighbor (car edge))
+                   (weight (cdr edge))
+                   (candidate (+ current-dist weight)))
+              (when (< candidate (gethash neighbor dist most-positive-fixnum))
+                (setf (gethash neighbor dist) candidate)))))))
+    dist))
+
+(let ((result (dijkstra *graph* :a)))
+  (dolist (entry *graph*)
+    (format t "~a: ~a~%" (car entry) (gethash (car entry) result))))

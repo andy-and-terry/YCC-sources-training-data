@@ -1,0 +1,64 @@
+CREATE ARR 170 , 45 , 75 , 90 , 802 , 24 , 2 , 66 ,
+8 CONSTANT ARR-LEN
+CREATE TEMP 8 CELLS ALLOT
+CREATE BUCKET 10 CELLS ALLOT
+VARIABLE DPLACE
+VARIABLE VAL
+VARIABLE DGT
+VARIABLE POS
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+: TELEM ( i -- addr ) CELLS TEMP + ;
+: CNT ( d -- addr ) CELLS BUCKET + ;
+
+: CLEAR-COUNT ( -- )
+  10 0 DO 0 I CNT ! LOOP ;
+
+: DIGIT-OF ( value -- digit )
+  DPLACE @ / 10 MOD ;
+
+: COUNT-DIGITS ( -- )
+  ARR-LEN 0 DO
+    I ELEM @ DIGIT-OF
+    DUP CNT @ 1+ SWAP CNT !
+  LOOP ;
+
+: PREFIX-SUM ( -- )
+  10 1 DO
+    I CNT @ I 1- CNT @ + I CNT !
+  LOOP ;
+
+: PLACE-ELEMENTS ( -- )
+  -1 ARR-LEN 1- DO
+    I ELEM @ VAL !
+    VAL @ DIGIT-OF DGT !
+    DGT @ CNT @ 1- POS !
+    VAL @ POS @ TELEM !
+    POS @ DGT @ CNT !
+  -1 +LOOP ;
+
+: COPY-BACK ( -- )
+  ARR-LEN 0 DO
+    I TELEM @ I ELEM !
+  LOOP ;
+
+: SORT-PASS ( -- )
+  CLEAR-COUNT
+  COUNT-DIGITS
+  PREFIX-SUM
+  PLACE-ELEMENTS
+  COPY-BACK ;
+
+: RADIX-SORT ( -- )
+  1 DPLACE !
+  3 0 DO
+    SORT-PASS
+    DPLACE @ 10 * DPLACE !
+  LOOP ;
+
+: PRINT-ARR ( -- )
+  ARR-LEN 0 DO I ELEM @ . LOOP ;
+
+RADIX-SORT
+PRINT-ARR
+CR

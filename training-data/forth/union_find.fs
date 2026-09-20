@@ -1,0 +1,39 @@
+CREATE PARENT 10 CELLS ALLOT
+10 CONSTANT MAX-N
+VARIABLE CUR
+VARIABLE ROOTX
+VARIABLE ROOTY
+
+: P@ ( i -- addr ) CELLS PARENT + ;
+
+: INIT-UF ( -- )
+  MAX-N 0 DO
+    I I P@ !
+  LOOP ;
+
+: UF-FIND ( x -- root )
+  CUR !
+  BEGIN
+    CUR @ P@ @ CUR @ <>
+  WHILE
+    CUR @ P@ @ CUR !
+  REPEAT
+  CUR @ ;
+
+: UNION ( x y -- )
+  UF-FIND ROOTY !
+  UF-FIND ROOTX !
+  ROOTX @ ROOTY @ <> IF
+    ROOTY @ ROOTX @ P@ !
+  THEN ;
+
+: CONNECTED? ( x y -- flag )
+  UF-FIND SWAP UF-FIND = ;
+
+INIT-UF
+0 1 UNION
+2 3 UNION
+1 3 UNION
+0 3 CONNECTED? .
+0 4 CONNECTED? .
+CR
