@@ -2,10 +2,10 @@
 set -euo pipefail
 
 knapsack_01() {
-    local -n weights=$1
-    local -n values=$2
+    local -n item_weights=$1
+    local -n item_values=$2
     local capacity=$3
-    local n=${#weights[@]}
+    local n=${#item_weights[@]}
     local -a dp
     local i w
 
@@ -14,8 +14,8 @@ knapsack_01() {
     done
 
     for ((i = 0; i < n; i++)); do
-        for ((w = capacity; w >= weights[i]; w--)); do
-            local candidate=$((dp[w - weights[i]] + values[i]))
+        for ((w = capacity; w >= item_weights[i]; w--)); do
+            local candidate=$((dp[w - item_weights[i]] + item_values[i]))
             if ((candidate > dp[w])); then
                 dp[w]=$candidate
             fi

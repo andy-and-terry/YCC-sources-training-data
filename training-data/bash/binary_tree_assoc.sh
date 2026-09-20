@@ -8,33 +8,40 @@ declare -A node_left
 declare -A node_right
 next_id=0
 root=""
+last_new_id=""
 
+# Modifies the associative arrays directly (rather than returning the new
+# id via command substitution) since a $(...) subshell would only mutate
+# its own copy of these arrays and the inserts would be silently lost.
 new_node() {
     local id="n$next_id"
     next_id=$((next_id + 1))
     node_value[$id]=$1
     node_left[$id]=""
     node_right[$id]=""
-    echo "$id"
+    last_new_id=$id
 }
 
 insert() {
     local value=$1
     if [[ -z "$root" ]]; then
-        root=$(new_node "$value")
+        new_node "$value"
+        root=$last_new_id
         return
     fi
     local cur=$root
     while true; do
         if ((value < node_value[cur])); then
             if [[ -z "${node_left[$cur]}" ]]; then
-                node_left[$cur]=$(new_node "$value")
+                new_node "$value"
+                node_left[$cur]=$last_new_id
                 return
             fi
             cur=${node_left[$cur]}
         else
             if [[ -z "${node_right[$cur]}" ]]; then
-                node_right[$cur]=$(new_node "$value")
+                new_node "$value"
+                node_right[$cur]=$last_new_id
                 return
             fi
             cur=${node_right[$cur]}
