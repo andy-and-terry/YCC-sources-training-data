@@ -1,0 +1,40 @@
+CREATE COINS 1 , 3 , 4 ,
+3 CONSTANT NCOINS
+11 CONSTANT AMOUNT
+CREATE DP 12 CELLS ALLOT
+999999 CONSTANT INF
+VARIABLE AMT
+VARIABLE CIDX
+VARIABLE CVAL
+VARIABLE CAND
+VARIABLE CUR
+
+: COIN@ ( i -- c ) CELLS COINS + @ ;
+: DP@ ( i -- addr ) CELLS DP + ;
+
+: INIT-DP ( -- )
+  AMOUNT 1+ 0 DO
+    INF I DP@ !
+  LOOP
+  0 0 DP@ ! ;
+
+: COMPUTE-DP ( -- )
+  AMOUNT 1+ 1 DO
+    I AMT !
+    NCOINS 0 DO
+      I CIDX !
+      CIDX @ COIN@ CVAL !
+      CVAL @ AMT @ <= IF
+        AMT @ CVAL @ - DP@ @ 1+ CAND !
+        AMT @ DP@ @ CUR !
+        CAND @ CUR @ MIN AMT @ DP@ !
+      THEN
+    LOOP
+  LOOP ;
+
+: COIN-CHANGE ( -- min-coins )
+  INIT-DP
+  COMPUTE-DP
+  AMOUNT DP@ @ ;
+
+COIN-CHANGE . CR

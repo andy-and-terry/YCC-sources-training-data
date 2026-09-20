@@ -1,4 +1,4 @@
-public class ChainOfResponsibilityPattern {
+public class ChainOfResponsibilityPattern_v2 {
     abstract static class Approver {
         protected Approver next;
 
