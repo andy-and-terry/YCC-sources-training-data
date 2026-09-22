@@ -1,0 +1,65 @@
+(module
+  (memory (export "memory") 1)
+
+  (func $heap_push (export "heap_push") (param $heap_base i32) (param $size i32) (param $value i32) (result i32)
+    (local $i i32)
+    (local $parent i32)
+    (local $parent_val i32)
+    (local $tmp i32)
+    (i32.store (i32.add (local.get $heap_base) (i32.mul (local.get $size) (i32.const 4))) (local.get $value))
+    (local.set $i (local.get $size))
+    (block $up_done
+      (loop $up
+        (br_if $up_done (i32.le_s (local.get $i) (i32.const 0)))
+        (local.set $parent (i32.div_s (i32.sub (local.get $i) (i32.const 1)) (i32.const 2)))
+        (local.set $parent_val (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $parent) (i32.const 4)))))
+        (br_if $up_done (i32.le_s (local.get $parent_val) (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $i) (i32.const 4))))))
+        (local.set $tmp (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $i) (i32.const 4)))))
+        (i32.store (i32.add (local.get $heap_base) (i32.mul (local.get $i) (i32.const 4))) (local.get $parent_val))
+        (i32.store (i32.add (local.get $heap_base) (i32.mul (local.get $parent) (i32.const 4))) (local.get $tmp))
+        (local.set $i (local.get $parent))
+        (br $up)))
+    (i32.add (local.get $size) (i32.const 1)))
+
+  (func $heap_pop (export "heap_pop") (param $heap_base i32) (param $size i32) (param $out_size_base i32) (result i32)
+    (local $top i32)
+    (local $last i32)
+    (local $new_size i32)
+    (local $i i32)
+    (local $left i32)
+    (local $right i32)
+    (local $smallest i32)
+    (local $tmp i32)
+    (local.set $top (i32.load (local.get $heap_base)))
+    (local.set $new_size (i32.sub (local.get $size) (i32.const 1)))
+    (local.set $last (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $new_size) (i32.const 4)))))
+    (i32.store (local.get $heap_base) (local.get $last))
+    (i32.store (local.get $out_size_base) (local.get $new_size))
+    (local.set $i (i32.const 0))
+    (block $down_done
+      (loop $down
+        (local.set $left (i32.add (i32.mul (local.get $i) (i32.const 2)) (i32.const 1)))
+        (local.set $right (i32.add (i32.mul (local.get $i) (i32.const 2)) (i32.const 2)))
+        (local.set $smallest (local.get $i))
+        (if (i32.and
+              (i32.lt_s (local.get $left) (local.get $new_size))
+              (i32.lt_s
+                (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $left) (i32.const 4))))
+                (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $smallest) (i32.const 4))))))
+          (then (local.set $smallest (local.get $left))))
+        (if (i32.and
+              (i32.lt_s (local.get $right) (local.get $new_size))
+              (i32.lt_s
+                (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $right) (i32.const 4))))
+                (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $smallest) (i32.const 4))))))
+          (then (local.set $smallest (local.get $right))))
+        (br_if $down_done (i32.eq (local.get $smallest) (local.get $i)))
+        (local.set $tmp (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $i) (i32.const 4)))))
+        (i32.store
+          (i32.add (local.get $heap_base) (i32.mul (local.get $i) (i32.const 4)))
+          (i32.load (i32.add (local.get $heap_base) (i32.mul (local.get $smallest) (i32.const 4)))))
+        (i32.store (i32.add (local.get $heap_base) (i32.mul (local.get $smallest) (i32.const 4))) (local.get $tmp))
+        (local.set $i (local.get $smallest))
+        (br $down)))
+    (local.get $top))
+)
