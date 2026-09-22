@@ -1,6 +1,8 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <sstream>
+#include <vector>
 
 // Grammar: Expression ::= Number | Expression '+' Expression | Expression '-' Expression
 class Expression {
