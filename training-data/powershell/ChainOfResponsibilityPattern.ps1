@@ -6,10 +6,20 @@ class SupportHandler {
         return $handler
     }
 
-    [void] Handle([int]$severity, [string]$message) {
+    # PowerShell classes have no `base.Method()` call syntax outside
+    # constructors, so an overridden Handle() cannot call its parent's
+    # version directly. Forward() stays undefined in every subclass, so
+    # it always resolves here instead of recursing into an override.
+    [void] Forward([int]$severity, [string]$message) {
         if ($null -ne $this.Next) {
             $this.Next.Handle($severity, $message)
+        } else {
+            Write-Output "unhandled: $message"
         }
+    }
+
+    [void] Handle([int]$severity, [string]$message) {
+        $this.Forward($severity, $message)
     }
 }
 
@@ -18,7 +28,7 @@ class Level1Support : SupportHandler {
         if ($severity -le 1) {
             Write-Output "Level1: $message"
         } else {
-            ([SupportHandler]$this).Handle($severity, $message)
+            $this.Forward($severity, $message)
         }
     }
 }
@@ -28,7 +38,7 @@ class Level2Support : SupportHandler {
         if ($severity -le 3) {
             Write-Output "Level2: $message"
         } else {
-            ([SupportHandler]$this).Handle($severity, $message)
+            $this.Forward($severity, $message)
         }
     }
 }
