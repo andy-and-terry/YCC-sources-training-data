@@ -28,7 +28,10 @@ class SimpleStack<G> : Object, Container<G> {
 
 void print_all(Container<int> c) {
     while (c.size() > 0) {
-        stdout.printf("%d\n", c.take());
+        int? item = c.take();
+        if (item != null) {
+            stdout.printf("%d\n", (int) item);
+        }
     }
 }
 

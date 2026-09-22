@@ -23,7 +23,7 @@ class Robot : Object, Greeter {
         return "Unit-7";
     }
 
-    public string greeting() {
+    public override string greeting() {
         return "BEEP BOOP, I AM %s".printf(name());
     }
 }
