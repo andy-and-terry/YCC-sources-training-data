@@ -1,0 +1,26 @@
+;; Sliding window maximum via a monotonic decreasing deque of indices,
+;; stored in a plain vector used as a deque (head/tail only ever advance).
+
+(define (sliding-window-maximum values k)
+  (let* ((v (list->vector values))
+         (n (vector-length v))
+         (dq (make-vector n 0)))
+    (let loop ((i 0) (head 0) (tail 0) (result '()))
+      (if (= i n)
+          (reverse result)
+          (let* ((tail1 (let shrink ((t tail))
+                          (if (and (> t head)
+                                   (<= (vector-ref v (vector-ref dq (- t 1))) (vector-ref v i)))
+                              (shrink (- t 1))
+                              t))))
+            (vector-set! dq tail1 i)
+            (let* ((tail2 (+ tail1 1))
+                   (head1 (if (<= (vector-ref dq head) (- i k)) (+ head 1) head)))
+              (if (>= i (- k 1))
+                  (loop (+ i 1) head1 tail2 (cons (vector-ref v (vector-ref dq head1)) result))
+                  (loop (+ i 1) head1 tail2 result))))))))
+
+(display (sliding-window-maximum '(1 3 -1 -3 5 3 6 7) 3))
+(newline)
+(display (sliding-window-maximum '(9 8 7 6 5) 2))
+(newline)
