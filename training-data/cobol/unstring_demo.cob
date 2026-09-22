@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. UNSTRINGDEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 CSV-LINE     PIC X(30) VALUE "JOHN,25,ENGINEER".
+       01 NAME-OUT     PIC X(10).
+       01 AGE-OUT      PIC X(3).
+       01 JOB-OUT      PIC X(15).
+
+       PROCEDURE DIVISION.
+           UNSTRING CSV-LINE DELIMITED BY ","
+               INTO NAME-OUT AGE-OUT JOB-OUT
+           END-UNSTRING
+           DISPLAY "NAME: " NAME-OUT
+           DISPLAY "AGE: " AGE-OUT
+           DISPLAY "JOB: " JOB-OUT
+           STOP RUN.
