@@ -19,7 +19,7 @@ architecture Behavioral of Carry_Select_Adder_4bit is
     signal result_hi0         : unsigned(2 downto 0);
     signal result_hi1         : unsigned(2 downto 0);
 begin
-    result_lo  <= ('0' & unsigned(a(1 downto 0))) + unsigned(b(1 downto 0)) + (cin & "");
+    result_lo  <= ('0' & unsigned(a(1 downto 0))) + unsigned(b(1 downto 0)) + cin;
     cout_lo    <= result_lo(2);
     sum_lo     <= STD_LOGIC_VECTOR(result_lo(1 downto 0));
 
