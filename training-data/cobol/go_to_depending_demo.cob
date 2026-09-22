@@ -8,28 +8,28 @@
        PROCEDURE DIVISION.
            PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
                MOVE I TO DAY-NUMBER
-               GO TO MONDAY-CASE TUESDAY-CASE
-                   WEDNESDAY-CASE OTHER-CASE
-                   DEPENDING ON DAY-NUMBER
-               DISPLAY "UNREACHABLE"
+               PERFORM PROCESS-DAY THRU PROCESS-DAY-EXIT
            END-PERFORM
            STOP RUN.
 
+       PROCESS-DAY.
+           GO TO MONDAY-CASE TUESDAY-CASE WEDNESDAY-CASE OTHER-CASE
+               DEPENDING ON DAY-NUMBER.
+
        MONDAY-CASE.
            DISPLAY "DAY " DAY-NUMBER ": MONDAY"
-           GO TO NEXT-DAY.
+           GO TO PROCESS-DAY-EXIT.
 
        TUESDAY-CASE.
            DISPLAY "DAY " DAY-NUMBER ": TUESDAY"
-           GO TO NEXT-DAY.
+           GO TO PROCESS-DAY-EXIT.
 
        WEDNESDAY-CASE.
            DISPLAY "DAY " DAY-NUMBER ": WEDNESDAY"
-           GO TO NEXT-DAY.
+           GO TO PROCESS-DAY-EXIT.
 
        OTHER-CASE.
-           DISPLAY "DAY " DAY-NUMBER ": UNKNOWN"
-           GO TO NEXT-DAY.
+           DISPLAY "DAY " DAY-NUMBER ": UNKNOWN".
 
-       NEXT-DAY.
-           CONTINUE.
+       PROCESS-DAY-EXIT.
+           EXIT.

@@ -7,7 +7,7 @@
        01 I PIC 9(1).
 
        PROCEDURE DIVISION.
-           MOVE "12345 " TO SAMPLE-VALUE(1)
+           MOVE "123456" TO SAMPLE-VALUE(1)
            MOVE "ABCDEF" TO SAMPLE-VALUE(2)
            MOVE "AB12CD" TO SAMPLE-VALUE(3)
            MOVE "      " TO SAMPLE-VALUE(4)

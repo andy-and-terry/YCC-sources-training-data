@@ -1,5 +1,7 @@
 #lang racket
 
+(require racket/match)
+
 ;; The state pattern is just a pure function from one state to the
 ;; next -- `match` replaces the usual State subclass hierarchy.
 (define (next-state state)

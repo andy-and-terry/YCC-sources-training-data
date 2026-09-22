@@ -13,6 +13,7 @@
                10 DP-CELL PIC 9(3) OCCURS 8 TIMES VALUE 0.
        01 I PIC 9(2).
        01 W PIC 9(2).
+       01 REDUCED-W PIC 9(2).
        01 CANDIDATE PIC 9(3).
 
        PROCEDURE DIVISION.
@@ -30,8 +31,9 @@
                    IF WT(I) > W
                        MOVE DP-CELL(I, W + 1) TO DP-CELL(I + 1, W + 1)
                    ELSE
+                       COMPUTE REDUCED-W = W - WT(I) + 1
                        COMPUTE CANDIDATE =
-                           DP-CELL(I, W - WT(I) + 1) + VL(I)
+                           DP-CELL(I, REDUCED-W) + VL(I)
                        IF CANDIDATE > DP-CELL(I, W + 1)
                            MOVE CANDIDATE TO DP-CELL(I + 1, W + 1)
                        ELSE
