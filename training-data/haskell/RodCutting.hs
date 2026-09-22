@@ -1,12 +1,13 @@
-import Data.Array
-
 rodCutting :: [Int] -> Int -> Int
-rodCutting prices n = table ! n
+rodCutting prices n = table !! n
   where
-    priceArr = listArray (1, length prices) prices
-    table = array (0, n) [(l, best l) | l <- [0 .. n]]
+    table = [best len | len <- [0 .. n]]
     best 0 = 0
-    best l = maximum [priceArr ! cut + table ! (l - cut) | cut <- [1 .. l], cut <= length prices]
+    best len = maximum [prices !! (cut - 1) + table !! (len - cut) | cut <- [1 .. len], cut <= length prices]
 
 main :: IO ()
-main = print (rodCutting [1, 5, 8, 9, 10, 17, 17, 20] 8)
+main = do
+  let prices = [1, 5, 8, 9, 10, 17, 17, 20]
+  print (rodCutting prices 8)
+  print (rodCutting prices 4)
+  print (rodCutting prices 1)

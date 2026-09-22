@@ -1,0 +1,35 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GOTODEPENDING.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 DAY-NUMBER PIC 9(1).
+       01 I PIC 9(1).
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
+               MOVE I TO DAY-NUMBER
+               GO TO MONDAY-CASE TUESDAY-CASE
+                   WEDNESDAY-CASE OTHER-CASE
+                   DEPENDING ON DAY-NUMBER
+               DISPLAY "UNREACHABLE"
+           END-PERFORM
+           STOP RUN.
+
+       MONDAY-CASE.
+           DISPLAY "DAY " DAY-NUMBER ": MONDAY"
+           GO TO NEXT-DAY.
+
+       TUESDAY-CASE.
+           DISPLAY "DAY " DAY-NUMBER ": TUESDAY"
+           GO TO NEXT-DAY.
+
+       WEDNESDAY-CASE.
+           DISPLAY "DAY " DAY-NUMBER ": WEDNESDAY"
+           GO TO NEXT-DAY.
+
+       OTHER-CASE.
+           DISPLAY "DAY " DAY-NUMBER ": UNKNOWN"
+           GO TO NEXT-DAY.
+
+       NEXT-DAY.
+           CONTINUE.
