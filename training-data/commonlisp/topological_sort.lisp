@@ -1,0 +1,20 @@
+(defparameter *graph*
+  '((:a :b :c)
+    (:b :d)
+    (:c :d)
+    (:d)))
+
+(defun topo-sort (graph)
+  (let ((visited (make-hash-table))
+        (result nil))
+    (labels ((visit (node)
+               (unless (gethash node visited)
+                 (setf (gethash node visited) t)
+                 (dolist (dep (rest (assoc node graph)))
+                   (visit dep))
+                 (push node result))))
+      (dolist (entry graph)
+        (visit (first entry))))
+    result))
+
+(format t "~a~%" (topo-sort *graph*))

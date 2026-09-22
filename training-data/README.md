@@ -1491,6 +1491,45 @@ Sample source files organized by programming language for model training.
 > Post-hoc verification also confirmed zero duplicate filenames within any
 > of the 60 folders.
 
+> A ninth pass was run concurrently with (and independently of) the
+> seventh/eighth passes above, in a separate session that branched before
+> either had merged; it too was triggered by the scheduled task asking for
+> "100 new files per folder per run," scaled down for the same
+> anti-repetition/unrealistic-scale reasons recorded for every pass since
+> the sixth. Working from 10 parallel sub-agents (roughly 6 language
+> folders each), it independently wrote 5 new files per folder across all
+> 60 folders (300 files) — verified where a toolchain existed in that
+> sandbox (Python, JavaScript, TypeScript `--strict`, C, Go via `go vet`/
+> `go run`, Rust, Ruby, Perl, Bash, Awk, Vimscript via `vim -Nes`,
+> Clojure, SBCL, GnuCOBOL, Crystal, and Mono/`mcs` for C# in
+> 7.2-compatible syntax) and hand-traced elsewhere. Merging that branch
+> back into this one surfaced the cost of running batches concurrently
+> without coordination: **140 of the 300 files collided** on the exact
+> same filename in the exact same folder as a file the seventh/eighth
+> passes had already added — both sessions independently reached for the
+> same "obvious next concept" per language (`heap_sort`, `dijkstra`,
+> `kmp_search`, `lru_cache`, `trie`, `decorator_pattern`, and similar,
+> across dozens of languages). Each of the 140 collisions was resolved by
+> keeping the already-merged seventh/eighth-pass version and discarding
+> the ninth pass's duplicate rather than trying to keep both (renaming one
+> would just be two independently-authored solutions to the same textbook
+> problem sitting side by side, which is exactly the "repetition hurts
+> more than it helps" case in the caveats below). That leaves 160
+> genuinely new files from the ninth pass — Ada BFS traversal and hash
+> table, an Apex strategy pattern, Awk FizzBuzz/matrix transpose/field
+> padding, several Bash utilities, C N-Queens, Clojure futures/promises,
+> COBOL FizzBuzz/compound interest/perfect-number check, Common Lisp
+> Dijkstra/trie/dynamic-variable and topological-sort demos, C++ CRTP and
+> variadic-template folds, C# `BlockingCollection`/`Task.WhenAll` async
+> demos, and more of the same long tail across the remaining folders. The
+> practical lesson for future passes: with several folders already having
+> gone through 2-3 top-up rounds, the pool of non-overlapping "obvious"
+> additions per language is shrinking, and independent concurrent runs
+> increasingly duplicate each other's choices rather than each other's
+> mistakes — a stronger argument than before for keeping these passes
+> small, spaced out, and (where feasible) sequential rather than run in
+> parallel branches against a fast-moving base.
+
 | Language   | Files |
 |------------|-------|
 | Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py`, `binary_tree.py` |
