@@ -4,7 +4,7 @@ type Pizza =
       ExtraCheese: bool }
 
 type PizzaBuilder(size: string) =
-    let mutable toppings = []
+    let mutable toppings: string list = []
     let mutable extraCheese = false
 
     member this.WithTopping(topping: string) =

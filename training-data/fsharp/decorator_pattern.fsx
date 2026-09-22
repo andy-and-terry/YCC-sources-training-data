@@ -1,6 +1,6 @@
 type Greeter = string -> string
 
-let withGreeting: Greeter = fun name -> sprintf "Hello, %s." name
+let withGreeting: Greeter = fun name -> sprintf "Hello, %s" name
 
 let shout (greeter: Greeter) : Greeter = fun name -> (greeter name).ToUpper()
 
