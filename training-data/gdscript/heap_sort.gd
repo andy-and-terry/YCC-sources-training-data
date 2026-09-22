@@ -1,6 +1,6 @@
 extends Node
 
-func heapify(arr: Array, n: int, i: int):
+func heapify(arr: Array, n: int, i: int) -> void:
 	var largest = i
 	var left = 2 * i + 1
 	var right = 2 * i + 2
@@ -14,7 +14,7 @@ func heapify(arr: Array, n: int, i: int):
 		arr[largest] = tmp
 		heapify(arr, n, largest)
 
-func heap_sort(arr: Array):
+func heap_sort(arr: Array) -> Array:
 	var n = arr.size()
 	for i in range(n / 2 - 1, -1, -1):
 		heapify(arr, n, i)
@@ -23,8 +23,7 @@ func heap_sort(arr: Array):
 		arr[0] = arr[i]
 		arr[i] = tmp
 		heapify(arr, i, 0)
+	return arr
 
 func _ready():
-	var arr = [5, 3, 8, 1, 9, 2]
-	heap_sort(arr)
-	print(arr)
+	print(heap_sort([9, 4, 7, 1, 3, 8, 2]))

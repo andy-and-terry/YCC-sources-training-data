@@ -1,0 +1,16 @@
+VOCABULARY MATH-WORDS
+
+MATH-WORDS DEFINITIONS
+
+: SQUARE ( n -- n*n ) DUP * ;
+: CUBE ( n -- n*n*n ) DUP DUP * * ;
+
+FORTH DEFINITIONS
+
+: DEMO ( -- )
+  MATH-WORDS
+  5 SQUARE . CR
+  3 CUBE . CR
+  FORTH ;
+
+DEMO

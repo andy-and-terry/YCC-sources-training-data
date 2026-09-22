@@ -1,32 +1,39 @@
 #import <Foundation/Foundation.h>
 
-@interface Logger : NSObject
-+ (instancetype)sharedLogger;
-- (void)log:(NSString *)message;
+@interface AppConfig : NSObject
+@property (nonatomic, strong) NSMutableDictionary *settings;
++ (instancetype)sharedConfig;
 @end
 
-@implementation Logger
-+ (instancetype)sharedLogger {
-    static Logger *instance = nil;
+@implementation AppConfig
+
++ (instancetype)sharedConfig {
+    static AppConfig *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        instance = [[self alloc] init];
+        instance = [[AppConfig alloc] init];
     });
     return instance;
 }
 
-- (void)log:(NSString *)message {
-    NSLog(@"[LOG] %@", message);
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        _settings = [NSMutableDictionary dictionary];
+    }
+    return self;
 }
+
 @end
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
-        Logger *first = [Logger sharedLogger];
-        Logger *second = [Logger sharedLogger];
-        [first log:@"first message"];
-        [second log:@"second message"];
-        NSLog(@"same instance: %@", first == second ? @"YES" : @"NO");
+        AppConfig *first = [AppConfig sharedConfig];
+        first.settings[@"theme"] = @"dark";
+
+        AppConfig *second = [AppConfig sharedConfig];
+        NSLog(@"%@", second.settings[@"theme"]);
+        NSLog(@"%@", first == second ? @"same instance" : @"different instance");
     }
     return 0;
 }

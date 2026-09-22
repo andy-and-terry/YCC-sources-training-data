@@ -1,40 +1,46 @@
 (define base 256)
-(define modulus 1000000007)
+(define modulus 101)
 
-(define (hash-of s start len)
-  (let loop ((i start) (count 0) (h 0))
-    (if (= count len)
-        h
-        (loop (+ i 1) (+ count 1) (modulo (+ (* h base) (char->integer (string-ref s i))) modulus)))))
-
-(define (power-mod b e m)
-  (if (= e 0)
-      1
-      (modulo (* b (power-mod b (- e 1) m)) m)))
+(define (char-code c) (char->integer c))
 
 (define (rabin-karp text pattern)
-  (let* ((n (string-length text))
-         (m (string-length pattern)))
-    (if (or (= m 0) (> m n))
-        '()
-        (let ((high-order (power-mod base (- m 1) modulus))
-              (pattern-hash (hash-of pattern 0 m)))
-          (let loop ((i 0) (text-hash (hash-of text 0 m)) (matches '()))
-            (let ((matches* (if (and (= text-hash pattern-hash)
-                                      (string=? (substring text i (+ i m)) pattern))
-                                 (cons i matches)
-                                 matches)))
-              (if (= i (- n m))
-                  (reverse matches*)
-                  (let* ((leaving (char->integer (string-ref text i)))
-                         (entering (char->integer (string-ref text (+ i m))))
-                         (next-hash (modulo (+ (* (- text-hash (* leaving high-order)) base) entering)
-                                             modulus)))
-                    (loop (+ i 1) next-hash matches*)))))))))
+  (define n (string-length text))
+  (define m (string-length pattern))
 
-(display (rabin-karp "abracadabra" "abra"))
+  (define (hash-of s len)
+    (let loop ((i 0) (h 0))
+      (if (= i len)
+          h
+          (loop (+ i 1) (modulo (+ (* h base) (char-code (string-ref s i))) modulus)))))
+
+  ;; base^(m-1) mod modulus, used to drop the leading character from the rolling hash
+  (define high-order
+    (let loop ((i 0) (h 1))
+      (if (= i (- m 1)) h (loop (+ i 1) (modulo (* h base) modulus)))))
+
+  (define (matches-at? i)
+    (let loop ((k 0))
+      (cond ((= k m) #t)
+            ((char=? (string-ref text (+ i k)) (string-ref pattern k)) (loop (+ k 1)))
+            (else #f))))
+
+  (define pattern-hash (hash-of pattern m))
+
+  (if (or (= m 0) (> m n))
+      '()
+      (let loop ((i 0) (text-hash (hash-of text m)) (result '()))
+        (let ((result2 (if (and (= text-hash pattern-hash) (matches-at? i))
+                            (cons i result)
+                            result)))
+          (if (= i (- n m))
+              (reverse result2)
+              (let* ((old (char-code (string-ref text i)))
+                     (new (char-code (string-ref text (+ i m))))
+                     (next-hash (modulo (+ (* base (modulo (- text-hash (* old high-order)) modulus)) new)
+                                        modulus)))
+                (loop (+ i 1) next-hash result2)))))))
+
+(display (rabin-karp "abxabcabcaby" "abc"))
 (newline)
 (display (rabin-karp "aaaaa" "aa"))
-(newline)
-(display (rabin-karp "hello world" "xyz"))
 (newline)

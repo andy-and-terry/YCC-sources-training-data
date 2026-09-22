@@ -1,29 +1,49 @@
 CREATE ARR 9 , 3 , 7 , 1 , 8 , 2 ,
 6 CONSTANT ARR-LEN
+VARIABLE TMP
+VARIABLE IDX2
+VARIABLE JDX2
+VARIABLE PLO
+VARIABLE PHI
+VARIABLE PIVOT
+VARIABLE PI
 
 : ELEM ( i -- addr ) CELLS ARR + ;
 
 : SWAP-ELEMS ( i j -- )
-  ELEM SWAP ELEM
-  DUP @ >R
-  DUP @ OVER !
-  R> SWAP ! ;
+  JDX2 ! IDX2 !
+  IDX2 @ ELEM @ TMP !
+  JDX2 @ ELEM @ IDX2 @ ELEM !
+  TMP @ JDX2 @ ELEM ! ;
 
 : PARTITION ( lo hi -- p )
-  2DUP ELEM @ >R
-  OVER 1-
-  SWAP
-  2 PICK SWAP
-  DO
-    I ELEM @ R@ <
+  PHI ! PLO !
+  PHI @ ELEM @ PIVOT !
+  PLO @ 1- PI !
+  PHI @ PLO @ DO
+    I ELEM @ PIVOT @ <=
     IF
-      1 SWAP - NEGATE
+      PI @ 1+ PI !
+      PI @ I SWAP-ELEMS
     THEN
   LOOP
-  R> DROP ;
+  PI @ 1+ PHI @ SWAP-ELEMS
+  PI @ 1+ ;
+
+: QUICKSORT ( lo hi -- )
+  2DUP <
+  IF
+    2DUP PARTITION >R
+    OVER R@ 1- RECURSE
+    R> 1+ SWAP RECURSE
+    DROP
+  ELSE
+    2DROP
+  THEN ;
 
 : PRINT-ARR ( -- )
   ARR-LEN 0 DO I ELEM @ . LOOP ;
 
+0 ARR-LEN 1- QUICKSORT
 PRINT-ARR
 CR

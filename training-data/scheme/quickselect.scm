@@ -1,0 +1,15 @@
+(define (quickselect items k)
+  (let* ((pivot (car items))
+         (rest (cdr items))
+         (smaller (filter (lambda (x) (< x pivot)) rest))
+         (larger (filter (lambda (x) (>= x pivot)) rest))
+         (num-smaller (length smaller)))
+    (cond
+      ((< k num-smaller) (quickselect smaller k))
+      ((> k num-smaller) (quickselect larger (- k num-smaller 1)))
+      (else pivot))))
+
+(display (quickselect '(7 10 4 3 20 15) 2))
+(newline)
+(display (quickselect '(7 10 4 3 20 15) 0))
+(newline)

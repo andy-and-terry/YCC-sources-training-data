@@ -1,32 +1,37 @@
-graph = {
-  "a" => [{"b", 4}, {"c", 1}],
-  "b" => [{"d", 1}],
-  "c" => [{"b", 2}, {"d", 5}],
-  "d" => [] of {String, Int32},
-}
+def dijkstra(graph : Hash(Int32, Array(Tuple(Int32, Int32))), source : Int32, node_count : Int32) : Array(Int32)
+  dist = Array.new(node_count, Int32::MAX)
+  dist[source] = 0
+  visited = Array.new(node_count, false)
 
-dist = Hash(String, Int32).new(Int32::MAX)
-dist["a"] = 0
-visited = Set(String).new
+  node_count.times do
+    u = -1
+    best = Int32::MAX
+    node_count.times do |i|
+      if !visited[i] && dist[i] < best
+        best = dist[i]
+        u = i
+      end
+    end
+    break if u == -1
 
-graph.size.times do
-  current = nil
-  best = Int32::MAX
-  graph.each_key do |node|
-    if !visited.includes?(node) && dist[node] < best
-      best = dist[node]
-      current = node
+    visited[u] = true
+    if edges = graph[u]?
+      edges.each do |v, weight|
+        if dist[u] + weight < dist[v]
+          dist[v] = dist[u] + weight
+        end
+      end
     end
   end
-  break unless current
 
-  visited << current
-  graph[current].each do |(neighbor, weight)|
-    nd = dist[current] + weight
-    dist[neighbor] = nd if nd < dist[neighbor]
-  end
+  dist
 end
 
-["a", "b", "c", "d"].each do |node|
-  puts "#{node}: #{dist[node]}"
-end
+graph = {
+  0 => [{1, 4}, {2, 1}],
+  1 => [{3, 1}],
+  2 => [{1, 2}, {3, 5}],
+  3 => [] of Tuple(Int32, Int32),
+}
+
+puts dijkstra(graph, 0, 4).inspect

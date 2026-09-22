@@ -4,17 +4,17 @@ class Queue
 {
     private array $items = [];
 
-    public function enqueue(mixed $item): void
+    public function enqueue($item): void
     {
         $this->items[] = $item;
     }
 
-    public function dequeue(): mixed
+    public function dequeue()
     {
         return array_shift($this->items);
     }
 
-    public function peek(): mixed
+    public function peek()
     {
         return $this->items[0] ?? null;
     }
@@ -29,7 +29,4 @@ $queue = new Queue();
 $queue->enqueue(1);
 $queue->enqueue(2);
 $queue->enqueue(3);
-echo $queue->dequeue() . "\n";
-echo $queue->dequeue() . "\n";
-echo $queue->peek() . "\n";
-echo ($queue->isEmpty() ? 'empty' : 'not empty') . "\n";
+echo $queue->dequeue() . " " . $queue->peek() . " " . ($queue->isEmpty() ? "true" : "false") . "\n";

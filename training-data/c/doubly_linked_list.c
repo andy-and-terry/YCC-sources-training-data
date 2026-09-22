@@ -1,27 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct DNode {
+typedef struct Node {
     int data;
-    struct DNode *prev;
-    struct DNode *next;
-} DNode;
+    struct Node *prev;
+    struct Node *next;
+} Node;
 
 typedef struct {
-    DNode *head;
-    DNode *tail;
-} DoublyLinkedList;
+    Node *head;
+    Node *tail;
+} DList;
 
-void dll_init(DoublyLinkedList *list) {
-    list->head = NULL;
-    list->tail = NULL;
-}
-
-void dll_push_back(DoublyLinkedList *list, int value) {
-    DNode *node = malloc(sizeof(DNode));
+void push_back(DList *list, int value) {
+    Node *node = malloc(sizeof(Node));
     node->data = value;
-    node->prev = list->tail;
     node->next = NULL;
+    node->prev = list->tail;
+
     if (list->tail) {
         list->tail->next = node;
     } else {
@@ -30,57 +26,40 @@ void dll_push_back(DoublyLinkedList *list, int value) {
     list->tail = node;
 }
 
-int dll_pop_front(DoublyLinkedList *list) {
-    DNode *node = list->head;
-    int value = node->data;
-    list->head = node->next;
-    if (list->head) {
-        list->head->prev = NULL;
-    } else {
-        list->tail = NULL;
-    }
+void remove_node(DList *list, Node *node) {
+    if (node->prev) node->prev->next = node->next;
+    else list->head = node->next;
+
+    if (node->next) node->next->prev = node->prev;
+    else list->tail = node->prev;
+
     free(node);
-    return value;
 }
 
-void dll_print_forward(const DoublyLinkedList *list) {
-    for (DNode *cur = list->head; cur; cur = cur->next) {
-        printf("%d ", cur->data);
-    }
+void print_forward(const DList *list) {
+    for (Node *n = list->head; n; n = n->next) printf("%d ", n->data);
     printf("\n");
 }
 
-void dll_print_backward(const DoublyLinkedList *list) {
-    for (DNode *cur = list->tail; cur; cur = cur->prev) {
-        printf("%d ", cur->data);
-    }
+void print_backward(const DList *list) {
+    for (Node *n = list->tail; n; n = n->prev) printf("%d ", n->data);
     printf("\n");
-}
-
-void dll_free(DoublyLinkedList *list) {
-    DNode *cur = list->head;
-    while (cur) {
-        DNode *next = cur->next;
-        free(cur);
-        cur = next;
-    }
-    list->head = NULL;
-    list->tail = NULL;
 }
 
 int main(void) {
-    DoublyLinkedList list;
-    dll_init(&list);
-    dll_push_back(&list, 10);
-    dll_push_back(&list, 20);
-    dll_push_back(&list, 30);
+    DList list = {NULL, NULL};
+    push_back(&list, 1);
+    push_back(&list, 2);
+    push_back(&list, 3);
+    push_back(&list, 4);
 
-    dll_print_forward(&list);
-    dll_print_backward(&list);
+    print_forward(&list);
+    print_backward(&list);
 
-    printf("popped: %d\n", dll_pop_front(&list));
-    dll_print_forward(&list);
+    remove_node(&list, list.head->next);
+    print_forward(&list);
 
-    dll_free(&list);
+    Node *n;
+    while ((n = list.head)) remove_node(&list, n);
     return 0;
 }

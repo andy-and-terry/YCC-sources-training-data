@@ -1,46 +1,20 @@
-delegate int Transform(int x);
-delegate bool Predicate(int x);
+delegate int Operation(int a, int b);
 
-int[] map_array(int[] arr, Transform fn) {
-    int[] result = {};
-    foreach (int x in arr) {
-        result += fn(x);
-    }
-    return result;
+int apply(Operation op, int a, int b) {
+    return op(a, b);
 }
 
-int[] filter_array(int[] arr, Predicate fn) {
-    int[] result = {};
-    foreach (int x in arr) {
-        if (fn(x)) result += x;
-    }
-    return result;
-}
-
-int square(int x) {
-    return x * x;
-}
-
-bool is_even(int x) {
-    return x % 2 == 0;
+int add(int a, int b) {
+    return a + b;
 }
 
 void main() {
-    int[] data = { 1, 2, 3, 4, 5, 6 };
+    Operation multiply = (a, b) => a * b;
 
-    foreach (int x in map_array(data, square)) {
-        stdout.printf("%d ", x);
-    }
-    stdout.printf("\n");
+    stdout.printf("%d\n", apply(add, 3, 4));
+    stdout.printf("%d\n", apply(multiply, 3, 4));
 
-    foreach (int x in filter_array(data, is_even)) {
-        stdout.printf("%d ", x);
-    }
-    stdout.printf("\n");
-
-    Transform double_it = (x) => x * 2;
-    foreach (int x in map_array(data, double_it)) {
-        stdout.printf("%d ", x);
-    }
-    stdout.printf("\n");
+    int factor = 10;
+    Operation scaleAndAdd = (a, b) => (a + b) * factor;
+    stdout.printf("%d\n", apply(scaleAndAdd, 1, 2));
 }

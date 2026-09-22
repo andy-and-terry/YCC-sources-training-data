@@ -1,0 +1,22 @@
+(define graph '((a . (b c)) (b . (a d)) (c . (a d)) (d . (b c e)) (e . (d))))
+
+(define (neighbors g node)
+  (let ((entry (assq node g)))
+    (if entry (cdr entry) '())))
+
+(define (bfs g start)
+  (let loop ((queue (list start))
+             (visited (list start))
+             (order '()))
+    (if (null? queue)
+        (reverse order)
+        (let* ((node (car queue))
+               (rest (cdr queue))
+               (new-neighbors (filter (lambda (n) (not (member n visited))) (neighbors g node)))
+               (new-visited (append visited new-neighbors)))
+          (loop (append rest new-neighbors) new-visited (cons node order))))))
+
+(display (bfs graph 'a))
+(newline)
+(display (bfs graph 'e))
+(newline)

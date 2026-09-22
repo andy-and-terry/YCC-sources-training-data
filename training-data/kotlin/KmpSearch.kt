@@ -42,5 +42,4 @@ fun kmpSearch(text: String, pattern: String): List<Int> {
 
 fun main() {
     println(kmpSearch("abxabcabcaby", "abcaby"))
-    println(kmpSearch("aaaaa", "aa"))
 }

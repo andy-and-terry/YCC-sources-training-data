@@ -2,33 +2,33 @@ use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::Arc;
 use std::thread;
 
-struct AtomicCounter {
-    value: AtomicUsize,
+struct Metrics {
+    requests: AtomicUsize,
 }
 
-impl AtomicCounter {
+impl Metrics {
     fn new() -> Self {
-        AtomicCounter { value: AtomicUsize::new(0) }
+        Metrics { requests: AtomicUsize::new(0) }
     }
 
-    fn increment(&self) {
-        self.value.fetch_add(1, Ordering::SeqCst);
+    fn record(&self) -> usize {
+        self.requests.fetch_add(1, Ordering::SeqCst) + 1
     }
 
-    fn get(&self) -> usize {
-        self.value.load(Ordering::SeqCst)
+    fn total(&self) -> usize {
+        self.requests.load(Ordering::SeqCst)
     }
 }
 
 fn main() {
-    let counter = Arc::new(AtomicCounter::new());
+    let metrics = Arc::new(Metrics::new());
     let mut handles = vec![];
 
-    for _ in 0..10 {
-        let counter = Arc::clone(&counter);
+    for _ in 0..8 {
+        let metrics = Arc::clone(&metrics);
         handles.push(thread::spawn(move || {
-            for _ in 0..1000 {
-                counter.increment();
+            for _ in 0..500 {
+                metrics.record();
             }
         }));
     }
@@ -37,5 +37,5 @@ fn main() {
         handle.join().unwrap();
     }
 
-    println!("Final count: {}", counter.get());
+    println!("total requests: {}", metrics.total());
 }

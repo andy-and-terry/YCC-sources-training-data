@@ -5,8 +5,7 @@ fun lcs_length (a, b) =
     val table = Array2.array (m + 1, n + 1, 0)
     fun compute (i, j) =
       if i > m then ()
-      else if j > n then compute (i + 1, 0)
-      else if i = 0 orelse j = 0 then (Array2.update (table, i, j, 0); compute (i, j + 1))
+      else if j > n then compute (i + 1, 1)
       else
         let
           val v =
@@ -18,11 +17,11 @@ fun lcs_length (a, b) =
           Array2.update (table, i, j, v);
           compute (i, j + 1)
         end
-    val () = compute (0, 0)
+    val () = compute (1, 1)
   in
     Array2.sub (table, m, n)
   end
 
-val () = print (Int.toString (lcs_length ("ABCBDAB", "BDCABA")) ^ "\n")
+val () = print (Int.toString (lcs_length ("abcde", "ace")) ^ "\n")
 val () = print (Int.toString (lcs_length ("abc", "abc")) ^ "\n")
-val () = print (Int.toString (lcs_length ("abc", "xyz")) ^ "\n")
+val () = print (Int.toString (lcs_length ("abc", "def")) ^ "\n")

@@ -1,28 +1,26 @@
+(def graph
+  {:a {:b 4 :c 1}
+   :b {:d 1}
+   :c {:b 2 :d 5}
+   :d {}})
+
 (defn dijkstra [graph start]
   (loop [dist {start 0}
-         visited #{}
-         pq (sorted-set [0 start])]
-    (if (empty? pq)
+         unvisited (set (keys graph))]
+    (if (empty? unvisited)
       dist
-      (let [[d u] (first pq)
-            pq (disj pq [d u])]
-        (if (visited u)
-          (recur dist visited pq)
-          (let [visited (conj visited u)
-                [dist pq]
-                (reduce (fn [[dist pq] [v w]]
-                          (let [nd (+ d w)]
-                            (if (< nd (get dist v Integer/MAX_VALUE))
-                              [(assoc dist v nd) (conj pq [nd v])]
-                              [dist pq])))
-                        [dist pq]
-                        (get graph u []))]
-            (recur dist visited pq)))))))
-
-(def graph
-  {:a [[:b 4] [:c 1]]
-   :b [[:d 1]]
-   :c [[:b 2] [:d 5]]
-   :d []})
+      (let [current (apply min-key #(get dist % Integer/MAX_VALUE) unvisited)
+            current-dist (get dist current Integer/MAX_VALUE)]
+        (if (= current-dist Integer/MAX_VALUE)
+          dist
+          (let [updated (reduce
+                          (fn [d [neighbor weight]]
+                            (let [candidate (+ current-dist weight)]
+                              (if (< candidate (get d neighbor Integer/MAX_VALUE))
+                                (assoc d neighbor candidate)
+                                d)))
+                          dist
+                          (get graph current))]
+            (recur updated (disj unvisited current))))))))
 
 (println (dijkstra graph :a))

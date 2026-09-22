@@ -1,9 +1,8 @@
 public class SingletonPattern {
     private static SingletonPattern instance;
-    private Integer counter;
+    private Integer callCount = 0;
 
     private SingletonPattern() {
-        counter = 0;
     }
 
     public static SingletonPattern getInstance() {
@@ -13,23 +12,17 @@ public class SingletonPattern {
         return instance;
     }
 
-    public void increment() {
-        counter++;
-    }
-
-    public Integer getCounter() {
-        return counter;
+    public Integer recordCall() {
+        callCount++;
+        return callCount;
     }
 
     public static void main() {
-        SingletonPattern first = SingletonPattern.getInstance();
-        first.increment();
-        first.increment();
-
-        SingletonPattern second = SingletonPattern.getInstance();
-        second.increment();
-
-        System.debug(first === second);
-        System.debug(second.getCounter());
+        SingletonPattern a = SingletonPattern.getInstance();
+        SingletonPattern b = SingletonPattern.getInstance();
+        a.recordCall();
+        a.recordCall();
+        System.debug(b.recordCall());
+        System.debug(a === b);
     }
 }

@@ -1,32 +1,29 @@
 class Product
-  ATTRIBUTES = %i[name price quantity].freeze
+  ATTRIBUTES = [:name, :price, :quantity].freeze
 
-  ATTRIBUTES.each do |attribute|
-    define_method(attribute) { instance_variable_get("@#{attribute}") }
-    define_method("#{attribute}=") { |value| instance_variable_set("@#{attribute}", value) }
+  ATTRIBUTES.each do |attr|
+    define_method(attr) { instance_variable_get("@#{attr}") }
+    define_method("#{attr}=") { |value| instance_variable_set("@#{attr}", value) }
   end
 
-  def initialize(attrs = {})
-    attrs.each { |key, value| public_send("#{key}=", value) }
+  def initialize(name:, price:, quantity:)
+    @name = name
+    @price = price
+    @quantity = quantity
   end
 
-  class << self
-    def create_validated(attrs)
-      new(attrs).tap do |product|
-        raise ArgumentError, 'price must be positive' unless product.price.positive?
-      end
-    end
+  def self.define_query(name, &block)
+    define_method(name, &block)
   end
+
+  define_query(:in_stock?) { quantity > 0 }
+  define_query(:total) { price * quantity }
 end
 
-widget = Product.new(name: 'Widget', price: 9.99, quantity: 3)
-puts widget.name
-puts widget.price
-widget.quantity = 10
-puts widget.quantity
+item = Product.new(name: "Widget", price: 2.5, quantity: 4)
+puts item.name
+puts item.total
+puts item.in_stock?
 
-begin
-  Product.create_validated(name: 'Bad', price: -1, quantity: 1)
-rescue ArgumentError => e
-  puts "rejected: #{e.message}"
-end
+item.quantity = 0
+puts item.in_stock?

@@ -1,23 +1,19 @@
-type ValidationError =
-    | Empty
-    | TooLong of int
+let parseAge (input: string) : Result<int, string> =
+    match System.Int32.TryParse input with
+    | true, n -> Ok n
+    | false, _ -> Error (sprintf "'%s' is not a number" input)
 
-let validateNotEmpty (s: string) =
-    if s.Length = 0 then Error Empty else Ok s
+let validateAge (age: int) : Result<int, string> =
+    if age >= 0 && age <= 120 then Ok age
+    else Error (sprintf "%d is not a valid age" age)
 
-let validateLength maxLen (s: string) =
-    if s.Length > maxLen then Error(TooLong s.Length) else Ok s
+let describeAge (age: int) : Result<string, string> =
+    Ok (sprintf "age is %d" age)
 
-let validateUsername (s: string) =
-    validateNotEmpty s
-    |> Result.bind (validateLength 10)
+let processAge (input: string) : Result<string, string> =
+    parseAge input
+    |> Result.bind validateAge
+    |> Result.bind describeAge
 
-let describe result =
-    match result with
-    | Ok s -> sprintf "valid: %s" s
-    | Error Empty -> "invalid: empty"
-    | Error (TooLong n) -> sprintf "invalid: too long (%d chars)" n
-
-printfn "%s" (describe (validateUsername "alice"))
-printfn "%s" (describe (validateUsername ""))
-printfn "%s" (describe (validateUsername "waaaaaaaaaaay_too_long"))
+[ "42"; "abc"; "200" ]
+|> List.iter (fun input -> printfn "%A" (processAge input))

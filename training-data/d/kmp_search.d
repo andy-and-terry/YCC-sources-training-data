@@ -1,45 +1,35 @@
 import std.stdio;
 
-int[] buildLps(string pattern) {
-    auto lps = new int[pattern.length];
-    size_t len = 0;
-    size_t i = 1;
-    while (i < pattern.length) {
-        if (pattern[i] == pattern[len]) {
-            len++;
-            lps[i] = cast(int) len;
-            i++;
-        } else if (len != 0) {
-            len = lps[len - 1];
-        } else {
-            lps[i] = 0;
-            i++;
-        }
+int[] buildFailure(string pattern) {
+    auto fail = new int[](pattern.length);
+    int k = 0;
+    for (size_t i = 1; i < pattern.length; i++) {
+        while (k > 0 && pattern[k] != pattern[i]) k = fail[k - 1];
+        if (pattern[k] == pattern[i]) k++;
+        fail[i] = k;
     }
-    return lps;
+    return fail;
 }
 
-int kmpSearch(string text, string pattern) {
-    if (pattern.length == 0) return 0;
-    auto lps = buildLps(pattern);
-    size_t i = 0;
-    size_t j = 0;
-    while (i < text.length) {
-        if (text[i] == pattern[j]) {
-            i++;
-            j++;
-            if (j == pattern.length) return cast(int)(i - j);
-        } else if (j != 0) {
-            j = lps[j - 1];
-        } else {
-            i++;
+int[] kmpSearch(string text, string pattern) {
+    int[] matches;
+    if (pattern.length == 0) return matches;
+
+    auto fail = buildFailure(pattern);
+    int k = 0;
+
+    for (size_t i = 0; i < text.length; i++) {
+        while (k > 0 && pattern[k] != text[i]) k = fail[k - 1];
+        if (pattern[k] == text[i]) k++;
+        if (k == pattern.length) {
+            matches ~= cast(int)(i - pattern.length + 1);
+            k = fail[k - 1];
         }
     }
-    return -1;
+
+    return matches;
 }
 
 void main() {
-    writeln(kmpSearch("abxabcabcaby", "abcaby"));
-    writeln(kmpSearch("hello world", "world"));
-    writeln(kmpSearch("hello world", "xyz"));
+    writeln(kmpSearch("ababcabcabababd", "ababd"));
 }

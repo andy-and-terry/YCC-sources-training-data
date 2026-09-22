@@ -1,62 +1,55 @@
 #import <Foundation/Foundation.h>
 
-@interface LLNode : NSObject
-@property (nonatomic, strong) NSNumber *value;
-@property (nonatomic, strong) LLNode *next;
+@interface ListNode : NSObject
+@property (nonatomic) NSInteger value;
+@property (nonatomic, strong) ListNode *next;
+- (instancetype)initWithValue:(NSInteger)value;
 @end
 
-@implementation LLNode
+@implementation ListNode
+- (instancetype)initWithValue:(NSInteger)value {
+    self = [super init];
+    if (self) _value = value;
+    return self;
+}
 @end
 
-@interface SinglyLinkedList : NSObject
-@property (nonatomic, strong) LLNode *head;
-- (void)addValue:(NSNumber *)value;
+@interface LinkedList : NSObject
+@property (nonatomic, strong) ListNode *head;
+- (void)append:(NSInteger)value;
 - (NSArray<NSNumber *> *)toArray;
-- (void)reverse;
 @end
 
-@implementation SinglyLinkedList
-- (void)addValue:(NSNumber *)value {
-    LLNode *node = [[LLNode alloc] init];
-    node.value = value;
+@implementation LinkedList
+- (void)append:(NSInteger)value {
+    ListNode *node = [[ListNode alloc] initWithValue:value];
     if (!self.head) {
         self.head = node;
         return;
     }
-    LLNode *cur = self.head;
-    while (cur.next) cur = cur.next;
-    cur.next = node;
+    ListNode *current = self.head;
+    while (current.next) {
+        current = current.next;
+    }
+    current.next = node;
 }
-
 - (NSArray<NSNumber *> *)toArray {
-    NSMutableArray *result = [NSMutableArray array];
-    LLNode *cur = self.head;
-    while (cur) {
-        [result addObject:cur.value];
-        cur = cur.next;
+    NSMutableArray<NSNumber *> *result = [NSMutableArray array];
+    ListNode *current = self.head;
+    while (current) {
+        [result addObject:@(current.value)];
+        current = current.next;
     }
     return result;
-}
-
-- (void)reverse {
-    LLNode *prev = nil;
-    LLNode *cur = self.head;
-    while (cur) {
-        LLNode *next = cur.next;
-        cur.next = prev;
-        prev = cur;
-        cur = next;
-    }
-    self.head = prev;
 }
 @end
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
-        SinglyLinkedList *list = [[SinglyLinkedList alloc] init];
-        for (NSInteger i = 1; i <= 5; i++) [list addValue:@(i)];
-        NSLog(@"%@", [list toArray]);
-        [list reverse];
+        LinkedList *list = [[LinkedList alloc] init];
+        [list append:1];
+        [list append:2];
+        [list append:3];
         NSLog(@"%@", [list toArray]);
     }
     return 0;

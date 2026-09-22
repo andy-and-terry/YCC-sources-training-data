@@ -1,11 +1,11 @@
 public class AVLTree {
-    private class Node {
-        Integer value;
-        Node left;
-        Node right;
-        Integer height;
+    public class Node {
+        public Integer value;
+        public Integer height;
+        public Node left;
+        public Node right;
 
-        Node(Integer value) {
+        public Node(Integer value) {
             this.value = value;
             this.height = 1;
         }
@@ -13,12 +13,12 @@ public class AVLTree {
 
     private Node root;
 
-    private Integer height(Node node) {
-        return node == null ? 0 : node.height;
+    private Integer heightOf(Node n) {
+        return n == null ? 0 : n.height;
     }
 
-    private Integer balanceFactor(Node node) {
-        return node == null ? 0 : height(node.left) - height(node.right);
+    private Integer balanceFactor(Node n) {
+        return n == null ? 0 : heightOf(n.left) - heightOf(n.right);
     }
 
     private Node rotateRight(Node y) {
@@ -26,8 +26,8 @@ public class AVLTree {
         Node t2 = x.right;
         x.right = y;
         y.left = t2;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
+        y.height = Math.max(heightOf(y.left), heightOf(y.right)) + 1;
+        x.height = Math.max(heightOf(x.left), heightOf(x.right)) + 1;
         return x;
     }
 
@@ -36,73 +36,59 @@ public class AVLTree {
         Node t2 = y.left;
         y.left = x;
         x.right = t2;
-        x.height = Math.max(height(x.left), height(x.right)) + 1;
-        y.height = Math.max(height(y.left), height(y.right)) + 1;
+        x.height = Math.max(heightOf(x.left), heightOf(x.right)) + 1;
+        y.height = Math.max(heightOf(y.left), heightOf(y.right)) + 1;
         return y;
     }
 
-    private Node insertNode(Node node, Integer value) {
-        if (node == null) {
+    public Node insert(Node n, Integer value) {
+        if (n == null) {
             return new Node(value);
         }
-        if (value < node.value) {
-            node.left = insertNode(node.left, value);
-        } else if (value > node.value) {
-            node.right = insertNode(node.right, value);
+        if (value < n.value) {
+            n.left = insert(n.left, value);
+        } else if (value > n.value) {
+            n.right = insert(n.right, value);
         } else {
-            return node;
+            return n;
         }
 
-        node.height = Math.max(height(node.left), height(node.right)) + 1;
-        Integer balance = balanceFactor(node);
+        n.height = Math.max(heightOf(n.left), heightOf(n.right)) + 1;
+        Integer balance = balanceFactor(n);
 
-        if (balance > 1 && value < node.left.value) {
-            return rotateRight(node);
+        if (balance > 1 && value < n.left.value) {
+            return rotateRight(n);
         }
-        if (balance < -1 && value > node.right.value) {
-            return rotateLeft(node);
+        if (balance < -1 && value > n.right.value) {
+            return rotateLeft(n);
         }
-        if (balance > 1 && value > node.left.value) {
-            node.left = rotateLeft(node.left);
-            return rotateRight(node);
+        if (balance > 1 && value > n.left.value) {
+            n.left = rotateLeft(n.left);
+            return rotateRight(n);
         }
-        if (balance < -1 && value < node.right.value) {
-            node.right = rotateRight(node.right);
-            return rotateLeft(node);
+        if (balance < -1 && value < n.right.value) {
+            n.right = rotateRight(n.right);
+            return rotateLeft(n);
         }
-        return node;
+        return n;
     }
 
-    public void insert(Integer value) {
-        root = insertNode(root, value);
-    }
-
-    private void inorderCollect(Node node, List<Integer> result) {
-        if (node == null) {
-            return;
+    private void inorder(Node n, List<Integer> out) {
+        if (n != null) {
+            inorder(n.left, out);
+            out.add(n.value);
+            inorder(n.right, out);
         }
-        inorderCollect(node.left, result);
-        result.add(node.value);
-        inorderCollect(node.right, result);
-    }
-
-    public List<Integer> inorder() {
-        List<Integer> result = new List<Integer>();
-        inorderCollect(root, result);
-        return result;
-    }
-
-    public Integer height() {
-        return height(root);
     }
 
     public static void main() {
         AVLTree tree = new AVLTree();
-        List<Integer> values = new List<Integer>{10, 20, 30, 40, 50, 25};
-        for (Integer v : values) {
-            tree.insert(v);
+        for (Integer v : new List<Integer>{10, 20, 30, 40, 50, 25}) {
+            tree.root = tree.insert(tree.root, v);
         }
-        System.debug(tree.inorder());
-        System.debug(tree.height());
+        List<Integer> out = new List<Integer>();
+        tree.inorder(tree.root, out);
+        System.debug(out);
+        System.debug(tree.root.height);
     }
 }

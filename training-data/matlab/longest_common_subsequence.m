@@ -1,4 +1,4 @@
-function result = longest_common_subsequence(a, b)
+function len = longest_common_subsequence(a, b)
     m = length(a);
     n = length(b);
     dp = zeros(m + 1, n + 1);
@@ -11,19 +11,8 @@ function result = longest_common_subsequence(a, b)
             end
         end
     end
-
-    result = '';
-    i = m;
-    j = n;
-    while i > 0 && j > 0
-        if a(i) == b(j)
-            result = [a(i), result];
-            i = i - 1;
-            j = j - 1;
-        elseif dp(i, j + 1) >= dp(i + 1, j)
-            i = i - 1;
-        else
-            j = j - 1;
-        end
-    end
+    len = dp(m + 1, n + 1);
 end
+
+disp(longest_common_subsequence('abcde', 'ace'))
+disp(longest_common_subsequence('abc', 'xyz'))

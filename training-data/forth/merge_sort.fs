@@ -1,68 +1,78 @@
-CREATE ARR 9 , 3 , 7 , 1 , 8 , 2 , 5 , 4 ,
+CREATE ARR 5 , 2 , 9 , 1 , 5 , 6 , 3 , 8 ,
 8 CONSTANT ARR-LEN
-CREATE TEMP 8 CELLS ALLOT
+CREATE TEMP ARR-LEN CELLS ALLOT
 
-: ELEM ( i -- addr ) CELLS ARR + ;
-: TELEM ( i -- addr ) CELLS TEMP + ;
-
+VARIABLE WIDTH
+VARIABLE START
 VARIABLE LO
 VARIABLE MID
 VARIABLE HI
-VARIABLE LI
-VARIABLE RI
-VARIABLE TI
-VARIABLE WIDTH
+VARIABLE LEFT
+VARIABLE RIGHT
+VARIABLE OUT
 
-: MERGE-RUNS ( -- )
-  LO @ LI !
-  MID @ RI !
-  LO @ TI !
-  BEGIN
-    LI @ MID @ < RI @ HI @ < AND
-  WHILE
-    LI @ ELEM @ RI @ ELEM @ <=
-    IF
-      LI @ ELEM @ TI @ TELEM !
-      LI @ 1+ LI !
-    ELSE
-      RI @ ELEM @ TI @ TELEM !
-      RI @ 1+ RI !
-    THEN
-    TI @ 1+ TI !
-  REPEAT
-  BEGIN LI @ MID @ < WHILE
-    LI @ ELEM @ TI @ TELEM !
-    LI @ 1+ LI !
-    TI @ 1+ TI !
-  REPEAT
-  BEGIN RI @ HI @ < WHILE
-    RI @ ELEM @ TI @ TELEM !
-    RI @ 1+ RI !
-    TI @ 1+ TI !
-  REPEAT
-  HI @ LO @ DO
-    I TELEM @ I ELEM !
+: A@ ( idx -- addr ) CELLS ARR + ;
+: T@ ( idx -- addr ) CELLS TEMP + ;
+
+: COPY-BACK ( lo hi -- )
+  1+ SWAP DO
+    I T@ @ I A@ !
   LOOP ;
+
+: MERGE-RUN ( lo mid hi -- )
+  HI ! MID ! LO !
+  LO @ LEFT !
+  MID @ 1+ RIGHT !
+  LO @ OUT !
+  BEGIN
+    LEFT @ MID @ <= RIGHT @ HI @ <= AND
+  WHILE
+    LEFT @ A@ @ RIGHT @ A@ @ <=
+    IF
+      OUT @ T@ LEFT @ A@ @ SWAP !
+      1 LEFT +!
+    ELSE
+      OUT @ T@ RIGHT @ A@ @ SWAP !
+      1 RIGHT +!
+    THEN
+    1 OUT +!
+  REPEAT
+  BEGIN
+    LEFT @ MID @ <=
+  WHILE
+    OUT @ T@ LEFT @ A@ @ SWAP !
+    1 LEFT +!
+    1 OUT +!
+  REPEAT
+  BEGIN
+    RIGHT @ HI @ <=
+  WHILE
+    OUT @ T@ RIGHT @ A@ @ SWAP !
+    1 RIGHT +!
+    1 OUT +!
+  REPEAT
+  LO @ HI @ COPY-BACK ;
 
 : MERGE-SORT ( -- )
   1 WIDTH !
   BEGIN
     WIDTH @ ARR-LEN <
   WHILE
-    0 LO !
+    0 START !
     BEGIN
-      LO @ ARR-LEN <
+      START @ ARR-LEN 1- <
     WHILE
-      LO @ WIDTH @ + ARR-LEN MIN MID !
-      LO @ WIDTH @ 2* + ARR-LEN MIN HI !
-      MERGE-RUNS
-      LO @ WIDTH @ 2* + LO !
+      START @
+      START @ WIDTH @ + 1- ARR-LEN 1- MIN
+      START @ WIDTH @ 2* + 1- ARR-LEN 1- MIN
+      MERGE-RUN
+      WIDTH @ 2* START +!
     REPEAT
     WIDTH @ 2* WIDTH !
   REPEAT ;
 
 : PRINT-ARR ( -- )
-  ARR-LEN 0 DO I ELEM @ . LOOP ;
+  ARR-LEN 0 DO I A@ @ . LOOP ;
 
 MERGE-SORT
 PRINT-ARR

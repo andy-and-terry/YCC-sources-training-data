@@ -1,0 +1,21 @@
+CREATE ARR 3 , 1 , 4 , 1 , 5 , 9 , 2 , 6 ,
+8 CONSTANT ARR-LEN
+CREATE PREFIX ARR-LEN 1+ CELLS ALLOT
+
+: ELEM ( i -- addr ) CELLS ARR + ;
+: PREFIX@ ( i -- addr ) CELLS PREFIX + ;
+
+: BUILD-PREFIX ( -- )
+  0 0 PREFIX@ !
+  ARR-LEN 0 DO
+    I PREFIX@ @ I ELEM @ + I 1+ PREFIX@ !
+  LOOP ;
+
+: RANGE-SUM ( lo hi -- sum )
+  1+ PREFIX@ @
+  SWAP PREFIX@ @
+  - ;
+
+BUILD-PREFIX
+0 3 RANGE-SUM . CR
+2 5 RANGE-SUM . CR

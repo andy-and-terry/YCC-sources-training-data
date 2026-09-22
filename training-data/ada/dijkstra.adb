@@ -1,59 +1,49 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Dijkstra is
-   N : constant Integer := 5;
-   Inf : constant Integer := 1_000_000;
-   type Graph_Type is array (0 .. N - 1, 0 .. N - 1) of Integer;
-   type Dist_Array is array (0 .. N - 1) of Integer;
-   type Visited_Array is array (0 .. N - 1) of Boolean;
+   Num_Nodes : constant := 5;
+   Infinity  : constant := 999_999;
+   type Weight_Matrix is array (0 .. Num_Nodes - 1, 0 .. Num_Nodes - 1) of Integer;
+   type Dist_Array is array (0 .. Num_Nodes - 1) of Integer;
+   type Bool_Array is array (0 .. Num_Nodes - 1) of Boolean;
 
-   Graph : constant Graph_Type :=
+   Graph : constant Weight_Matrix :=
      ((0, 4, 0, 0, 8),
-      (4, 0, 8, 0, 11),
-      (0, 8, 0, 7, 0),
-      (0, 0, 7, 0, 9),
-      (8, 11, 0, 9, 0));
+      (4, 0, 3, 0, 0),
+      (0, 3, 0, 2, 0),
+      (0, 0, 2, 0, 5),
+      (8, 0, 0, 5, 0));
 
-   Dist    : Dist_Array;
-   Visited : Visited_Array := (others => False);
-
-   function Min_Distance return Integer is
-      Best     : Integer := Inf;
-      Best_Idx : Integer := -1;
+   function Shortest_Paths (Source : Integer) return Dist_Array is
+      Dist    : Dist_Array := (others => Infinity);
+      Visited : Bool_Array := (others => False);
+      U, Best : Integer;
    begin
-      for V in 0 .. N - 1 loop
-         if not Visited (V) and then Dist (V) <= Best then
-            Best := Dist (V);
-            Best_Idx := V;
-         end if;
-      end loop;
-      return Best_Idx;
-   end Min_Distance;
-
-   procedure Run (Source : Integer) is
-      U : Integer;
-   begin
-      for I in Dist'Range loop
-         Dist (I) := Inf;
-      end loop;
       Dist (Source) := 0;
-
-      for Count in 0 .. N - 2 loop
-         U := Min_Distance;
+      for Iteration in 1 .. Num_Nodes loop
+         U := -1;
+         Best := Infinity + 1;
+         for Node in Dist'Range loop
+            if not Visited (Node) and then Dist (Node) < Best then
+               Best := Dist (Node);
+               U := Node;
+            end if;
+         end loop;
+         exit when U = -1;
          Visited (U) := True;
-         for V in 0 .. N - 1 loop
-            if not Visited (V) and then Graph (U, V) /= 0
-              and then Dist (U) /= Inf
-              and then Dist (U) + Graph (U, V) < Dist (V)
-            then
+         for V in Graph'Range (2) loop
+            if Graph (U, V) > 0 and then Dist (U) + Graph (U, V) < Dist (V) then
                Dist (V) := Dist (U) + Graph (U, V);
             end if;
          end loop;
       end loop;
-   end Run;
+      return Dist;
+   end Shortest_Paths;
+
+   Result : constant Dist_Array := Shortest_Paths (0);
 begin
-   Run (0);
-   for I in Dist'Range loop
-      Put_Line (Dist (I)'Image);
+   for D of Result loop
+      Put (D'Image);
    end loop;
+   New_Line;
 end Dijkstra;

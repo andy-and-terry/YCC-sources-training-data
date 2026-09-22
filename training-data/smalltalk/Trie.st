@@ -1,15 +1,15 @@
 Object subclass: TrieNode [
-    | children isEnd |
+    | children isEndOfWord |
     TrieNode class >> new [
         | n |
         n := super new.
-        n setUp.
+        n setChildren.
         ^n
     ]
-    setUp [ children := Dictionary new. isEnd := false ]
+    setChildren [ children := Dictionary new. isEndOfWord := false ]
     children [ ^children ]
-    isEnd [ ^isEnd ]
-    isEnd: aBoolean [ isEnd := aBoolean ]
+    isEndOfWord [ ^isEndOfWord ]
+    isEndOfWord: aBoolean [ isEndOfWord := aBoolean ]
 ]
 
 Object subclass: Trie [
@@ -17,51 +17,34 @@ Object subclass: Trie [
     Trie class >> new [
         | t |
         t := super new.
-        t setUp.
+        t setRoot.
         ^t
     ]
-    setUp [ root := TrieNode new ]
+    setRoot [ root := TrieNode new ]
 
     insert: aWord [
         | node |
         node := root.
         aWord do: [ :ch |
-            (node children includesKey: ch)
-                ifFalse: [ node children at: ch put: TrieNode new ].
-            node := node children at: ch.
+            node := node children at: ch ifAbsentPut: [ TrieNode new ]
         ].
-        node isEnd: true.
+        node isEndOfWord: true
     ]
 
-    contains: aWord [
+    search: aWord [
         | node |
         node := root.
         aWord do: [ :ch |
             (node children includesKey: ch)
-                ifFalse: [ ^false ].
-            node := node children at: ch.
+                ifTrue: [ node := node children at: ch ]
+                ifFalse: [ ^false ]
         ].
-        ^node isEnd
-    ]
-
-    startsWith: aPrefix [
-        | node |
-        node := root.
-        aPrefix do: [ :ch |
-            (node children includesKey: ch)
-                ifFalse: [ ^false ].
-            node := node children at: ch.
-        ].
-        ^true
+        ^node isEndOfWord
     ]
 ]
 
 | trie |
 trie := Trie new.
-trie insert: 'cat'.
-trie insert: 'car'.
-trie insert: 'card'.
-Transcript showCr: (trie contains: 'cat') printString.
-Transcript showCr: (trie contains: 'ca') printString.
-Transcript showCr: (trie startsWith: 'ca') printString.
-Transcript showCr: (trie startsWith: 'do') printString.
+#('cat' 'car' 'card') do: [ :w | trie insert: w ].
+Transcript showCr: (trie search: 'car') printString.
+Transcript showCr: (trie search: 'ca') printString.

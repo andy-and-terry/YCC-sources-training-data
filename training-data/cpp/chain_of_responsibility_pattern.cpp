@@ -4,59 +4,55 @@
 
 class Handler {
 public:
-    virtual ~Handler() = default;
-    void setNext(std::shared_ptr<Handler> next) { nextHandler = next; }
-    virtual void handle(int severity, const std::string& message) {
-        if (nextHandler) nextHandler->handle(severity, message);
+    void set_next(std::shared_ptr<Handler> next) { next_handler = std::move(next); }
+
+    virtual void handle(int amount) {
+        if (next_handler) next_handler->handle(amount);
+        else std::cout << "No handler could approve amount " << amount << std::endl;
     }
+
+    virtual ~Handler() = default;
 
 protected:
-    std::shared_ptr<Handler> nextHandler;
+    std::shared_ptr<Handler> next_handler;
 };
 
-class InfoHandler : public Handler {
+class Supervisor : public Handler {
 public:
-    void handle(int severity, const std::string& message) override {
-        if (severity <= 1) {
-            std::cout << "[INFO] " << message << std::endl;
-        } else {
-            Handler::handle(severity, message);
-        }
+    void handle(int amount) override {
+        if (amount <= 1000) std::cout << "Supervisor approved " << amount << std::endl;
+        else Handler::handle(amount);
     }
 };
 
-class WarningHandler : public Handler {
+class Manager : public Handler {
 public:
-    void handle(int severity, const std::string& message) override {
-        if (severity == 2) {
-            std::cout << "[WARNING] " << message << std::endl;
-        } else {
-            Handler::handle(severity, message);
-        }
+    void handle(int amount) override {
+        if (amount <= 5000) std::cout << "Manager approved " << amount << std::endl;
+        else Handler::handle(amount);
     }
 };
 
-class ErrorHandler : public Handler {
+class Director : public Handler {
 public:
-    void handle(int severity, const std::string& message) override {
-        if (severity >= 3) {
-            std::cout << "[ERROR] " << message << std::endl;
-        } else {
-            Handler::handle(severity, message);
-        }
+    void handle(int amount) override {
+        if (amount <= 20000) std::cout << "Director approved " << amount << std::endl;
+        else Handler::handle(amount);
     }
 };
 
 int main() {
-    auto info = std::make_shared<InfoHandler>();
-    auto warning = std::make_shared<WarningHandler>();
-    auto error = std::make_shared<ErrorHandler>();
-    info->setNext(warning);
-    warning->setNext(error);
+    auto supervisor = std::make_shared<Supervisor>();
+    auto manager = std::make_shared<Manager>();
+    auto director = std::make_shared<Director>();
 
-    info->handle(1, "system started");
-    info->handle(2, "disk space low");
-    info->handle(3, "out of memory");
+    supervisor->set_next(manager);
+    manager->set_next(director);
+
+    supervisor->handle(500);
+    supervisor->handle(3000);
+    supervisor->handle(15000);
+    supervisor->handle(50000);
 
     return 0;
 }

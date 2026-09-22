@@ -1,46 +1,36 @@
 protocol Coffee {
-    var cost: Double { get }
-    var description: String { get }
+    func cost() -> Double
+    func description() -> String
 }
 
 struct SimpleCoffee: Coffee {
-    var cost: Double { 2.0 }
-    var description: String { "Coffee" }
+    func cost() -> Double { 2.0 }
+    func description() -> String { "coffee" }
 }
 
 class CoffeeDecorator: Coffee {
-    private let wrapped: Coffee
+    let wrapped: Coffee
 
     init(_ wrapped: Coffee) {
         self.wrapped = wrapped
     }
 
-    var cost: Double { wrapped.cost }
-    var description: String { wrapped.description }
+    func cost() -> Double { wrapped.cost() }
+    func description() -> String { wrapped.description() }
 }
 
 final class MilkDecorator: CoffeeDecorator {
-    private let base: Coffee
-    override init(_ wrapped: Coffee) {
-        self.base = wrapped
-        super.init(wrapped)
-    }
-    override var cost: Double { base.cost + 0.5 }
-    override var description: String { base.description + " + Milk" }
+    override func cost() -> Double { super.cost() + 0.5 }
+    override func description() -> String { "\(super.description()) with milk" }
 }
 
-final class SyrupDecorator: CoffeeDecorator {
-    private let base: Coffee
-    override init(_ wrapped: Coffee) {
-        self.base = wrapped
-        super.init(wrapped)
-    }
-    override var cost: Double { base.cost + 0.75 }
-    override var description: String { base.description + " + Syrup" }
+final class SugarDecorator: CoffeeDecorator {
+    override func cost() -> Double { super.cost() + 0.25 }
+    override func description() -> String { "\(super.description()) with sugar" }
 }
 
-var order: Coffee = SimpleCoffee()
-order = MilkDecorator(order)
-order = SyrupDecorator(order)
+var drink: Coffee = SimpleCoffee()
+drink = MilkDecorator(drink)
+drink = SugarDecorator(drink)
 
-print("\(order.description): $\(order.cost)")
+print("\(drink.description()) costs \(drink.cost())")

@@ -1,9 +1,9 @@
 extends Node
 
-func bfs(graph: Dictionary, start: int) -> Array:
+func bfs(graph: Dictionary, start: String) -> Array:
 	var visited = {start: true}
-	var queue = [start]
 	var order = []
+	var queue = [start]
 	while not queue.is_empty():
 		var node = queue.pop_front()
 		order.append(node)
@@ -15,10 +15,9 @@ func bfs(graph: Dictionary, start: int) -> Array:
 
 func _ready():
 	var graph = {
-		0: [1, 2],
-		1: [0, 3],
-		2: [0, 3],
-		3: [1, 2, 4],
-		4: [3]
+		"a": ["b", "c"],
+		"b": ["d"],
+		"c": ["d"],
+		"d": []
 	}
-	print(bfs(graph, 0))
+	print(bfs(graph, "a"))

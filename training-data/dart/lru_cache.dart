@@ -1,25 +1,26 @@
-import 'dart:collection';
-
 class LruCache<K, V> {
   final int capacity;
-  final LinkedHashMap<K, V> _map = LinkedHashMap<K, V>();
+  final Map<K, V> _map = {};
+  final List<K> _order = [];
 
   LruCache(this.capacity);
 
   V? get(K key) {
     if (!_map.containsKey(key)) return null;
-    final value = _map.remove(key) as V;
-    _map[key] = value;
-    return value;
+    _order.remove(key);
+    _order.add(key);
+    return _map[key];
   }
 
   void put(K key, V value) {
     if (_map.containsKey(key)) {
-      _map.remove(key);
+      _order.remove(key);
     } else if (_map.length >= capacity) {
-      _map.remove(_map.keys.first);
+      final oldest = _order.removeAt(0);
+      _map.remove(oldest);
     }
     _map[key] = value;
+    _order.add(key);
   }
 }
 

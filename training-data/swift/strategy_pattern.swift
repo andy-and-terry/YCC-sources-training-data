@@ -1,42 +1,28 @@
-protocol DiscountStrategy {
-    func apply(to price: Double) -> Double
+protocol SortStrategy {
+    func sort(_ array: [Int]) -> [Int]
 }
 
-struct NoDiscount: DiscountStrategy {
-    func apply(to price: Double) -> Double { price }
+struct AscendingStrategy: SortStrategy {
+    func sort(_ array: [Int]) -> [Int] { array.sorted() }
 }
 
-struct PercentageDiscount: DiscountStrategy {
-    let percent: Double
-    func apply(to price: Double) -> Double { price * (1 - percent / 100) }
+struct DescendingStrategy: SortStrategy {
+    func sort(_ array: [Int]) -> [Int] { array.sorted(by: >) }
 }
 
-struct FlatDiscount: DiscountStrategy {
-    let amount: Double
-    func apply(to price: Double) -> Double { max(0, price - amount) }
-}
+final class Sorter {
+    var strategy: SortStrategy
 
-final class ShoppingCart {
-    private var strategy: DiscountStrategy
-
-    init(strategy: DiscountStrategy) {
+    init(strategy: SortStrategy) {
         self.strategy = strategy
     }
 
-    func setStrategy(_ strategy: DiscountStrategy) {
-        self.strategy = strategy
-    }
-
-    func checkout(_ price: Double) -> Double {
-        strategy.apply(to: price)
+    func sort(_ array: [Int]) -> [Int] {
+        strategy.sort(array)
     }
 }
 
-let cart = ShoppingCart(strategy: NoDiscount())
-print(cart.checkout(100))
-
-cart.setStrategy(PercentageDiscount(percent: 20))
-print(cart.checkout(100))
-
-cart.setStrategy(FlatDiscount(amount: 15))
-print(cart.checkout(100))
+let sorter = Sorter(strategy: AscendingStrategy())
+print(sorter.sort([5, 2, 8, 1]))
+sorter.strategy = DescendingStrategy()
+print(sorter.sort([5, 2, 8, 1]))

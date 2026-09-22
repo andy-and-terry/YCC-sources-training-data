@@ -1,39 +1,41 @@
-func rabinKarpSearch(_ text: String, _ pattern: String) -> [Int] {
-    let t = Array(text)
-    let p = Array(pattern)
-    let n = t.count, m = p.count
-    guard m > 0, m <= n else { return [] }
+func rabinKarpSearch(text: String, pattern: String) -> [Int] {
+    let textChars = Array(text)
+    let patternChars = Array(pattern)
+    let n = textChars.count
+    let m = patternChars.count
+    guard m > 0, n >= m else { return [] }
 
     let base = 256
-    let prime = 1_000_000_007
-    var h = 1
-    for _ in 0..<(m - 1) { h = (h * base) % prime }
+    let modulus = 1_000_000_007
+    var highOrder = 1
+    for _ in 0..<(m - 1) {
+        highOrder = (highOrder * base) % modulus
+    }
 
     var patternHash = 0
     var windowHash = 0
     for i in 0..<m {
-        patternHash = (patternHash * base + Int(p[i].asciiValue ?? 0)) % prime
-        windowHash = (windowHash * base + Int(t[i].asciiValue ?? 0)) % prime
+        patternHash = (patternHash * base + Int(patternChars[i].asciiValue ?? 0)) % modulus
+        windowHash = (windowHash * base + Int(textChars[i].asciiValue ?? 0)) % modulus
     }
 
     var matches: [Int] = []
-    var i = 0
-    while true {
-        if windowHash == patternHash && Array(t[i..<(i + m)]) == p {
-            matches.append(i)
+    for i in 0...(n - m) {
+        if windowHash == patternHash {
+            if Array(textChars[i..<(i + m)]) == patternChars {
+                matches.append(i)
+            }
         }
-        if i == n - m { break }
-
-        let oldChar = Int(t[i].asciiValue ?? 0)
-        let newChar = Int(t[i + m].asciiValue ?? 0)
-        windowHash = (base * (windowHash - oldChar * h) + newChar) % prime
-        if windowHash < 0 { windowHash += prime }
-        i += 1
+        if i < n - m {
+            let leading = Int(textChars[i].asciiValue ?? 0)
+            let trailing = Int(textChars[i + m].asciiValue ?? 0)
+            windowHash = (windowHash - leading * highOrder % modulus + modulus) % modulus
+            windowHash = (windowHash * base + trailing) % modulus
+        }
     }
-
     return matches
 }
 
-print(rabinKarpSearch("ababcababcabc", "abc"))
-print(rabinKarpSearch("aaaaaa", "aa"))
-print(rabinKarpSearch("hello", "xyz"))
+let text = "abracadabra abra cadabra"
+let pattern = "abra"
+print(rabinKarpSearch(text: text, pattern: pattern))

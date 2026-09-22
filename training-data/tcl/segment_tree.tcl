@@ -1,49 +1,51 @@
-array set tree {}
-set treeSize 0
+array set segTree {}
+set segTreeN 0
 
-proc seg_build {values} {
-    global tree treeSize
-    set n [llength $values]
-    set treeSize [expr {4 * ($n + 1)}]
-    for {set i 0} {$i < $treeSize} {incr i} {
-        set tree($i) 0
+proc segTreeBuild {data} {
+    global segTree segTreeN
+    set segTreeN [llength $data]
+    for {set i 0} {$i < 2 * $segTreeN} {incr i} {
+        set segTree($i) 0
     }
-    seg_build_rec $values 1 0 [expr {$n - 1}]
+    for {set i 0} {$i < $segTreeN} {incr i} {
+        set segTree([expr {$segTreeN + $i}]) [lindex $data $i]
+    }
+    for {set i [expr {$segTreeN - 1}]} {$i >= 1} {incr i -1} {
+        set segTree($i) [expr {$segTree([expr {2 * $i}]) + $segTree([expr {2 * $i + 1}])}]
+    }
 }
 
-proc seg_build_rec {values node lo hi} {
-    global tree
-    if {$lo == $hi} {
-        set tree($node) [lindex $values $lo]
-        return
+proc segTreeUpdate {index value} {
+    global segTree segTreeN
+    set i [expr {$index + $segTreeN}]
+    set segTree($i) $value
+    while {$i > 1} {
+        set i [expr {$i / 2}]
+        set segTree($i) [expr {$segTree([expr {2 * $i}]) + $segTree([expr {2 * $i + 1}])}]
     }
-    set mid [expr {($lo + $hi) / 2}]
-    set leftNode [expr {2 * $node}]
-    set rightNode [expr {2 * $node + 1}]
-    seg_build_rec $values $leftNode $lo $mid
-    seg_build_rec $values $rightNode [expr {$mid + 1}] $hi
-    set tree($node) [expr {$tree($leftNode) + $tree($rightNode)}]
 }
 
-proc seg_query {node lo hi ql qr} {
-    global tree
-    if {$qr < $lo || $hi < $ql} {
-        return 0
+proc segTreeQuery {left right} {
+    global segTree segTreeN
+    set l [expr {$left + $segTreeN}]
+    set r [expr {$right + $segTreeN + 1}]
+    set sum 0
+    while {$l < $r} {
+        if {$l % 2 == 1} {
+            incr sum $segTree($l)
+            incr l
+        }
+        if {$r % 2 == 1} {
+            incr r -1
+            incr sum $segTree($r)
+        }
+        set l [expr {$l / 2}]
+        set r [expr {$r / 2}]
     }
-    if {$ql <= $lo && $hi <= $qr} {
-        return $tree($node)
-    }
-    set mid [expr {($lo + $hi) / 2}]
-    set left [seg_query [expr {2 * $node}] $lo $mid $ql $qr]
-    set right [seg_query [expr {2 * $node + 1}] [expr {$mid + 1}] $hi $ql $qr]
-    return [expr {$left + $right}]
+    return $sum
 }
 
-proc seg_range_sum {n ql qr} {
-    return [seg_query 1 0 [expr {$n - 1}] $ql $qr]
-}
-
-set data {1 3 5 7 9 11}
-seg_build $data
-puts [seg_range_sum [llength $data] 1 3]
-puts [seg_range_sum [llength $data] 0 5]
+segTreeBuild {1 3 5 7 9 11}
+puts [segTreeQuery 1 3]
+segTreeUpdate 1 10
+puts [segTreeQuery 1 3]

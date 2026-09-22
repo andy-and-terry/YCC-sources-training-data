@@ -1,6 +1,3 @@
-const MAX_LEVEL = 16;
-const P = 0.5;
-
 class SkipListNode {
   constructor(value, level) {
     this.value = value;
@@ -9,43 +6,45 @@ class SkipListNode {
 }
 
 class SkipList {
-  constructor() {
-    this.head = new SkipListNode(-Infinity, MAX_LEVEL);
+  constructor(maxLevel = 4, p = 0.5) {
+    this.maxLevel = maxLevel;
+    this.p = p;
     this.level = 0;
+    this.header = new SkipListNode(-Infinity, maxLevel);
   }
 
-  #randomLevel() {
+  randomLevel() {
     let lvl = 0;
-    while (lvl < MAX_LEVEL && Math.random() < P) lvl++;
+    while (Math.random() < this.p && lvl < this.maxLevel) lvl++;
     return lvl;
   }
 
   insert(value) {
-    const update = new Array(MAX_LEVEL + 1).fill(this.head);
-    let current = this.head;
-
+    const update = new Array(this.maxLevel + 1).fill(this.header);
+    let current = this.header;
     for (let i = this.level; i >= 0; i--) {
       while (current.forward[i] && current.forward[i].value < value) {
         current = current.forward[i];
       }
       update[i] = current;
     }
-
-    const newLevel = this.#randomLevel();
-    if (newLevel > this.level) {
-      for (let i = this.level + 1; i <= newLevel; i++) update[i] = this.head;
-      this.level = newLevel;
-    }
-
-    const newNode = new SkipListNode(value, newLevel);
-    for (let i = 0; i <= newLevel; i++) {
-      newNode.forward[i] = update[i].forward[i];
-      update[i].forward[i] = newNode;
+    current = current.forward[0];
+    if (!current || current.value !== value) {
+      const level = this.randomLevel();
+      if (level > this.level) {
+        for (let i = this.level + 1; i <= level; i++) update[i] = this.header;
+        this.level = level;
+      }
+      const node = new SkipListNode(value, level);
+      for (let i = 0; i <= level; i++) {
+        node.forward[i] = update[i].forward[i];
+        update[i].forward[i] = node;
+      }
     }
   }
 
   contains(value) {
-    let current = this.head;
+    let current = this.header;
     for (let i = this.level; i >= 0; i--) {
       while (current.forward[i] && current.forward[i].value < value) {
         current = current.forward[i];
@@ -54,12 +53,20 @@ class SkipList {
     current = current.forward[0];
     return current !== null && current.value === value;
   }
+
+  toArray() {
+    const result = [];
+    let current = this.header.forward[0];
+    while (current) {
+      result.push(current.value);
+      current = current.forward[0];
+    }
+    return result;
+  }
 }
 
 const list = new SkipList();
-for (const v of [3, 6, 7, 9, 12, 19, 17, 26, 21, 25]) list.insert(v);
-console.log(list.contains(19));
-console.log(list.contains(15));
-console.log(list.contains(25));
-
+[3, 6, 7, 9, 12, 19, 17, 26, 21, 25].forEach((v) => list.insert(v));
+console.log(list.toArray());
+console.log(list.contains(19), list.contains(15));
 module.exports = { SkipList };

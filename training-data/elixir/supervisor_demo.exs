@@ -1,45 +1,37 @@
-defmodule FlakyWorker do
-  use GenServer
+defmodule Worker do
+  use Agent
 
-  def start_link(_opts), do: GenServer.start_link(__MODULE__, 0, name: __MODULE__)
+  def start_link(name) do
+    Agent.start_link(fn -> 0 end, name: name)
+  end
 
-  def bump, do: GenServer.call(__MODULE__, :bump)
-  def crash, do: GenServer.cast(__MODULE__, :crash)
-
-  @impl true
-  def init(count), do: {:ok, count}
-
-  @impl true
-  def handle_call(:bump, _from, count), do: {:reply, count + 1, count + 1}
-
-  @impl true
-  def handle_cast(:crash, _count), do: raise("boom")
+  def bump(name), do: Agent.update(name, &(&1 + 1))
+  def value(name), do: Agent.get(name, & &1)
 end
 
-defmodule DemoSupervisor do
+defmodule WorkerSupervisor do
   use Supervisor
 
-  def start_link(_opts), do: Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
+  def start_link(init_arg) do
+    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  end
 
   @impl true
-  def init(:ok) do
+  def init(_init_arg) do
     children = [
-      %{id: FlakyWorker, start: {FlakyWorker, :start_link, [[]]}, restart: :permanent}
+      Supervisor.child_spec({Worker, :worker_one}, id: :worker_one),
+      Supervisor.child_spec({Worker, :worker_two}, id: :worker_two)
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
 
-{:ok, _sup} = DemoSupervisor.start_link([])
+{:ok, _sup} = WorkerSupervisor.start_link([])
 
-IO.inspect(FlakyWorker.bump())
-IO.inspect(FlakyWorker.bump())
+Worker.bump(:worker_one)
+Worker.bump(:worker_one)
+Worker.bump(:worker_two)
 
-pid_before = Process.whereis(FlakyWorker)
-FlakyWorker.crash()
-Process.sleep(50)
-pid_after = Process.whereis(FlakyWorker)
-
-IO.inspect(pid_before != pid_after)
-IO.inspect(FlakyWorker.bump())
+IO.inspect(Worker.value(:worker_one))
+IO.inspect(Worker.value(:worker_two))

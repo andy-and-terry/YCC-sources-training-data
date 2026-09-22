@@ -1,26 +1,22 @@
-VARIABLE POS
-VARIABLE LIMIT
-VARIABLE RUN-CHAR
-VARIABLE RUN-LEN
+VARIABLE CUR-CHAR
+VARIABLE RUN-COUNT
 
-: RLE ( addr len -- )
-  OVER + LIMIT !
-  POS !
-  BEGIN
-    POS @ LIMIT @ <
-  WHILE
-    POS @ C@ RUN-CHAR !
-    1 RUN-LEN !
-    POS @ 1+ POS !
-    BEGIN
-      POS @ LIMIT @ < POS @ C@ RUN-CHAR @ = AND
-    WHILE
-      RUN-LEN @ 1+ RUN-LEN !
-      POS @ 1+ POS !
-    REPEAT
-    RUN-CHAR @ EMIT
-    RUN-LEN @ .
-  REPEAT ;
+: RUN-LENGTH-ENCODE ( addr len -- )
+  DUP 0= IF 2DROP EXIT THEN
+  OVER C@ CUR-CHAR !
+  0 RUN-COUNT !
+  0 DO
+    DUP I + C@ CUR-CHAR @ =
+    IF
+      1 RUN-COUNT +!
+    ELSE
+      CUR-CHAR @ EMIT RUN-COUNT @ .
+      DUP I + C@ CUR-CHAR !
+      1 RUN-COUNT !
+    THEN
+  LOOP
+  CUR-CHAR @ EMIT RUN-COUNT @ .
+  DROP ;
 
-S" aaabbbccd" RLE
+S" aaabccccd" RUN-LENGTH-ENCODE
 CR

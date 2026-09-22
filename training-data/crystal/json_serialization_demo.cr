@@ -5,14 +5,9 @@ class Person
 
   property name : String
   property age : Int32
-
-  def initialize(@name : String, @age : Int32)
-  end
 end
 
-person = Person.new("Ada", 30)
-json = person.to_json
-puts json
-
-parsed = Person.from_json(json)
-puts "#{parsed.name} is #{parsed.age}"
+json = %({"name":"Ada","age":36})
+person = Person.from_json(json)
+puts "#{person.name} is #{person.age}"
+puts person.to_json

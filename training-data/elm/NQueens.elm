@@ -1,4 +1,4 @@
-module NQueens exposing (solve)
+module NQueens exposing (isSafe, solutionCount, solve)
 
 
 solve : Int -> List (List Int)
@@ -22,3 +22,8 @@ isSafe queens col =
     queens
         |> List.indexedMap (\i q -> ( i + 1, q ))
         |> List.all (\( dist, q ) -> q /= col && abs (q - col) /= dist)
+
+
+solutionCount : Int -> Int
+solutionCount n =
+    List.length (solve n)

@@ -4,17 +4,17 @@ mutable struct FenwickTree
     FenwickTree(n::Int) = new(zeros(Int, n + 1), n)
 end
 
-function update!(ft::FenwickTree, i::Int, delta::Int)
-    i += 1
+function update!(ft::FenwickTree, index::Int, delta::Int)
+    i = index
     while i <= ft.n
         ft.tree[i] += delta
         i += i & (-i)
     end
 end
 
-function prefix_sum(ft::FenwickTree, i::Int)
-    i += 1
+function prefix_sum(ft::FenwickTree, index::Int)
     total = 0
+    i = index
     while i > 0
         total += ft.tree[i]
         i -= i & (-i)
@@ -22,15 +22,15 @@ function prefix_sum(ft::FenwickTree, i::Int)
     return total
 end
 
-function range_sum(ft::FenwickTree, l::Int, r::Int)
-    return prefix_sum(ft, r) - (l == 0 ? 0 : prefix_sum(ft, l - 1))
+function range_sum(ft::FenwickTree, left::Int, right::Int)
+    return prefix_sum(ft, right) - prefix_sum(ft, left - 1)
 end
 
-ft = FenwickTree(8)
-values = [3, 2, -1, 6, 5, 4, -3, 3]
-for (i, v) in enumerate(values)
-    update!(ft, i - 1, v)
+ft = FenwickTree(10)
+for (i, v) in enumerate([3, 2, -1, 6, 5, 4, -3, 3, 7, 2])
+    update!(ft, i, v)
 end
-
-println(prefix_sum(ft, 4))
-println(range_sum(ft, 2, 5))
+println(range_sum(ft, 1, 5))
+println(range_sum(ft, 4, 10))
+update!(ft, 3, 4)
+println(range_sum(ft, 1, 5))

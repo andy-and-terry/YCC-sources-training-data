@@ -1,42 +1,48 @@
 newtype State s a = State { runState :: s -> (a, s) }
 
 instance Functor (State s) where
-  fmap f (State g) = State $ \s ->
-    let (a, s') = g s
-    in (f a, s')
+  fmap f (State g) = State (\s -> let (a, s') = g s in (f a, s'))
 
 instance Applicative (State s) where
-  pure a = State $ \s -> (a, s)
-  (State f) <*> (State g) = State $ \s ->
+  pure a = State (\s -> (a, s))
+  (State f) <*> (State g) = State (\s ->
     let (h, s') = f s
         (a, s'') = g s'
-    in (h a, s'')
+    in (h a, s''))
 
 instance Monad (State s) where
   return = pure
-  (State g) >>= f = State $ \s ->
+  (State g) >>= f = State (\s ->
     let (a, s') = g s
-        State h = f a
-    in h s'
+    in runState (f a) s')
 
 get :: State s s
-get = State $ \s -> (s, s)
+get = State (\s -> (s, s))
 
 put :: s -> State s ()
-put s = State $ \_ -> ((), s)
+put s = State (\_ -> ((), s))
 
-fresh :: State Int Int
-fresh = do
-  n <- get
-  put (n + 1)
-  return n
+modify :: (s -> s) -> State s ()
+modify f = State (\s -> ((), f s))
 
-labelThree :: State Int (Int, Int, Int)
-labelThree = do
-  a <- fresh
-  b <- fresh
-  c <- fresh
-  return (a, b, c)
+push :: Int -> State [Int] ()
+push x = modify (x :)
+
+pop :: State [Int] Int
+pop = do
+  stack <- get
+  let (x : xs) = stack
+  put xs
+  return x
+
+stackOps :: State [Int] Int
+stackOps = do
+  push 1
+  push 2
+  push 3
+  a <- pop
+  b <- pop
+  return (a + b)
 
 main :: IO ()
-main = print (runState labelThree 0)
+main = print (runState stackOps [])

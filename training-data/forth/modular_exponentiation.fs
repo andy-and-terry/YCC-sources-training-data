@@ -1,0 +1,23 @@
+VARIABLE BASE
+VARIABLE EXP
+VARIABLE MOD-N
+VARIABLE RESULT
+
+: MOD-POW ( base exp m -- result )
+  MOD-N !  EXP !  BASE !
+  1 RESULT !
+  BASE @ MOD-N @ MOD BASE !
+  BEGIN
+    EXP @ 0>
+  WHILE
+    EXP @ 1 AND 1 =
+    IF
+      RESULT @ BASE @ * MOD-N @ MOD RESULT !
+    THEN
+    BASE @ BASE @ * MOD-N @ MOD BASE !
+    EXP @ 2/ EXP !
+  REPEAT
+  RESULT @ ;
+
+3 13 7 MOD-POW .
+CR

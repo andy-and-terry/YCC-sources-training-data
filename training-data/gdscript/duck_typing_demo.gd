@@ -1,19 +1,24 @@
 extends Node
 
+class Duck:
+	func make_sound() -> String:
+		return "Quack!"
+
 class Dog:
-	func speak() -> String:
+	func make_sound() -> String:
 		return "Woof!"
 
-class Cat:
-	func speak() -> String:
-		return "Meow!"
+class Rock:
+	func exists() -> bool:
+		return true
 
-func make_it_speak(animal) -> String:
-	if animal.has_method("speak"):
-		return animal.call("speak")
-	return "..."
+func make_it_speak(thing) -> void:
+	if thing.has_method("make_sound"):
+		print(thing.make_sound())
+	else:
+		print("this thing cannot speak")
 
 func _ready():
-	var animals = [Dog.new(), Cat.new()]
-	for animal in animals:
-		print(make_it_speak(animal))
+	var things = [Duck.new(), Dog.new(), Rock.new()]
+	for thing in things:
+		make_it_speak(thing)

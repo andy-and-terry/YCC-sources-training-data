@@ -1,73 +1,80 @@
 <?php
 
-interface TrafficLightState
+interface OrderState
 {
-    public function next(): TrafficLightState;
-
+    public function next(Order $order): void;
     public function name(): string;
 }
 
-class RedState implements TrafficLightState
+class PendingState implements OrderState
 {
-    public function next(): TrafficLightState
+    public function next(Order $order): void
     {
-        return new GreenState();
+        $order->setState(new ShippedState());
     }
 
     public function name(): string
     {
-        return 'Red';
+        return 'pending';
     }
 }
 
-class GreenState implements TrafficLightState
+class ShippedState implements OrderState
 {
-    public function next(): TrafficLightState
+    public function next(Order $order): void
     {
-        return new YellowState();
+        $order->setState(new DeliveredState());
     }
 
     public function name(): string
     {
-        return 'Green';
+        return 'shipped';
     }
 }
 
-class YellowState implements TrafficLightState
+class DeliveredState implements OrderState
 {
-    public function next(): TrafficLightState
+    public function next(Order $order): void
     {
-        return new RedState();
+        // terminal state, no further transition
     }
 
     public function name(): string
     {
-        return 'Yellow';
+        return 'delivered';
     }
 }
 
-class TrafficLight
+class Order
 {
-    private TrafficLightState $state;
+    private OrderState $state;
 
     public function __construct()
     {
-        $this->state = new RedState();
+        $this->state = new PendingState();
+    }
+
+    public function setState(OrderState $state): void
+    {
+        $this->state = $state;
     }
 
     public function advance(): void
     {
-        $this->state = $this->state->next();
+        $this->state->next($this);
     }
 
-    public function current(): string
+    public function status(): string
     {
         return $this->state->name();
     }
 }
 
-$light = new TrafficLight();
-for ($i = 0; $i < 4; $i++) {
-    echo $light->current() . "\n";
-    $light->advance();
-}
+$order = new Order();
+echo $order->status() . "\n";
+$order->advance();
+echo $order->status() . "\n";
+$order->advance();
+echo $order->status() . "\n";
+$order->advance();
+echo $order->status() . "\n";

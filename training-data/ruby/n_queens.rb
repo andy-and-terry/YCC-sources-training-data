@@ -1,4 +1,4 @@
-def solve_n_queens(n)
+def n_queens(n)
   solutions = []
   columns = []
 
@@ -8,17 +8,12 @@ def solve_n_queens(n)
       return
     end
 
-    n.times do |col|
-      safe = columns.each_with_index.none? do |placed_col, placed_row|
-        placed_col == col ||
-          (placed_row - row).abs == (placed_col - col).abs
-      end
+    (0...n).each do |col|
+      next unless safe?(columns, row, col)
 
-      if safe
-        columns << col
-        place.call(row + 1)
-        columns.pop
-      end
+      columns << col
+      place.call(row + 1)
+      columns.pop
     end
   end
 
@@ -26,6 +21,12 @@ def solve_n_queens(n)
   solutions
 end
 
-solutions = solve_n_queens(4)
-puts solutions.length          # 2
-puts solutions.first.inspect   # [1, 3, 0, 2]
+def safe?(columns, row, col)
+  columns.each_with_index.all? do |placed_col, placed_row|
+    placed_col != col && (placed_col - col).abs != (placed_row - row).abs
+  end
+end
+
+solutions = n_queens(4)
+puts solutions.length
+puts solutions.first.inspect

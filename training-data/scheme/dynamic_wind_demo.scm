@@ -1,21 +1,19 @@
-(define (with-resource name thunk)
+(define trace '())
+
+(define (log! tag) (set! trace (cons tag trace)))
+
+(define (with-tracking thunk)
   (dynamic-wind
-   (lambda () (display "acquire ") (display name) (newline))
+   (lambda () (log! 'enter))
    thunk
-   (lambda () (display "release ") (display name) (newline))))
+   (lambda () (log! 'leave))))
 
-(with-resource "file-a"
-  (lambda () (display "using file-a") (newline)))
-
-;; dynamic-wind still runs the "after" cleanup even when a continuation
-;; captured inside the body is invoked to leave early.
 (call-with-current-continuation
- (lambda (escape)
-   (with-resource "file-b"
-     (lambda ()
-       (display "about to bail out") (newline)
-       (escape #f)
-       (display "this never runs") (newline)))))
+ (lambda (k)
+   (with-tracking
+    (lambda ()
+      (log! 'body)
+      (k 'escaped)))))
 
-(display "done")
+(display (reverse trace))
 (newline)

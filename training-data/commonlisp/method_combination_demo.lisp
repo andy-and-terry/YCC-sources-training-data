@@ -1,19 +1,23 @@
-(defgeneric process (obj))
+(defclass account ()
+  ((balance :initarg :balance :accessor balance :initform 0)))
 
-(defmethod process :before ((obj integer))
-  (format t "before: about to process ~a~%" obj))
+(defgeneric withdraw (account amount))
 
-(defmethod process ((obj integer))
-  (format t "primary: processing ~a~%" obj)
-  (* obj 2))
+(defmethod withdraw :before ((a account) amount)
+  (format t "checking: withdrawing ~a from balance ~a~%" amount (balance a)))
 
-(defmethod process :after ((obj integer))
-  (format t "after: done processing ~a~%" obj))
+(defmethod withdraw ((a account) amount)
+  (decf (balance a) amount))
 
-(defmethod process :around ((obj integer))
-  (format t "around: entering~%")
-  (let ((result (call-next-method)))
-    (format t "around: leaving with result ~a~%" result)
-    result))
+(defmethod withdraw :after ((a account) amount)
+  (declare (ignore amount))
+  (format t "new balance: ~a~%" (balance a)))
 
-(print (process 5))
+(defmethod withdraw :around ((a account) amount)
+  (if (> amount (balance a))
+      (format t "denied: insufficient funds~%")
+      (call-next-method)))
+
+(let ((acc (make-instance 'account :balance 100)))
+  (withdraw acc 30)
+  (withdraw acc 1000))

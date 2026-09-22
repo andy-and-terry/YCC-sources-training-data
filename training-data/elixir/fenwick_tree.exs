@@ -1,41 +1,44 @@
 defmodule FenwickTree do
-  defstruct size: 0, tree: %{}
+  import Bitwise
+
+  defstruct tree: %{}, size: 0
 
   def new(size) do
-    %FenwickTree{size: size, tree: Map.new(1..size, fn i -> {i, 0} end)}
+    tree = for i <- 1..size, into: %{}, do: {i, 0}
+    %__MODULE__{tree: tree, size: size}
   end
 
-  def update(%FenwickTree{size: size, tree: tree} = fenwick, index, delta) do
-    tree = do_update(tree, index, delta, size)
-    %{fenwick | tree: tree}
+  def add(%__MODULE__{} = ft, index, delta) do
+    tree = do_add(ft.tree, index + 1, ft.size, delta)
+    %{ft | tree: tree}
   end
 
-  defp do_update(tree, index, _delta, size) when index > size, do: tree
+  defp do_add(tree, i, size, _delta) when i > size, do: tree
 
-  defp do_update(tree, index, delta, size) do
-    tree = Map.update!(tree, index, &(&1 + delta))
-    do_update(tree, index + Bitwise.band(index, -index), delta, size)
+  defp do_add(tree, i, size, delta) do
+    tree = Map.update(tree, i, delta, &(&1 + delta))
+    do_add(tree, i + (i &&& -i), size, delta)
   end
 
-  def prefix_sum(%FenwickTree{tree: tree}, index) do
-    do_prefix_sum(tree, index, 0)
+  def prefix_sum(%__MODULE__{} = ft, index), do: do_sum(ft.tree, index + 1, 0)
+
+  defp do_sum(_tree, i, total) when i <= 0, do: total
+
+  defp do_sum(tree, i, total) do
+    do_sum(tree, i - (i &&& -i), total + Map.get(tree, i, 0))
   end
 
-  defp do_prefix_sum(_tree, index, sum) when index <= 0, do: sum
-
-  defp do_prefix_sum(tree, index, sum) do
-    do_prefix_sum(tree, index - Bitwise.band(index, -index), sum + Map.get(tree, index, 0))
-  end
-
-  def range_sum(fenwick, lo, hi) do
-    prefix_sum(fenwick, hi) - prefix_sum(fenwick, lo - 1)
+  def range_sum(ft, left, right) do
+    prefix_sum(ft, right) - if(left > 0, do: prefix_sum(ft, left - 1), else: 0)
   end
 end
 
-fenwick =
-  Enum.reduce(Enum.with_index([3, 2, -1, 6, 5, 4, -3, 3, 7, 2], 1), FenwickTree.new(10), fn
-    {value, index}, acc -> FenwickTree.update(acc, index, value)
-  end)
+ft = FenwickTree.new(6)
 
-IO.inspect(FenwickTree.prefix_sum(fenwick, 5))
-IO.inspect(FenwickTree.range_sum(fenwick, 3, 7))
+ft =
+  [1, 3, 5, 7, 9, 11]
+  |> Enum.with_index()
+  |> Enum.reduce(ft, fn {v, i}, acc -> FenwickTree.add(acc, i, v) end)
+
+IO.inspect(FenwickTree.range_sum(ft, 1, 3))
+IO.inspect(FenwickTree.prefix_sum(ft, 5))

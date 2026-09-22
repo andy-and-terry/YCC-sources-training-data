@@ -1,31 +1,31 @@
-(defn make-cache [capacity]
-  (atom {:capacity capacity :order [] :data {}}))
+(defn make-lru [capacity]
+  (atom {:capacity capacity :order [] :store {}}))
 
-(defn cache-get [cache key]
-  (let [{:keys [data order]} @cache]
-    (if (contains? data key)
+(defn lru-get [lru key]
+  (let [{:keys [store order]} @lru]
+    (if (contains? store key)
       (do
-        (swap! cache assoc :order (conj (vec (remove #(= % key) order)) key))
-        (get data key))
-      :miss)))
+        (swap! lru assoc :order (conj (vec (remove #(= % key) order)) key))
+        (get store key))
+      nil)))
 
-(defn cache-put! [cache key val]
-  (swap! cache
-         (fn [{:keys [capacity order data] :as state}]
+(defn lru-put! [lru key value]
+  (swap! lru
+         (fn [{:keys [capacity order store]}]
            (let [order (conj (vec (remove #(= % key) order)) key)
-                 data (assoc data key val)]
+                 store (assoc store key value)]
              (if (> (count order) capacity)
                (let [evict (first order)]
                  {:capacity capacity
                   :order (vec (rest order))
-                  :data (dissoc data evict)})
-               {:capacity capacity :order order :data data})))))
+                  :store (dissoc store evict)})
+               {:capacity capacity :order order :store store})))))
 
-(def c (make-cache 2))
-(cache-put! c :a 1)
-(cache-put! c :b 2)
-(println (cache-get c :a))
-(cache-put! c :c 3)
-(println (cache-get c :b))
-(println (cache-get c :a))
-(println (cache-get c :c))
+(def cache (make-lru 2))
+(lru-put! cache :a 1)
+(lru-put! cache :b 2)
+(println (lru-get cache :a))
+(lru-put! cache :c 3)
+(println (lru-get cache :b))
+(println (lru-get cache :a))
+(println (lru-get cache :c))

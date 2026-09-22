@@ -4,44 +4,37 @@ class Coffee
   end
 
   def description
-    'Coffee'
+    "coffee"
   end
 end
 
-class CoffeeDecorator
+class CoffeeDecorator < SimpleDelegator
   def initialize(coffee)
-    @coffee = coffee
-  end
-
-  def cost
-    @coffee.cost
-  end
-
-  def description
-    @coffee.description
+    super
   end
 end
 
 class MilkDecorator < CoffeeDecorator
   def cost
-    super + 0.5
+    __getobj__.cost + 0.5
   end
 
   def description
-    "#{super}, Milk"
+    "#{__getobj__.description}, milk"
   end
 end
 
-class SyrupDecorator < CoffeeDecorator
+class SugarDecorator < CoffeeDecorator
   def cost
-    super + 0.75
+    __getobj__.cost + 0.25
   end
 
   def description
-    "#{super}, Syrup"
+    "#{__getobj__.description}, sugar"
   end
 end
 
-drink = SyrupDecorator.new(MilkDecorator.new(Coffee.new))
-puts drink.description   # Coffee, Milk, Syrup
-puts drink.cost           # 3.25
+require "delegate"
+
+order = SugarDecorator.new(MilkDecorator.new(Coffee.new))
+puts "#{order.description}: $#{'%.2f' % order.cost}"

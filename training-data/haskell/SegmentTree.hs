@@ -1,35 +1,34 @@
 import Data.Array
-import qualified Data.Map as Map
 
-buildAssoc :: Array Int Int -> Int -> Int -> Int -> (Int, Map.Map Int Int)
-buildAssoc arr node lo hi
-  | lo == hi = (arr ! lo, Map.singleton node (arr ! lo))
-  | otherwise =
-      let mid = (lo + hi) `div` 2
-          (leftVal, leftMap) = buildAssoc arr (2 * node) lo mid
-          (rightVal, rightMap) = buildAssoc arr (2 * node + 1) (mid + 1) hi
-          total = leftVal + rightVal
-      in (total, Map.insert node total (Map.union leftMap rightMap))
+data SegmentTree = SegmentTree
+  { size :: Int
+  , tree :: Array Int Int
+  }
 
-buildTree :: [Int] -> Array Int Int
-buildTree xs = listArray (1, 4 * n) [Map.findWithDefault 0 i nodeMap | i <- [1 .. 4 * n]]
+buildTree :: [Int] -> SegmentTree
+buildTree values = SegmentTree n (build (listArray (0, 2 * n - 1) (replicate (2 * n) 0)))
   where
-    n = length xs
-    arr = listArray (1, n) xs
-    (_, nodeMap) = buildAssoc arr 1 1 n
+    n = length values
+    build arr0 = foldl combineUp withLeaves [n - 1, n - 2 .. 1]
+      where
+        withLeaves = arr0 // zip [n ..] values
+        combineUp arr i = arr // [(i, arr ! (2 * i) + arr ! (2 * i + 1))]
 
-query :: Array Int Int -> Int -> Int -> Int -> Int -> Int -> Int
-query tree node lo hi l r
-  | r < lo || hi < l = 0
-  | l <= lo && hi <= r = tree ! node
-  | otherwise =
-      let mid = (lo + hi) `div` 2
-      in query tree (2 * node) lo mid l r + query tree (2 * node + 1) (mid + 1) hi l r
+rangeSum :: SegmentTree -> Int -> Int -> Int
+rangeSum st l0 r0 = go (l0 + n) (r0 + n) 0
+  where
+    n = size st
+    arr = tree st
+    go l r acc
+      | l >= r = acc
+      | otherwise =
+          let acc1 = if odd l then acc + arr ! l else acc
+              l1 = if odd l then l + 1 else l
+              acc2 = if odd r then acc1 + arr ! (r - 1) else acc1
+              r1 = if odd r then r - 1 else r
+          in go (l1 `div` 2) (r1 `div` 2) acc2
 
 main :: IO ()
 main = do
-  let xs = [1, 3, 5, 7, 9, 11]
-      n = length xs
-      tree = buildTree xs
-  print (query tree 1 1 n 2 4)
-  print (query tree 1 1 n 1 6)
+  let st = buildTree [1, 3, 5, 7, 9, 11]
+  print (rangeSum st 1 4)

@@ -1,17 +1,15 @@
 using System;
 
-class ConfigManager
+sealed class AppConfig
 {
-    private static readonly Lazy<ConfigManager> instance =
-        new Lazy<ConfigManager>(() => new ConfigManager());
+    private static readonly Lazy<AppConfig> lazyInstance = new(() => new AppConfig());
 
-    public static ConfigManager Instance => instance.Value;
+    public static AppConfig Instance => lazyInstance.Value;
 
-    public string Environment { get; set; }
+    public string Theme { get; set; } = "light";
 
-    private ConfigManager()
+    private AppConfig()
     {
-        Environment = "production";
     }
 }
 
@@ -19,8 +17,8 @@ class SingletonPatternDemo
 {
     static void Main()
     {
-        ConfigManager.Instance.Environment = "staging";
-        Console.WriteLine(ConfigManager.Instance.Environment);
-        Console.WriteLine(ReferenceEquals(ConfigManager.Instance, ConfigManager.Instance));
+        AppConfig.Instance.Theme = "dark";
+        Console.WriteLine(AppConfig.Instance.Theme);
+        Console.WriteLine(ReferenceEquals(AppConfig.Instance, AppConfig.Instance));
     }
 }

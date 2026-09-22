@@ -1,42 +1,39 @@
 Object subclass: LRUCache [
-    | capacity store order |
-    LRUCache class >> capacity: n [
+    | capacity order values |
+    LRUCache class >> new: cap [
         | c |
         c := super new.
-        c setCapacity: n.
+        c setCapacity: cap.
         ^c
     ]
-    setCapacity: n [
-        capacity := n.
-        store := Dictionary new.
-        order := OrderedCollection new.
-    ]
 
-    touch: key [
-        order remove: key ifAbsent: [ ].
-        order addLast: key.
+    setCapacity: cap [
+        capacity := cap.
+        order := OrderedCollection new.
+        values := Dictionary new.
     ]
 
     get: key [
-        (store includesKey: key)
-            ifFalse: [ ^-1 ].
-        self touch: key.
-        ^store at: key
+        (values includesKey: key) ifFalse: [ ^nil ].
+        order remove: key.
+        order addLast: key.
+        ^values at: key
     ]
 
     put: key value: value [
-        store at: key put: value.
-        self touch: key.
-        order size > capacity
-            ifTrue: [ | evict |
-                evict := order removeFirst.
-                store removeKey: evict.
-            ].
+        (values includesKey: key) ifTrue: [ order remove: key ].
+        order addLast: key.
+        values at: key put: value.
+        order size > capacity ifTrue: [
+            | evicted |
+            evicted := order removeFirst.
+            values removeKey: evicted.
+        ].
     ]
 ]
 
 | cache |
-cache := LRUCache capacity: 2.
+cache := LRUCache new: 2.
 cache put: 1 value: 'a'.
 cache put: 2 value: 'b'.
 Transcript showCr: (cache get: 1) printString.

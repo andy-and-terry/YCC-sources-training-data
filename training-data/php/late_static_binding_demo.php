@@ -7,9 +7,9 @@ class Model
         return new static();
     }
 
-    public function name(): string
+    public function describe(): string
     {
-        return static::class;
+        return 'a ' . static::class;
     }
 }
 
@@ -19,8 +19,12 @@ class User extends Model
 
 class Product extends Model
 {
+    public function describe(): string
+    {
+        return 'a special ' . parent::describe();
+    }
 }
 
-echo Model::create()->name() . "\n";
-echo User::create()->name() . "\n";
-echo Product::create()->name() . "\n";
+foreach ([Model::create(), User::create(), Product::create()] as $instance) {
+    echo $instance->describe() . "\n";
+}

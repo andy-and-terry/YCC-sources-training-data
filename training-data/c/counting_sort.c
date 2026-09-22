@@ -1,31 +1,19 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
-void counting_sort(int *arr, int n) {
-    if (n == 0) return;
+#define RANGE 100
 
-    int max = arr[0];
-    for (int i = 1; i < n; i++) {
-        if (arr[i] > max) max = arr[i];
-    }
+void counting_sort(int arr[], int n) {
+    int count[RANGE] = {0};
+    int output[n];
 
-    int *counts = calloc((size_t)max + 1, sizeof(int));
-    for (int i = 0; i < n; i++) {
-        counts[arr[i]]++;
-    }
-    for (int i = 1; i <= max; i++) {
-        counts[i] += counts[i - 1];
-    }
-
-    int *output = malloc((size_t)n * sizeof(int));
+    for (int i = 0; i < n; i++) count[arr[i]]++;
+    for (int i = 1; i < RANGE; i++) count[i] += count[i - 1];
     for (int i = n - 1; i >= 0; i--) {
-        output[--counts[arr[i]]] = arr[i];
+        output[count[arr[i]] - 1] = arr[i];
+        count[arr[i]]--;
     }
-
-    memcpy(arr, output, (size_t)n * sizeof(int));
-    free(counts);
-    free(output);
+    memcpy(arr, output, n * sizeof(int));
 }
 
 int main(void) {
@@ -34,9 +22,7 @@ int main(void) {
 
     counting_sort(arr, n);
 
-    for (int i = 0; i < n; i++) {
-        printf("%d ", arr[i]);
-    }
+    for (int i = 0; i < n; i++) printf("%d ", arr[i]);
     printf("\n");
     return 0;
 }

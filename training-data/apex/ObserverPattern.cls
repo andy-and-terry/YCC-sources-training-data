@@ -3,19 +3,15 @@ public class ObserverPattern {
         void update(String event);
     }
 
-    public class LoggingObserver implements Observer {
-        public List<String> log = new List<String>();
-
+    public class EmailObserver implements Observer {
         public void update(String event) {
-            log.add('logged: ' + event);
+            System.debug('Email notification: ' + event);
         }
     }
 
-    public class AlertObserver implements Observer {
-        public List<String> alerts = new List<String>();
-
+    public class SmsObserver implements Observer {
         public void update(String event) {
-            alerts.add('alert: ' + event);
+            System.debug('SMS notification: ' + event);
         }
     }
 
@@ -35,15 +31,8 @@ public class ObserverPattern {
 
     public static void main() {
         Subject subject = new Subject();
-        ObserverPattern outer = new ObserverPattern();
-        LoggingObserver logger = outer.new LoggingObserver();
-        AlertObserver alerter = outer.new AlertObserver();
-
-        subject.subscribe(logger);
-        subject.subscribe(alerter);
-        subject.notifyAll('order placed');
-
-        System.debug(logger.log);
-        System.debug(alerter.alerts);
+        subject.subscribe(new EmailObserver());
+        subject.subscribe(new SmsObserver());
+        subject.notifyAll('Order Shipped');
     }
 }

@@ -1,17 +1,18 @@
-(defn insert [trie word]
+(defn trie-insert [trie word]
   (assoc-in trie (concat (map str word) [:end?]) true))
 
-(defn contains-word? [trie word]
-  (let [node (get-in trie (map str word))]
-    (boolean (and node (:end? node)))))
+(defn trie-search [trie word]
+  (let [path (map str word)]
+    (true? (get-in trie (concat path [:end?])))))
 
-(defn starts-with? [trie prefix]
-  (boolean (get-in trie (map str prefix))))
+(defn trie-starts-with? [trie prefix]
+  (not (nil? (get-in trie (map str prefix)))))
 
-(def t (reduce insert {} ["cat" "car" "cart" "dog"]))
+(def words ["cat" "car" "card" "dog"])
+(def built (reduce trie-insert {} words))
 
-(println (contains-word? t "car"))
-(println (contains-word? t "ca"))
-(println (starts-with? t "ca"))
-(println (starts-with? t "do"))
-(println (starts-with? t "z"))
+(println (trie-search built "car"))
+(println (trie-search built "ca"))
+(println (trie-starts-with? built "ca"))
+(println (trie-starts-with? built "do"))
+(println (trie-starts-with? built "z"))

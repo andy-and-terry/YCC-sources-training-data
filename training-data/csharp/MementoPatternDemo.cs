@@ -4,52 +4,49 @@ using System.Collections.Generic;
 class EditorMemento
 {
     public string Content { get; }
-    public EditorMemento(string content) { Content = content; }
+    public EditorMemento(string content) => Content = content;
 }
 
-class Editor
+class TextEditor
 {
-    public string Content { get; set; } = "";
+    public string Content { get; private set; } = "";
 
-    public EditorMemento Save()
-    {
-        return new EditorMemento(Content);
-    }
+    public void Type(string text) => Content += text;
 
-    public void Restore(EditorMemento memento)
-    {
-        Content = memento.Content;
-    }
+    public EditorMemento Save() => new EditorMemento(Content);
+
+    public void Restore(EditorMemento memento) => Content = memento.Content;
 }
 
-class History
+class EditorHistory
 {
-    private readonly Stack<EditorMemento> snapshots = new Stack<EditorMemento>();
+    private readonly Stack<EditorMemento> history = new();
 
-    public void Push(EditorMemento memento) => snapshots.Push(memento);
-    public EditorMemento Pop() => snapshots.Pop();
+    public void Push(EditorMemento memento) => history.Push(memento);
+
+    public EditorMemento Pop() => history.Pop();
 }
 
 class MementoPatternDemo
 {
     static void Main()
     {
-        var editor = new Editor();
-        var history = new History();
+        var editor = new TextEditor();
+        var history = new EditorHistory();
 
-        editor.Content = "draft one";
+        editor.Type("Hello");
         history.Push(editor.Save());
 
-        editor.Content = "draft two";
+        editor.Type(", world");
         history.Push(editor.Save());
 
-        editor.Content = "draft three";
-        Console.WriteLine("current: " + editor.Content);
+        editor.Type("!!!");
+        Console.WriteLine(editor.Content);
 
         editor.Restore(history.Pop());
-        Console.WriteLine("after undo: " + editor.Content);
+        Console.WriteLine(editor.Content);
 
         editor.Restore(history.Pop());
-        Console.WriteLine("after undo: " + editor.Content);
+        Console.WriteLine(editor.Content);
     }
 }

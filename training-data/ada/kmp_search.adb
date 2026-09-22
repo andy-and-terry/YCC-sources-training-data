@@ -1,30 +1,36 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Kmp_Search is
-   function Search (Text, Pattern : String) return Integer is
-      N : constant Integer := Text'Length;
-      M : constant Integer := Pattern'Length;
-      type Lps_Array is array (0 .. M - 1) of Integer;
-      Lps : Lps_Array := (others => 0);
-      Len : Integer := 0;
-      I, J : Integer;
+   type Int_Array is array (Natural range <>) of Natural;
+
+   function Build_Lps (Pattern : String) return Int_Array is
+      M   : constant Natural := Pattern'Length;
+      Lps : Int_Array (0 .. M - 1) := (others => 0);
+      Len : Natural := 0;
+      I   : Natural := 1;
    begin
-      I := 1;
       while I < M loop
          if Pattern (Pattern'First + I) = Pattern (Pattern'First + Len) then
             Len := Len + 1;
             Lps (I) := Len;
             I := I + 1;
-         elsif Len /= 0 then
+         elsif Len > 0 then
             Len := Lps (Len - 1);
          else
             Lps (I) := 0;
             I := I + 1;
          end if;
       end loop;
+      return Lps;
+   end Build_Lps;
 
-      I := 0;
-      J := 0;
+   function Find (Text, Pattern : String) return Integer is
+      N   : constant Natural := Text'Length;
+      M   : constant Natural := Pattern'Length;
+      Lps : constant Int_Array := Build_Lps (Pattern);
+      I   : Natural := 0;
+      J   : Natural := 0;
+   begin
       while I < N loop
          if Text (Text'First + I) = Pattern (Pattern'First + J) then
             I := I + 1;
@@ -32,16 +38,15 @@ procedure Kmp_Search is
             if J = M then
                return I - J;
             end if;
-         elsif J /= 0 then
+         elsif J > 0 then
             J := Lps (J - 1);
          else
             I := I + 1;
          end if;
       end loop;
       return -1;
-   end Search;
+   end Find;
 begin
-   Put_Line (Search ("abxabcabcaby", "abcaby")'Image);
-   Put_Line (Search ("hello world", "world")'Image);
-   Put_Line (Search ("hello world", "xyz")'Image);
+   Put_Line (Integer'Image (Find ("abxabcabcaby", "abcaby")));
+   Put_Line (Integer'Image (Find ("hello world", "xyz")));
 end Kmp_Search;

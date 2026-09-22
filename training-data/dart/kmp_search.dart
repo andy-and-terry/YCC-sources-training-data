@@ -1,42 +1,37 @@
-List<int> buildLps(String pattern) {
-  final lps = List<int>.filled(pattern.length, 0);
-  var len = 0;
-  var i = 1;
-  while (i < pattern.length) {
-    if (pattern[i] == pattern[len]) {
-      len++;
-      lps[i] = len;
-      i++;
-    } else if (len != 0) {
-      len = lps[len - 1];
-    } else {
-      lps[i] = 0;
-      i++;
+List<int> _buildFailure(String pattern) {
+  final fail = List<int>.filled(pattern.length, 0);
+  var k = 0;
+  for (var i = 1; i < pattern.length; i++) {
+    while (k > 0 && pattern[k] != pattern[i]) {
+      k = fail[k - 1];
     }
+    if (pattern[k] == pattern[i]) k++;
+    fail[i] = k;
   }
-  return lps;
+  return fail;
 }
 
-int kmpSearch(String text, String pattern) {
-  if (pattern.isEmpty) return 0;
-  final lps = buildLps(pattern);
-  var i = 0, j = 0;
-  while (i < text.length) {
-    if (text[i] == pattern[j]) {
-      i++;
-      j++;
-      if (j == pattern.length) return i - j;
-    } else if (j != 0) {
-      j = lps[j - 1];
-    } else {
-      i++;
+List<int> kmpSearch(String text, String pattern) {
+  final matches = <int>[];
+  if (pattern.isEmpty) return matches;
+
+  final fail = _buildFailure(pattern);
+  var k = 0;
+
+  for (var i = 0; i < text.length; i++) {
+    while (k > 0 && pattern[k] != text[i]) {
+      k = fail[k - 1];
+    }
+    if (pattern[k] == text[i]) k++;
+    if (k == pattern.length) {
+      matches.add(i - pattern.length + 1);
+      k = fail[k - 1];
     }
   }
-  return -1;
+
+  return matches;
 }
 
 void main() {
-  print(kmpSearch('abxabcabcaby', 'abcaby'));
-  print(kmpSearch('hello world', 'world'));
-  print(kmpSearch('hello world', 'xyz'));
+  print(kmpSearch('ababcabcabababd', 'ababd'));
 }

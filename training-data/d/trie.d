@@ -2,7 +2,7 @@ import std.stdio;
 
 class TrieNode {
     TrieNode[char] children;
-    bool isWord = false;
+    bool isEnd = false;
 }
 
 class Trie {
@@ -14,43 +14,36 @@ class Trie {
 
     void insert(string word) {
         auto node = root;
-        foreach (ch; word) {
-            if ((ch in node.children) is null) {
-                node.children[ch] = new TrieNode();
-            }
-            node = node.children[ch];
+        foreach (c; word) {
+            if (c !in node.children) node.children[c] = new TrieNode();
+            node = node.children[c];
         }
-        node.isWord = true;
+        node.isEnd = true;
     }
 
-    bool contains(string word) {
+    private TrieNode find(string s) {
+        auto node = root;
+        foreach (c; s) {
+            if (c !in node.children) return null;
+            node = node.children[c];
+        }
+        return node;
+    }
+
+    bool search(string word) {
         auto node = find(word);
-        return node !is null && node.isWord;
+        return node !is null && node.isEnd;
     }
 
     bool startsWith(string prefix) {
         return find(prefix) !is null;
     }
-
-    private TrieNode find(string s) {
-        auto node = root;
-        foreach (ch; s) {
-            auto next = ch in node.children;
-            if (next is null) return null;
-            node = *next;
-        }
-        return node;
-    }
 }
 
 void main() {
     auto trie = new Trie();
-    foreach (word; ["cat", "car", "card", "care", "dog"]) {
-        trie.insert(word);
-    }
-    writeln(trie.contains("car"));
-    writeln(trie.contains("ca"));
+    foreach (w; ["cat", "car", "card"]) trie.insert(w);
+    writeln(trie.search("car"));
+    writeln(trie.search("ca"));
     writeln(trie.startsWith("ca"));
-    writeln(trie.startsWith("do"));
-    writeln(trie.startsWith("z"));
 }

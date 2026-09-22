@@ -1,31 +1,26 @@
-interface ModernLogger {
-  log(message: string): void;
+interface ModernPrinter {
+  printDocument(text: string): void;
 }
 
-class LegacyLogger {
-  writeLine(text: string): void {
+// Legacy interface with an incompatible method signature.
+class LegacyPrinter {
+  printOldFormat(payload: { content: string; uppercase: boolean }): void {
+    const text = payload.uppercase ? payload.content.toUpperCase() : payload.content;
     console.log(`[legacy] ${text}`);
   }
 }
 
-class LegacyLoggerAdapter implements ModernLogger {
-  constructor(private legacy: LegacyLogger) {}
+class LegacyPrinterAdapter implements ModernPrinter {
+  constructor(private legacy: LegacyPrinter) {}
 
-  log(message: string): void {
-    this.legacy.writeLine(message);
+  printDocument(text: string): void {
+    this.legacy.printOldFormat({ content: text, uppercase: false });
   }
 }
 
-class ConsoleLogger implements ModernLogger {
-  log(message: string): void {
-    console.log(`[console] ${message}`);
-  }
+function render(printer: ModernPrinter, text: string): void {
+  printer.printDocument(text);
 }
 
-function runDiagnostics(logger: ModernLogger): void {
-  logger.log('diagnostics started');
-  logger.log('diagnostics complete');
-}
-
-runDiagnostics(new ConsoleLogger());
-runDiagnostics(new LegacyLoggerAdapter(new LegacyLogger()));
+const adapted: ModernPrinter = new LegacyPrinterAdapter(new LegacyPrinter());
+render(adapted, "hello from the adapter pattern");

@@ -1,39 +1,34 @@
-(define (sift-down! vec start end)
-  (let loop ((root start))
-    (let ((left (+ (* 2 root) 1))
-          (right (+ (* 2 root) 2))
-          (largest root))
-      (let* ((largest (if (and (< left end) (> (vector-ref vec left) (vector-ref vec largest)))
-                           left
-                           largest))
-             (largest (if (and (< right end) (> (vector-ref vec right) (vector-ref vec largest)))
-                           right
-                           largest)))
-        (if (= largest root)
-            #t
-            (let ((tmp (vector-ref vec root)))
-              (vector-set! vec root (vector-ref vec largest))
-              (vector-set! vec largest tmp)
-              (loop largest)))))))
-
-(define (build-heap! vec)
-  (let ((n (vector-length vec)))
-    (let loop ((i (- (quotient n 2) 1)))
-      (if (>= i 0)
-          (begin
-            (sift-down! vec i n)
-            (loop (- i 1)))))))
-
 (define (heap-sort! vec)
-  (build-heap! vec)
-  (let loop ((end (- (vector-length vec) 1)))
+  (define n (vector-length vec))
+
+  (define (swap! i j)
+    (let ((tmp (vector-ref vec i)))
+      (vector-set! vec i (vector-ref vec j))
+      (vector-set! vec j tmp)))
+
+  (define (sift-down start end)
+    (let loop ((root start))
+      (let ((child (+ (* 2 root) 1)))
+        (if (>= child end)
+            'done
+            (let ((larger (if (and (< (+ child 1) end)
+                                    (< (vector-ref vec child) (vector-ref vec (+ child 1))))
+                               (+ child 1)
+                               child)))
+              (if (< (vector-ref vec root) (vector-ref vec larger))
+                  (begin (swap! root larger) (loop larger))
+                  'done))))))
+
+  (let build-loop ((start (quotient (- n 2) 2)))
+    (if (>= start 0)
+        (begin (sift-down start n) (build-loop (- start 1)))))
+
+  (let sort-loop ((end (- n 1)))
     (if (> end 0)
         (begin
-          (let ((tmp (vector-ref vec 0)))
-            (vector-set! vec 0 (vector-ref vec end))
-            (vector-set! vec end tmp))
-          (sift-down! vec 0 end)
-          (loop (- end 1)))))
+          (swap! 0 end)
+          (sift-down 0 end)
+          (sort-loop (- end 1)))))
   vec)
 
 (display (heap-sort! (vector 5 3 8 1 9 2 7)))

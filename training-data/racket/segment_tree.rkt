@@ -1,53 +1,45 @@
 #lang racket
 
-;; Segment tree over a fixed array supporting range-sum queries and
-;; point updates in O(log n), backed by a mutable vector sized 4*n.
+(struct seg-tree (vec n) #:mutable)
 
-(define (build values)
-  (define n (vector-length values))
+(define (build-segment-tree arr)
+  (define n (vector-length arr))
   (define tree (make-vector (* 4 n) 0))
-  (define (build! node lo hi)
+  (define (build node start end)
     (cond
-      [(= lo hi) (vector-set! tree node (vector-ref values lo))]
+      [(= start end) (vector-set! tree node (vector-ref arr start))]
       [else
-       (define mid (quotient (+ lo hi) 2))
-       (build! (+ (* 2 node) 1) lo mid)
-       (build! (+ (* 2 node) 2) (+ mid 1) hi)
-       (vector-set! tree node (+ (vector-ref tree (+ (* 2 node) 1))
-                                  (vector-ref tree (+ (* 2 node) 2))))]))
-  (when (> n 0) (build! 0 0 (- n 1)))
-  (list tree n))
+       (define mid (quotient (+ start end) 2))
+       (build (* 2 node) start mid)
+       (build (+ (* 2 node) 1) (+ mid 1) end)
+       (vector-set! tree node (+ (vector-ref tree (* 2 node))
+                                  (vector-ref tree (+ (* 2 node) 1))))]))
+  (build 1 0 (sub1 n))
+  (seg-tree tree n))
 
-(define (seg-update! st index value)
-  (define tree (first st))
-  (define n (second st))
-  (define (update! node lo hi)
-    (cond
-      [(= lo hi) (vector-set! tree node value)]
-      [else
-       (define mid (quotient (+ lo hi) 2))
-       (if (<= index mid)
-           (update! (+ (* 2 node) 1) lo mid)
-           (update! (+ (* 2 node) 2) (+ mid 1) hi))
-       (vector-set! tree node (+ (vector-ref tree (+ (* 2 node) 1))
-                                  (vector-ref tree (+ (* 2 node) 2))))]))
-  (update! 0 0 (- n 1)))
+(define (segment-query st node start end l r)
+  (cond
+    [(or (> l end) (< r start)) 0]
+    [(and (<= l start) (>= r end)) (vector-ref (seg-tree-vec st) node)]
+    [else
+     (define mid (quotient (+ start end) 2))
+     (+ (segment-query st (* 2 node) start mid l r)
+        (segment-query st (+ (* 2 node) 1) (+ mid 1) end l r))]))
 
-(define (seg-query st ql qr)
-  (define tree (first st))
-  (define n (second st))
-  (define (query node lo hi)
-    (cond
-      [(or (> ql hi) (< qr lo)) 0]
-      [(and (<= ql lo) (>= qr hi)) (vector-ref tree node)]
-      [else
-       (define mid (quotient (+ lo hi) 2))
-       (+ (query (+ (* 2 node) 1) lo mid)
-          (query (+ (* 2 node) 2) (+ mid 1) hi))]))
-  (query 0 0 (- n 1)))
+(define (segment-update! st node start end idx value)
+  (define tree (seg-tree-vec st))
+  (cond
+    [(= start end) (vector-set! tree node value)]
+    [else
+     (define mid (quotient (+ start end) 2))
+     (if (<= idx mid)
+         (segment-update! st (* 2 node) start mid idx value)
+         (segment-update! st (+ (* 2 node) 1) (+ mid 1) end idx value))
+     (vector-set! tree node (+ (vector-ref tree (* 2 node))
+                                (vector-ref tree (+ (* 2 node) 1))))]))
 
-(define st (build (vector 1 3 5 7 9 11)))
-(displayln (seg-query st 1 3)) ; 3+5+7 = 15
-(seg-update! st 1 10)          ; values now 1 10 5 7 9 11
-(displayln (seg-query st 1 3)) ; 10+5+7 = 22
-(displayln (seg-query st 0 5)) ; full sum = 43
+(define arr (vector 1 3 5 7 9 11))
+(define st (build-segment-tree arr))
+(displayln (segment-query st 1 0 (sub1 (seg-tree-n st)) 1 4))
+(segment-update! st 1 0 (sub1 (seg-tree-n st)) 1 10)
+(displayln (segment-query st 1 0 (sub1 (seg-tree-n st)) 1 4))

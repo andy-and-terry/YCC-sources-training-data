@@ -1,65 +1,57 @@
 public class ChainOfResponsibilityPattern {
-    enum Level { INFO, WARNING, ERROR }
+    abstract static class Approver {
+        private Approver next;
 
-    abstract static class Handler {
-        private Handler next;
-
-        Handler setNext(Handler next) {
+        Approver setNext(Approver next) {
             this.next = next;
             return next;
         }
 
-        void handle(Level level, String message) {
-            if (canHandle(level)) {
-                process(message);
-            } else if (next != null) {
-                next.handle(level, message);
+        abstract void approve(double amount);
+
+        void forward(double amount) {
+            if (next != null) {
+                next.approve(amount);
             } else {
-                System.out.println("unhandled: " + message);
+                System.out.println("no one could approve " + amount);
             }
         }
-
-        abstract boolean canHandle(Level level);
-
-        abstract void process(String message);
     }
 
-    static class InfoHandler extends Handler {
-        boolean canHandle(Level level) {
-            return level == Level.INFO;
-        }
-
-        void process(String message) {
-            System.out.println("[INFO] " + message);
+    static class Manager extends Approver {
+        void approve(double amount) {
+            if (amount <= 1000) {
+                System.out.println("manager approved " + amount);
+            } else {
+                forward(amount);
+            }
         }
     }
 
-    static class WarningHandler extends Handler {
-        boolean canHandle(Level level) {
-            return level == Level.WARNING;
-        }
-
-        void process(String message) {
-            System.out.println("[WARNING] " + message);
+    static class Director extends Approver {
+        void approve(double amount) {
+            if (amount <= 5000) {
+                System.out.println("director approved " + amount);
+            } else {
+                forward(amount);
+            }
         }
     }
 
-    static class ErrorHandler extends Handler {
-        boolean canHandle(Level level) {
-            return level == Level.ERROR;
-        }
-
-        void process(String message) {
-            System.out.println("[ERROR] " + message);
+    static class VicePresident extends Approver {
+        void approve(double amount) {
+            System.out.println("VP approved " + amount);
         }
     }
 
     public static void main(String[] args) {
-        Handler chain = new InfoHandler();
-        chain.setNext(new WarningHandler()).setNext(new ErrorHandler());
+        Manager manager = new Manager();
+        Director director = new Director();
+        VicePresident vp = new VicePresident();
+        manager.setNext(director).setNext(vp);
 
-        chain.handle(Level.INFO, "server started");
-        chain.handle(Level.WARNING, "disk usage high");
-        chain.handle(Level.ERROR, "connection lost");
+        for (double amount : new double[] {500, 3000, 9000}) {
+            manager.approve(amount);
+        }
     }
 }

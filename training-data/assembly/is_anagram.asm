@@ -4,63 +4,56 @@ section .data
     str2 db "silent", 0
 
 section .bss
-    counts resb 26
+    counts resq 26
 
 section .text
     global _start
 
 _start:
-    ; zero out the counts array
     lea rdi, [counts]
-    xor rax, rax
     mov rcx, 26
 clear_loop:
-    mov byte [rdi], 0
-    inc rdi
+    mov qword [rdi], 0
+    add rdi, 8
     loop clear_loop
 
-    ; increment counts for each letter in str1
     lea rsi, [str1]
-    lea rdi, [counts]
-count_str1:
-    movzx rax, byte [rsi]
-    cmp al, 0
-    je decrement_str2
+add_loop:
+    mov al, [rsi]
+    test al, al
+    jz sub_start
     sub al, 'a'
-    inc byte [rdi + rax]
+    movzx rax, al
+    inc qword [counts + rax * 8]
     inc rsi
-    jmp count_str1
+    jmp add_loop
 
-    ; decrement counts for each letter in str2
-decrement_str2:
+sub_start:
     lea rsi, [str2]
-decrement_loop:
-    movzx rax, byte [rsi]
-    cmp al, 0
-    je check_result
+sub_loop:
+    mov al, [rsi]
+    test al, al
+    jz check_start
     sub al, 'a'
-    dec byte [rdi + rax]
+    movzx rax, al
+    dec qword [counts + rax * 8]
     inc rsi
-    jmp decrement_loop
+    jmp sub_loop
 
-check_result:
-    ; every count should be back to zero if the strings are anagrams
-    lea rsi, [counts]
-    xor rcx, rcx
-verify_loop:
+check_start:
+    xor rcx, rcx             ; index
+    mov rdi, 1                ; assume anagram
+check_loop:
     cmp rcx, 26
-    jge is_anagram_true
-    movsx rax, byte [rsi + rcx]
-    cmp rax, 0
-    jne is_anagram_false
+    jge exit
+    mov rax, [counts + rcx * 8]
+    test rax, rax
+    jz check_next
+    mov rdi, 0                 ; found a nonzero count, not an anagram
+    jmp exit
+check_next:
     inc rcx
-    jmp verify_loop
-
-is_anagram_true:
-    mov rdi, 1
-    jmp done
-is_anagram_false:
-    mov rdi, 0
-done:
+    jmp check_loop
+exit:
     mov rax, 60
     syscall

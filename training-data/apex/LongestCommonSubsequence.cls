@@ -13,7 +13,7 @@ public class LongestCommonSubsequence {
 
         for (Integer i = 1; i <= m; i++) {
             for (Integer j = 1; j <= n; j++) {
-                if (a.substring(i - 1, i) == b.substring(j - 1, j)) {
+                if (a.charAt(i - 1) == b.charAt(j - 1)) {
                     dp[i][j] = dp[i - 1][j - 1] + 1;
                 } else {
                     dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
@@ -26,6 +26,5 @@ public class LongestCommonSubsequence {
     public static void main() {
         System.debug(lcsLength('abcde', 'ace'));
         System.debug(lcsLength('abc', 'abc'));
-        System.debug(lcsLength('abc', 'def'));
     }
 }

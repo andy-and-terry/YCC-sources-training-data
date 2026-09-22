@@ -1,37 +1,28 @@
-fun interface DiscountStrategy {
-    fun apply(price: Double): Double
+interface SortStrategy {
+    fun sort(items: IntArray): IntArray
 }
 
-class NoDiscount : DiscountStrategy {
-    override fun apply(price: Double) = price
+class AscendingStrategy : SortStrategy {
+    override fun sort(items: IntArray): IntArray = items.sortedArray()
 }
 
-class PercentageDiscount(private val percent: Double) : DiscountStrategy {
-    override fun apply(price: Double) = price * (1 - percent / 100)
+class DescendingStrategy : SortStrategy {
+    override fun sort(items: IntArray): IntArray = items.sortedArrayDescending()
 }
 
-class FlatDiscount(private val amount: Double) : DiscountStrategy {
-    override fun apply(price: Double) = (price - amount).coerceAtLeast(0.0)
-}
-
-class Checkout(private var strategy: DiscountStrategy) {
-    fun setStrategy(strategy: DiscountStrategy) {
+class Sorter(private var strategy: SortStrategy) {
+    fun setStrategy(strategy: SortStrategy) {
         this.strategy = strategy
     }
 
-    fun total(price: Double): Double = strategy.apply(price)
+    fun execute(items: IntArray): IntArray = strategy.sort(items)
 }
 
 fun main() {
-    val checkout = Checkout(NoDiscount())
-    println(checkout.total(100.0))
+    val data = intArrayOf(5, 2, 8, 1, 9)
+    val sorter = Sorter(AscendingStrategy())
+    println(sorter.execute(data).joinToString())
 
-    checkout.setStrategy(PercentageDiscount(20.0))
-    println(checkout.total(100.0))
-
-    checkout.setStrategy(FlatDiscount(15.0))
-    println(checkout.total(100.0))
-
-    checkout.setStrategy { price -> price / 2 }
-    println(checkout.total(100.0))
+    sorter.setStrategy(DescendingStrategy())
+    println(sorter.execute(data).joinToString())
 }

@@ -1,0 +1,13 @@
+(define (counting-sort lst max-value)
+  (let ((counts (make-vector (+ max-value 1) 0)))
+    (for-each (lambda (x) (vector-set! counts x (+ 1 (vector-ref counts x)))) lst)
+    (let loop ((i 0) (result '()))
+      (if (> i max-value)
+          (reverse result)
+          (let inner ((c (vector-ref counts i)) (result result))
+            (if (= c 0)
+                (loop (+ i 1) result)
+                (inner (- c 1) (cons i result))))))))
+
+(display (counting-sort '(4 2 2 8 3 3 1 0) 8))
+(newline)

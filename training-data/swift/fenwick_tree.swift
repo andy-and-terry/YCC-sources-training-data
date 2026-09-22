@@ -2,12 +2,12 @@ final class FenwickTree {
     private var tree: [Int]
     private let n: Int
 
-    init(size: Int) {
+    init(_ size: Int) {
         n = size
         tree = [Int](repeating: 0, count: size + 1)
     }
 
-    func update(_ index: Int, _ delta: Int) {
+    func add(_ index: Int, _ delta: Int) {
         var i = index + 1
         while i <= n {
             tree[i] += delta
@@ -17,28 +17,23 @@ final class FenwickTree {
 
     func prefixSum(_ index: Int) -> Int {
         var i = index + 1
-        var sum = 0
+        var total = 0
         while i > 0 {
-            sum += tree[i]
+            total += tree[i]
             i -= i & (-i)
         }
-        return sum
+        return total
     }
 
     func rangeSum(_ left: Int, _ right: Int) -> Int {
-        guard left > 0 else { return prefixSum(right) }
-        return prefixSum(right) - prefixSum(left - 1)
+        prefixSum(right) - (left > 0 ? prefixSum(left - 1) : 0)
     }
 }
 
-let values = [3, 2, -1, 6, 5, 4, -3, 3, 7, 2]
-let fenwick = FenwickTree(size: values.count)
-for (index, value) in values.enumerated() {
-    fenwick.update(index, value)
+let ft = FenwickTree(6)
+for (i, v) in [1, 3, 5, 7, 9, 11].enumerated() {
+    ft.add(i, v)
 }
-
-print(fenwick.prefixSum(5))
-print(fenwick.rangeSum(2, 6))
-
-fenwick.update(3, 10)
-print(fenwick.rangeSum(2, 6))
+print(ft.rangeSum(1, 3)) // 15
+ft.add(1, 10)
+print(ft.rangeSum(1, 3)) // 25

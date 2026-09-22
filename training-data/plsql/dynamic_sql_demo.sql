@@ -1,34 +1,35 @@
-CREATE TABLE dyn_demo_items (
-    id NUMBER,
-    name VARCHAR2(50)
+CREATE TABLE dept_stats (
+    dept_name VARCHAR2(20),
+    emp_count NUMBER
 );
 
-INSERT INTO dyn_demo_items VALUES (1, 'Widget');
-INSERT INTO dyn_demo_items VALUES (2, 'Gadget');
+INSERT INTO dept_stats VALUES ('Engineering', 42);
+INSERT INTO dept_stats VALUES ('Sales', 17);
 
-CREATE OR REPLACE PROCEDURE insert_dynamic(
-    p_table_name IN VARCHAR2,
-    p_id IN NUMBER,
-    p_name IN VARCHAR2
-) IS
+CREATE OR REPLACE PROCEDURE count_rows(p_table_name IN VARCHAR2, p_count OUT NUMBER) IS
 BEGIN
-    EXECUTE IMMEDIATE 'INSERT INTO ' || p_table_name || ' (id, name) VALUES (:1, :2)'
-        USING p_id, p_name;
-END insert_dynamic;
+    EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM ' || p_table_name INTO p_count;
+END count_rows;
 /
 
-CREATE OR REPLACE PROCEDURE query_table_dynamic(p_table_name IN VARCHAR2) IS
-    TYPE ref_cursor IS REF CURSOR;
-    c ref_cursor;
-    v_id NUMBER;
-    v_name VARCHAR2(50);
+CREATE OR REPLACE PROCEDURE create_summary_table(p_table_name IN VARCHAR2) IS
 BEGIN
-    OPEN c FOR 'SELECT id, name FROM ' || p_table_name || ' ORDER BY id';
-    LOOP
-        FETCH c INTO v_id, v_name;
-        EXIT WHEN c%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE(v_id || ': ' || v_name);
+    EXECUTE IMMEDIATE 'CREATE TABLE ' || p_table_name || ' (label VARCHAR2(20), value NUMBER)';
+END create_summary_table;
+/
+
+DECLARE
+    v_count NUMBER;
+BEGIN
+    count_rows('dept_stats', v_count);
+    DBMS_OUTPUT.PUT_LINE('dept_stats row count: ' || v_count);
+
+    create_summary_table('run_summary');
+    EXECUTE IMMEDIATE 'INSERT INTO run_summary VALUES (:1, :2)' USING 'rows_seen', v_count;
+    COMMIT;
+
+    FOR rec IN (SELECT label, value FROM run_summary) LOOP
+        DBMS_OUTPUT.PUT_LINE(rec.label || ' = ' || rec.value);
     END LOOP;
-    CLOSE c;
-END query_table_dynamic;
+END;
 /

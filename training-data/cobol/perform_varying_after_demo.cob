@@ -1,0 +1,24 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFORMVARYAFTER.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 GRID.
+           05 GRID-ROW OCCURS 3 TIMES.
+               10 GRID-CELL PIC 9(2) OCCURS 3 TIMES.
+       01 ROW-IDX PIC 9(2).
+       01 COL-IDX PIC 9(2).
+       01 CELL-VALUE PIC 9(2) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING ROW-IDX FROM 1 BY 1 UNTIL ROW-IDX > 3
+               AFTER COL-IDX FROM 1 BY 1 UNTIL COL-IDX > 3
+               ADD 1 TO CELL-VALUE
+               MOVE CELL-VALUE TO GRID-CELL(ROW-IDX, COL-IDX)
+           END-PERFORM
+
+           PERFORM VARYING ROW-IDX FROM 1 BY 1 UNTIL ROW-IDX > 3
+               DISPLAY GRID-CELL(ROW-IDX, 1) " "
+                       GRID-CELL(ROW-IDX, 2) " "
+                       GRID-CELL(ROW-IDX, 3)
+           END-PERFORM
+           STOP RUN.

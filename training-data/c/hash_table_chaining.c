@@ -5,7 +5,7 @@
 #define TABLE_SIZE 16
 
 typedef struct Entry {
-    char *key;
+    char key[32];
     int value;
     struct Entry *next;
 } Entry;
@@ -14,37 +14,31 @@ typedef struct {
     Entry *buckets[TABLE_SIZE];
 } HashTable;
 
-char *copy_string(const char *src) {
-    size_t len = strlen(src) + 1;
-    char *dst = malloc(len);
-    memcpy(dst, src, len);
-    return dst;
-}
-
 unsigned int hash_string(const char *key) {
     unsigned int hash = 5381;
-    for (const char *p = key; *p; p++) {
-        hash = ((hash << 5) + hash) + (unsigned char)*p;
+    while (*key) {
+        hash = ((hash << 5) + hash) + (unsigned char)(*key);
+        key++;
     }
     return hash % TABLE_SIZE;
 }
 
 void ht_init(HashTable *table) {
-    for (int i = 0; i < TABLE_SIZE; i++) {
-        table->buckets[i] = NULL;
-    }
+    for (int i = 0; i < TABLE_SIZE; i++) table->buckets[i] = NULL;
 }
 
-void ht_set(HashTable *table, const char *key, int value) {
+void ht_put(HashTable *table, const char *key, int value) {
     unsigned int idx = hash_string(key);
-    for (Entry *e = table->buckets[idx]; e; e = e->next) {
-        if (strcmp(e->key, key) == 0) {
-            e->value = value;
+    Entry *cur = table->buckets[idx];
+    while (cur) {
+        if (strcmp(cur->key, key) == 0) {
+            cur->value = value;
             return;
         }
+        cur = cur->next;
     }
     Entry *entry = malloc(sizeof(Entry));
-    entry->key = copy_string(key);
+    strcpy(entry->key, key);
     entry->value = value;
     entry->next = table->buckets[idx];
     table->buckets[idx] = entry;
@@ -52,11 +46,13 @@ void ht_set(HashTable *table, const char *key, int value) {
 
 int ht_get(HashTable *table, const char *key, int *found) {
     unsigned int idx = hash_string(key);
-    for (Entry *e = table->buckets[idx]; e; e = e->next) {
-        if (strcmp(e->key, key) == 0) {
+    Entry *cur = table->buckets[idx];
+    while (cur) {
+        if (strcmp(cur->key, key) == 0) {
             *found = 1;
-            return e->value;
+            return cur->value;
         }
+        cur = cur->next;
     }
     *found = 0;
     return 0;
@@ -64,12 +60,11 @@ int ht_get(HashTable *table, const char *key, int *found) {
 
 void ht_free(HashTable *table) {
     for (int i = 0; i < TABLE_SIZE; i++) {
-        Entry *e = table->buckets[i];
-        while (e) {
-            Entry *next = e->next;
-            free(e->key);
-            free(e);
-            e = next;
+        Entry *cur = table->buckets[i];
+        while (cur) {
+            Entry *next = cur->next;
+            free(cur);
+            cur = next;
         }
     }
 }
@@ -78,17 +73,18 @@ int main(void) {
     HashTable table;
     ht_init(&table);
 
-    ht_set(&table, "apple", 3);
-    ht_set(&table, "banana", 5);
-    ht_set(&table, "cherry", 7);
-    ht_set(&table, "apple", 9);
+    ht_put(&table, "apple", 3);
+    ht_put(&table, "banana", 7);
+    ht_put(&table, "cherry", 12);
+    ht_put(&table, "apple", 5);
 
-    int found;
-    printf("%d\n", ht_get(&table, "apple", &found));
-    printf("found apple: %d\n", found);
-    printf("%d\n", ht_get(&table, "banana", &found));
-    ht_get(&table, "missing", &found);
-    printf("found missing: %d\n", found);
+    const char *keys[] = {"apple", "banana", "cherry", "durian"};
+    for (int i = 0; i < 4; i++) {
+        int found;
+        int value = ht_get(&table, keys[i], &found);
+        if (found) printf("%s -> %d\n", keys[i], value);
+        else printf("%s -> not found\n", keys[i]);
+    }
 
     ht_free(&table);
     return 0;

@@ -1,21 +1,20 @@
-enum TrafficLightColor {
-    Red
-    Yellow
-    Green
+enum OrderStatus {
+    Pending
+    Shipped
+    Delivered
+    Cancelled
 }
 
-function NextColor {
-    param([TrafficLightColor]$Color)
-    switch ($Color) {
-        ([TrafficLightColor]::Red)    { return [TrafficLightColor]::Green }
-        ([TrafficLightColor]::Green)  { return [TrafficLightColor]::Yellow }
-        ([TrafficLightColor]::Yellow) { return [TrafficLightColor]::Red }
+function Get-StatusMessage([OrderStatus]$status) {
+    switch ($status) {
+        ([OrderStatus]::Pending)   { return "Order is awaiting processing" }
+        ([OrderStatus]::Shipped)   { return "Order is on its way" }
+        ([OrderStatus]::Delivered) { return "Order has arrived" }
+        ([OrderStatus]::Cancelled) { return "Order was cancelled" }
     }
-    return $Color
 }
 
-$current = [TrafficLightColor]::Red
-for ($i = 0; $i -lt 4; $i++) {
-    Write-Output $current
-    $current = NextColor -Color $current
-}
+$current = [OrderStatus]::Shipped
+Get-StatusMessage $current
+[int]$current
+[OrderStatus].GetEnumNames()

@@ -4,19 +4,13 @@ macro define_getter(name)
   end
 end
 
-class Widget
-  def initialize(@width : Int32, @height : Int32)
+class Product
+  def initialize(@title : String, @price : Float64)
   end
 
-  define_getter width
-  define_getter height
-
-  def area
-    width * height
-  end
+  define_getter title
+  define_getter price
 end
 
-w = Widget.new(4, 5)
-puts w.width
-puts w.height
-puts w.area
+product = Product.new("Widget", 9.99)
+puts "#{product.title}: #{product.price}"

@@ -1,42 +1,39 @@
-class ListNode {
-    $Value
-    [ListNode]$Next
-
-    ListNode($value) {
-        $this.Value = $value
-        $this.Next = $null
+function New-ListNode {
+    param($Value)
+    [PSCustomObject]@{
+        Value = $Value
+        Next  = $null
     }
 }
 
-class LinkedList {
-    [ListNode]$Head
-
-    [void] Append($value) {
-        $node = [ListNode]::new($value)
-        if ($null -eq $this.Head) {
-            $this.Head = $node
-            return
-        }
-        $current = $this.Head
-        while ($null -ne $current.Next) {
-            $current = $current.Next
-        }
-        $current.Next = $node
+function Add-Node {
+    param($Head, $Value)
+    $node = New-ListNode -Value $Value
+    if ($null -eq $Head) {
+        return $node
     }
-
-    [string] ToString() {
-        $values = @()
-        $current = $this.Head
-        while ($null -ne $current) {
-            $values += $current.Value
-            $current = $current.Next
-        }
-        return $values -join " -> "
+    $cur = $Head
+    while ($null -ne $cur.Next) {
+        $cur = $cur.Next
     }
+    $cur.Next = $node
+    return $Head
 }
 
-$list = [LinkedList]::new()
-$list.Append(1)
-$list.Append(2)
-$list.Append(3)
-$list.ToString()
+function Get-ListValues {
+    param($Head)
+    $values = @()
+    $cur = $Head
+    while ($null -ne $cur) {
+        $values += $cur.Value
+        $cur = $cur.Next
+    }
+    return $values
+}
+
+$head = $null
+foreach ($v in 1..5) {
+    $head = Add-Node -Head $head -Value $v
+}
+
+Get-ListValues -Head $head

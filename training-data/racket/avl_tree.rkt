@@ -1,55 +1,61 @@
 #lang racket
 
-(struct node (value left right height) #:transparent)
+(struct node (key left right height) #:transparent)
 
-(define (h n) (if n (node-height n) 0))
+(define (height n)
+  (if n (node-height n) 0))
 
-(define (make-leaf v) (node v #f #f 1))
-
-(define (update-height n)
-  (node (node-value n) (node-left n) (node-right n)
-        (+ 1 (max (h (node-left n)) (h (node-right n))))))
+(define (make-node key left right)
+  (node key left right (+ 1 (max (height left) (height right)))))
 
 (define (balance-factor n)
-  (- (h (node-left n)) (h (node-right n))))
+  (if n (- (height (node-left n)) (height (node-right n))) 0))
 
-(define (rotate-right n)
-  (define l (node-left n))
-  (define new-n (update-height (node (node-value n) (node-right l) (node-right n) 0)))
-  (update-height (node (node-value l) (node-left l) new-n 0)))
+(define (rotate-right y)
+  (define x (node-left y))
+  (make-node (node-key x) (node-left x)
+             (make-node (node-key y) (node-right x) (node-right y))))
 
-(define (rotate-left n)
-  (define r (node-right n))
-  (define new-n (update-height (node (node-value n) (node-left n) (node-left r) 0)))
-  (update-height (node (node-value r) new-n (node-right r) 0)))
+(define (rotate-left x)
+  (define y (node-right x))
+  (make-node (node-key y)
+             (make-node (node-key x) (node-left x) (node-left y))
+             (node-right y)))
 
-(define (rebalance n0)
-  (define n (update-height n0))
+(define (avl-insert n key)
+  (cond
+    [(not n) (make-node key #f #f)]
+    [(< key (node-key n))
+     (define new-left (avl-insert (node-left n) key))
+     (define balanced (make-node (node-key n) new-left (node-right n)))
+     (rebalance balanced key)]
+    [(> key (node-key n))
+     (define new-right (avl-insert (node-right n) key))
+     (define balanced (make-node (node-key n) (node-left n) new-right))
+     (rebalance balanced key)]
+    [else n]))
+
+(define (rebalance n key)
   (define bf (balance-factor n))
   (cond
-    [(> bf 1)
-     (if (< (balance-factor (node-left n)) 0)
-         (rotate-right (node (node-value n) (rotate-left (node-left n)) (node-right n) 0))
-         (rotate-right n))]
-    [(< bf -1)
-     (if (> (balance-factor (node-right n)) 0)
-         (rotate-left (node (node-value n) (node-left n) (rotate-right (node-right n)) 0))
-         (rotate-left n))]
+    [(and (> bf 1) (< key (node-key (node-left n))))
+     (rotate-right n)]
+    [(and (< bf -1) (> key (node-key (node-right n))))
+     (rotate-left n)]
+    [(and (> bf 1) (> key (node-key (node-left n))))
+     (rotate-right (make-node (node-key n) (rotate-left (node-left n)) (node-right n)))]
+    [(and (< bf -1) (< key (node-key (node-right n))))
+     (rotate-left (make-node (node-key n) (node-left n) (rotate-right (node-right n))))]
     [else n]))
 
-(define (avl-insert n v)
-  (cond
-    [(not n) (make-leaf v)]
-    [(< v (node-value n)) (rebalance (node (node-value n) (avl-insert (node-left n) v) (node-right n) 0))]
-    [(> v (node-value n)) (rebalance (node (node-value n) (node-left n) (avl-insert (node-right n) v) 0))]
-    [else n]))
-
-(define (inorder n)
+(define (avl-inorder n)
   (if (not n)
       '()
-      (append (inorder (node-left n)) (list (node-value n)) (inorder (node-right n)))))
+      (append (avl-inorder (node-left n)) (list (node-key n)) (avl-inorder (node-right n)))))
 
-(define tree (foldl (lambda (v acc) (avl-insert acc v)) #f '(10 20 30 40 50 25)))
+(define tree
+  (for/fold ([t #f]) ([key '(10 20 30 40 50 25)])
+    (avl-insert t key)))
 
-(displayln (inorder tree))
-(displayln (h tree))
+(displayln (avl-inorder tree))
+(displayln (node-height tree))

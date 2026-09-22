@@ -1,32 +1,32 @@
 type
   Observer = ref object of RootObj
 
-method notify(o: Observer, event: string) {.base.} =
+  Subject = ref object
+    observers: seq[Observer]
+    state: int
+
+method notify(o: Observer, state: int) {.base.} =
   discard
 
 type
-  Logger = ref object of Observer
-  Alerter = ref object of Observer
+  ConsoleObserver = ref object of Observer
+    name: string
 
-method notify(o: Logger, event: string) =
-  echo "Logger received: ", event
+method notify(o: ConsoleObserver, state: int) =
+  echo o.name, " received update: ", state
 
-method notify(o: Alerter, event: string) =
-  echo "Alerter received: ", event
+proc newSubject(): Subject =
+  Subject(observers: @[], state: 0)
 
-type
-  Subject = object
-    observers: seq[Observer]
-
-proc attach(s: var Subject, o: Observer) =
+proc attach(s: Subject, o: Observer) =
   s.observers.add(o)
 
-proc emit(s: Subject, event: string) =
+proc setState(s: Subject, state: int) =
+  s.state = state
   for o in s.observers:
-    o.notify(event)
+    o.notify(state)
 
-var subject: Subject
-subject.attach(Logger())
-subject.attach(Alerter())
-subject.emit("started")
-subject.emit("stopped")
+let subject = newSubject()
+subject.attach(ConsoleObserver(name: "A"))
+subject.attach(ConsoleObserver(name: "B"))
+subject.setState(42)

@@ -1,4 +1,4 @@
-function! QuickSort(items)
+function! Quicksort(items)
   if len(a:items) <= 1
     return a:items
   endif
@@ -6,7 +6,7 @@ function! QuickSort(items)
   let rest = a:items[1:]
   let less = filter(copy(rest), 'v:val < pivot')
   let more = filter(copy(rest), 'v:val >= pivot')
-  return QuickSort(less) + [pivot] + QuickSort(more)
+  return Quicksort(less) + [pivot] + Quicksort(more)
 endfunction
 
-echo QuickSort([5, 2, 9, 1, 5, 6, 3])
+echo Quicksort([5, 3, 8, 1, 9, 2, 7])
