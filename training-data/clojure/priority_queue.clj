@@ -3,21 +3,18 @@
 (defn pq-right [i] (+ 2 (* 2 i)))
 
 (defn pq-push [heap value]
-  (loop [h (conj heap value) i (dec (count (conj heap value)))]
-    (if (and (pos? i) (< (nth h i) (nth h (pq-parent i))))
-      (let [p (pq-parent i)
-            swapped (assoc h i (nth h p) p (nth h i))]
-        (recur swapped p))
-      h)))
+  (let [h0 (conj heap value)]
+    (loop [h h0 i (dec (count h0))]
+      (if (and (pos? i) (< (nth h i) (nth h (pq-parent i))))
+        (let [p (pq-parent i)]
+          (recur (assoc h i (nth h p) p (nth h i)) p))
+        h))))
 
 (defn pq-sift-down [heap i]
   (let [n (count heap)
         l (pq-left i)
         r (pq-right i)
-        smallest (cond-> i
-                   (and (< l n) (< (nth heap l) (nth heap i))) (-> (constantly l))
-                   true identity)
-        smallest (if (and (< l n) (< (nth heap l) (nth heap smallest))) l smallest)
+        smallest (if (and (< l n) (< (nth heap l) (nth heap i))) l i)
         smallest (if (and (< r n) (< (nth heap r) (nth heap smallest))) r smallest)]
     (if (= smallest i)
       heap
