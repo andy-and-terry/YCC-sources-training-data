@@ -26,7 +26,7 @@ class Editor {
   }
 }
 
-class History {
+class EditHistory {
   private mementos: EditorMemento[] = [];
 
   push(memento: EditorMemento): void {
@@ -39,17 +39,17 @@ class History {
 }
 
 const editor = new Editor();
-const history = new History();
+const editHistory = new EditHistory();
 
 editor.type("Hello");
-history.push(editor.save());
+editHistory.push(editor.save());
 editor.type(", world");
-history.push(editor.save());
+editHistory.push(editor.save());
 editor.type("!");
 
 console.log(editor.getContent());
 
-const last = history.pop();
+const last = editHistory.pop();
 if (last) {
   editor.restore(last);
 }
