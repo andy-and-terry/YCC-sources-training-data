@@ -17,7 +17,7 @@ architecture Behavioral of Adder_Subtractor_4bit is
 begin
     -- XOR-ing b with sub broadcast turns this into a subtractor (two's
     -- complement via invert-and-add-1, same trick as the Verilog original).
-    b_xor <= b xor (others => sub);
+    b_xor <= b xor (sub & sub & sub & sub);
     sum_ext <= ('0' & unsigned(a)) + ('0' & unsigned(b_xor)) + sub;
     result_i <= std_logic_vector(sum_ext(3 downto 0));
     result <= result_i;
