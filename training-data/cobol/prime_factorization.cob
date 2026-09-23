@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PRIMEFACTORIZATION.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 NUM-VAL PIC 9(5) VALUE 360.
+       01 REM-VAL PIC 9(5).
+       01 DIV-VAL PIC 9(5) VALUE 2.
+
+       PROCEDURE DIVISION.
+           MOVE NUM-VAL TO REM-VAL
+           DISPLAY "PRIME FACTORS OF " NUM-VAL ":"
+           PERFORM UNTIL REM-VAL = 1
+               IF FUNCTION MOD(REM-VAL, DIV-VAL) = 0
+                   DISPLAY DIV-VAL
+                   DIVIDE REM-VAL BY DIV-VAL GIVING REM-VAL
+               ELSE
+                   ADD 1 TO DIV-VAL
+               END-IF
+           END-PERFORM
+           STOP RUN.
