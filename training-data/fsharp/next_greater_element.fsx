@@ -1,5 +1,5 @@
 let nextGreaterElements (values: int list) =
-    let result = Array.create values.Length -1
+    let result = Array.create values.Length (-1)
     let arr = List.toArray values
     let mutable stack: int list = []
     for i in 0 .. arr.Length - 1 do

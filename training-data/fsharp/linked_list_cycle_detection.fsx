@@ -13,19 +13,27 @@ let makeCyclicList values cycleBackTo =
     arr.[0]
 
 let hasCycle (head: Node) =
-    let rec go slow fast =
+    let rec advance node steps =
+        match steps, node with
+        | 0, n -> n
+        | _, None -> None
+        | s, Some(n: Node) -> advance n.Next (s - 1)
+
+    let rec loop slow fast =
         match fast with
         | None -> false
-        | Some (f: Node) ->
+        | Some(f: Node) ->
             match f.Next with
             | None -> false
-            | Some fastNext ->
-                let slowNext = (Option.get slow: Node).Next
-                if System.Object.ReferenceEquals(slowNext, fastNext) then true
-                else go slowNext fastNext.Next
-    match head.Next with
-    | None -> false
-    | Some _ -> go (Some head) (Some head)
+            | Some _ ->
+                let nextSlow = advance slow 1
+                let nextFast = advance fast 2
+                match nextSlow, nextFast with
+                | Some s, Some f when System.Object.ReferenceEquals(s, f) -> true
+                | Some _, Some _ -> loop nextSlow nextFast
+                | _ -> false
+
+    loop (Some head) (Some head)
 
 let acyclic = makeCyclicList [ 1; 2; 3; 4 ] None
 let cyclic = makeCyclicList [ 1; 2; 3; 4 ] (Some 1)
