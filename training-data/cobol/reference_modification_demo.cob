@@ -1,0 +1,23 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. REFMODDEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 FULL-NAME  PIC X(20) VALUE "JOHN SMITH".
+       01 FIRST-NAME PIC X(10).
+       01 LAST-NAME  PIC X(10).
+       01 REBUILT    PIC X(20).
+
+       PROCEDURE DIVISION.
+      *> Reference modification (FIELD(START:LENGTH)) pulls out a
+      *> variable-length slice without STRING/UNSTRING or INSPECT.
+           MOVE FULL-NAME(1:4) TO FIRST-NAME
+           MOVE FULL-NAME(6:5) TO LAST-NAME
+           DISPLAY "FIRST: " FIRST-NAME
+           DISPLAY "LAST:  " LAST-NAME
+
+           STRING FUNCTION TRIM(LAST-NAME) DELIMITED BY SIZE
+               ", " DELIMITED BY SIZE
+               FUNCTION TRIM(FIRST-NAME) DELIMITED BY SIZE
+               INTO REBUILT
+           DISPLAY REBUILT
+           STOP RUN.
