@@ -1,0 +1,13 @@
+: COUNT-BITS ( n -- count )
+  0 SWAP
+  BEGIN
+    DUP 0>
+  WHILE
+    DUP 1 AND ROT + SWAP
+    1 RSHIFT
+  REPEAT
+  DROP ;
+
+255 COUNT-BITS .
+170 COUNT-BITS .
+CR

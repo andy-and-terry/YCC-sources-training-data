@@ -1,0 +1,12 @@
+314 CONSTANT PI-100
+
+: CIRCLE-AREA ( radius -- area*100 )
+  DUP * PI-100 * ;
+
+: CIRCLE-CIRCUMFERENCE ( radius -- circumference*100 )
+  2 * PI-100 * ;
+
+5 CIRCLE-AREA .
+5 CIRCLE-CIRCUMFERENCE .
+10 CIRCLE-AREA .
+CR

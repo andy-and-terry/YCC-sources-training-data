@@ -1,0 +1,17 @@
+: SUM-DIGITS ( n -- sum )
+  0 SWAP
+  BEGIN
+    DUP 0>
+  WHILE
+    DUP 10 MOD ROT + SWAP
+    10 /
+  REPEAT
+  DROP ;
+
+: DIGITAL-ROOT ( n -- root )
+  DUP 9 <= IF EXIT THEN
+  SUM-DIGITS RECURSE ;
+
+12345 DIGITAL-ROOT .
+9875 DIGITAL-ROOT .
+CR

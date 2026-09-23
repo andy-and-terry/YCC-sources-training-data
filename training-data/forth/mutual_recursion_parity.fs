@@ -1,0 +1,15 @@
+DEFER IS-ODD?
+
+: IS-EVEN? ( n -- flag )
+  DUP 0= IF DROP TRUE EXIT THEN
+  1- IS-ODD? ;
+
+:NONAME ( n -- flag )
+  DUP 0= IF DROP FALSE EXIT THEN
+  1- IS-EVEN? ;
+IS IS-ODD?
+
+10 IS-EVEN? .
+7 IS-ODD? .
+0 IS-EVEN? .
+CR

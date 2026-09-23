@@ -1,0 +1,9 @@
+: BITWISE-DEMO ( -- )
+  12 10 AND . CR
+  12 10 OR . CR
+  12 10 XOR . CR
+  1 4 LSHIFT . CR
+  16 2 RSHIFT . CR
+  0 INVERT . CR ;
+
+BITWISE-DEMO
