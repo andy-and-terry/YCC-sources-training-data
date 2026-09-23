@@ -1,0 +1,30 @@
+CREATE ARR 10 , 9 , 2 , 5 , 3 , 7 , 101 , 18 ,
+8 CONSTANT NLEN
+CREATE LIS 8 CELLS ALLOT
+VARIABLE BEST
+
+: ARR@ ( i -- n ) CELLS ARR + @ ;
+: LIS-ADDR ( i -- addr ) CELLS LIS + ;
+
+: INIT-LIS ( -- )
+  NLEN 0 DO 1 I LIS-ADDR ! LOOP ;
+
+: COMPUTE-LIS ( -- )
+  INIT-LIS
+  NLEN 1 DO
+    I 0 DO
+      I ARR@ J ARR@ > IF
+        J LIS-ADDR @ 1+ I LIS-ADDR @ MAX I LIS-ADDR !
+      THEN
+    LOOP
+  LOOP ;
+
+: MAX-LIS ( -- n )
+  0 BEST !
+  NLEN 0 DO
+    I LIS-ADDR @ BEST @ MAX BEST !
+  LOOP
+  BEST @ ;
+
+COMPUTE-LIS
+MAX-LIS . CR
