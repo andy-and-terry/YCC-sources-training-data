@@ -9,7 +9,6 @@ local function bellman_ford(vertices, edges, source)
     for _, edge in ipairs(edges) do
       local u, v, w = edge[1], edge[2], edge[3]
       if dist[u] + w < dist[v] then
-        dist[u] = dist[u]
         dist[v] = dist[u] + w
       end
     end
