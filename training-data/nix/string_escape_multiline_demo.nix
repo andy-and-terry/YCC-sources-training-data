@@ -8,8 +8,9 @@ let
     hello: ${name}
   '';
 
-  # multi-line strings strip the common leading indentation of all
-  # lines, so this renders without the six-space margin below.
+  # multi-line strings strip the common leading indentation shared by
+  # every line, so the four-space margin below disappears and only
+  # "line two"'s extra two spaces of relative indentation survive.
   block = ''
     line one
       line two, indented one more level
