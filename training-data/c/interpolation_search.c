@@ -1,0 +1,20 @@
+#include <stdio.h>
+
+int interpolation_search(const int *a, int n, int target) {
+    int lo = 0, hi = n - 1;
+    while (lo <= hi && target >= a[lo] && target <= a[hi]) {
+        if (a[hi] == a[lo]) return a[lo] == target ? lo : -1;
+        int pos = lo + (int)((long long)(target - a[lo]) * (hi - lo) / (a[hi] - a[lo]));
+        if (a[pos] == target) return pos;
+        if (a[pos] < target) lo = pos + 1;
+        else hi = pos - 1;
+    }
+    return -1;
+}
+
+int main(void) {
+    int a[] = {10, 12, 13, 16, 18, 19, 20, 21, 22, 23, 24, 33, 35, 42, 47};
+    int n = sizeof a / sizeof a[0];
+    printf("%d %d\n", interpolation_search(a, n, 18), interpolation_search(a, n, 25));
+    return 0;
+}
