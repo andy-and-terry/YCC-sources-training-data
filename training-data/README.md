@@ -1682,7 +1682,7 @@ Sample source files organized by programming language for model training.
 
 Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go), `gcd` (TypeScript, C#, Kotlin, Swift, PHP, C), and `merge_sort` (C#, Kotlin, Swift, PHP, Ruby).
 
-> An eleventh pass added 503 hand-written files (no sub-agents) across 22
+> An eleventh pass added 503 hand-written files (no sub-agents) across 21
 > folders: python, javascript, typescript, go, rust, java, cpp, c, ruby,
 > php, csharp, kotlin, swift, lua, perl, bash, scala, haskell, elixir,
 > dart and julia (~23-26 each). Each folder got the same set of small
