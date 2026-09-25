@@ -7,7 +7,9 @@ import (
 	"unicode"
 )
 
-type expr interface{ eval(env map[string]float64) float64 }
+type expr interface {
+	eval(env map[string]float64) float64
+}
 
 type num float64
 type variable string
@@ -17,7 +19,7 @@ type binary struct {
 }
 type neg struct{ e expr }
 
-func (n num) eval(map[string]float64) float64        { return float64(n) }
+func (n num) eval(map[string]float64) float64          { return float64(n) }
 func (v variable) eval(env map[string]float64) float64 { return env[string(v)] }
 func (n neg) eval(env map[string]float64) float64      { return -n.e.eval(env) }
 func (b binary) eval(env map[string]float64) float64 {
