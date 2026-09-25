@@ -1,8 +1,8 @@
-interface UserEvents {
+type UserEvents = {
   login: { userId: string };
   logout: { userId: string; reason: string };
   error: { message: string };
-}
+};
 
 class TypedEmitter<Events extends Record<string, unknown>> {
   private listeners: { [K in keyof Events]?: Array<(payload: Events[K]) => void> } = {};

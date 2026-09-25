@@ -12,14 +12,14 @@ type LessThan<A extends number, B extends number> = BuildTuple<A> extends [...Bu
   ? false
   : true;
 
-type Range<Start extends number, End extends number, Acc extends number[] = []> = Start extends End
+type IntRange<Start extends number, End extends number, Acc extends number[] = []> = Start extends End
   ? Acc[number]
-  : Range<Add<Start, 1>, End, [...Acc, Start]>;
+  : IntRange<Add<Start, 1>, End, [...Acc, Start]>;
 
 type Sum = Add<3, 4>;
 type Diff = Subtract<10, 4>;
 type Smaller = LessThan<2, 9>;
-type ZeroToFour = Range<0, 5>;
+type ZeroToFour = IntRange<0, 5>;
 
 const sum: Sum = 7;
 const diff: Diff = 6;
