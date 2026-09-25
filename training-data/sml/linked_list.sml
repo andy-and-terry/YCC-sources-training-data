@@ -6,7 +6,7 @@ fun toList Nil = []
   | toList (Node (x, next)) = x :: toList (!next)
 
 fun appendValue (Nil, x) = Node (x, ref Nil)
-  | appendValue (Node (v, next) : 'a node, x) = (next := appendValue (!next, x); Node (v, next))
+  | appendValue (Node (v, next), x) = (next := appendValue (!next, x); Node (v, next))
 
 fun lengthOf Nil = 0
   | lengthOf (Node (_, next)) = 1 + lengthOf (!next)
