@@ -1682,6 +1682,20 @@ Sample source files organized by programming language for model training.
 
 Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go), `gcd` (TypeScript, C#, Kotlin, Swift, PHP, C), and `merge_sort` (C#, Kotlin, Swift, PHP, Ruby).
 
+> An eleventh pass added 503 hand-written files (no sub-agents) across 22
+> folders: python, javascript, typescript, go, rust, java, cpp, c, ruby,
+> php, csharp, kotlin, swift, lua, perl, bash, scala, haskell, elixir,
+> dart and julia (~23-26 each). Each folder got the same set of small
+> exercise-style problems (Luhn, ISBN-10, Hamming, Atbash, pig latin,
+> spiral matrix, saddle points, happy/perfect numbers, look-and-say,
+> binary gap, max-product subarray, moving average, ASCII histogram, a
+> concurrency-safe bank account, etc.) written idiomatically per language,
+> plus a few language-specific extras (TS `Result` type and typed event
+> bus, C arena/dynamic string, Kotlin delegated properties, Swift property
+> wrappers, PHP readonly value objects, C# channels). Python, JavaScript,
+> TypeScript, Go, Rust, Java, C++, C, Ruby, PHP, Perl and Bash files were
+> compiled/run locally; the rest were not verified by a compiler.
+
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
 ## Caveats for actual model training
