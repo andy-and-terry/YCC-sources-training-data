@@ -1613,6 +1613,52 @@ Sample source files organized by programming language for model training.
 > committed centrally in eleven small checkpoints as each sub-agent
 > finished, per the established practice from prior multi-agent passes,
 > which is what caught both overwrites before they reached the remote.
+>
+> An eleventh batch then added roughly 20 more new files to every one of
+> the 60 language folders (~1,200 files total), run as six parallel
+> sub-agents each covering ten languages, plus two follow-up sub-agents
+> that filled in the languages the first round didn't finish before
+> hitting a session rate limit (matlab, powershell, prolog, smalltalk,
+> sml, solidity, wasm, zig, plus a scheme top-up and a one-file cpp
+> top-up). Breadth this round, across most languages: graph algorithms
+> not yet covered per-language (A*, Prim's/Kruskal's MST, Floyd-Warshall,
+> Bellman-Ford, Kosaraju's/Tarjan's SCC, bipartite check, cycle
+> detection), classic data structures (LFU cache, skip list, bloom
+> filter, Fenwick tree, segment tree, sparse table), string algorithms
+> (Z-algorithm, Rabin-Karp, longest palindromic substring, Boyer-Moore
+> majority vote), and remaining GoF design patterns per language
+> (bridge, facade, flyweight, proxy, iterator, visitor, command,
+> template method, observer, strategy, decorator, singleton), plus a
+> language-specific idiom or two where an obvious gap remained (e.g. a
+> Prolog `format/2`/`between/3` demo, a Smalltalk `Symbol` vs `String`
+> identity demo). Solidity's additions leaned smart-contract-idiomatic
+> (soulbound tokens, a blind auction, `CREATE2` factory, meta-transaction
+> relaying, checks-effects-interactions, gas/storage packing) rather than
+> generic algorithms. Verified where a toolchain exists in this sandbox:
+> `gcc`/`g++` (C, C++), `javac`/`java` (Java), `go vet`/`go run` (Go),
+> `rustc` (Rust), `node --check` (JavaScript), `python3 -m py_compile`
+> (Python), `php -l`, `perl -c`, `bash -n`/execution, and `awk` against
+> sample input. No toolchain is available in this sandbox for the
+> remaining languages (matching the README's existing per-language
+> caveats above), so those files were hand-reviewed instead of
+> compiled — several real bugs were still caught and fixed this way: a
+> Prolog label-structure mismatch and un-evaluated arithmetic in a
+> Huffman demo, a Smalltalk keyword-message bug in a Prim's MST demo and
+> an undeclared class variable in a Flyweight demo, a Scheme LFU cache
+> tie-break that evicted the just-inserted key, an infinite-loop BFS in
+> an SML bipartite-check demo, a top-level-`;` sequencing bug in an SML
+> LFU cache that ran a side effect once at load time instead of on every
+> call, and unbalanced parens in two hand-written WAT files. One
+> accidental edit to a pre-existing file (`cpp/sudoku_solver.cpp`,
+> rewritten by a sub-agent instead of left alone) was caught via `git
+> status` and reverted before committing. One filename collision was
+> also caught afterward: a new `scala/KmpSearch.scala` differed from the
+> pre-existing `scala/KMPSearch.scala` only by case (a correctness risk
+> on case-insensitive filesystems) and was renamed to
+> `KmpSearchAllMatches.scala`, which also better describes its
+> find-all-matches behavior versus the original's find-first. Work was
+> committed centrally in three checkpoints as each batch of sub-agents
+> finished.
 
 | Language   | Files |
 |------------|-------|
