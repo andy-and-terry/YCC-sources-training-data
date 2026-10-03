@@ -1,0 +1,74 @@
+5 CONSTANT DJ-N
+9999 CONSTANT DJ-INF
+CREATE DADJ DJ-N DJ-N * CELLS ALLOT
+CREATE DIST DJ-N CELLS ALLOT
+CREATE VISITED DJ-N CELLS ALLOT
+VARIABLE DJ-U
+VARIABLE DJ-V
+VARIABLE DJ-W
+VARIABLE BEST-DIST
+VARIABLE BEST-NODE
+VARIABLE DJ-I
+VARIABLE CAND
+
+: DADJ@ ( u v -- addr ) SWAP DJ-N * + CELLS DADJ + ;
+: DIST@ ( v -- addr ) CELLS DIST + ;
+: VIS@ ( v -- addr ) CELLS VISITED + ;
+
+: DJ-INIT ( -- )
+  DJ-N DJ-N * 0 DO DJ-INF I CELLS DADJ + ! LOOP
+  DJ-N 0 DO DJ-INF I DIST@ ! 0 I VIS@ ! LOOP
+  0 0 DIST@ ! ;
+
+: DJ-ADD-EDGE ( u v w -- )
+  DJ-W ! DJ-V ! DJ-U !
+  DJ-U @ DJ-V @ DADJ@ DJ-W @ SWAP ! ;
+
+: DJ-PICK ( -- node )
+  DJ-INF BEST-DIST !
+  -1 BEST-NODE !
+  DJ-N 0 DO
+    I VIS@ @ 0= IF
+      I DIST@ @ BEST-DIST @ < IF
+        I DIST@ @ BEST-DIST !
+        I BEST-NODE !
+      THEN
+    THEN
+  LOOP
+  BEST-NODE @ ;
+
+: DJ-RELAX ( u -- )
+  DJ-U !
+  DJ-N 0 DO
+    DJ-U @ I DADJ@ @ DJ-INF <> IF
+      DJ-U @ DIST@ @ DJ-U @ I DADJ@ @ + CAND !
+      CAND @ I DIST@ @ < IF
+        CAND @ I DIST@ !
+      THEN
+    THEN
+  LOOP ;
+
+: DJ-RUN ( -- )
+  DJ-N 0 DO
+    DJ-PICK DJ-I !
+    1 DJ-I @ VIS@ !
+    DJ-I @ DJ-RELAX
+  LOOP ;
+
+: PRINT-DIST ( -- )
+  DJ-N 0 DO
+    I DIST@ @ .
+  LOOP ;
+
+DJ-INIT
+0 1 4 DJ-ADD-EDGE
+0 2 1 DJ-ADD-EDGE
+2 1 2 DJ-ADD-EDGE
+1 3 1 DJ-ADD-EDGE
+2 3 5 DJ-ADD-EDGE
+3 4 3 DJ-ADD-EDGE
+1 4 7 DJ-ADD-EDGE
+
+DJ-RUN
+PRINT-DIST
+CR
