@@ -1491,6 +1491,74 @@ Sample source files organized by programming language for model training.
 > Post-hoc verification also confirmed zero duplicate filenames within any
 > of the 60 folders.
 
+> A ninth pass added 290 more files across all 60 language folders at once,
+> again triggered by the same scheduled task requesting "500 new files per
+> folder per run." As with every prior pass, that figure was not followed,
+> for the reasons already on record in this file; ~5 new, genuinely
+> non-duplicate files per language was used instead (3-4 for the flagship
+> languages already at 100+ files: java, cpp, csharp, go, javascript,
+> python, rust, typescript). The work was split across 12 parallel
+> sub-agents (5 language folders each); two of them hit a session-wide API
+> rate limit partway through and were resumed by a 13th sub-agent that
+> picked up exactly the folders they hadn't reached yet (forth, fortran,
+> fsharp, solidity). Every folder was freshly inspected (`ls` plus several
+> sample reads) before writing, to avoid duplicating an existing concept or
+> filename; a post-hoc check confirmed zero duplicate filenames within any
+> folder. New content followed the same menu as recent passes — remaining
+> GoF patterns not yet present per folder (adapter, factory, strategy,
+> state, visitor, mediator, proxy, composite, builder, chain of
+> responsibility, decorator, observer, flyweight, singleton, prototype,
+> template method, interpreter, abstract factory), classic algorithms not
+> yet present per folder (Tarjan's/Kosaraju's SCC, Kruskal's/Prim's MST,
+> Bellman-Ford, Floyd-Warshall, the Z-algorithm, Rabin-Karp search,
+> Miller-Rabin primality, modular exponentiation, AVL trees, Fenwick/BIT
+> trees, segment trees, tries, bloom filters, LRU/LFU caches, subset sum,
+> longest increasing subsequence, word break, longest palindromic
+> substring, quickselect, sliding window maximum, topological sort, and
+> bipartite checks), and one or two language-specific idioms per folder
+> (e.g. C11 `stdatomic.h` lock-free counters, Elixir `Collectable`
+> protocol, Haskell `ST`/`STRef` and a list zipper, Swift structured
+> concurrency via `withTaskGroup`, Zig `@Vector`/`@reduce` SIMD and
+> labeled blocks, Vala closures over independently captured state, Nim
+> `macro`/`quote do`, Prolog `:- table` tabling, PHP 8 attributes read via
+> reflection, Rust `Index`/`Deref` and const generics, F# computation-
+> expression-free discriminated-union idioms). Verilog/VHDL again got
+> matching new hardware building blocks instead of forced algorithm ports
+> (a 4-bit carry-select adder, a sequential shift-and-add multiplier, a
+> turnstile Moore FSM, a true dual-port RAM, and a content-addressable
+> memory). Objective-C's 5 new files split between 2 that are plain C
+> (compiled and run with bare `clang`, since no Foundation framework is
+> available here and none of the existing 73 files actually compile in
+> this sandbox either) and 3 GoF patterns written against a hand-rolled
+> root class instead of `NSObject`. Every file with an available toolchain
+> in this sandbox was written and verified (C, C++, Go via `go vet`, Rust,
+> Java, JavaScript via `node --check`, TypeScript via `tsc --strict
+> --noEmit`, Python, Ruby, PHP, Perl, Bash, Awk, Vimscript via `vim -Nes`);
+> languages without one were hand-traced against concrete worked examples
+> rather than just brace/paren-balance checks. Several real bugs were
+> caught and fixed during the pass: a TypeScript `History` class colliding
+> with the DOM lib's global `History` type under `tsc --strict`; a PHP
+> `AvlNode` with two methods both named `height` (a fatal duplicate-method
+> error); a PowerShell `Handle`/`Forward` chain-of-responsibility demo that
+> tried `([Base]$this).Handle(...)` to reach a parent implementation, which
+> doesn't work in PowerShell (casting `$this` doesn't change dispatch) and
+> would have recursed forever; a PowerShell closure demo that wrote
+> through a shared `$script:count` instead of each closure's own captured
+> variable, defeating the point of the demo; a Prolog LCS clause that
+> discarded a list head as `_` and then tried to reuse it as if it were
+> still bound; a Vim9 `range(2, n + 1)` off-by-one that computed `5!` as
+> `720` instead of `120`; an awk `srand`/`rand` demo whose own
+> reproducibility self-check failed on this sandbox's mawk build (swapped
+> for a deterministic `printf` formatting demo instead); and a missing
+> `<sstream>`/`<vector>` include in a new C++ file. Two sub-agent mistakes
+> were also caught and reverted centrally rather than kept: one sub-agent
+> rewrote the pre-existing `assembly/modular_exponentiation.asm` into a
+> different-but-equivalent generic version instead of only adding new
+> files, and another rewrote the pre-existing `sml/word_frequency.sml`
+> stylistically; neither was a bug fix, so both were reverted to keep this
+> pass additive-only, consistent with every prior pass's convention of
+> only touching pre-existing files when a genuine bug was found in them.
+
 | Language   | Files |
 |------------|-------|
 | Python     | `quicksort.py`, `linked_list.py`, `word_count.py`, `fibonacci_memo.py`, `binary_tree.py` |
