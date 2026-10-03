@@ -1,0 +1,34 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. MERGEVERBDEMO.
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT FILE-A ASSIGN TO "a.dat"
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT FILE-B ASSIGN TO "b.dat"
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT MERGED-FILE ASSIGN TO "merged.dat"
+               ORGANIZATION IS LINE SEQUENTIAL.
+
+       DATA DIVISION.
+       FILE SECTION.
+       SD FILE-A.
+       01 FILE-A-RECORD.
+           05 FILE-A-KEY PIC 9(5).
+           05 FILE-A-DATA PIC X(20).
+       SD FILE-B.
+       01 FILE-B-RECORD.
+           05 FILE-B-KEY PIC 9(5).
+           05 FILE-B-DATA PIC X(20).
+       FD MERGED-FILE.
+       01 MERGED-RECORD.
+           05 MERGED-KEY PIC 9(5).
+           05 MERGED-DATA PIC X(20).
+
+       PROCEDURE DIVISION.
+           MERGE FILE-A ON ASCENDING KEY FILE-A-KEY
+                 FILE-B ON ASCENDING KEY FILE-B-KEY
+               USING FILE-A FILE-B
+               GIVING MERGED-FILE
+           DISPLAY "MERGE COMPLETE"
+           STOP RUN.
