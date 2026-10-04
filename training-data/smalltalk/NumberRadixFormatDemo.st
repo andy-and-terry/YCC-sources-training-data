@@ -23,4 +23,3 @@ Transcript showCr: (-17 \\ 5) printString.
 Transcript showCr: (-17 rem: 5) printString.
 Transcript showCr: (-17 quo: 5) printString.
 Transcript showCr: 10 even printString.
-Transcript showCr: 7 isPrime printString.
