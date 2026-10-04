@@ -1,0 +1,8 @@
+(println (merge {:a 1 :b 2} {:b 3 :c 4}))
+(println (merge-with + {:a 1 :b 2} {:b 3 :c 4}))
+(println (merge-with into {:x [1]} {:x [2] :y [3]}))
+(println (apply merge-with + (map #(hash-map % 1) "banana")))
+(println (zipmap [:a :b :c] [1 2 3]))
+(println (select-keys {:a 1 :b 2 :c 3} [:a :c]))
+(println (into {} (filter (fn [[_ v]] (odd? v)) {:a 1 :b 2 :c 3})))
+(println (update-vals {:a 1 :b 2} #(* 10 %)))

@@ -1,0 +1,23 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. TABLE2D.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 GRID.
+          05 GRID-ROW OCCURS 3 TIMES.
+             10 GRID-CELL PIC 99 OCCURS 4 TIMES.
+       01 R PIC 9.
+       01 C PIC 9.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING R FROM 1 BY 1 UNTIL R > 3
+               PERFORM VARYING C FROM 1 BY 1 UNTIL C > 4
+                   COMPUTE GRID-CELL(R, C) = R * C
+               END-PERFORM
+           END-PERFORM
+           PERFORM VARYING R FROM 1 BY 1 UNTIL R > 3
+               PERFORM VARYING C FROM 1 BY 1 UNTIL C > 4
+                   DISPLAY GRID-CELL(R, C) " " WITH NO ADVANCING
+               END-PERFORM
+               DISPLAY SPACE
+           END-PERFORM
+           STOP RUN.

@@ -1,0 +1,7 @@
+(def state {:user {:name "Ada" :visits 1 :tags ["a"]}})
+(println (update-in state [:user :visits] inc))
+(println (assoc-in state [:user :email] "ada@example.com"))
+(println (update-in state [:user :tags] conj "b"))
+(println (dissoc (:user state) :tags))
+(println (get-in state [:user :missing] :default))
+(println (update state :user select-keys [:name]))
