@@ -1,0 +1,8 @@
+(println (flatten [1 [2 [3 4]] [[5]] 6]))
+(println (zipmap [:a :b :c] [1 2 3]))
+(println (zipmap "abc" (range)))
+(println (mapcat reverse [[1 2 3] [4 5 6]]))
+(println (apply concat [[1 2] [3] [4 5]]))
+(println (map vector [1 2 3] "xyz"))
+(println (apply map list [[1 2 3] [4 5 6]]))
+(println (into {} (map (fn [[k v]] [k (inc v)]) {:a 1 :b 2})))

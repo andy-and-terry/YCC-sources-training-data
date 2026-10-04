@@ -1,0 +1,13 @@
+(defun count-set-bits (n)
+  (logcount n))
+
+(let ((a #b1100) (b #b1010))
+  (format t "and: ~b~%" (logand a b))
+  (format t "or:  ~b~%" (logior a b))
+  (format t "xor: ~b~%" (logxor a b))
+  (format t "not a: ~a~%" (lognot a))
+  (format t "a << 2: ~a~%" (ash a 2))
+  (format t "a >> 1: ~a~%" (ash a -1))
+  (format t "bit 2 of a set: ~a~%" (logbitp 2 a))
+  (format t "set bits in 255: ~a~%" (count-set-bits 255))
+  (format t "integer-length of 1024: ~a~%" (integer-length 1024)))

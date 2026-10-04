@@ -1,0 +1,11 @@
+(let ((a 1/3) (b 1/6))
+  (format t "sum: ~a~%" (+ a b))
+  (format t "product: ~a~%" (* a b))
+  (format t "numerator/denominator of 6/8: ~a/~a~%"
+          (numerator 6/8) (denominator 6/8))
+  (format t "float of 1/3: ~f~%" (float 1/3))
+  (format t "rational of 0.5: ~a~%" (rational 0.5))
+  (format t "(/ 7 2): ~a~%" (/ 7 2))
+  (format t "floor/rem: ~a ~a~%" (floor 7 2) (rem 7 2))
+  (format t "expt 2/3 3: ~a~%" (expt 2/3 3))
+  (format t "big factorial 25: ~a~%" (reduce #'* (loop for i from 1 to 25 collect i))))

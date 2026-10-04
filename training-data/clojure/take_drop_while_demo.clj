@@ -1,0 +1,10 @@
+(def nums [1 3 5 6 7 9 2 4])
+
+(println (take-while odd? nums))
+(println (drop-while odd? nums))
+(println (take-last 3 nums))
+(println (drop-last 3 nums))
+(println (take-nth 2 nums))
+(println (first (filter even? nums)))
+(println (take 5 (drop 2 (cycle [:a :b :c]))))
+(println (->> (range) (map #(* % %)) (take-while #(< % 50))))

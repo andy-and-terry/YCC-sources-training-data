@@ -1,0 +1,17 @@
+IO.inspect(Enum.to_list(1..5))
+IO.inspect(Enum.to_list(10..1//-3))
+IO.inspect(Enum.to_list(1..10//4))
+IO.inspect(Enum.sum(1..100))
+IO.inspect(Enum.count(1..0//1))
+IO.inspect(5 in 1..10)
+IO.inspect(11 in 1..10)
+IO.inspect(Enum.map(1..3, &(&1 * &1)))
+IO.inspect(Enum.reduce(1..5, 1, &*/2))
+IO.inspect(Range.size(3..9))
+IO.inspect(Enum.zip(1..3, ?a..?c))
+IO.inspect(Enum.take_every(1..20, 5))
+IO.inspect(Enum.slice(10..20, 2, 3))
+
+range = 1..10//2
+IO.inspect({range.first, range.last, range.step})
+IO.inspect(Enum.member?(range, 5))
