@@ -1,0 +1,27 @@
+;; Numeric tower basics: exactness, rounding and radix conversion.
+
+(define (show x) (display x) (newline))
+
+(show (/ 1 3))
+(show (exact->inexact (/ 1 3)))
+(show (inexact->exact 0.5))
+(show (exact? 1/2))
+(show (inexact? 0.5))
+
+(show (list (floor 2.7) (ceiling 2.2) (round 2.5) (round 3.5) (truncate -2.7)))
+(show (list (quotient 17 5) (remainder 17 5) (modulo -7 3) (remainder -7 3)))
+(show (number->string 255 16))
+(show (number->string 5 2))
+(show (string->number "ff" 16))
+(show (string->number "1e3"))
+(show (string->number "not-a-number"))
+(show (list (exact (floor 3.9)) (abs -4/3) (min 1 2.0) (max 3 4)))
+(show (sqrt 16))
+(show (sqrt 2))
+(show (expt 2 100))
+(show (expt 2 -2))
+(show (exact->inexact 22/7))
+(show (number->string 3.14))
+(show (list (numerator 6/4) (denominator 6/4)))
+(show (gcd 12 18))
+(show (lcm 4 6))

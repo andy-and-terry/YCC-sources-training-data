@@ -1,0 +1,31 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFORMTIMES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 COUNTER     PIC 99 VALUE 0.
+       01 REPEATS     PIC 9 VALUE 4.
+       01 STARS       PIC X(10) VALUE SPACES.
+       01 POS         PIC 99 VALUE 1.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM 3 TIMES
+               ADD 1 TO COUNTER
+               DISPLAY "INLINE PASS " COUNTER
+           END-PERFORM
+
+           MOVE 0 TO COUNTER
+           PERFORM REPEATS TIMES
+               PERFORM BUMP-PARA
+           END-PERFORM
+           DISPLAY "COUNTER AFTER VARIABLE REPEAT: " COUNTER
+
+           PERFORM 5 TIMES
+               MOVE "*" TO STARS(POS:1)
+               ADD 1 TO POS
+               DISPLAY STARS
+           END-PERFORM
+           STOP RUN.
+
+       BUMP-PARA.
+           ADD 10 TO COUNTER.
