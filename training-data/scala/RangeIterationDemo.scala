@@ -12,7 +12,7 @@ object RangeIterationDemo {
     val squares = for (i <- 1 to 5 if i % 2 == 1) yield i * i
     println(squares)
     println(Iterator.from(1).takeWhile(_ < 4).toList)
-    println(Seq.fill(3)("x"), Seq.tabulate(4)(_ * 3))
+    println((Seq.fill(3)("x"), Seq.tabulate(4)(_ * 3)))
     println(0.0 to 1.0 by 0.25)
     var n = 0
     while (n < 3) { print(n); n += 1 }

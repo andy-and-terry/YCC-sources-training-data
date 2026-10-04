@@ -1,0 +1,10 @@
+print(string.format("%5.2f|%-6s|%04d|%x|%q", 3.14159, "ab", 42, 255, "hi\n"))
+print(("hello world"):gsub("o", "0"))
+print(("hello"):gsub("l+", function(m) return "[" .. #m .. "]" end))
+print(("$name is $age"):gsub("%$(%w+)", { name = "Ann", age = 30 }))
+print(("a,b,,c"):find(",,", 1, true))
+print(("  trim  "):match("^%s*(.-)%s*$") .. "|")
+for k, v in ("a=1, b=2, c=3"):gmatch("(%w+)=(%w+)") do io.write(k, ":", v, " ") end
+print()
+print(("abc"):rep(3, "-"), ("Hello"):upper(), ("Hello"):byte(1, 2))
+print(("x"):len(), #"héllo", utf8 and utf8.len("héllo"))

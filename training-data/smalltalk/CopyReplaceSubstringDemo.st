@@ -14,4 +14,4 @@ Transcript showCr: (s reject: [:c | c isVowel]).
 Transcript showCr: s reverse.
 Transcript showCr: (s asSet size) printString.
 Transcript showCr: (s , '!' , '!').
-Transcript showCr: s hash printString size > 0.
+Transcript showCr: (s hash printString size > 0) printString.

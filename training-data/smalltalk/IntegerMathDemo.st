@@ -15,4 +15,4 @@ Transcript showCr: (255 radix: 16) printString.
 Transcript showCr: 3.7 floor printString.
 Transcript showCr: 3.2 ceiling printString.
 Transcript showCr: 3.5 rounded printString.
-Transcript showCr: 10 log: 10.
+Transcript showCr: (100 log: 10) printString.

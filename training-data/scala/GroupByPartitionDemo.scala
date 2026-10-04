@@ -13,6 +13,7 @@ object GroupByPartitionDemo {
     println(emps.groupMapReduce(_.dept)(_.salary)(_ + _))
     println(emps.maxBy(_.salary).name)
     println(emps.sortBy(e => (e.dept, -e.salary)).map(_.name))
-    println(emps.span(_.dept == "eng").productIterator.toList.map(_.asInstanceOf[List[Emp]].size))
+    val (engPrefix, rest) = emps.span(_.dept == "eng")
+    println((engPrefix.size, rest.size))
   }
 }
