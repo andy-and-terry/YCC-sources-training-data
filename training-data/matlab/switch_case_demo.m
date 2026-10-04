@@ -1,28 +1,12 @@
-function switch_case_demo()
-    inputs = {'apple', 'carrot', 3, 'zzz', 'Banana'};
-    for k = 1:numel(inputs)
-        fprintf('%s\n', classify(inputs{k}));
-    end
-end
-
-function out = classify(x)
-    if ischar(x)
-        switch lower(x)
-            case {'apple', 'banana'}
-                out = 'fruit';
-            case 'carrot'
-                out = 'vegetable';
-            otherwise
-                out = 'unknown food';
-        end
-    else
-        switch x
-            case 1
-                out = 'one';
-            case {2, 3}
-                out = 'two or three';
-            otherwise
-                out = 'number';
-        end
+function description = describe_number(n)
+    switch true
+        case n < 0
+            description = 'negative';
+        case n == 0
+            description = 'zero';
+        case mod(n, 2) == 0
+            description = 'even';
+        otherwise
+            description = 'odd';
     end
 end
