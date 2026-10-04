@@ -23,4 +23,4 @@ print((("x"):gsub("", "-")))
 local count = select(2, ("banana"):gsub("a", ""))
 print(count)
 
-print((("abc"):gsub(".", { a = "1", b = true, c = false })))
+print((("abc"):gsub(".", { a = "1", b = false, c = false })))

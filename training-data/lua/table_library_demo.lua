@@ -13,7 +13,7 @@ print(table.unpack({ 10, 20, 30 }))
 print(table.unpack({ 10, 20, 30 }, 2))
 
 local packed = table.pack("x", nil, "z")
-print(packed.n, #packed)
+print(packed.n, packed[1], packed[2], packed[3])
 
 local moved = table.move({ 1, 2, 3 }, 1, 3, 2)
 print(table.concat(moved, ","))
