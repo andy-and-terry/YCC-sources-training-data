@@ -7,7 +7,7 @@ fun countLetters s =
                 in Array.update (counts, i, Array.sub (counts, i) + 1) end
             else ()
     in
-        (String.app bump s; counts)
+        (List.app bump (explode s); counts)
     end
 
 val counts = countLetters "Hello, World"
