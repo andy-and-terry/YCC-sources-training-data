@@ -1,0 +1,20 @@
+puts [expr {sqrt(144)}]
+puts [expr {pow(2, 10)}]
+puts [expr {abs(-7.5)}]
+puts [expr {round(3.6)}]
+puts [expr {ceil(3.2)}]
+puts [expr {floor(-3.2)}]
+puts [expr {int(9.99)}]
+puts [expr {hypot(3, 4)}]
+puts [expr {max(4, 9, 2)}]
+puts [expr {min(4, 9, 2)}]
+puts [expr {7 / 2}]
+puts [expr {7 / 2.0}]
+puts [expr {-7 % 3}]
+puts [expr {2 ** 8}]
+puts [expr {0x1F & 0x0F}]
+puts [expr {1 << 5}]
+
+# Define a custom math function
+proc ::tcl::mathfunc::cube {x} { expr {$x * $x * $x} }
+puts [expr {cube(3) + 1}]

@@ -1,0 +1,8 @@
+(print (reduce #'+ '(1 2 3 4 5)))
+(print (reduce #'+ '(1 2 3 4 5) :initial-value 100))
+(print (reduce #'max '(3 9 2 7)))
+(print (reduce #'list '(1 2 3 4)))
+(print (reduce #'list '(1 2 3 4) :from-end t))
+(print (reduce #'+ '((1 2) (3 4) (5 6)) :key #'first))
+(print (reduce (lambda (acc x) (cons x acc)) '(1 2 3) :initial-value nil))
+(terpri)

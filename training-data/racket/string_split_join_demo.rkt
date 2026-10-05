@@ -1,0 +1,15 @@
+#lang racket
+
+(displayln (string-split "  the quick  brown fox " ))
+(displayln (string-split "a,b,,c" "," #:trim? #f))
+(displayln (string-join '("x" "y" "z") ", "))
+(displayln (string-trim "  padded  "))
+(displayln (string-replace "hello world" "o" "0"))
+(displayln (string-upcase "shout"))
+(displayln (string-contains? "racket" "ack"))
+(displayln (string-prefix? "racket" "rac"))
+(displayln (substring "abcdef" 2 4))
+(displayln (regexp-match #rx"([0-9]+)-([0-9]+)" "tel 555-1234"))
+(displayln (regexp-replace* #rx"[aeiou]" "education" "*"))
+(displayln (list->string (reverse (string->list "stressed"))))
+(displayln (string-append* (map (lambda (s) (string-append s "!")) '("a" "b"))))
