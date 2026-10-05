@@ -12,6 +12,6 @@ run() ->
     lists:foreach(
       fun(I) ->
               G = to_gray(I),
-              io:format("~p -> ~3..0B -> ~p~n", [I, list_to_integer(integer_to_list(G, 2)), from_gray(G)])
+              io:format("~p -> ~3.2.0B -> ~p~n", [I, G, from_gray(G)])
       end,
       lists:seq(0, 7)).
