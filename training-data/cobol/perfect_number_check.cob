@@ -1,0 +1,21 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFECTNUMBER.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 N PIC 9(5) VALUE 28.
+       01 DIVISOR PIC 9(5).
+       01 DIVISOR-SUM PIC 9(5) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING DIVISOR FROM 1 BY 1 UNTIL DIVISOR >= N
+               IF FUNCTION MOD(N, DIVISOR) = 0
+                   ADD DIVISOR TO DIVISOR-SUM
+               END-IF
+           END-PERFORM
+
+           IF DIVISOR-SUM = N
+               DISPLAY N " IS A PERFECT NUMBER"
+           ELSE
+               DISPLAY N " IS NOT A PERFECT NUMBER"
+           END-IF
+           STOP RUN.

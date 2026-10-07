@@ -1,0 +1,41 @@
+32 CONSTANT MAX-DEPTH
+CREATE STACK MAX-DEPTH CELLS ALLOT
+CREATE MIN-STACK MAX-DEPTH CELLS ALLOT
+VARIABLE SP
+VARIABLE MSP
+
+: STACK@ ( i -- addr ) CELLS STACK + ;
+: MIN-STACK@ ( i -- addr ) CELLS MIN-STACK + ;
+
+: INIT-STACK ( -- )
+  0 SP ! 0 MSP ! ;
+
+: MS-PUSH ( n -- )
+  DUP SP @ STACK@ ! 1 SP +!
+  MSP @ 0= IF
+    DUP MIN-STACK@ ! 1 MSP +!
+  ELSE
+    DUP MSP @ 1- MIN-STACK@ @ <= IF
+      DUP MSP @ MIN-STACK@ ! 1 MSP +!
+    ELSE
+      DROP
+    THEN
+  THEN ;
+
+: MS-POP ( -- n )
+  -1 SP +!
+  SP @ STACK@ @
+  DUP MSP @ 1- MIN-STACK@ @ = IF
+    -1 MSP +!
+  THEN ;
+
+: MS-MIN ( -- n )
+  MSP @ 1- MIN-STACK@ @ ;
+
+INIT-STACK
+5 MS-PUSH
+2 MS-PUSH
+7 MS-PUSH
+MS-MIN . CR
+MS-POP DROP
+MS-MIN . CR

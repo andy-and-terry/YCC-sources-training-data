@@ -1,0 +1,12 @@
+: IS-PERFECT-SQUARE? ( n -- flag )
+  DUP 0< IF DROP FALSE EXIT THEN
+  0
+  BEGIN
+    2DUP DUP * >=
+  WHILE
+    1+
+  REPEAT
+  DUP * = ;
+
+16 IS-PERFECT-SQUARE? . CR
+15 IS-PERFECT-SQUARE? . CR

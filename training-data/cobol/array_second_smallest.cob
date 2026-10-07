@@ -1,0 +1,27 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SECONDSMALLEST.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 ARR.
+           05 ARR-ITEM PIC S9(3) OCCURS 6 TIMES
+               VALUES 12 5 9 3 8 3.
+       01 SMALLEST PIC S9(3) VALUE 999.
+       01 SECOND-SMALLEST PIC S9(3) VALUE 999.
+       01 I PIC 9(1).
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
+               IF ARR-ITEM(I) < SMALLEST
+                   MOVE SMALLEST TO SECOND-SMALLEST
+                   MOVE ARR-ITEM(I) TO SMALLEST
+               ELSE
+                   IF ARR-ITEM(I) < SECOND-SMALLEST
+                       AND ARR-ITEM(I) NOT = SMALLEST
+                       MOVE ARR-ITEM(I) TO SECOND-SMALLEST
+                   END-IF
+               END-IF
+           END-PERFORM
+
+           DISPLAY "SMALLEST: " SMALLEST
+           DISPLAY "SECOND SMALLEST: " SECOND-SMALLEST
+           STOP RUN.

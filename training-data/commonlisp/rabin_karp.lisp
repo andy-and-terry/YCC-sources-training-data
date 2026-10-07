@@ -1,0 +1,26 @@
+(defparameter *base* 256)
+(defparameter *modulus* 101)
+
+(defun rabin-karp-search (text pattern)
+  (let* ((n (length text))
+         (m (length pattern))
+         (pat-hash 0) (txt-hash 0) (high-order 1))
+    (when (or (zerop m) (> m n)) (return-from rabin-karp-search -1))
+    (dotimes (_ (1- m))
+      (setf high-order (mod (* high-order *base*) *modulus*)))
+    (dotimes (i m)
+      (setf pat-hash (mod (+ (* *base* pat-hash) (char-code (char pattern i))) *modulus*))
+      (setf txt-hash (mod (+ (* *base* txt-hash) (char-code (char text i))) *modulus*)))
+    (loop for i from 0 to (- n m) do
+      (when (and (= pat-hash txt-hash) (string= text pattern :start1 i :end1 (+ i m)))
+        (return-from rabin-karp-search i))
+      (when (< i (- n m))
+        (setf txt-hash
+              (mod (+ (* *base* (- txt-hash (* (char-code (char text i)) high-order)))
+                      (char-code (char text (+ i m))))
+                   *modulus*))
+        (when (< txt-hash 0) (incf txt-hash *modulus*))))
+    -1))
+
+(format t "~a~%" (rabin-karp-search "abxabcabcaby" "abcaby"))
+(format t "~a~%" (rabin-karp-search "hello world" "xyz"))
