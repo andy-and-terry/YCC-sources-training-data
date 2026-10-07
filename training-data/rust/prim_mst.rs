@@ -1,66 +1,48 @@
-use std::cmp::Ordering;
+// Prim's algorithm grows a single minimum spanning tree one edge at a
+// time, always adding the cheapest edge that crosses the boundary
+// between visited and unvisited vertices.
 use std::collections::BinaryHeap;
+use std::cmp::Reverse;
 
-struct Edge {
-    cost: i32,
-    to: usize,
-    from: usize,
-}
-
-impl Eq for Edge {}
-impl PartialEq for Edge {
-    fn eq(&self, other: &Self) -> bool {
-        self.cost == other.cost
-    }
-}
-impl Ord for Edge {
-    fn cmp(&self, other: &Self) -> Ordering {
-        other.cost.cmp(&self.cost)
-    }
-}
-impl PartialOrd for Edge {
-    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        Some(self.cmp(other))
-    }
-}
-
-fn prim_mst(num_nodes: usize, adj: &[Vec<(usize, i32)>], start: usize) -> (Vec<(usize, usize, i32)>, i32) {
+fn prim_mst(num_nodes: usize, adj: &[Vec<(usize, i32)>]) -> (i32, Vec<(usize, usize, i32)>) {
     let mut visited = vec![false; num_nodes];
     let mut heap = BinaryHeap::new();
-    let mut mst = Vec::new();
-    let mut total_cost = 0;
+    let mut edges = Vec::new();
+    let mut total = 0;
 
-    visited[start] = true;
-    for &(to, cost) in &adj[start] {
-        heap.push(Edge { cost, to, from: start });
+    visited[0] = true;
+    for &(to, weight) in &adj[0] {
+        heap.push(Reverse((weight, 0, to)));
     }
 
-    while let Some(Edge { cost, to, from }) = heap.pop() {
+    while let Some(Reverse((weight, from, to))) = heap.pop() {
         if visited[to] {
             continue;
         }
         visited[to] = true;
-        total_cost += cost;
-        mst.push((from, to, cost));
-        for &(next, next_cost) in &adj[to] {
+        total += weight;
+        edges.push((from, to, weight));
+
+        for &(next, next_weight) in &adj[to] {
             if !visited[next] {
-                heap.push(Edge { cost: next_cost, to: next, from: to });
+                heap.push(Reverse((next_weight, to, next)));
             }
         }
     }
-    (mst, total_cost)
+
+    (total, edges)
 }
 
 fn main() {
-    // undirected graph as a symmetric adjacency list
-    let adj = vec![
-        vec![(1, 2), (3, 6)],
-        vec![(0, 2), (2, 3), (3, 8), (4, 5)],
-        vec![(1, 3), (4, 7)],
-        vec![(0, 6), (1, 8), (4, 9)],
-        vec![(1, 5), (2, 7), (3, 9)],
-    ];
-    let (mst, cost) = prim_mst(5, &adj, 0);
-    println!("MST edges: {:?}", mst);
-    println!("total cost: {}", cost);
+    // undirected graph: 0-1(4), 0-2(1), 1-2(2), 1-3(5), 2-3(8)
+    let mut adj = vec![Vec::new(); 4];
+    let raw_edges = [(0, 1, 4), (0, 2, 1), (1, 2, 2), (1, 3, 5), (2, 3, 8)];
+    for &(u, v, w) in &raw_edges {
+        adj[u].push((v, w));
+        adj[v].push((u, w));
+    }
+
+    let (total_weight, mst_edges) = prim_mst(4, &adj);
+    println!("total weight: {}", total_weight);
+    println!("edges: {:?}", mst_edges);
 }

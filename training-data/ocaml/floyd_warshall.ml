@@ -1,6 +1,11 @@
-let floyd_warshall graph =
-  let n = Array.length graph in
-  let dist = Array.map Array.copy graph in
+let inf = 1000000
+
+let floyd_warshall n edges =
+  let dist = Array.make_matrix n n inf in
+  for i = 0 to n - 1 do
+    dist.(i).(i) <- 0
+  done;
+  List.iter (fun (u, v, w) -> dist.(u).(v) <- w) edges;
   for k = 0 to n - 1 do
     for i = 0 to n - 1 do
       for j = 0 to n - 1 do
@@ -12,18 +17,10 @@ let floyd_warshall graph =
   dist
 
 let () =
-  let inf = 1000000 in
-  let graph =
-    [|
-      [| 0; 3; inf; 7 |];
-      [| 8; 0; 2; inf |];
-      [| 5; inf; 0; 1 |];
-      [| 2; inf; inf; 0 |];
-    |]
-  in
-  let dist = floyd_warshall graph in
+  let edges = [ (0, 1, 3); (0, 2, 8); (1, 2, 2); (2, 0, 5); (2, 3, 1); (3, 1, 4) ] in
+  let dist = floyd_warshall 4 edges in
   Array.iter
     (fun row ->
-      Array.iter (fun v -> Printf.printf "%d " v) row;
+      Array.iter (fun d -> Printf.printf "%d " d) row;
       print_newline ())
     dist

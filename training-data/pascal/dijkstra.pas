@@ -2,51 +2,58 @@ program DijkstraDemo;
 
 const
   NodeCount = 5;
-  Inf = 999999;
+  Infinity = 30000;
+
+type
+  Matrix = array[0..NodeCount - 1, 0..NodeCount - 1] of Integer;
 
 var
-  adj: array[0..NodeCount - 1, 0..NodeCount - 1] of Integer;
+  graph: Matrix;
   dist: array[0..NodeCount - 1] of Integer;
   visited: array[0..NodeCount - 1] of Boolean;
-  i, j, u, minDist, alt: Integer;
 
+procedure Dijkstra(source: Integer);
+var
+  i, u, v, minDist, count: Integer;
 begin
   for i := 0 to NodeCount - 1 do
-    for j := 0 to NodeCount - 1 do
-      adj[i][j] := Inf;
-
-  adj[0][1] := 4; adj[0][2] := 1;
-  adj[2][1] := 2; adj[1][3] := 1;
-  adj[2][3] := 5; adj[3][4] := 3;
-  adj[1][4] := 6;
-
-  for i := 0 to NodeCount - 1 do
   begin
-    dist[i] := Inf;
+    dist[i] := Infinity;
     visited[i] := False;
   end;
-  dist[0] := 0;
+  dist[source] := 0;
 
-  for i := 0 to NodeCount - 1 do
+  for count := 0 to NodeCount - 1 do
   begin
     u := -1;
-    minDist := Inf + 1;
-    for j := 0 to NodeCount - 1 do
-      if (not visited[j]) and (dist[j] < minDist) then
+    minDist := Infinity + 1;
+    for i := 0 to NodeCount - 1 do
+      if (not visited[i]) and (dist[i] < minDist) then
       begin
-        minDist := dist[j];
-        u := j;
+        minDist := dist[i];
+        u := i;
       end;
     if u = -1 then Break;
     visited[u] := True;
-    for j := 0 to NodeCount - 1 do
-      if (adj[u][j] < Inf) and (not visited[j]) then
-      begin
-        alt := dist[u] + adj[u][j];
-        if alt < dist[j] then dist[j] := alt;
-      end;
-  end;
 
+    for v := 0 to NodeCount - 1 do
+      if (graph[u][v] > 0) and (dist[u] + graph[u][v] < dist[v]) then
+        dist[v] := dist[u] + graph[u][v];
+  end;
+end;
+
+var
+  i, j: Integer;
+begin
+  for i := 0 to NodeCount - 1 do
+    for j := 0 to NodeCount - 1 do
+      graph[i][j] := 0;
+
+  graph[0][1] := 4; graph[0][2] := 1;
+  graph[2][1] := 2; graph[1][3] := 1;
+  graph[2][3] := 5; graph[3][4] := 3;
+
+  Dijkstra(0);
   for i := 0 to NodeCount - 1 do
     WriteLn('dist[', i, '] = ', dist[i]);
 end.

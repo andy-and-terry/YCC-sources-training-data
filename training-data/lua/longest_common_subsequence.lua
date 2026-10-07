@@ -1,4 +1,4 @@
-local function lcs(a, b)
+local function lcs_length(a, b)
   local m, n = #a, #b
   local dp = {}
   for i = 0, m do
@@ -17,23 +17,9 @@ local function lcs(a, b)
       end
     end
   end
-
-  local i, j = m, n
-  local chars = {}
-  while i > 0 and j > 0 do
-    if a:sub(i, i) == b:sub(j, j) then
-      table.insert(chars, 1, a:sub(i, i))
-      i = i - 1
-      j = j - 1
-    elseif dp[i - 1][j] >= dp[i][j - 1] then
-      i = i - 1
-    else
-      j = j - 1
-    end
-  end
-
-  return dp[m][n], table.concat(chars)
+  return dp[m][n]
 end
 
-local length, subsequence = lcs("ABCBDAB", "BDCABA")
-print(length, subsequence)
+print(lcs_length("abcde", "ace"))
+print(lcs_length("abc", "abc"))
+print(lcs_length("abc", "xyz"))

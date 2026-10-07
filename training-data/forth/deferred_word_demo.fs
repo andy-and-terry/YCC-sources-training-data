@@ -1,0 +1,14 @@
+DEFER ACTION
+
+: SQUARE-IT ( n -- n^2 ) DUP * ;
+: DOUBLE-IT ( n -- n*2 ) 2 * ;
+
+: APPLY-ACTION ( n -- result ) ACTION ;
+
+' SQUARE-IT IS ACTION
+5 APPLY-ACTION .
+CR
+
+' DOUBLE-IT IS ACTION
+5 APPLY-ACTION .
+CR

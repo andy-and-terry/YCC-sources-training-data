@@ -1,29 +1,30 @@
-let rec siftDown (arr: int[]) root heapSize =
-    let left = 2 * root + 1
-    let right = 2 * root + 2
-    let mutable largest = root
-
-    if left < heapSize && arr.[left] > arr.[largest] then
-        largest <- left
-    if right < heapSize && arr.[right] > arr.[largest] then
-        largest <- right
-
-    if largest <> root then
-        let temp = arr.[root]
-        arr.[root] <- arr.[largest]
-        arr.[largest] <- temp
-        siftDown arr largest heapSize
+let siftDown (arr: int[]) (n: int) (root: int) =
+    let mutable cur = root
+    let mutable go = true
+    while go do
+        let mutable largest = cur
+        let left = 2 * cur + 1
+        let right = 2 * cur + 2
+        if left < n && arr.[left] > arr.[largest] then largest <- left
+        if right < n && arr.[right] > arr.[largest] then largest <- right
+        if largest = cur then
+            go <- false
+        else
+            let temp = arr.[cur]
+            arr.[cur] <- arr.[largest]
+            arr.[largest] <- temp
+            cur <- largest
 
 let heapSort (arr: int[]) =
     let n = arr.Length
-    for i in (n / 2 - 1) .. -1 .. 0 do
-        siftDown arr i n
-    for endIdx in (n - 1) .. -1 .. 1 do
+    for i in n / 2 - 1 .. -1 .. 0 do
+        siftDown arr n i
+    for i in n - 1 .. -1 .. 1 do
         let temp = arr.[0]
-        arr.[0] <- arr.[endIdx]
-        arr.[endIdx] <- temp
-        siftDown arr 0 endIdx
-    arr
+        arr.[0] <- arr.[i]
+        arr.[i] <- temp
+        siftDown arr i 0
 
-let data = [| 8; 3; 5; 1; 9; 2; 7; 4 |]
-printfn "%A" (heapSort data)
+let arr = [| 6; 3; 8; 1; 9; 2 |]
+heapSort arr
+printfn "%A" arr

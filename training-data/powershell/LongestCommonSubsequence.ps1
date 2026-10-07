@@ -1,24 +1,22 @@
 function Get-LongestCommonSubsequence {
     param([string]$A, [string]$B)
 
-    $n = $A.Length
-    $m = $B.Length
-    $dp = New-Object 'int[,]' ($n + 1), ($m + 1)
-
-    for ($i = 1; $i -le $n; $i++) {
-        for ($j = 1; $j -le $m; $j++) {
+    $m = $A.Length; $n = $B.Length
+    $dp = New-Object 'string[,]' ($m + 1), ($n + 1)
+    for ($i = 0; $i -le $m; $i++) { $dp[$i, 0] = '' }
+    for ($j = 0; $j -le $n; $j++) { $dp[0, $j] = '' }
+    for ($i = 1; $i -le $m; $i++) {
+        for ($j = 1; $j -le $n; $j++) {
             if ($A[$i - 1] -eq $B[$j - 1]) {
-                $dp[$i, $j] = $dp[$i - 1, $j - 1] + 1
-            }
-            elseif ($dp[$i - 1, $j] -ge $dp[$i, $j - 1]) {
+                $dp[$i, $j] = $dp[$i - 1, $j - 1] + $A[$i - 1]
+            } elseif ($dp[$i - 1, $j].Length -ge $dp[$i, $j - 1].Length) {
                 $dp[$i, $j] = $dp[$i - 1, $j]
-            }
-            else {
+            } else {
                 $dp[$i, $j] = $dp[$i, $j - 1]
             }
         }
     }
-    return $dp[$n, $m]
+    return $dp[$m, $n]
 }
 
-Get-LongestCommonSubsequence -A 'ABCBDAB' -B 'BDCABA'
+Get-LongestCommonSubsequence -A "ABCBDAB" -B "BDCABA"

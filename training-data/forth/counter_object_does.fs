@@ -1,0 +1,13 @@
+: COUNTER ( "name" -- )
+  CREATE 0 ,
+  DOES> ( -- n )
+  DUP @ 1+ DUP ROT ! ;
+
+COUNTER TICKS
+COUNTER CLICKS
+
+TICKS .
+TICKS .
+CLICKS .
+TICKS .
+CR

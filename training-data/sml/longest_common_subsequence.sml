@@ -1,4 +1,4 @@
-fun lcs (a, b) =
+fun lcs_length (a, b) =
   let
     val m = String.size a
     val n = String.size b
@@ -22,4 +22,6 @@ fun lcs (a, b) =
     Array2.sub (table, m, n)
   end
 
-val () = print (Int.toString (lcs ("ABCBDAB", "BDCABA")) ^ "\n")
+val () = print (Int.toString (lcs_length ("abcde", "ace")) ^ "\n")
+val () = print (Int.toString (lcs_length ("abc", "abc")) ^ "\n")
+val () = print (Int.toString (lcs_length ("abc", "def")) ^ "\n")

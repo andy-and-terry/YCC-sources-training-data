@@ -1,16 +1,17 @@
-function counting_sort(arr::Vector{Int}, max_val::Int)
-    counts = zeros(Int, max_val + 1)
-    for v in arr
-        counts[v + 1] += 1
+function counting_sort(arr::Vector{Int})
+    if isempty(arr)
+        return Int[]
     end
-
+    lo, hi = minimum(arr), maximum(arr)
+    counts = zeros(Int, hi - lo + 1)
+    for v in arr
+        counts[v - lo + 1] += 1
+    end
     result = Int[]
-    for v in 0:max_val
-        for _ in 1:counts[v + 1]
-            push!(result, v)
-        end
+    for (i, count) in enumerate(counts)
+        append!(result, fill(i + lo - 1, count))
     end
     return result
 end
 
-println(counting_sort([4, 2, 9, 6, 2, 1, 9, 4], 9))
+println(counting_sort([4, 2, 2, 8, 3, 3, 1]))

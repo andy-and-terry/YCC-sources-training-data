@@ -1,20 +1,20 @@
-func wordBreak(_ s: String, _ wordDict: [String]) -> Bool {
-    let words = Set(wordDict)
+func wordBreak(_ s: String, _ wordDict: Set<String>) -> Bool {
     let chars = Array(s)
-    var dp = [Bool](repeating: false, count: chars.count + 1)
+    let n = chars.count
+    var dp = [Bool](repeating: false, count: n + 1)
     dp[0] = true
-
-    for end in 1...chars.count {
-        for start in 0..<end where dp[start] {
-            let word = String(chars[start..<end])
-            if words.contains(word) {
-                dp[end] = true
-                break
+    for i in 1...n {
+        for j in 0..<i where dp[j] && !dp[i] {
+            let word = String(chars[j..<i])
+            if wordDict.contains(word) {
+                dp[i] = true
             }
         }
     }
-    return dp[chars.count]
+    return dp[n]
 }
 
-print(wordBreak("leetcode", ["leet", "code"]))      // true
-print(wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"])) // false
+let dict: Set<String> = ["swift", "is", "fun", "lang"]
+print(wordBreak("swiftisfun", dict))
+print(wordBreak("swiftlang", dict))
+print(wordBreak("nope", dict))

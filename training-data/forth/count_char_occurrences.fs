@@ -1,0 +1,18 @@
+VARIABLE TARGET-CHAR
+VARIABLE OCC-COUNT
+VARIABLE SRC-ADDR
+VARIABLE SRC-LEN
+
+: COUNT-CHAR ( addr len char -- count )
+  TARGET-CHAR !
+  SRC-LEN !
+  SRC-ADDR !
+  0 OCC-COUNT !
+  SRC-LEN @ 0 DO
+    SRC-ADDR @ I + C@ TARGET-CHAR @ = IF 1 OCC-COUNT +! THEN
+  LOOP
+  OCC-COUNT @ ;
+
+S" mississippi" [CHAR] s COUNT-CHAR .
+S" hello world" [CHAR] o COUNT-CHAR .
+CR

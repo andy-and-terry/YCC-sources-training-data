@@ -1,33 +1,22 @@
 const std = @import("std");
-const allocator = std.heap.page_allocator;
 
-fn lcsLength(a: []const u8, b: []const u8) !usize {
-    const rows = a.len + 1;
-    const cols = b.len + 1;
-
-    const dp = try allocator.alloc([]usize, rows);
-    defer allocator.free(dp);
-    for (dp) |*row| {
-        row.* = try allocator.alloc(usize, cols);
-    }
-    defer for (dp) |row| allocator.free(row);
-
-    for (0..rows) |i| dp[i][0] = 0;
-    for (0..cols) |j| dp[0][j] = 0;
-
-    for (1..rows) |i| {
-        for (1..cols) |j| {
+fn longestCommonSubsequence(a: []const u8, b: []const u8) usize {
+    var table: [10][10]usize = undefined;
+    for (0..a.len + 1) |i| table[i][0] = 0;
+    for (0..b.len + 1) |j| table[0][j] = 0;
+    for (1..a.len + 1) |i| {
+        for (1..b.len + 1) |j| {
             if (a[i - 1] == b[j - 1]) {
-                dp[i][j] = dp[i - 1][j - 1] + 1;
+                table[i][j] = table[i - 1][j - 1] + 1;
             } else {
-                dp[i][j] = @max(dp[i - 1][j], dp[i][j - 1]);
+                table[i][j] = @max(table[i - 1][j], table[i][j - 1]);
             }
         }
     }
-    return dp[rows - 1][cols - 1];
+    return table[a.len][b.len];
 }
 
-pub fn main() !void {
-    const len = try lcsLength("ABCBDAB", "BDCABA");
-    std.debug.print("{d}\n", .{len});
+pub fn main() void {
+    std.debug.print("{d}\n", .{longestCommonSubsequence("ABCBDAB", "BDCABA")});
+    std.debug.print("{d}\n", .{longestCommonSubsequence("abc", "abc")});
 }

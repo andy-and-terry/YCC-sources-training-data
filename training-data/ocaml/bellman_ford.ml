@@ -1,37 +1,22 @@
-type edge = { src : string; dst : string; weight : int }
-
-let bellman_ford vertices edges source =
+(* Unlike Dijkstra, Bellman-Ford relaxes every edge |V| - 1 times, which
+   still works correctly with negative edge weights as long as there is
+   no negative-weight cycle reachable from the source. *)
+let bellman_ford nodes edges source =
   let dist = Hashtbl.create 16 in
-  List.iter (fun v -> Hashtbl.replace dist v max_int) vertices;
+  List.iter (fun n -> Hashtbl.replace dist n max_int) nodes;
   Hashtbl.replace dist source 0;
-  for _ = 1 to List.length vertices - 1 do
+  for _ = 1 to List.length nodes - 1 do
     List.iter
-      (fun e ->
-        let du = Hashtbl.find dist e.src in
-        if du <> max_int && du + e.weight < Hashtbl.find dist e.dst then
-          Hashtbl.replace dist e.dst (du + e.weight))
+      (fun (from_node, to_node, weight) ->
+        let from_dist = Hashtbl.find dist from_node in
+        if from_dist <> max_int && from_dist + weight < Hashtbl.find dist to_node then
+          Hashtbl.replace dist to_node (from_dist + weight))
       edges
   done;
-  let has_negative_cycle =
-    List.exists
-      (fun e ->
-        let du = Hashtbl.find dist e.src in
-        du <> max_int && du + e.weight < Hashtbl.find dist e.dst)
-      edges
-  in
-  (dist, has_negative_cycle)
+  dist
 
 let () =
-  let vertices = [ "a"; "b"; "c"; "d" ] in
-  let edges =
-    [
-      { src = "a"; dst = "b"; weight = 4 };
-      { src = "a"; dst = "c"; weight = 5 };
-      { src = "b"; dst = "c"; weight = -3 };
-      { src = "c"; dst = "d"; weight = 4 };
-      { src = "b"; dst = "d"; weight = 6 };
-    ]
-  in
-  let dist, has_cycle = bellman_ford vertices edges "a" in
-  List.iter (fun v -> Printf.printf "%s: %d\n" v (Hashtbl.find dist v)) vertices;
-  Printf.printf "negative cycle: %b\n" has_cycle
+  let nodes = [ "a"; "b"; "c"; "d" ] in
+  let edges = [ ("a", "b", 4); ("a", "c", 5); ("b", "c", -3); ("c", "d", 2); ("b", "d", 6) ] in
+  let dist = bellman_ford nodes edges "a" in
+  List.iter (fun n -> Printf.printf "%s: %d\n" n (Hashtbl.find dist n)) nodes

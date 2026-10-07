@@ -1,40 +1,26 @@
-class Shape {
-    [double] Area() {
-        throw 'not implemented'
-    }
-}
-
-class Circle : Shape {
+class Circle {
     [double]$Radius
     Circle([double]$radius) { $this.Radius = $radius }
-    [double] Area() { return [math]::Pi * $this.Radius * $this.Radius }
+    [double] Area() { return [Math]::PI * $this.Radius * $this.Radius }
 }
 
-class Rectangle : Shape {
-    [double]$Width
-    [double]$Height
-    Rectangle([double]$width, [double]$height) {
-        $this.Width = $width
-        $this.Height = $height
-    }
-    [double] Area() { return $this.Width * $this.Height }
+class Square {
+    [double]$Side
+    Square([double]$side) { $this.Side = $side }
+    [double] Area() { return $this.Side * $this.Side }
 }
 
-function New-Shape {
-    param([string]$Kind, [double[]]$Dimensions)
-
-    switch ($Kind) {
-        'circle' { return [Circle]::new($Dimensions[0]) }
-        'rectangle' { return [Rectangle]::new($Dimensions[0], $Dimensions[1]) }
-        default { throw "unknown shape kind: $Kind" }
+class ShapeFactory {
+    static [object] Create([string]$kind, [double]$size) {
+        switch ($kind) {
+            'circle' { return [Circle]::new($size) }
+            'square' { return [Square]::new($size) }
+            default { throw "unknown shape: $kind" }
+        }
     }
 }
 
-$shapes = @(
-    (New-Shape -Kind 'circle' -Dimensions @(2)),
-    (New-Shape -Kind 'rectangle' -Dimensions @(3, 4))
-)
-
-foreach ($shape in $shapes) {
-    '{0:N2}' -f $shape.Area()
+foreach ($spec in @(@('circle', 3), @('square', 4))) {
+    $shape = [ShapeFactory]::Create($spec[0], $spec[1])
+    "{0} area: {1:N2}" -f $spec[0], $shape.Area()
 }

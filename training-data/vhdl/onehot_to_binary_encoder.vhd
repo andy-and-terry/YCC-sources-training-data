@@ -9,20 +9,19 @@ end Onehot_To_Binary_Encoder;
 
 architecture Behavioral of Onehot_To_Binary_Encoder is
 begin
-    valid <= '0' when onehot_in = (onehot_in'range => '0') else '1';
+    valid <= '1' when onehot_in /= "00000000" else '0';
 
     process(onehot_in)
     begin
-        case onehot_in is
-            when "10000000" => binary_out <= "111";
-            when "01000000" => binary_out <= "110";
-            when "00100000" => binary_out <= "101";
-            when "00010000" => binary_out <= "100";
-            when "00001000" => binary_out <= "011";
-            when "00000100" => binary_out <= "010";
-            when "00000010" => binary_out <= "001";
-            when "00000001" => binary_out <= "000";
-            when others     => binary_out <= "000";
-        end case;
+        if    onehot_in(7) = '1' then binary_out <= "111";
+        elsif onehot_in(6) = '1' then binary_out <= "110";
+        elsif onehot_in(5) = '1' then binary_out <= "101";
+        elsif onehot_in(4) = '1' then binary_out <= "100";
+        elsif onehot_in(3) = '1' then binary_out <= "011";
+        elsif onehot_in(2) = '1' then binary_out <= "010";
+        elsif onehot_in(1) = '1' then binary_out <= "001";
+        elsif onehot_in(0) = '1' then binary_out <= "000";
+        else                          binary_out <= "000";
+        end if;
     end process;
 end Behavioral;

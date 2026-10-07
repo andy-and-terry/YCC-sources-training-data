@@ -1,6 +1,5 @@
 class DisjointSet(n: Int) {
     private val parent = IntArray(n) { it }
-    private val rank = IntArray(n)
 
     fun find(x: Int): Int {
         if (parent[x] != x) parent[x] = find(parent[x])
@@ -11,28 +10,20 @@ class DisjointSet(n: Int) {
         val rootA = find(a)
         val rootB = find(b)
         if (rootA == rootB) return false
-        if (rank[rootA] < rank[rootB]) {
-            parent[rootA] = rootB
-        } else if (rank[rootA] > rank[rootB]) {
-            parent[rootB] = rootA
-        } else {
-            parent[rootB] = rootA
-            rank[rootA]++
-        }
+        parent[rootA] = rootB
         return true
     }
 }
 
-data class WeightedEdge(val u: Int, val v: Int, val weight: Int)
+data class Edge(val from: Int, val to: Int, val weight: Int)
 
-fun kruskalMst(vertexCount: Int, edges: List<WeightedEdge>): List<WeightedEdge> {
-    val sorted = edges.sortedBy { it.weight }
-    val dsu = DisjointSet(vertexCount)
-    val mst = mutableListOf<WeightedEdge>()
-    for (edge in sorted) {
-        if (dsu.union(edge.u, edge.v)) {
+fun kruskalMst(vertexCount: Int, edges: List<Edge>): List<Edge> {
+    val disjointSet = DisjointSet(vertexCount)
+    val mst = mutableListOf<Edge>()
+
+    for (edge in edges.sortedBy { it.weight }) {
+        if (disjointSet.union(edge.from, edge.to)) {
             mst.add(edge)
-            if (mst.size == vertexCount - 1) break
         }
     }
     return mst
@@ -40,17 +31,15 @@ fun kruskalMst(vertexCount: Int, edges: List<WeightedEdge>): List<WeightedEdge> 
 
 fun main() {
     val edges = listOf(
-        WeightedEdge(0, 1, 4),
-        WeightedEdge(0, 2, 1),
-        WeightedEdge(1, 2, 2),
-        WeightedEdge(1, 3, 5),
-        WeightedEdge(2, 3, 8)
+        Edge(0, 1, 4),
+        Edge(0, 2, 3),
+        Edge(1, 2, 1),
+        Edge(1, 3, 2),
+        Edge(2, 3, 4),
+        Edge(3, 4, 2),
+        Edge(4, 2, 4),
     )
-    val mst = kruskalMst(4, edges)
-    var total = 0
-    for (edge in mst) {
-        println("${edge.u} - ${edge.v} : ${edge.weight}")
-        total += edge.weight
-    }
-    println("Total weight: $total")
+    val mst = kruskalMst(5, edges)
+    println(mst)
+    println("total weight: ${mst.sumOf { it.weight }}")
 }

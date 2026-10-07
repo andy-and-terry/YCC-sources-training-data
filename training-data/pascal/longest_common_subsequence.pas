@@ -1,11 +1,9 @@
-program LongestCommonSubsequenceDemo;
+program LongestCommonSubsequence;
 
+function LCS(a, b: string): Integer;
 var
-  a: string = 'ABCBDAB';
-  b: string = 'BDCABA';
-  dp: array[0..7, 0..6] of Integer;
+  dp: array[0..50, 0..50] of Integer;
   i, j: Integer;
-
 begin
   for i := 0 to Length(a) do
     dp[i][0] := 0;
@@ -16,10 +14,16 @@ begin
     for j := 1 to Length(b) do
       if a[i] = b[j] then
         dp[i][j] := dp[i - 1][j - 1] + 1
-      else if dp[i - 1][j] >= dp[i][j - 1] then
+      else if dp[i - 1][j] > dp[i][j - 1] then
         dp[i][j] := dp[i - 1][j]
       else
         dp[i][j] := dp[i][j - 1];
 
-  WriteLn('LCS length: ', dp[Length(a)][Length(b)]);
+  LCS := dp[Length(a)][Length(b)];
+end;
+
+begin
+  WriteLn(LCS('abcde', 'ace'));
+  WriteLn(LCS('abc', 'abc'));
+  WriteLn(LCS('abc', 'def'));
 end.

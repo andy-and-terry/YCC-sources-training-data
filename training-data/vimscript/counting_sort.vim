@@ -1,21 +1,15 @@
-function! CountingSort(arr)
-  if empty(a:arr)
-    return []
-  endif
-  let maxVal = max(a:arr)
-  let counts = repeat([0], maxVal + 1)
-  for x in a:arr
-    let counts[x] += 1
+function! CountingSort(arr, maxVal)
+  let counts = repeat([0], a:maxVal + 1)
+  for v in a:arr
+    let counts[v] += 1
   endfor
   let result = []
-  for i in range(0, maxVal)
-    let j = 0
-    while j < counts[i]
-      call add(result, i)
-      let j += 1
-    endwhile
+  for v in range(a:maxVal + 1)
+    for _ in range(counts[v])
+      call add(result, v)
+    endfor
   endfor
   return result
 endfunction
 
-echo CountingSort([4, 2, 2, 8, 3, 3, 1])
+echo CountingSort([4, 2, 2, 8, 3, 3, 1], 8)

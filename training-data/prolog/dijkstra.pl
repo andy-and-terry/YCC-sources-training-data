@@ -1,40 +1,43 @@
-edge(a, b, 4). edge(a, c, 1). edge(c, b, 1). edge(b, d, 1). edge(c, d, 5).
+% Dijkstra's shortest-path algorithm over a small directed weighted graph,
+% using library(assoc) as the distance map and a greedy min-unvisited pick
+% at each step (rather than relaxing every edge like Bellman-Ford would).
+:- use_module(library(assoc)).
 
-get_dist(Node, Dists, Dist) :- member(Node-Dist, Dists), !.
-get_dist(_, _, inf).
+edge(a, b, 4). edge(a, c, 1). edge(c, b, 2).
+edge(b, d, 5). edge(c, d, 8). edge(d, e, 3).
 
-update_dist(Node, NewDist, Dists, [Node-NewDist|Rest]) :-
-    select(Node-_, Dists, Rest), !.
-update_dist(Node, NewDist, Dists, [Node-NewDist|Dists]).
+neighbors(Node, Neighbors) :- findall(N-W, edge(Node, N, W), Neighbors).
 
-min_unvisited(Dists, Visited, Best) :-
-    findall(D-N, (member(N-D, Dists), \+ member(N, Visited), D \= inf), Candidates),
-    Candidates \= [],
-    sort(Candidates, [_-Best|_]).
+dijkstra(Source, Nodes, Dists) :-
+    findall(N-D, (member(N, Nodes), (N == Source -> D = 0 ; D = inf)), Pairs),
+    list_to_assoc(Pairs, DistMap0),
+    dijkstra_loop(Nodes, DistMap0, DistMap),
+    assoc_to_list(DistMap, Dists).
 
-relax([], _, Dists, Dists).
-relax([edge(_, V, W)|Rest], BestDist, Dists, NewDists) :-
-    get_dist(V, Dists, DV),
-    Candidate is BestDist + W,
-    ( (DV == inf ; Candidate < DV) ->
-        update_dist(V, Candidate, Dists, Dists1)
-    ; Dists1 = Dists
-    ),
-    relax(Rest, BestDist, Dists1, NewDists).
-
-dijkstra_step(Nodes, Visited, Dists, Dists) :-
-    length(Nodes, N), length(Visited, N), !.
-dijkstra_step(Nodes, Visited, Dists, FinalDists) :-
-    min_unvisited(Dists, Visited, Best),
+dijkstra_loop([], DistMap, DistMap) :- !.
+dijkstra_loop(Unvisited, DistMap0, DistMap) :-
+    select_min(Unvisited, DistMap0, Node),
     !,
-    get_dist(Best, Dists, BestDist),
-    findall(edge(Best, V, W), edge(Best, V, W), OutEdges),
-    relax(OutEdges, BestDist, Dists, Dists1),
-    dijkstra_step(Nodes, [Best|Visited], Dists1, FinalDists).
-dijkstra_step(_, _, Dists, Dists).
+    neighbors(Node, Neighbors),
+    get_assoc(Node, DistMap0, NodeDist),
+    relax_all(Neighbors, NodeDist, DistMap0, DistMap1),
+    exclude(==(Node), Unvisited, Rest),
+    dijkstra_loop(Rest, DistMap1, DistMap).
+dijkstra_loop(_, DistMap, DistMap).
 
-dijkstra(Nodes, Source, FinalDists) :-
-    findall(N-D, (member(N, Nodes), (N == Source -> D = 0 ; D = inf)), InitDists),
-    dijkstra_step(Nodes, [], InitDists, FinalDists).
+select_min(Unvisited, DistMap, BestNode) :-
+    findall(D-N, (member(N, Unvisited), get_assoc(N, DistMap, D), D \= inf), Pairs),
+    Pairs \= [],
+    keysort(Pairs, [_-BestNode|_]).
 
-:- dijkstra([a, b, c, d], a, Dists), writeln(Dists).
+relax_all([], _, DistMap, DistMap).
+relax_all([N-W|Rest], NodeDist, DistMap0, DistMap) :-
+    get_assoc(N, DistMap0, OldDist),
+    NewDist is NodeDist + W,
+    (   (OldDist == inf ; NewDist < OldDist)
+    ->  put_assoc(N, DistMap0, NewDist, DistMap1)
+    ;   DistMap1 = DistMap0
+    ),
+    relax_all(Rest, NodeDist, DistMap1, DistMap).
+
+:- dijkstra(a, [a, b, c, d, e], Dists), writeln(Dists).

@@ -1,6 +1,7 @@
 fun lengthOfLIS(nums: IntArray): Int {
     if (nums.isEmpty()) return 0
     val tails = mutableListOf<Int>()
+
     for (num in nums) {
         var lo = 0
         var hi = tails.size

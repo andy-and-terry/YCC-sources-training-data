@@ -1,42 +1,30 @@
 type Pizza =
     { Size: string
-      Cheese: bool
-      Pepperoni: bool
-      Mushrooms: bool }
+      Toppings: string list
+      ExtraCheese: bool }
 
-type PizzaBuilder() =
-    let mutable size = "medium"
-    let mutable cheese = false
-    let mutable pepperoni = false
-    let mutable mushrooms = false
+type PizzaBuilder(size: string) =
+    let mutable toppings: string list = []
+    let mutable extraCheese = false
 
-    member this.WithSize(s: string) =
-        size <- s
+    member this.WithTopping(topping: string) =
+        toppings <- topping :: toppings
         this
 
-    member this.AddCheese() =
-        cheese <- true
-        this
-
-    member this.AddPepperoni() =
-        pepperoni <- true
-        this
-
-    member this.AddMushrooms() =
-        mushrooms <- true
+    member this.WithExtraCheese() =
+        extraCheese <- true
         this
 
     member _.Build() : Pizza =
         { Size = size
-          Cheese = cheese
-          Pepperoni = pepperoni
-          Mushrooms = mushrooms }
+          Toppings = List.rev toppings
+          ExtraCheese = extraCheese }
 
 let pizza =
-    PizzaBuilder()
-        .WithSize("large")
-        .AddCheese()
-        .AddMushrooms()
+    PizzaBuilder("large")
+        .WithTopping("pepperoni")
+        .WithTopping("mushroom")
+        .WithExtraCheese()
         .Build()
 
 printfn "%A" pizza

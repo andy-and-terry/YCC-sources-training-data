@@ -1,26 +1,35 @@
-function bellman_ford(n::Int, edges::Vector{Tuple{Int, Int, Int}}, source::Int)
-    dist = fill(div(typemax(Int), 2), n)
+function bellman_ford(graph::Dict, source::String, n_vertices::Int)
+    dist = Dict(v => typemax(Int) for v in keys(graph))
     dist[source] = 0
 
-    for _ in 1:(n - 1)
+    edges = Tuple{String, String, Int}[]
+    for (u, neighbors) in graph
+        for (v, w) in neighbors
+            push!(edges, (u, v, w))
+        end
+    end
+
+    for _ in 1:(n_vertices - 1)
         for (u, v, w) in edges
-            if dist[u] + w < dist[v]
+            if dist[u] != typemax(Int) && dist[u] + w < dist[v]
                 dist[v] = dist[u] + w
             end
         end
     end
 
-    has_negative_cycle = false
     for (u, v, w) in edges
-        if dist[u] + w < dist[v]
-            has_negative_cycle = true
+        if dist[u] != typemax(Int) && dist[u] + w < dist[v]
+            error("graph contains a negative-weight cycle")
         end
     end
 
-    return dist, has_negative_cycle
+    return dist
 end
 
-edges = [(1, 2, -1), (1, 3, 4), (2, 3, 3), (2, 4, 2), (2, 5, 2), (4, 3, 5), (4, 2, 1), (5, 4, -3)]
-dist, has_negative_cycle = bellman_ford(5, edges, 1)
-println(dist)
-println(has_negative_cycle)
+graph = Dict(
+    "a" => [("b", 4), ("c", 5)],
+    "b" => [("c", -3)],
+    "c" => [("d", 4)],
+    "d" => []
+)
+println(bellman_ford(graph, "a", 4))

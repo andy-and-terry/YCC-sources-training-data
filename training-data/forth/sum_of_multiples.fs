@@ -1,0 +1,14 @@
+VARIABLE TOTAL
+
+: MULTIPLE-OF-3-OR-5? ( n -- flag )
+  DUP 3 MOD 0= SWAP 5 MOD 0= OR ;
+
+: SUM-MULTIPLES ( limit -- sum )
+  0 TOTAL !
+  0 DO
+    I MULTIPLE-OF-3-OR-5? IF I TOTAL +! THEN
+  LOOP
+  TOTAL @ ;
+
+1000 SUM-MULTIPLES .
+CR

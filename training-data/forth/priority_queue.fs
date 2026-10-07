@@ -1,0 +1,52 @@
+CREATE PQ 10 CELLS ALLOT
+10 CONSTANT PQ-CAP
+VARIABLE PQ-COUNT
+VARIABLE PQ-NEWVAL
+VARIABLE PQ-IDX
+
+: PQ-ELEM ( i -- addr ) CELLS PQ + ;
+: PQ-INIT ( -- ) 0 PQ-COUNT ! ;
+
+: PQ-INSERT ( value -- )
+  PQ-COUNT @ PQ-CAP < IF
+    PQ-NEWVAL !
+    PQ-COUNT @ PQ-IDX !
+    BEGIN
+      PQ-IDX @ 0 >
+      IF
+        PQ-IDX @ 1- PQ-ELEM @ PQ-NEWVAL @ >
+      ELSE
+        FALSE
+      THEN
+    WHILE
+      PQ-IDX @ PQ-ELEM PQ-IDX @ 1- PQ-ELEM @ SWAP !
+      PQ-IDX @ 1- PQ-IDX !
+    REPEAT
+    PQ-IDX @ PQ-ELEM PQ-NEWVAL @ SWAP !
+    1 PQ-COUNT +!
+  ELSE
+    DROP
+  THEN ;
+
+: PQ-EXTRACT-MIN ( -- value found? )
+  PQ-COUNT @ 0 > IF
+    0 PQ-ELEM @
+    PQ-COUNT @ 1- 0 ?DO
+      I 1+ PQ-ELEM @ I PQ-ELEM !
+    LOOP
+    -1 PQ-COUNT +!
+    TRUE
+  ELSE
+    0 FALSE
+  THEN ;
+
+PQ-INIT
+30 PQ-INSERT
+10 PQ-INSERT
+20 PQ-INSERT
+5 PQ-INSERT
+PQ-EXTRACT-MIN . .
+PQ-EXTRACT-MIN . .
+PQ-EXTRACT-MIN . .
+PQ-EXTRACT-MIN . .
+CR

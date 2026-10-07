@@ -1,10 +1,5 @@
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, ShapeType) {
-    ShapeTypeCircle,
-    ShapeTypeSquare
-};
-
 @protocol Shape <NSObject>
 - (double)area;
 - (NSString *)name;
@@ -21,8 +16,8 @@ typedef NS_ENUM(NSInteger, ShapeType) {
     if (self) _radius = radius;
     return self;
 }
-- (double)area { return M_PI * self.radius * self.radius; }
-- (NSString *)name { return @"circle"; }
+- (double)area { return M_PI * _radius * _radius; }
+- (NSString *)name { return @"Circle"; }
 @end
 
 @interface Square : NSObject <Shape>
@@ -36,21 +31,26 @@ typedef NS_ENUM(NSInteger, ShapeType) {
     if (self) _side = side;
     return self;
 }
-- (double)area { return self.side * self.side; }
-- (NSString *)name { return @"square"; }
+- (double)area { return _side * _side; }
+- (NSString *)name { return @"Square"; }
 @end
 
+typedef NS_ENUM(NSInteger, ShapeKind) {
+    ShapeKindCircle,
+    ShapeKindSquare,
+};
+
 @interface ShapeFactory : NSObject
-+ (id<Shape>)shapeOfType:(ShapeType)type withParam:(double)param;
++ (id<Shape>)shapeOfKind:(ShapeKind)kind withSize:(double)size;
 @end
 
 @implementation ShapeFactory
-+ (id<Shape>)shapeOfType:(ShapeType)type withParam:(double)param {
-    switch (type) {
-        case ShapeTypeCircle:
-            return [[Circle alloc] initWithRadius:param];
-        case ShapeTypeSquare:
-            return [[Square alloc] initWithSide:param];
++ (id<Shape>)shapeOfKind:(ShapeKind)kind withSize:(double)size {
+    switch (kind) {
+        case ShapeKindCircle:
+            return [[Circle alloc] initWithRadius:size];
+        case ShapeKindSquare:
+            return [[Square alloc] initWithSide:size];
     }
     return nil;
 }
@@ -58,10 +58,11 @@ typedef NS_ENUM(NSInteger, ShapeType) {
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
-        id<Shape> circle = [ShapeFactory shapeOfType:ShapeTypeCircle withParam:3.0];
-        id<Shape> square = [ShapeFactory shapeOfType:ShapeTypeSquare withParam:4.0];
-        NSLog(@"%@ area: %.2f", circle.name, circle.area);
-        NSLog(@"%@ area: %.2f", square.name, square.area);
+        NSArray<NSNumber *> *kinds = @[ @(ShapeKindCircle), @(ShapeKindSquare) ];
+        for (NSNumber *kind in kinds) {
+            id<Shape> shape = [ShapeFactory shapeOfKind:kind.integerValue withSize:3.0];
+            NSLog(@"%@ area = %.2f", shape.name, shape.area);
+        }
     }
     return 0;
 }

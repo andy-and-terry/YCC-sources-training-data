@@ -1,0 +1,7 @@
+(format t "~r~%" 42)
+(format t "~:r~%" 3)
+(format t "~@r~%" 14)
+(format t "~:[no~;yes~]~%" t)
+(format t "~{~a~^, ~}~%" '(1 2 3))
+(format t "~d cat~:p~%" 1)
+(format t "~d cat~:p~%" 5)

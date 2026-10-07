@@ -1,11 +1,11 @@
-function Invoke-BellmanFord {
-    param([array]$Edges, [int]$NodeCount, [int]$Source)
+function Get-BellmanFord {
+    param($Vertices, $Edges, [string]$Source)
 
     $dist = @{}
-    for ($i = 0; $i -lt $NodeCount; $i++) { $dist[$i] = [int]::MaxValue }
+    foreach ($v in $Vertices) { $dist[$v] = [int]::MaxValue }
     $dist[$Source] = 0
 
-    for ($i = 0; $i -lt $NodeCount - 1; $i++) {
+    for ($i = 1; $i -lt $Vertices.Count; $i++) {
         foreach ($edge in $Edges) {
             $u, $v, $w = $edge
             if ($dist[$u] -ne [int]::MaxValue -and $dist[$u] + $w -lt $dist[$v]) {
@@ -17,22 +17,24 @@ function Invoke-BellmanFord {
     foreach ($edge in $Edges) {
         $u, $v, $w = $edge
         if ($dist[$u] -ne [int]::MaxValue -and $dist[$u] + $w -lt $dist[$v]) {
-            Write-Output 'negative cycle detected'
-            return $null
+            throw "graph contains a negative-weight cycle"
         }
     }
+
     return $dist
 }
 
+$vertices = @('a', 'b', 'c', 'd', 'e')
 $edges = @(
-    , @(0, 1, 6)
-    , @(0, 2, 7)
-    , @(1, 2, 8)
-    , @(1, 3, 5)
-    , @(1, 4, -4)
-    , @(2, 3, -3)
-    , @(2, 4, 9)
-    , @(3, 1, -2)
+    , @('a', 'b', -1)
+    , @('a', 'c', 4)
+    , @('b', 'c', 3)
+    , @('b', 'd', 2)
+    , @('b', 'e', 2)
+    , @('d', 'b', 1)
+    , @('d', 'c', 5)
+    , @('e', 'd', -3)
 )
 
-Invoke-BellmanFord -Edges $edges -NodeCount 5 -Source 0
+$result = Get-BellmanFord -Vertices $vertices -Edges $edges -Source 'a'
+foreach ($key in $vertices) { "$key`: $($result[$key])" }

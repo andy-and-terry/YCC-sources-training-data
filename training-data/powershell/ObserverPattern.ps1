@@ -1,19 +1,36 @@
 class Subject {
-    [System.Collections.Generic.List[scriptblock]]$Observers = [System.Collections.Generic.List[scriptblock]]::new()
+    [System.Collections.ArrayList]$Observers
 
-    [void] Subscribe([scriptblock]$observer) {
-        $this.Observers.Add($observer)
+    Subject() {
+        $this.Observers = New-Object System.Collections.ArrayList
+    }
+
+    [void] Attach($observer) {
+        [void]$this.Observers.Add($observer)
     }
 
     [void] Notify([string]$eventName) {
         foreach ($observer in $this.Observers) {
-            & $observer $eventName
+            $observer.Update($eventName)
         }
     }
 }
 
-$subject = [Subject]::new()
-$subject.Subscribe({ param($e) Write-Output "logger saw: $e" })
-$subject.Subscribe({ param($e) Write-Output "mailer sending alert for: $e" })
+class EmailNotifier {
+    [void] Update([string]$eventName) {
+        "Email: received event '$eventName'"
+    }
+}
 
-$subject.Notify('order-placed')
+class LogNotifier {
+    [void] Update([string]$eventName) {
+        "Log: recorded event '$eventName'"
+    }
+}
+
+$subject = [Subject]::new()
+$subject.Attach([EmailNotifier]::new())
+$subject.Attach([LogNotifier]::new())
+
+$subject.Notify("OrderPlaced")
+$subject.Notify("OrderShipped")

@@ -1,48 +1,58 @@
 program HeapSortDemo;
 
 var
-  data: array[0..7] of Integer = (5, 3, 8, 1, 9, 2, 7, 4);
-  n: Integer;
+  arr: array[0..7] of Integer = (5, 3, 8, 1, 9, 2, 7, 4);
 
-procedure Heapify(var arr: array of Integer; size, root: Integer);
+procedure Swap(var a, b: Integer);
 var
-  largest, left, right, temp: Integer;
+  t: Integer;
 begin
-  largest := root;
-  left := 2 * root + 1;
-  right := 2 * root + 2;
-  if (left < size) and (arr[left] > arr[largest]) then largest := left;
-  if (right < size) and (arr[right] > arr[largest]) then largest := right;
-  if largest <> root then
+  t := a;
+  a := b;
+  b := t;
+end;
+
+procedure SiftDown(var a: array of Integer; start, count: Integer);
+var
+  root, child: Integer;
+begin
+  root := start;
+  while root * 2 + 1 < count do
   begin
-    temp := arr[root];
-    arr[root] := arr[largest];
-    arr[largest] := temp;
-    Heapify(arr, size, largest);
+    child := root * 2 + 1;
+    if (child + 1 < count) and (a[child] < a[child + 1]) then
+      child := child + 1;
+    if a[root] < a[child] then
+    begin
+      Swap(a[root], a[child]);
+      root := child;
+    end
+    else
+      Break;
   end;
 end;
 
-procedure HeapSort(var arr: array of Integer; size: Integer);
+procedure HeapSort(var a: array of Integer; count: Integer);
 var
-  i, temp: Integer;
+  i, endIdx: Integer;
 begin
-  for i := (size div 2) - 1 downto 0 do
-    Heapify(arr, size, i);
-  for i := size - 1 downto 1 do
+  for i := (count div 2) - 1 downto 0 do
+    SiftDown(a, i, count);
+
+  endIdx := count - 1;
+  while endIdx > 0 do
   begin
-    temp := arr[0];
-    arr[0] := arr[i];
-    arr[i] := temp;
-    Heapify(arr, i, 0);
+    Swap(a[0], a[endIdx]);
+    SiftDown(a, 0, endIdx);
+    endIdx := endIdx - 1;
   end;
 end;
 
 var
   i: Integer;
 begin
-  n := 8;
-  HeapSort(data, n);
-  for i := 0 to n - 1 do
-    Write(data[i], ' ');
+  HeapSort(arr, 8);
+  for i := 0 to 7 do
+    Write(arr[i], ' ');
   WriteLn;
 end.

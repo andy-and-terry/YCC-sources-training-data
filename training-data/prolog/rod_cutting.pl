@@ -1,16 +1,14 @@
-price(1, 1). price(2, 5). price(3, 8). price(4, 9). price(5, 10). price(6, 17). price(7, 17). price(8, 20).
+price(1, 1). price(2, 5). price(3, 8). price(4, 9).
+price(5, 10). price(6, 17). price(7, 17). price(8, 20).
 
-best_price(0, 0) :- !.
-best_price(Len, Best) :-
+best_revenue(0, 0) :- !.
+best_revenue(N, Best) :-
+    N > 0,
     findall(Revenue,
-        ( between(1, Len, Cut),
-          price(Cut, Price),
-          Remaining is Len - Cut,
-          best_price(Remaining, RestBest),
-          Revenue is Price + RestBest
-        ),
+        (price(Len, Price), Len =< N, Rest is N - Len,
+         best_revenue(Rest, RestRevenue), Revenue is Price + RestRevenue),
         Revenues),
+    Revenues \= [],
     max_list(Revenues, Best).
 
-:- best_price(8, Best), format("max revenue for rod length 8: ~w~n", [Best]).
-:- best_price(4, Best2), format("max revenue for rod length 4: ~w~n", [Best2]).
+:- best_revenue(8, Best), writeln(Best).

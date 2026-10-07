@@ -1,53 +1,35 @@
-class DisjointSet {
-    [int[]]$Parent
+function Find-Root {
+    param([hashtable]$Parent, [string]$Node)
 
-    DisjointSet([int]$size) {
-        $this.Parent = 0..($size - 1)
-    }
-
-    [int] Find([int]$x) {
-        while ($this.Parent[$x] -ne $x) {
-            $x = $this.Parent[$x]
-        }
-        return $x
-    }
-
-    [bool] Union([int]$a, [int]$b) {
-        $rootA = $this.Find($a)
-        $rootB = $this.Find($b)
-        if ($rootA -eq $rootB) { return $false }
-        $this.Parent[$rootA] = $rootB
-        return $true
-    }
+    if ($Parent[$Node] -eq $Node) { return $Node }
+    return Find-Root -Parent $Parent -Node $Parent[$Node]
 }
 
-function Invoke-Kruskal {
-    param([array]$Edges, [int]$NodeCount)
+function Get-KruskalMst {
+    param([array]$Edges, [string[]]$Nodes)
 
-    $sorted = $Edges | Sort-Object { $_[2] }
-    $dsu = [DisjointSet]::new($NodeCount)
-    $mst = @()
+    $parent = @{}
+    foreach ($n in $Nodes) { $parent[$n] = $n }
 
-    foreach ($edge in $sorted) {
-        $u, $v, $w = $edge
-        if ($dsu.Union($u, $v)) {
-            $mst += , $edge
+    $sortedEdges = $Edges | Sort-Object -Property Weight
+    $mst = New-Object System.Collections.ArrayList
+
+    foreach ($edge in $sortedEdges) {
+        $rootA = Find-Root -Parent $parent -Node $edge.From
+        $rootB = Find-Root -Parent $parent -Node $edge.To
+        if ($rootA -ne $rootB) {
+            $parent[$rootA] = $rootB
+            [void]$mst.Add($edge)
         }
     }
     return $mst
 }
 
 $edges = @(
-    , @(0, 1, 4)
-    , @(0, 2, 4)
-    , @(1, 2, 2)
-    , @(1, 3, 5)
-    , @(2, 3, 5)
-    , @(2, 4, 11)
-    , @(3, 4, 7)
+    [PSCustomObject]@{ From = 'a'; To = 'b'; Weight = 1 }
+    [PSCustomObject]@{ From = 'b'; To = 'c'; Weight = 3 }
+    [PSCustomObject]@{ From = 'a'; To = 'c'; Weight = 2 }
+    [PSCustomObject]@{ From = 'c'; To = 'd'; Weight = 4 }
 )
-
-$mst = Invoke-Kruskal -Edges $edges -NodeCount 5
-foreach ($edge in $mst) {
-    "$($edge[0])-$($edge[1]) weight $($edge[2])"
-}
+$nodes = @('a', 'b', 'c', 'd')
+Get-KruskalMst -Edges $edges -Nodes $nodes | ForEach-Object { "$($_.From)-$($_.To): $($_.Weight)" }

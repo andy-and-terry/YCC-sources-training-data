@@ -1,0 +1,21 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DEC2BIN.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 NUM PIC 9(5) VALUE 37.
+       01 WORK PIC 9(5).
+       01 Q PIC 9(5).
+       01 R PIC 9.
+       01 BITS PIC X(16) VALUE SPACES.
+       01 POS PIC 99 VALUE 16.
+
+       PROCEDURE DIVISION.
+           MOVE NUM TO WORK
+           PERFORM UNTIL WORK = 0
+               DIVIDE WORK BY 2 GIVING Q REMAINDER R
+               MOVE R TO BITS(POS:1)
+               SUBTRACT 1 FROM POS
+               MOVE Q TO WORK
+           END-PERFORM
+           DISPLAY NUM " IN BINARY: " BITS
+           STOP RUN.

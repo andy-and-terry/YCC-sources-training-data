@@ -4,9 +4,16 @@ function word_break(s::String, word_dict::Set{String})
     dp[1] = true
 
     for i in 1:n
-        for j in 0:(i - 1)
-            if dp[j + 1] && s[(j + 1):i] in word_dict
-                dp[i + 1] = true
+        if !dp[i]
+            continue
+        end
+        for j in (i + 1):(n + 1)
+            if dp[j]
+                continue
+            end
+            word = s[i:(j - 1)]
+            if word in word_dict
+                dp[j] = true
             end
         end
     end
@@ -14,7 +21,9 @@ function word_break(s::String, word_dict::Set{String})
     return dp[n + 1]
 end
 
-dict = Set(["leet", "code", "apple", "pen"])
-println(word_break("leetcode", dict))
-println(word_break("applepenapple", dict))
-println(word_break("catsandog", dict))
+dict1 = Set(["leet", "code"])
+println(word_break("leetcode", dict1))
+
+dict2 = Set(["apple", "pen"])
+println(word_break("applepenapple", dict2))
+println(word_break("catsandog", Set(["cats", "dog", "sand", "and", "cat"])))

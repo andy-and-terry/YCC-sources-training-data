@@ -1,30 +1,24 @@
 let
   lcs = a: b:
     let
-      aLen = builtins.stringLength a;
-      bLen = builtins.stringLength b;
-    in
-      if aLen == 0 || bLen == 0 then ""
-      else
-        let
-          aLast = builtins.substring (aLen - 1) 1 a;
-          bLast = builtins.substring (bLen - 1) 1 b;
-          aRest = builtins.substring 0 (aLen - 1) a;
-          bRest = builtins.substring 0 (bLen - 1) b;
-        in
-          if aLast == bLast then lcs aRest bRest + aLast
-          else
-            let
-              withoutA = lcs aRest b;
-              withoutB = lcs a bRest;
-            in
-              if builtins.stringLength withoutA >= builtins.stringLength withoutB
-              then withoutA
-              else withoutB;
+      la = builtins.stringLength a;
+      lb = builtins.stringLength b;
+      charAt = s: i: builtins.substring i 1 s;
 
-  result = lcs "ABCBDAB" "BDCABA";
+      go = i: j:
+        if i == la || j == lb then 0
+        else if charAt a i == charAt b j then 1 + go (i + 1) (j + 1)
+        else
+          let
+            skipA = go (i + 1) j;
+            skipB = go i (j + 1);
+          in
+            if skipA > skipB then skipA else skipB;
+    in
+      go 0 0;
 in
   {
-    inherit result;
-    length = builtins.stringLength result;
+    length1 = lcs "abcde" "ace";
+    length2 = lcs "abc" "abc";
+    length3 = lcs "abc" "def";
   }

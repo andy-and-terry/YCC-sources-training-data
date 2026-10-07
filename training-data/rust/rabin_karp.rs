@@ -1,41 +1,43 @@
+// Rabin-Karp compares rolling hashes instead of raw substrings, so a
+// mismatching window is usually rejected in O(1) rather than O(m).
 const BASE: u64 = 256;
-const MODULUS: u64 = 1_000_000_007;
+const MOD: u64 = 1_000_000_007;
 
 fn rabin_karp(text: &str, pattern: &str) -> Vec<usize> {
-    let text = text.as_bytes();
-    let pattern = pattern.as_bytes();
+    let text: Vec<u8> = text.bytes().collect();
+    let pattern: Vec<u8> = pattern.bytes().collect();
     let (n, m) = (text.len(), pattern.len());
-    let mut matches = Vec::new();
     if m == 0 || m > n {
-        return matches;
+        return Vec::new();
     }
 
     let mut high_order = 1u64;
     for _ in 0..m - 1 {
-        high_order = (high_order * BASE) % MODULUS;
+        high_order = (high_order * BASE) % MOD;
     }
 
-    let hash_of = |bytes: &[u8]| -> u64 {
-        bytes.iter().fold(0u64, |acc, &b| (acc * BASE + b as u64) % MODULUS)
-    };
+    let mut pattern_hash = 0u64;
+    let mut window_hash = 0u64;
+    for i in 0..m {
+        pattern_hash = (pattern_hash * BASE + pattern[i] as u64) % MOD;
+        window_hash = (window_hash * BASE + text[i] as u64) % MOD;
+    }
 
-    let pattern_hash = hash_of(pattern);
-    let mut window_hash = hash_of(&text[..m]);
-
+    let mut matches = Vec::new();
     for i in 0..=n - m {
-        if window_hash == pattern_hash && &text[i..i + m] == pattern {
+        if window_hash == pattern_hash && &text[i..i + m] == &pattern[..] {
             matches.push(i);
         }
-        if i + m < n {
-            window_hash = (window_hash + MODULUS - (text[i] as u64 * high_order) % MODULUS) % MODULUS;
-            window_hash = (window_hash * BASE + text[i + m] as u64) % MODULUS;
+        if i < n - m {
+            window_hash = (window_hash + MOD - (text[i] as u64 * high_order) % MOD) % MOD;
+            window_hash = (window_hash * BASE + text[i + m] as u64) % MOD;
         }
     }
     matches
 }
 
 fn main() {
-    let text = "abracadabra abracadabra";
-    let pattern = "abra";
-    println!("matches of {:?} in {:?}: {:?}", pattern, text, rabin_karp(text, pattern));
+    println!("{:?}", rabin_karp("abxabcabcaby", "abcaby"));
+    println!("{:?}", rabin_karp("aaaaa", "aa"));
+    println!("{:?}", rabin_karp("abc", "xyz"));
 }
