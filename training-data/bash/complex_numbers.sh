@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Complex arithmetic via awk; numbers are passed as "re im" pairs.
 cx() {
-    awk -v op="$1" -v a="$2" -v b="$3" -v c="$4" -v d="$5" 'BEGIN {
+    awk -v op="$1" -v a="$2" -v b="$3" -v c="${4:-0}" -v d="${5:-0}" 'BEGIN {
         if (op == "add") { re = a + c; im = b + d }
         else if (op == "mul") { re = a * c - b * d; im = a * d + b * c }
         else if (op == "div") { den = c * c + d * d; re = (a * c + b * d) / den; im = (b * c - a * d) / den }
