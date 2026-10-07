@@ -1,0 +1,15 @@
+s = "  Hello, Elixir World  "
+
+IO.inspect(String.trim(s))
+IO.inspect(s |> String.trim() |> String.upcase())
+IO.inspect(String.split("a,b,c", ","))
+IO.inspect(String.replace("banana", "an", "AN"))
+IO.inspect(String.contains?("banana", "nan"))
+IO.inspect(String.slice("abcdef", 1..3))
+IO.inspect(String.pad_leading("7", 3, "0"))
+IO.inspect(String.graphemes("héllo"))
+IO.inspect(String.length("héllo"))
+IO.inspect(byte_size("héllo"))
+IO.inspect(String.starts_with?("elixir", ["ex", "el"]))
+IO.inspect(String.capitalize("hello world"))
+IO.inspect(String.reverse("stressed"))

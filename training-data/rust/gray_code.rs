@@ -1,23 +1,21 @@
-const fn to_gray(n: u32) -> u32 {
-    n ^ (n >> 1)
+fn gray_code(n: u32) -> Vec<u32> {
+    (0..1u32 << n).map(|i| i ^ (i >> 1)).collect()
 }
 
-const fn from_gray(mut g: u32) -> u32 {
-    let mut shift = 1;
-    while shift < 32 {
-        g ^= g >> shift;
-        shift <<= 1;
+fn from_gray(mut g: u32) -> u32 {
+    let mut n = 0;
+    while g != 0 {
+        n ^= g;
+        g >>= 1;
     }
-    g
+    n
 }
-
-const _: () = assert!(from_gray(to_gray(123456)) == 123456);
 
 fn main() {
-    let codes: Vec<u32> = (0..16).map(to_gray).collect();
-    for (i, g) in codes.iter().enumerate() {
-        println!("{:2} {:04b} {:2}", i, g, from_gray(*g));
-    }
+    let codes = gray_code(3);
+    let fmt: Vec<String> = codes.iter().map(|c| format!("{:03b}", c)).collect();
+    println!("{:?}", fmt);
     let ok = codes.windows(2).all(|w| (w[0] ^ w[1]).count_ones() == 1);
-    println!("adjacent differ by one bit: {}", ok);
+    println!("{}", ok);
+    println!("{:?}", codes.iter().map(|&c| from_gray(c)).collect::<Vec<_>>());
 }

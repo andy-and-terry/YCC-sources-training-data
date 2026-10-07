@@ -1,0 +1,12 @@
+(require '[clojure.string :as str])
+
+(println (str/upper-case "hello") (str/capitalize "world"))
+(println (str/join ", " [1 2 3]))
+(println (str/split "a,b,,c" #","))
+(println (str/split-lines "one\ntwo\nthree"))
+(println (str/trim "  padded  ") "|" (str/triml "  x") "|" (str/trimr "x  ") "|")
+(println (str/replace "foo bar foo" "foo" "baz"))
+(println (str/replace "2024-03-15" #"(\d+)-(\d+)-(\d+)" "$3/$2/$1"))
+(println (str/starts-with? "clojure" "clo") (str/ends-with? "clojure" "ure") (str/includes? "clojure" "ju"))
+(println (str/blank? "   ") (str/index-of "banana" "na"))
+(println (str/reverse "abc"))

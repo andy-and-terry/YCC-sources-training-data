@@ -1,13 +1,12 @@
 #include <stdio.h>
 
-#define ROWS 10
+#define ROWS 8
 
 int main(void) {
-    unsigned long long row[ROWS] = {1};
+    int row[ROWS] = {1};
     for (int r = 0; r < ROWS; r++) {
-        for (int i = r; i > 0; i--) row[i] += row[i - 1];
-        printf("%*s", (ROWS - r - 1) * 2, "");
-        for (int i = 0; i <= r; i++) printf("%4llu", row[i]);
+        for (int c = r; c > 0; c--) row[c] += row[c - 1];  /* update right-to-left */
+        for (int c = 0; c <= r; c++) printf("%d ", row[c]);
         printf("\n");
     }
     return 0;
