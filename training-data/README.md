@@ -1711,3 +1711,19 @@ Each subdirectory groups files by language category (`cat`) for easy filtering d
 - **For real training data, prefer:** an existing large, deduplicated,
   license-filtered code corpus, or a curated set of real-world repository
   code (with tests, docs, and project structure) at a realistic scale.
+
+> An eleventh pass added about 900 more files across all 60 language
+> folders (twelve parallel sub-agents, 15 new files per language, one
+> short of that in Smalltalk), again triggered by the scheduled task
+> requesting "500 new files per folder per run." As in the sixth through
+> tenth passes, that figure was not followed (it would mean roughly
+> 30,000 files in one run); 15 per language was used instead. Files were
+> only compiled or run where a toolchain existed in the sandbox: C, C++,
+> Go, Java, Rust, Python, Ruby, Perl, PHP, JavaScript, TypeScript, Bash,
+> Awk, NASM assembly, Nix, and Vimscript. Everything else (Ada, Apex,
+> Clojure, COBOL, Common Lisp, Crystal, C#, D, Dart, Elixir, Elm, Erlang,
+> Forth, Fortran, F#, GDScript, Groovy, Haskell, Julia, Kotlin, Lua,
+> MATLAB, Nim, Objective-C, OCaml, Pascal, PL/SQL, PowerShell, Prolog, R,
+> Racket, Scala, Scheme, Smalltalk, SML, Solidity, Swift, Tcl, Vala, VBA,
+> Verilog, VHDL, WebAssembly, Zig) was proofread by hand only and may
+> contain compile errors.

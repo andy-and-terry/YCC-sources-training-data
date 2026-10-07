@@ -1,0 +1,12 @@
+;; Number <-> string conversion and numeric tower basics
+(display (number->string 255 16)) (newline)
+(display (number->string 255 2)) (newline)
+(display (string->number "ff" 16)) (newline)
+(display (string->number "not a number")) (newline)
+(display (exact->inexact 1/3)) (newline)
+(display (/ 6 4)) (newline)
+(display (exact (floor 3.7))) (newline)
+(display (round 2.5)) (newline)
+(display (truncate -2.7)) (newline)
+(display (expt 2 100)) (newline)
+(display (exact->inexact (sqrt 2))) (newline)
