@@ -1,0 +1,5 @@
+(println (mapcat reverse [[1 2 3] [4 5 6]]))
+(println (mapcat #(repeat % %) [1 2 3]))
+(println (flatten [1 [2 [3 [4]]] 5]))
+(println (apply concat [[1] [2 3] []]))
+(println (mapcat (fn [s] (clojure.string/split s #"\s+")) ["a b" "c d e"]))

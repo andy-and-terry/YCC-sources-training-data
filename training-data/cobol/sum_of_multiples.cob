@@ -1,0 +1,18 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SUMOFMULTIPLES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 LIMIT-N PIC 9(4) VALUE 1000.
+       01 I PIC 9(4).
+       01 TOTAL PIC 9(7) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I >= LIMIT-N
+               IF FUNCTION MOD(I, 3) = 0 OR FUNCTION MOD(I, 5) = 0
+                   ADD I TO TOTAL
+               END-IF
+           END-PERFORM
+
+           DISPLAY "SUM OF MULTIPLES OF 3 OR 5 BELOW "
+               LIMIT-N ": " TOTAL
+           STOP RUN.

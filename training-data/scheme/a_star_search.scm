@@ -1,0 +1,65 @@
+;; Grid A* search using plain lists as an "open set" (fine for a small
+;; illustrative grid; a real implementation would use a priority queue).
+
+(define (heuristic a b)
+  (+ (abs (- (car a) (car b))) (abs (- (cadr a) (cadr b)))))
+
+(define (grid-ref grid r c) (list-ref (list-ref grid r) c))
+(define (in-bounds? grid r c)
+  (and (>= r 0) (< r (length grid)) (>= c 0) (< c (length (car grid)))))
+
+(define (assoc-get alist key default)
+  (let ((entry (assoc key alist)))
+    (if entry (cdr entry) default)))
+
+(define (a-star grid start goal)
+  (let loop ((open (list (cons (heuristic start goal) start)))
+             (came-from '())
+             (g-score (list (cons start 0))))
+    (if (null? open)
+        #f
+        (let* ((best (car (sort-by-f open)))
+               (current (cdr best))
+               (rest-open (cdr (sort-by-f open))))
+          (if (equal? current goal)
+              (reconstruct-path came-from current)
+              (let* ((r (car current)) (c (cadr current))
+                     (neighbors (filter (lambda (n) (and (in-bounds? grid (car n) (cadr n))
+                                                          (= (grid-ref grid (car n) (cadr n)) 0)))
+                                        (list (list (- r 1) c) (list (+ r 1) c)
+                                              (list r (- c 1)) (list r (+ c 1))))))
+                (let expand ((ns neighbors) (open2 rest-open) (came-from2 came-from) (g2 g-score))
+                  (if (null? ns)
+                      (loop open2 came-from2 g2)
+                      (let* ((n (car ns))
+                             (tentative (+ (assoc-get g2 current 999999) 1)))
+                        (if (< tentative (assoc-get g2 n 999999))
+                            (expand (cdr ns)
+                                    (cons (cons (+ tentative (heuristic n goal)) n) open2)
+                                    (cons (cons n current) came-from2)
+                                    (cons (cons n tentative) g2))
+                            (expand (cdr ns) open2 came-from2 g2)))))))))))
+
+(define (sort-by-f open)
+  (if (null? open)
+      '()
+      (let* ((pivot (car open))
+             (rest (cdr open))
+             (lower (filter (lambda (p) (< (car p) (car pivot))) rest))
+             (upper (filter (lambda (p) (>= (car p) (car pivot))) rest)))
+        (append (sort-by-f lower) (list pivot) (sort-by-f upper)))))
+
+(define (reconstruct-path came-from current)
+  (let loop ((node current) (path (list current)))
+    (let ((entry (assoc node came-from)))
+      (if entry
+          (loop (cdr entry) (cons (cdr entry) path))
+          path))))
+
+(define grid '((0 0 0 0)
+               (1 1 0 1)
+               (0 0 0 0)
+               (0 1 1 0)))
+
+(display (a-star grid (list 0 0) (list 3 3)))
+(newline)

@@ -1,0 +1,15 @@
+(defparameter *v* (make-array 5 :initial-element 0))
+(dotimes (i 5) (setf (aref *v* i) (* i i)))
+(print *v*)
+(print (length *v*))
+
+(defparameter *grid* (make-array '(2 3) :initial-contents '((1 2 3) (4 5 6))))
+(print (aref *grid* 1 2))
+(print (array-dimensions *grid*))
+
+(defparameter *stack* (make-array 0 :adjustable t :fill-pointer t))
+(vector-push-extend 10 *stack*)
+(vector-push-extend 20 *stack*)
+(print *stack*)
+(print (vector-pop *stack*))
+(terpri)

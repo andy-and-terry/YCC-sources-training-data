@@ -1,0 +1,23 @@
+(define (insert-by-end pair lst)
+  (cond ((null? lst) (list pair))
+        ((<= (cdr pair) (cdr (car lst))) (cons pair lst))
+        (else (cons (car lst) (insert-by-end pair (cdr lst))))))
+
+(define (sort-by-end lst)
+  (if (null? lst)
+      '()
+      (insert-by-end (car lst) (sort-by-end (cdr lst)))))
+
+(define (activity-selection activities)
+  (let ((ordered (sort-by-end activities)))
+    (let loop ((rest ordered) (last-end -1) (selected '()))
+      (if (null? rest)
+          (reverse selected)
+          (let* ((current (car rest)) (start (car current)) (end (cdr current)))
+            (if (>= start last-end)
+                (loop (cdr rest) end (cons current selected))
+                (loop (cdr rest) last-end selected)))))))
+
+(define activities '((1 . 4) (3 . 5) (0 . 6) (5 . 7) (3 . 9) (5 . 9) (6 . 10) (8 . 11) (8 . 12) (2 . 14) (12 . 16)))
+(display (activity-selection activities))
+(newline)

@@ -1,0 +1,40 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ROMANNUMERALS.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 NUM         PIC 9(4) VALUE 1994.
+       01 REMAINING   PIC 9(4).
+       01 ROMAN-OUT   PIC X(20) VALUE SPACES.
+       01 PTR         PIC 9(3) VALUE 1.
+       01 I           PIC 9(2).
+       01 SYMBOL-DATA.
+           05 FILLER PIC X(6) VALUE "1000M ".
+           05 FILLER PIC X(6) VALUE "0900CM".
+           05 FILLER PIC X(6) VALUE "0500D ".
+           05 FILLER PIC X(6) VALUE "0400CD".
+           05 FILLER PIC X(6) VALUE "0100C ".
+           05 FILLER PIC X(6) VALUE "0090XC".
+           05 FILLER PIC X(6) VALUE "0050L ".
+           05 FILLER PIC X(6) VALUE "0040XL".
+           05 FILLER PIC X(6) VALUE "0010X ".
+           05 FILLER PIC X(6) VALUE "0009IX".
+           05 FILLER PIC X(6) VALUE "0005V ".
+           05 FILLER PIC X(6) VALUE "0004IV".
+           05 FILLER PIC X(6) VALUE "0001I ".
+       01 SYMBOL-TABLE REDEFINES SYMBOL-DATA.
+           05 SYMBOL-ENTRY OCCURS 13 TIMES.
+               10 SYM-VALUE PIC 9(4).
+               10 SYM-TEXT  PIC X(2).
+
+       PROCEDURE DIVISION.
+           MOVE NUM TO REMAINING
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 13
+               PERFORM UNTIL REMAINING < SYM-VALUE(I)
+                   STRING SYM-TEXT(I) DELIMITED BY SPACE
+                       INTO ROMAN-OUT WITH POINTER PTR
+                   END-STRING
+                   SUBTRACT SYM-VALUE(I) FROM REMAINING
+               END-PERFORM
+           END-PERFORM
+           DISPLAY NUM " = " ROMAN-OUT
+           STOP RUN.

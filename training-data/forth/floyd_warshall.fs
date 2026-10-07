@@ -1,0 +1,37 @@
+4 CONSTANT NODES
+999999 CONSTANT INF
+CREATE DIST NODES NODES * CELLS ALLOT
+
+: DIST@ ( row col -- addr ) SWAP NODES * + CELLS DIST + ;
+
+: INIT ( -- )
+  NODES NODES * 0 DO INF I CELLS DIST + ! LOOP
+  NODES 0 DO I I DIST@ 0 SWAP ! LOOP ;
+
+: SET-EDGE ( from to weight -- )
+  ROT ROT DIST@ ! ;
+
+: FLOYD-WARSHALL ( -- )
+  NODES 0 DO
+    NODES 0 DO
+      NODES 0 DO
+        J I DIST@ @
+        J K DIST@ @ K I DIST@ @ +
+        MIN
+        J I DIST@ !
+      LOOP
+    LOOP
+  LOOP ;
+
+INIT
+0 1 3 SET-EDGE
+1 2 1 SET-EDGE
+2 3 2 SET-EDGE
+0 3 100 SET-EDGE
+FLOYD-WARSHALL
+NODES 0 DO
+  NODES 0 DO
+    J I DIST@ @ .
+  LOOP
+  CR
+LOOP

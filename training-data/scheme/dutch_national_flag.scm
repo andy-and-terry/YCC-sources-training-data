@@ -1,0 +1,22 @@
+(define (swap! vec i j)
+  (let ((tmp (vector-ref vec i)))
+    (vector-set! vec i (vector-ref vec j))
+    (vector-set! vec j tmp)))
+
+(define (dutch-national-flag! vec pivot)
+  (let loop ((low 0) (mid 0) (high (- (vector-length vec) 1)))
+    (if (<= mid high)
+        (cond ((< (vector-ref vec mid) pivot)
+               (swap! vec low mid)
+               (loop (+ low 1) (+ mid 1) high))
+              ((= (vector-ref vec mid) pivot)
+               (loop low (+ mid 1) high))
+              (else
+               (swap! vec mid high)
+               (loop low mid (- high 1))))))
+  vec)
+
+(display (dutch-national-flag! (vector 2 0 2 1 1 0) 1))
+(newline)
+(display (dutch-national-flag! (vector 2 0 1) 1))
+(newline)

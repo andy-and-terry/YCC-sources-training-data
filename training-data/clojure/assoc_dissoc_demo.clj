@@ -1,0 +1,16 @@
+(def person {:name "Grace" :age 45})
+
+(def older (assoc person :age 46))
+(def with-role (assoc person :role :admiral :langs ["COBOL"]))
+(def anonymous (dissoc person :name))
+
+(println person)
+(println older)
+(println with-role)
+(println anonymous)
+(println (merge person {:age 50 :city "NYC"}))
+(println (merge-with + {:a 1 :b 2} {:a 10 :c 3}))
+(println (select-keys with-role [:name :role]))
+(println (keys person) (vals person))
+(println (contains? person :age) (contains? person :email))
+(println (assoc [1 2 3] 1 :x))

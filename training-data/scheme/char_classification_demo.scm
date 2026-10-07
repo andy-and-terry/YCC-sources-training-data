@@ -1,0 +1,33 @@
+;; Character classification and simple text analysis.
+
+(define (count-if pred str)
+  (let loop ((i 0) (n 0))
+    (if (= i (string-length str))
+        n
+        (loop (+ i 1) (if (pred (string-ref str i)) (+ n 1) n)))))
+
+(define text "Hello World 2024, from Scheme!")
+
+(display (count-if char-alphabetic? text))
+(newline)
+(display (count-if char-numeric? text))
+(newline)
+(display (count-if char-whitespace? text))
+(newline)
+(display (count-if char-upper-case? text))
+(newline)
+(display (count-if (lambda (c) (memv (char-downcase c) '(#\a #\e #\i #\o #\u))) text))
+(newline)
+(display (char->integer #\A))
+(display " ")
+(display (integer->char 100))
+(newline)
+(display (char-upcase #\z))
+(display (char-downcase #\Q))
+(newline)
+(display (char<? #\a #\b))
+(newline)
+(display (- (char->integer #\7) (char->integer #\0)))
+(newline)
+(display (list->string (map char-upcase (string->list "shout"))))
+(newline)

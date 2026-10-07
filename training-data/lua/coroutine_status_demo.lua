@@ -1,0 +1,20 @@
+local co = coroutine.create(function(a, b)
+  print("start", a, b)
+  local c = coroutine.yield(a + b)
+  print("got", c)
+  local d, e = coroutine.yield(c * 2)
+  print("got", d, e)
+  return "finished"
+end)
+
+print(coroutine.status(co))
+print(coroutine.resume(co, 1, 2))
+print(coroutine.status(co))
+print(coroutine.resume(co, 10))
+print(coroutine.resume(co, "x", "y"))
+print(coroutine.status(co))
+print(coroutine.resume(co))
+
+local bad = coroutine.wrap(function() error("boom") end)
+print(pcall(bad))
+print(coroutine.isyieldable(), coroutine.running())

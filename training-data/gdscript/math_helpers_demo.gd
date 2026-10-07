@@ -1,0 +1,21 @@
+extends Node
+
+func _ready():
+	print(clamp(15, 0, 10), clampf(-0.5, 0.0, 1.0), clampi(7, 1, 5))
+	print(lerp(0.0, 100.0, 0.25), lerpf(10.0, 20.0, 0.5))
+	print(inverse_lerp(0.0, 10.0, 2.5))
+	print(remap(5.0, 0.0, 10.0, 100.0, 200.0))
+	print(move_toward(0.0, 10.0, 3.0), move_toward(9.0, 10.0, 3.0))
+	print(wrapi(7, 0, 5), wrapf(-0.5, 0.0, 1.0))
+	print(posmod(-1, 5), -1 % 5)
+	print(sign(-3.2), signi(4), abs(-9), absf(-2.5))
+	print(snapped(17, 5))
+	print(smoothstep(0.0, 1.0, 0.5))
+	print(is_equal_approx(0.1 + 0.2, 0.3), 0.1 + 0.2 == 0.3)
+	print(deg_to_rad(180.0) == PI, rad_to_deg(PI))
+	print(sqrt(81.0), pow(2, 10), exp(0.0), log(1.0))
+	print(floor(2.7), ceil(2.1), round(2.5), fmod(7.5, 2.0))
+	print(min(3, 1, 2), max(3, 1, 2), minf(1.5, 0.5))
+	print(is_nan(NAN), is_inf(INF))
+	print(Vector2(3, 4).length(), Vector2(3, 4).normalized())
+	print(ease(0.5, 2.0))

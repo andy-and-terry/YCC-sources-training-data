@@ -1,0 +1,19 @@
+: SUM-SQUARE-DIGITS ( n -- sum )
+  0 SWAP
+  BEGIN
+    DUP 0>
+  WHILE
+    10 /MOD
+    DUP * ROT + SWAP
+  REPEAT
+  DROP ;
+
+: IS-HAPPY? ( n -- flag )
+  20 0 DO
+    DUP 1 = IF UNLOOP TRUE EXIT THEN
+    SUM-SQUARE-DIGITS
+  LOOP
+  1 = ;
+
+19 IS-HAPPY? . CR
+2 IS-HAPPY? . CR

@@ -1613,6 +1613,125 @@ Sample source files organized by programming language for model training.
 > committed centrally in eleven small checkpoints as each sub-agent
 > finished, per the established practice from prior multi-agent passes,
 > which is what caught both overwrites before they reached the remote.
+>
+> An eleventh batch then added roughly 20 more new files to every one of
+> the 60 language folders (~1,200 files total), run as six parallel
+> sub-agents each covering ten languages, plus two follow-up sub-agents
+> that filled in the languages the first round didn't finish before
+> hitting a session rate limit (matlab, powershell, prolog, smalltalk,
+> sml, solidity, wasm, zig, plus a scheme top-up and a one-file cpp
+> top-up). Breadth this round, across most languages: graph algorithms
+> not yet covered per-language (A*, Prim's/Kruskal's MST, Floyd-Warshall,
+> Bellman-Ford, Kosaraju's/Tarjan's SCC, bipartite check, cycle
+> detection), classic data structures (LFU cache, skip list, bloom
+> filter, Fenwick tree, segment tree, sparse table), string algorithms
+> (Z-algorithm, Rabin-Karp, longest palindromic substring, Boyer-Moore
+> majority vote), and remaining GoF design patterns per language
+> (bridge, facade, flyweight, proxy, iterator, visitor, command,
+> template method, observer, strategy, decorator, singleton), plus a
+> language-specific idiom or two where an obvious gap remained (e.g. a
+> Prolog `format/2`/`between/3` demo, a Smalltalk `Symbol` vs `String`
+> identity demo). Solidity's additions leaned smart-contract-idiomatic
+> (soulbound tokens, a blind auction, `CREATE2` factory, meta-transaction
+> relaying, checks-effects-interactions, gas/storage packing) rather than
+> generic algorithms. Verified where a toolchain exists in this sandbox:
+> `gcc`/`g++` (C, C++), `javac`/`java` (Java), `go vet`/`go run` (Go),
+> `rustc` (Rust), `node --check` (JavaScript), `python3 -m py_compile`
+> (Python), `php -l`, `perl -c`, `bash -n`/execution, and `awk` against
+> sample input. No toolchain is available in this sandbox for the
+> remaining languages (matching the README's existing per-language
+> caveats above), so those files were hand-reviewed instead of
+> compiled — several real bugs were still caught and fixed this way: a
+> Prolog label-structure mismatch and un-evaluated arithmetic in a
+> Huffman demo, a Smalltalk keyword-message bug in a Prim's MST demo and
+> an undeclared class variable in a Flyweight demo, a Scheme LFU cache
+> tie-break that evicted the just-inserted key, an infinite-loop BFS in
+> an SML bipartite-check demo, a top-level-`;` sequencing bug in an SML
+> LFU cache that ran a side effect once at load time instead of on every
+> call, and unbalanced parens in two hand-written WAT files. One
+> accidental edit to a pre-existing file (`cpp/sudoku_solver.cpp`,
+> rewritten by a sub-agent instead of left alone) was caught via `git
+> status` and reverted before committing. One filename collision was
+> also caught afterward: a new `scala/KmpSearch.scala` differed from the
+> pre-existing `scala/KMPSearch.scala` only by case (a correctness risk
+> on case-insensitive filesystems) and was renamed to
+> `KmpSearchAllMatches.scala`, which also better describes its
+> find-all-matches behavior versus the original's find-first. Work was
+> committed centrally in three checkpoints as each batch of sub-agents
+> finished.
+
+> A tenth pass added 295 more files across all 60 language folders at once
+> (6 parallel sub-agents, 10 languages each, ~5 new files per language),
+> again triggered by the same scheduled task requesting "500 new files per
+> folder per run." As with the 7th/8th/9th passes, that figure was not
+> followed, for the same reason recorded above: it conflicts with this
+> file's own anti-repetition caveats and the scale of every prior pass;
+> ~5 new, genuinely non-duplicate files per language was used again instead.
+> New content continued the established trend of filling remaining GoF
+> patterns (facade, bridge, mediator, memento, composite, proxy, adapter,
+> chain of responsibility, template method, flyweight, prototype, factory,
+> decorator, command, state, visitor — whichever were still missing in a
+> given folder) and common DP/graph gaps (Bellman-Ford, Floyd-Warshall,
+> Kosaraju's/Tarjan's SCC, Prim's/Kruskal's MST, bipartite check, cycle
+> detection, word break, rod cutting, matrix chain multiplication, subset
+> sum, longest increasing subsequence), plus one or two language-specific
+> idioms per folder: Python `functools.cache`/`itertools` recipes, Rust
+> `Deref`/`Index`/`Default` trait implementations, Elixir binary
+> pattern-matching-adjacent idioms (keyword lists, stepped ranges, trial
+> division), Prolog SWI `:- table` memoization and DCG-free recursive
+> segmentation, PL/SQL `FORALL ... SAVE EXCEPTIONS`, PowerShell script
+> classes, JavaScript ES2023/2024 `Iterator` helpers and immutable array
+> methods (`toSorted`/`with`), TypeScript assertion functions and private
+> `#` fields, C `_Generic`-free function-pointer "pattern" idioms
+> (callback observer, function-pointer state machine), Julia `Val`-based
+> dispatch, Zig labeled blocks and a hand-rolled AVL tree, and Nix's first
+> shortest-path/MST/cycle-detection coverage (the folder previously had
+> none). Verilog/VHDL again got matching hardware building blocks (a BCD
+> adder, an overflow detector, a Wallace-tree multiplier, an edge-triggered
+> SR flip-flop, and VHDL ports of several blocks that already existed only
+> in Verilog: half subtractor, 4-bit adder/subtractor, universal shift
+> register, UART transmitter, single-port RAM). Every file with an
+> available toolchain in this sandbox was written and verified: C/C++
+> (`gcc`/`g++ -Wall -Wextra`), Go (`go vet`/`go run`), Java (`javac`,
+> compiled alongside the existing 160+ files), JavaScript (`node --check`),
+> TypeScript (`npx tsc --strict --noEmit`, plus several compiled+run with
+> `tsc`+`node`), Python (`py_compile`), Rust (`rustc --edition 2021`),
+> Ruby (`ruby -c`), Perl (`perl -c`), PHP (`php -l`), Awk/Bash/Vimscript
+> (executed directly against sample input/output). Languages without a
+> toolchain were hand-traced against concrete worked examples (shared
+> graphs/matrices reused across languages for cross-checking MST/SCC/
+> shortest-path results, full DP table traces, VHDL/Verilog truth-table
+> and clock-by-clock traces) rather than just brace/paren-balance checks.
+> Several real bugs were caught and fixed during the pass: an Awk
+> `edit_distance.awk` draft that used `sub`/`ins` as variable names,
+> colliding with Awk's builtin `sub()` function; a Haskell `PrintfDemo.hs`
+> draft with a bogus `{-# LANGUAGE Text.Printf #-}` pragma (not a real GHC
+> extension); a COBOL `rod_cutting.cob` `PERFORM VARYING` line that ran
+> past the fixed-format column-72 limit; a PL/SQL `FORALL ... SAVE
+> EXCEPTIONS` draft that relied on a zero-row `UPDATE` to represent
+> failure (Oracle doesn't treat that as an error) instead of a constraint
+> violation; a PowerShell `TemplateMethodPattern.ps1` double-quoted
+> string literal `"Total sales: $1000"` that would have been silently
+> parsed as variable `$1000`; a Swift `memento_pattern.swift` draft with
+> a double-pop that discarded the wrong history entry; a Tcl
+> `cycle_detection.tcl` draft where `global` needed to be declared before
+> the arrays were populated for a recursive helper to see them; and a VBA
+> `ObserverPattern.bas` draft that needed an explicit `Dim asObserver As
+> IObserver` cast before a late-bound `Variant` could call the
+> interface-only `.Update` method. Five accidental overwrites of
+> **pre-existing** files (from earlier passes) were caught and reverted
+> before pushing — sub-agents rewriting an existing file under its own
+> name with a different-but-equivalent implementation instead of adding a
+> new one: `nim/word_break.nim`, `elm/SubsetSum.elm`,
+> `erlang/word_break.erl`, `prolog/word_break.pl`, and
+> `fsharp/floyd_warshall.fsx` (each reverted individually; the responsible
+> sub-agent's other genuinely-new files for that language were kept,
+> which is why a few languages landed at +4 files instead of +5). Work was
+> committed centrally in six small checkpoints as each sub-agent finished
+> (plus one extra checkpoint for the reverts caught between sub-agent
+> completions), per the established practice from prior multi-agent
+> passes, which is what caught all five overwrites before they reached
+> the remote.
 
 | Language   | Files |
 |------------|-------|
@@ -1681,6 +1800,20 @@ Sample source files organized by programming language for model training.
 | Vimscript  | `word_count.vim`, `is_prime.vim` |
 
 Additional patterns added to existing languages: `hash_map` (TypeScript, C++, Go), `palindrome` (Java, C#, Kotlin, Swift, PHP), `is_prime` (Python, JavaScript, Ruby, Rust, Java, Go), `gcd` (TypeScript, C#, Kotlin, Swift, PHP, C), and `merge_sort` (C#, Kotlin, Swift, PHP, Ruby).
+
+> An eleventh pass added 503 hand-written files (no sub-agents) across 21
+> folders: python, javascript, typescript, go, rust, java, cpp, c, ruby,
+> php, csharp, kotlin, swift, lua, perl, bash, scala, haskell, elixir,
+> dart and julia (~23-26 each). Each folder got the same set of small
+> exercise-style problems (Luhn, ISBN-10, Hamming, Atbash, pig latin,
+> spiral matrix, saddle points, happy/perfect numbers, look-and-say,
+> binary gap, max-product subarray, moving average, ASCII histogram, a
+> concurrency-safe bank account, etc.) written idiomatically per language,
+> plus a few language-specific extras (TS `Result` type and typed event
+> bus, C arena/dynamic string, Kotlin delegated properties, Swift property
+> wrappers, PHP readonly value objects, C# channels). Python, JavaScript,
+> TypeScript, Go, Rust, Java, C++, C, Ruby, PHP, Perl and Bash files were
+> compiled/run locally; the rest were not verified by a compiler.
 
 Each subdirectory groups files by language category (`cat`) for easy filtering during ingestion.
 
