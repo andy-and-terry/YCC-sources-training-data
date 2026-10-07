@@ -1,50 +1,40 @@
 {-# LANGUAGE DeriveFunctor #-}
 
--- A minimal hand-rolled Free monad: build a program as pure data, then
--- interpret it later. Here CommandF describes a tiny console DSL.
-data CommandF next
-  = Say String next
-  | Ask (String -> next)
-  deriving Functor
-
-data Free f a = Pure a | Roll (f (Free f a))
+data Free f a = Pure a | Free (f (Free f a))
 
 instance Functor f => Functor (Free f) where
-  fmap f (Pure a) = Pure (f a)
-  fmap f (Roll fa) = Roll (fmap (fmap f) fa)
+  fmap g (Pure a) = Pure (g a)
+  fmap g (Free fa) = Free (fmap (fmap g) fa)
 
 instance Functor f => Applicative (Free f) where
   pure = Pure
-  Pure f <*> x = fmap f x
-  Roll ff <*> x = Roll (fmap (<*> x) ff)
+  Pure g <*> x = fmap g x
+  Free fg <*> x = Free (fmap (<*> x) fg)
 
 instance Functor f => Monad (Free f) where
-  return = pure
-  Pure a >>= f = f a
-  Roll fa >>= f = Roll (fmap (>>= f) fa)
+  Pure a >>= k = k a
+  Free fa >>= k = Free (fmap (>>= k) fa)
 
-say :: String -> Free CommandF ()
-say s = Roll (Say s (Pure ()))
+data Cmd next = Say String next | Ask (String -> next)
+  deriving Functor
 
-ask :: Free CommandF String
-ask = Roll (Ask Pure)
+say :: String -> Free Cmd ()
+say s = Free (Say s (Pure ()))
 
--- Interprets the program purely, feeding a fixed canned answer to every Ask.
-interpret :: Free CommandF a -> [String] -> ([String], a)
-interpret (Pure a) _ = ([], a)
-interpret (Roll (Say s next)) input =
-  let (logs, a) = interpret next input
-  in (s : logs, a)
-interpret (Roll (Ask f)) (x : xs) = interpret (f x) xs
-interpret (Roll (Ask f)) [] = interpret (f "") []
+ask :: Free Cmd String
+ask = Free (Ask Pure)
 
-program :: Free CommandF ()
+program :: Free Cmd ()
 program = do
-  say "what is your name?"
-  name <- ask
-  say ("hello, " ++ name)
+  say "name?"
+  n <- ask
+  say ("hello " ++ n)
+
+runPure :: [String] -> Free Cmd a -> [String]
+runPure _ (Pure _) = []
+runPure ins (Free (Say s k)) = s : runPure ins k
+runPure (i : ins) (Free (Ask k)) = runPure ins (k i)
+runPure [] (Free (Ask _)) = ["<eof>"]
 
 main :: IO ()
-main = do
-  let (logs, ()) = interpret program ["Ada"]
-  mapM_ putStrLn logs
+main = mapM_ putStrLn (runPure ["Bob"] program)

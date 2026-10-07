@@ -1,38 +1,22 @@
--- A compound trigger with per-statement and per-row timing points, useful
--- for batching work that must happen once per statement rather than per row.
-CREATE TABLE orders_ct (
-    order_id NUMBER,
+CREATE TABLE ct_orders (
+    id     NUMBER PRIMARY KEY,
     amount NUMBER
 );
 
-CREATE TABLE order_audit (
-    action VARCHAR2(20),
-    row_count NUMBER
-);
-
-CREATE OR REPLACE TRIGGER orders_ct_audit
-FOR INSERT ON orders_ct
+CREATE OR REPLACE TRIGGER ct_orders_audit
+FOR INSERT OR UPDATE ON ct_orders
 COMPOUND TRIGGER
-    rows_affected NUMBER := 0;
-
-    BEFORE STATEMENT IS
-    BEGIN
-        rows_affected := 0;
-    END BEFORE STATEMENT;
+    TYPE id_list IS TABLE OF NUMBER INDEX BY PLS_INTEGER;
+    g_ids id_list;
 
     AFTER EACH ROW IS
     BEGIN
-        rows_affected := rows_affected + 1;
+        g_ids(g_ids.COUNT + 1) := :NEW.id;
     END AFTER EACH ROW;
 
     AFTER STATEMENT IS
     BEGIN
-        INSERT INTO order_audit VALUES ('INSERT', rows_affected);
+        DBMS_OUTPUT.PUT_LINE('Rows changed in statement: ' || g_ids.COUNT);
     END AFTER STATEMENT;
-END orders_ct_audit;
+END ct_orders_audit;
 /
-
-INSERT INTO orders_ct VALUES (1, 100);
-INSERT INTO orders_ct VALUES (2, 200);
-
-SELECT * FROM order_audit;

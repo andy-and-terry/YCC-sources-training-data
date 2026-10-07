@@ -1,17 +1,19 @@
 <?php
 
-class Point implements JsonSerializable
+class User implements JsonSerializable
 {
-    public function __construct(private float $x, private float $y)
-    {
-    }
+    public function __construct(
+        private string $name,
+        private string $password,
+        private DateTimeImmutable $created,
+    ) {}
 
     public function jsonSerialize(): array
     {
-        return ['x' => $this->x, 'y' => $this->y];
+        return ['name' => $this->name, 'created' => $this->created->format('Y-m-d')];
     }
 }
 
-$points = [new Point(1.0, 2.0), new Point(3.5, 4.5)];
-echo json_encode($points) . "\n";
-echo json_encode(['origin' => new Point(0, 0)]) . "\n";
+$u = new User('ada', 'secret', new DateTimeImmutable('2024-05-01'));
+echo json_encode($u), "\n";
+echo json_encode([$u, 'n' => 1.0], JSON_PRETTY_PRINT | JSON_PRESERVE_ZERO_FRACTION), "\n";

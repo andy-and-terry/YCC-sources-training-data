@@ -1,45 +1,28 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-// Deploys a minimal child contract to a deterministic address using
-// CREATE2, so callers can predict an address before deployment.
-contract Deployable {
-    address public creator;
-    uint256 public value;
+contract Child {
+    address public immutable owner;
+    uint256 public immutable id;
 
-    constructor(uint256 _value) {
-        creator = msg.sender;
-        value = _value;
+    constructor(address _owner, uint256 _id) {
+        owner = _owner;
+        id = _id;
     }
 }
 
 contract Create2FactoryDemo {
-    event Deployed(address addr, uint256 salt);
+    event Deployed(address addr, bytes32 salt);
 
-    function deploy(uint256 salt, uint256 value) external returns (address addr) {
-        bytes memory bytecode = abi.encodePacked(type(Deployable).creationCode, abi.encode(value));
-        addr = Create2.deploy(salt, bytecode);
-        emit Deployed(addr, salt);
+    function deploy(bytes32 salt, uint256 id) external returns (address) {
+        Child c = new Child{salt: salt}(msg.sender, id);
+        emit Deployed(address(c), salt);
+        return address(c);
     }
 
-    function computeAddress(uint256 salt, uint256 value) external view returns (address) {
-        bytes memory bytecode = abi.encodePacked(type(Deployable).creationCode, abi.encode(value));
-        bytes32 bytecodeHash = keccak256(bytecode);
-        return address(
-            uint160(
-                uint256(
-                    keccak256(abi.encodePacked(bytes1(0xff), address(this), salt, bytecodeHash))
-                )
-            )
-        );
-    }
-}
-
-library Create2 {
-    function deploy(uint256 salt, bytes memory bytecode) internal returns (address addr) {
-        assembly {
-            addr := create2(0, add(bytecode, 0x20), mload(bytecode), salt)
-            if iszero(extcodesize(addr)) { revert(0, 0) }
-        }
+    function predict(bytes32 salt, uint256 id) external view returns (address) {
+        bytes32 initHash = keccak256(abi.encodePacked(type(Child).creationCode, abi.encode(msg.sender, id)));
+        bytes32 h = keccak256(abi.encodePacked(bytes1(0xff), address(this), salt, initHash));
+        return address(uint160(uint256(h)));
     }
 }

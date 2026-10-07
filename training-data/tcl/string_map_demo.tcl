@@ -1,11 +1,10 @@
-set template "Hello NAME, your balance is AMOUNT dollars."
-set replacements {NAME "Ada" AMOUNT "150"}
+set text "the cat sat on the mat"
+puts [string map {cat dog mat rug} $text]
 
-set result [string map $replacements $template]
-puts $result
+# string map applies all pairs in a single pass, so swaps work
+puts [string map {a b b a} "abba cab"]
 
-set caesarMap {a b b c c d}
-puts [string map $caesarMap "abc"]
+puts [string map -nocase {HELLO bye} "Hello world"]
 
-set htmlEscape {< &lt; > &gt; & &amp;}
-puts [string map $htmlEscape "if a < b && b > c"]
+set template "Dear @name@, your balance is @amount@."
+puts [string map [list @name@ Alice @amount@ \$42.50] $template]

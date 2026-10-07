@@ -1,39 +1,30 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-// A soulbound (non-transferable) token: once minted to an address it
-// can never be moved, matching badges/credentials use cases.
 contract SoulboundTokenDemo {
-    string public name = "SoulboundBadge";
+    string public name = "Soulbound";
+    address public immutable issuer;
+    uint256 public nextId;
     mapping(uint256 => address) public ownerOf;
     mapping(address => uint256) public balanceOf;
-    uint256 public nextTokenId;
 
-    event Minted(address indexed to, uint256 indexed tokenId);
-    event Revoked(address indexed from, uint256 indexed tokenId);
+    event Minted(address indexed to, uint256 indexed id);
+    error Soulbound();
+    error NotIssuer();
 
-    error AlreadyBound(uint256 tokenId);
-    error NotOwner();
-    error TransfersDisabled();
-
-    function mint(address to) external returns (uint256 tokenId) {
-        tokenId = nextTokenId++;
-        ownerOf[tokenId] = to;
-        balanceOf[to] += 1;
-        emit Minted(to, tokenId);
+    constructor() {
+        issuer = msg.sender;
     }
 
-    function revoke(uint256 tokenId) external {
-        address owner = ownerOf[tokenId];
-        if (owner != msg.sender) revert NotOwner();
-        delete ownerOf[tokenId];
-        balanceOf[owner] -= 1;
-        emit Revoked(owner, tokenId);
+    function mint(address to) external returns (uint256 id) {
+        if (msg.sender != issuer) revert NotIssuer();
+        id = nextId++;
+        ownerOf[id] = to;
+        balanceOf[to]++;
+        emit Minted(to, id);
     }
 
-    // Transfers are intentionally impossible: the token is bound to
-    // the soul (address) it was minted to.
     function transferFrom(address, address, uint256) external pure {
-        revert TransfersDisabled();
+        revert Soulbound();
     }
 }

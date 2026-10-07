@@ -1,39 +1,29 @@
 import java.util.concurrent.locks.StampedLock;
 
 public class StampedLockDemo {
-    private final StampedLock lock = new StampedLock();
-    private double x, y;
+    static class Point {
+        private double x, y;
+        private final StampedLock lock = new StampedLock();
 
-    public void move(double dx, double dy) {
-        long stamp = lock.writeLock();
-        try {
-            x += dx;
-            y += dy;
-        } finally {
-            lock.unlockWrite(stamp);
+        void move(double dx, double dy) {
+            long s = lock.writeLock();
+            try { x += dx; y += dy; } finally { lock.unlockWrite(s); }
         }
-    }
 
-    // Tries an optimistic (lock-free) read first; only falls back to a
-    // full read lock if a concurrent write invalidated the stamp.
-    public double distanceFromOrigin() {
-        long stamp = lock.tryOptimisticRead();
-        double curX = x, curY = y;
-        if (!lock.validate(stamp)) {
-            stamp = lock.readLock();
-            try {
-                curX = x;
-                curY = y;
-            } finally {
-                lock.unlockRead(stamp);
+        double distanceFromOrigin() {
+            long s = lock.tryOptimisticRead();
+            double cx = x, cy = y;
+            if (!lock.validate(s)) {
+                s = lock.readLock();
+                try { cx = x; cy = y; } finally { lock.unlockRead(s); }
             }
+            return Math.sqrt(cx * cx + cy * cy);
         }
-        return Math.sqrt(curX * curX + curY * curY);
     }
 
     public static void main(String[] args) {
-        StampedLockDemo point = new StampedLockDemo();
-        point.move(3, 4);
-        System.out.println("distance: " + point.distanceFromOrigin());
+        Point p = new Point();
+        p.move(3, 4);
+        System.out.println(p.distanceFromOrigin());
     }
 }

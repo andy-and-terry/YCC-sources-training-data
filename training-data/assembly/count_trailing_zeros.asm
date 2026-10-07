@@ -1,10 +1,10 @@
-; x86-64 NASM: count trailing zero bits using the BSF instruction
+; x86-64 NASM: count trailing zero bits with bsf (40 = 0b101000 -> 3)
 section .text
     global _start
 
 _start:
-    mov rax, 48          ; 0b110000 -> 4 trailing zeros
-    bsf rbx, rax         ; rbx = index of lowest set bit
-    mov rdi, rbx
-    mov rax, 60
+    mov eax, 40
+    bsf ecx, eax         ; index of lowest set bit (undefined if eax == 0)
+    mov edi, ecx
+    mov eax, 60
     syscall

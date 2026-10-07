@@ -1,27 +1,17 @@
-Object subclass: GlyphStyle [
-    | fontName size |
-    fontName: f size: s [ fontName := f. size := s ]
-    describe: char at: position [
-        ^char, '@', position printString, ' in ', fontName, ' ', size printString
+Object subclass: GlyphFactory [
+    | cache |
+    init [ cache := Dictionary new ]
+    GlyphFactory class >> new [ ^super new init ]
+    glyphFor: aChar [
+        ^cache at: aChar ifAbsentPut: [ 'glyph-', (String with: aChar) ]
     ]
+    size [ ^cache size ]
 ]
 
-Object subclass: GlyphStyleFactory [
-    GlyphStyleFactory class [ | styles | ]
-
-    GlyphStyleFactory class >> styles [
-        ^styles ifNil: [ styles := Dictionary new ]
-    ]
-
-    GlyphStyleFactory class >> styleFor: fontName size: size [
-        | key |
-        key := fontName , '-' , size printString.
-        ^self styles at: key ifAbsentPut: [ GlyphStyle new fontName: fontName size: size; yourself ].
-    ]
-]
-
-| a b |
-a := GlyphStyleFactory styleFor: 'Arial' size: 12.
-b := GlyphStyleFactory styleFor: 'Arial' size: 12.
+| factory a b |
+factory := GlyphFactory new.
+a := factory glyphFor: $x.
+b := factory glyphFor: $x.
+factory glyphFor: $y.
 Transcript showCr: (a == b) printString.
-Transcript showCr: (a describe: 'H' at: 0).
+Transcript showCr: factory size printString.

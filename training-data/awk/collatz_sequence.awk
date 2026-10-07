@@ -1,14 +1,14 @@
 #!/usr/bin/awk -f
-BEGIN {
-    n = 27
-    steps = 0
-    printf "%d", n
+function collatz(n,    steps, seq) {
+    seq = n
     while (n != 1) {
-        if (n % 2 == 0) n = n / 2
-        else n = 3 * n + 1
+        n = (n % 2 == 0) ? n / 2 : 3 * n + 1
+        seq = seq " " n
         steps++
-        printf " %d", n
     }
-    print ""
-    print "steps:", steps
+    return seq " (steps: " steps ")"
+}
+BEGIN {
+    print collatz(6)
+    print collatz(7)
 }

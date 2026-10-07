@@ -1,36 +1,34 @@
-// A class exposing an @InvocableMethod so it can be called as an action
-// from Flow Builder or Process Builder, taking wrapped request objects
-// and returning wrapped responses (Apex's convention for invocable I/O).
 public class InvocableMethodDemo {
     public class Request {
-        @InvocableVariable(required=true)
-        public Decimal amount;
-
-        @InvocableVariable(required=true)
-        public Decimal discountPercent;
+        @InvocableVariable(label='Account Id' required=true)
+        public Id accountId;
+        @InvocableVariable(label='New Rating')
+        public String rating;
     }
 
-    public class Response {
+    public class Result {
         @InvocableVariable
-        public Decimal finalAmount;
+        public Boolean success;
+        @InvocableVariable
+        public String message;
     }
 
-    @InvocableMethod(label='Apply Discount' description='Applies a percentage discount to an amount')
-    public static List<Response> applyDiscount(List<Request> requests) {
-        List<Response> results = new List<Response>();
-        for (Request req : requests) {
-            Response res = new Response();
-            res.finalAmount = req.amount - (req.amount * req.discountPercent / 100);
+    // Callable from Flow and Process Builder; must be bulk-safe (list in, list out).
+    @InvocableMethod(label='Update Account Rating' description='Sets Rating on accounts')
+    public static List<Result> updateRating(List<Request> requests) {
+        List<Account> toUpdate = new List<Account>();
+        for (Request r : requests) {
+            toUpdate.add(new Account(Id = r.accountId, Rating = r.rating));
+        }
+        update toUpdate;
+
+        List<Result> results = new List<Result>();
+        for (Request r : requests) {
+            Result res = new Result();
+            res.success = true;
+            res.message = 'Updated ' + r.accountId;
             results.add(res);
         }
         return results;
-    }
-
-    public static void main() {
-        Request req = new Request();
-        req.amount = 200;
-        req.discountPercent = 15;
-        List<Response> results = applyDiscount(new List<Request>{req});
-        System.debug(results[0].finalAmount);
     }
 }

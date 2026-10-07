@@ -1,18 +1,15 @@
 #!/usr/bin/awk -f
-function factorize(n,    d, out) {
-    out = n ":"
-    d = 2
-    while (d * d <= n) {
-        while (n % d == 0) {
-            out = out " " d
-            n /= d
+function factorize(n,    out, p) {
+    out = ""
+    for (p = 2; p * p <= n; p++)
+        while (n % p == 0) {
+            out = out (out == "" ? "" : " x ") p
+            n = n / p
         }
-        d++
-    }
-    if (n > 1) out = out " " n
+    if (n > 1) out = out (out == "" ? "" : " x ") n
     return out
 }
 BEGIN {
-    print factorize(360)
-    print factorize(97)
+    for (i = 12; i <= 100; i *= 3) print i " = " factorize(i)
+    print 97 " = " factorize(97)
 }

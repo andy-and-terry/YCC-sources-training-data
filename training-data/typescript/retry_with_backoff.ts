@@ -1,31 +1,25 @@
-async function retryWithBackoff<T>(
-  operation: () => Promise<T>,
-  maxAttempts: number,
-  baseDelayMs: number,
+const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
+
+async function retry<T>(
+  fn: (attempt: number) => Promise<T>,
+  retries = 4,
+  baseMs = 5
 ): Promise<T> {
   let lastError: unknown;
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      return await operation();
+      return await fn(attempt);
     } catch (err) {
       lastError = err;
-      if (attempt === maxAttempts) break;
-      const delay = baseDelayMs * 2 ** (attempt - 1);
-      await new Promise((resolve) => setTimeout(resolve, delay));
+      const wait = baseMs * 2 ** (attempt - 1);
+      console.log(`attempt ${attempt} failed, waiting ${wait}ms`);
+      await sleep(wait);
     }
   }
   throw lastError;
 }
 
-let attempts = 0;
-async function flaky(): Promise<string> {
-  attempts += 1;
-  if (attempts < 3) {
-    throw new Error(`attempt ${attempts} failed`);
-  }
-  return 'success';
-}
-
-retryWithBackoff(flaky, 5, 10).then((result) => {
-  console.log(result, `after ${attempts} attempts`);
-});
+retry(async (n) => {
+  if (n < 3) throw new Error("flaky");
+  return `succeeded on attempt ${n}`;
+}).then(console.log);

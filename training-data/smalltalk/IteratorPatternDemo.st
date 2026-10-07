@@ -1,27 +1,16 @@
-Object subclass: ListIterator [
-    | collection index |
-    ListIterator class >> on: aCollection [
-        | it |
-        it := super new.
-        it setCollection: aCollection.
-        ^it
-    ]
-
-    setCollection: aCollection [
-        collection := aCollection.
-        index := 0.
-    ]
-
-    hasNext [ ^index < collection size ]
-
+Object subclass: Countdown [
+    | current |
+    from: n [ current := n ]
+    hasNext [ ^current > 0 ]
     next [
-        index := index + 1.
-        ^collection at: index
+        | v |
+        v := current.
+        current := current - 1.
+        ^v
     ]
 ]
 
-| it total |
-it := ListIterator on: #(10 20 30 40).
-total := 0.
-[ it hasNext ] whileTrue: [ total := total + it next ].
-Transcript showCr: total printString.
+| it |
+it := Countdown new from: 5; yourself.
+[ it hasNext ] whileTrue: [ Transcript show: it next printString; show: ' ' ].
+Transcript cr.

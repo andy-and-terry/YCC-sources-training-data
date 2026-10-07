@@ -1,21 +1,23 @@
+import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Duration;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 
 public class LocalDateTimeDemo {
     public static void main(String[] args) {
-        LocalDate start = LocalDate.of(2024, 1, 15);
-        LocalDate end = LocalDate.of(2024, 6, 1);
-        Period between = Period.between(start, end);
-        System.out.printf("gap: %d months, %d days%n", between.getMonths(), between.getDays());
+        LocalDate d = LocalDate.of(2024, 1, 31);
+        System.out.println(d.plusMonths(1) + " " + d.isLeapYear() + " " + d.getDayOfWeek());
+        System.out.println(d.with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
 
-        LocalDateTime meeting = LocalDateTime.of(2024, 3, 10, 14, 30);
-        LocalDateTime followUp = meeting.plusDays(7).plusHours(2);
-        System.out.println("follow-up: " + followUp.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-
-        Duration elapsed = Duration.between(meeting, followUp);
-        System.out.println("elapsed hours: " + elapsed.toHours());
+        LocalDateTime dt = LocalDateTime.of(2024, 3, 15, 9, 30);
+        System.out.println(dt.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        System.out.println(Duration.between(dt, dt.plusHours(5).plusMinutes(10)));
+        System.out.println(Period.between(d, LocalDate.of(2025, 3, 1)));
+        System.out.println(ChronoUnit.DAYS.between(d, LocalDate.of(2024, 12, 25)));
+        System.out.println(LocalDate.parse("2023-07-04").getMonth());
     }
 }

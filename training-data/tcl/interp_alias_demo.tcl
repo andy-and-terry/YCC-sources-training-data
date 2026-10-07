@@ -1,18 +1,18 @@
-proc greet {name} {
-    return "Hello, $name!"
-}
+proc add {a b} { expr {$a + $b} }
 
+interp alias {} plus {} add
+puts [plus 2 3]
+
+# Alias with prefilled argument (partial application)
+interp alias {} add10 {} add 10
+puts [add10 5]
+
+# Slave interpreter with an alias back into the master
 set slave [interp create]
-$slave eval {
-    proc double {n} { return [expr {$n * 2}] }
-}
+$slave alias hostAdd add
+puts [$slave eval {hostAdd 4 5}]
 
-interp alias {} greetAlias {} greet
-puts [greetAlias "Ada"]
-
-puts [$slave eval {double 21}]
-
-$slave alias hostGreet greet
-puts [$slave eval {hostGreet "Ada from slave"}]
-
+$slave eval {set x 100}
+puts [$slave eval {expr {$x + 1}}]
+puts [info exists x]
 interp delete $slave
