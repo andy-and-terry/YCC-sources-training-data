@@ -15,6 +15,6 @@ procedure Access_To_Subprogram_Demo is
      (("add", Add'Access), ("mul", Mul'Access));
 begin
    for E of Table loop
-      Put_Line (E.Name & " ->" & E.Op (6, 7)'Image);
+      Put_Line (E.Name & " ->" & Integer'Image (E.Op (6, 7)));
    end loop;
 end Access_To_Subprogram_Demo;

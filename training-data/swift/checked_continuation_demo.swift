@@ -1,3 +1,5 @@
+import Foundation
+
 func legacyFetch(id: Int, completion: @escaping (Result<String, Error>) -> Void) {
     DispatchQueue.global().asyncAfter(deadline: .now() + 0.01) {
         if id < 0 {
@@ -16,12 +18,11 @@ func fetch(id: Int) async throws -> String {
     }
 }
 
-import Foundation
 
 @main
 struct Main {
     static func main() async {
-        print(try? await fetch(id: 7) as Any)
+        if let v = try? await fetch(id: 7) { print(v) }
         do {
             _ = try await fetch(id: -1)
         } catch {

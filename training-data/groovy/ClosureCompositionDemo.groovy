@@ -2,9 +2,9 @@ def inc = { it + 1 }
 def dbl = { it * 2 }
 def sq  = { it * it }
 
-println (inc >> dbl)(3)
-println (inc << dbl)(3)
-println (inc >> dbl >> sq)(1)
+println((inc >> dbl)(3))
+println((inc << dbl)(3))
+println((inc >> dbl >> sq)(1))
 
 def pipeline = [inc, dbl, sq].inject { a, b -> a >> b }
 println pipeline(2)

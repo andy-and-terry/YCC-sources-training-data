@@ -28,7 +28,7 @@ procedure Semaphore_Protected is
 begin
    Semaphore.Acquire;
    Semaphore.Acquire;
-   Put_Line ("Available after two acquires:" & Semaphore.Available'Image);
+   Put_Line ("Available after two acquires:" & Natural'Image (Semaphore.Available));
    Semaphore.Release;
-   Put_Line ("Available after release:" & Semaphore.Available'Image);
+   Put_Line ("Available after release:" & Natural'Image (Semaphore.Available));
 end Semaphore_Protected;

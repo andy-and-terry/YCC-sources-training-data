@@ -8,8 +8,8 @@ procedure Vector_Generic_Sorting is
 
    V : Int_Vectors.Vector;
 begin
-   for X of reverse (1 .. 5) loop
-      V.Append (X * 7 mod 11);
+   for I in reverse 1 .. 5 loop
+      V.Append (I * 7 mod 11);
    end loop;
 
    Int_Sorting.Sort (V);

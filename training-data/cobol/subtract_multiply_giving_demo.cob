@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ARITHGIVE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 A PIC 9(4) VALUE 250.
+       01 B PIC 9(4) VALUE 75.
+       01 DIFF PIC S9(4).
+       01 PROD PIC 9(8).
+       01 SUMMED PIC 9(5).
+
+       PROCEDURE DIVISION.
+           SUBTRACT A FROM B GIVING DIFF
+           MULTIPLY A BY B GIVING PROD
+           ADD A B 10 GIVING SUMMED
+           DISPLAY "B - A = " DIFF
+           DISPLAY "A * B = " PROD
+           DISPLAY "A + B + 10 = " SUMMED
+           MULTIPLY 2 BY A
+           DISPLAY "A DOUBLED = " A
+           STOP RUN.

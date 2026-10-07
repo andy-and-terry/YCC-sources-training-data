@@ -16,10 +16,10 @@ begin
    --  Iteration is in key order
    C := M.First;
    while Has_Element (C) loop
-      Put_Line (Key (C)'Image & " => " & Element (C));
+      Put_Line (Integer'Image (Key (C)) & " => " & Element (C));
       Next (C);
    end loop;
 
-   Put_Line ("Floor of 25:" & Key (M.Floor (25))'Image);
-   Put_Line ("Ceiling of 25:" & Key (M.Ceiling (25))'Image);
+   Put_Line ("Floor of 25:" & Integer'Image (Key (M.Floor (25))));
+   Put_Line ("Ceiling of 25:" & Integer'Image (Key (M.Ceiling (25))));
 end Ordered_Map_Demo;

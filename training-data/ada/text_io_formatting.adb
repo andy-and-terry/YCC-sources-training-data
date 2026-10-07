@@ -12,5 +12,5 @@ begin
    New_Line;
    Put (12345.678, Fore => 1, Aft => 3, Exp => 2);
    New_Line;
-   Put_Line ("Left" & (1 .. 4 => ' ') & "|");
+   Put_Line ("Left    |");
 end Text_IO_Formatting;

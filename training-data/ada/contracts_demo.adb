@@ -1,9 +1,10 @@
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;    use Ada.Text_IO;
+with Ada.Assertions; use Ada.Assertions;
 
 procedure Contracts_Demo is
    function Safe_Div (A, B : Integer) return Integer
      with Pre  => B /= 0,
-          Post => Safe_Div'Result * B <= A + abs B;
+          Post => abs Safe_Div'Result <= abs A;
 
    function Safe_Div (A, B : Integer) return Integer is
    begin
@@ -14,7 +15,7 @@ procedure Contracts_Demo is
 
    E : Even := 8;
 begin
-   Put_Line ("10 / 3 =" & Safe_Div (10, 3)'Image);
+   Put_Line ("10 / 3 =" & Integer'Image (Safe_Div (10, 3)));
    Put_Line ("Even value:" & E'Image);
    begin
       E := 7;   --  violates the predicate when assertions are enabled
