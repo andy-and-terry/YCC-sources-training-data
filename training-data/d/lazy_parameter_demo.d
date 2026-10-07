@@ -1,29 +1,25 @@
 import std.stdio;
 
-int evaluations = 0;
+int calls;
 
 int expensive() {
-    ++evaluations;
-    writeln("computing...");
-    return 42;
+    calls++;
+    return 100;
 }
 
-int pick(bool useValue, lazy int value) {
-    if (useValue)
-        return value + value;
-    return 0;
+int orDefault(bool useIt, lazy int fallback) {
+    return useIt ? 1 : fallback;
 }
 
-void logIf(bool enabled, lazy string message) {
-    if (enabled)
-        writeln("LOG: ", message);
+void logIf(bool enabled, lazy string msg) {
+    if (enabled) writeln(msg);
 }
 
 void main() {
-    writeln(pick(false, expensive()));
-    writeln("evaluations so far: ", evaluations);
-    writeln(pick(true, expensive()));
-    writeln("evaluations so far: ", evaluations);
+    writeln(orDefault(true, expensive()));
+    writeln(calls);
+    writeln(orDefault(false, expensive()));
+    writeln(calls);
 
     logIf(false, "never built");
     logIf(true, "built on demand");

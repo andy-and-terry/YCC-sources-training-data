@@ -2,29 +2,18 @@
 #include <iostream>
 #include <vector>
 
-std::function<int()> makeCounter(int start) {
-    return [n = start]() mutable { return n++; };
-}
-
 int main() {
     int base = 10;
     auto byValue = [base](int x) { return x + base; };
     auto byRef = [&base](int x) { return x + base; };
+    auto counter = [n = 0]() mutable { return ++n; };   // init-capture
 
-    base = 20;
-    std::cout << "by value: " << byValue(1) << std::endl;
-    std::cout << "by ref: " << byRef(1) << std::endl;
+    base = 100;
+    std::cout << byValue(1) << " " << byRef(1) << "\n";   // 11 101
+    std::cout << counter() << counter() << counter() << "\n";
 
-    auto counter = makeCounter(5);
-    std::cout << counter() << " " << counter() << " " << counter() << std::endl;
-
-    std::vector<std::function<int(int)>> ops;
-    for (int k = 1; k <= 3; ++k) {
-        ops.push_back([k](int x) { return x * k; });
-    }
-    for (auto &op : ops) {
-        std::cout << op(7) << " ";
-    }
-    std::cout << std::endl;
-    return 0;
+    std::vector<std::function<int()>> fns;
+    for (int i = 0; i < 3; ++i) fns.push_back([i] { return i * i; });
+    for (auto& f : fns) std::cout << f() << " ";
+    std::cout << "\n";
 }

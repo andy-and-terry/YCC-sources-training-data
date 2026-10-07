@@ -1,16 +1,10 @@
-: SHOW-COMPARE ( c-addr1 u1 c-addr2 u2 -- )
-  COMPARE
-  DUP 0< IF DROP ." less" EXIT THEN
-  0> IF ." greater" ELSE ." equal" THEN ;
+\ COMPARE and SEARCH on counted string pairs
+: SAME? ( a1 u1 a2 u2 -- flag )  COMPARE 0= ;
 
-S" apple" S" banana" SHOW-COMPARE CR
-S" pear" S" apple" SHOW-COMPARE CR
-S" same" S" same" SHOW-COMPARE CR
+S" apple" S" apple" SAME? . CR
+S" apple" S" banana" COMPARE . CR
+S" banana" S" apple" COMPARE . CR
 
-S" abc" S" abc" COMPARE 0= . CR
-
-: FIND-WORD ( c-addr u c-addr2 u2 -- )
-  SEARCH IF TYPE ELSE 2DROP ." not found" THEN CR ;
-
-S" hello world" S" wor" FIND-WORD
-S" hello world" S" xyz" FIND-WORD
+S" the quick brown fox" S" quick" SEARCH
+SWAP DROP . CR           \ remaining length after the match
+S" hello" S" xyz" SEARCH NIP NIP . CR

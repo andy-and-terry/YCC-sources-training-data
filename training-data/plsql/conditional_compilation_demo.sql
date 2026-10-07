@@ -1,18 +1,17 @@
-ALTER SESSION SET PLSQL_CCFLAGS = 'debug_mode:TRUE, max_items:3';
+ALTER SESSION SET PLSQL_CCFLAGS = 'debug_mode:TRUE, level_cap:3';
 
-DECLARE
-    TYPE items_t IS VARRAY($$max_items) OF VARCHAR2(10);
-    items items_t := items_t('a', 'b', 'c');
+CREATE OR REPLACE PROCEDURE conditional_compilation_demo IS
 BEGIN
     $IF $$debug_mode $THEN
-        DBMS_OUTPUT.PUT_LINE('debug: ' || items.COUNT || ' items');
+        DBMS_OUTPUT.PUT_LINE('Debug build, level cap = ' || $$level_cap);
     $ELSE
-        NULL;
+        DBMS_OUTPUT.PUT_LINE('Release build');
     $END
-    $IF DBMS_DB_VERSION.VER_LE_11 $THEN
-        DBMS_OUTPUT.PUT_LINE('old database');
+
+    $IF DBMS_DB_VERSION.VER_LE_10 $THEN
+        DBMS_OUTPUT.PUT_LINE('Oracle 10g or older');
     $ELSE
-        DBMS_OUTPUT.PUT_LINE('modern database');
+        DBMS_OUTPUT.PUT_LINE('Oracle 11g or newer');
     $END
-END;
+END conditional_compilation_demo;
 /

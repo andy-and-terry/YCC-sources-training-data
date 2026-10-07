@@ -1,26 +1,21 @@
 Sub Main()
     Dim fruits As Variant
-    fruits = Array("pear", "apple", "fig")
-    Debug.Print LBound(fruits), UBound(fruits)
-    Debug.Print Join(fruits, ", ")
+    fruits = Array("apple", "banana", "cherry", "avocado")
+
+    Debug.Print LBound(fruits); UBound(fruits)
+
+    Dim onlyA As Variant
+    onlyA = Filter(fruits, "a", True)
+    Debug.Print UBound(onlyA) + 1; "items contain 'a'"
+
+    Dim noBan As Variant
+    noBan = Filter(fruits, "banana", False)
+    Debug.Print Join(noBan, ", ")
 
     Dim parts() As String
-    parts = Split("a;b;c;d", ";")
-    Debug.Print UBound(parts) + 1
+    parts = Split("one two three", " ")
+    Debug.Print parts(1), UBound(parts)
 
-    Dim nums() As Long
-    Dim i As Long
-    ReDim nums(0 To 2)
-    For i = 0 To 2: nums(i) = i * 10: Next i
-
-    ReDim Preserve nums(0 To 4)
-    nums(3) = 30: nums(4) = 40
-    For i = LBound(nums) To UBound(nums)
-        Debug.Print nums(i);
-    Next i
-    Debug.Print
-
-    Erase nums
-    Debug.Print IsArray(fruits), IsArray(nums)
-    Debug.Print Filter(parts, "b")(0)
+    Debug.Print IsArray(fruits), IsArray("text")
+    Erase parts
 End Sub

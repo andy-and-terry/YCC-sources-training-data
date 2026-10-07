@@ -1,18 +1,15 @@
 program merge_pack_demo
     implicit none
-    integer :: v(8) = [4, -1, 7, 0, -5, 3, 8, -2]
-    integer, allocatable :: positives(:)
+    integer :: v(8), i
+    logical :: mask(8)
 
-    print *, 'abs via merge:', merge(v, -v, v >= 0)
-    print *, 'sign labels:  ', merge(1, 0, v > 0)
+    v = [(i - 4, i = 1, 8)]
+    mask = v > 0
 
-    positives = pack(v, v > 0)
-    print *, 'positives:', positives
-    print *, 'count:', count(v < 0), 'any zero:', any(v == 0), 'all small:', all(abs(v) < 10)
-
-    print *, 'unpacked:', unpack(positives, v > 0, 0)
-    print *, 'cshift:', cshift(v, 2)
-    print *, 'eoshift:', eoshift(v, -2, boundary=99)
-    print *, 'minval/maxval:', minval(v), maxval(v)
-    print *, 'findloc of 7:', findloc(v, 7, dim=1)
+    print '(A, *(I0, 1X))', "values:    ", v
+    print '(A, *(I0, 1X))', "abs via merge: ", merge(v, -v, mask)
+    print '(A, *(I0, 1X))', "positives: ", pack(v, mask)
+    print '(A, I0)', "count: ", count(mask)
+    print '(A, *(I0, 1X))', "unpack:    ", unpack([7, 8, 9], [.true., .false., .true., .false.], 0)
+    print '(A, L1, 1X, L1)', "any/all: ", any(mask), all(mask)
 end program merge_pack_demo

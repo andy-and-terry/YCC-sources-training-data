@@ -10,18 +10,12 @@ fn collatzSteps(start: u64) u32 {
 }
 
 pub fn main() void {
-    std.debug.print("6 -> {d}\n", .{collatzSteps(6)});
-    std.debug.print("27 -> {d}\n", .{collatzSteps(27)});
-
-    var best: u64 = 1;
-    var best_steps: u32 = 0;
-    var n: u64 = 1;
-    while (n < 1000) : (n += 1) {
-        const s = collatzSteps(n);
-        if (s > best_steps) {
-            best_steps = s;
-            best = n;
-        }
+    var n: u64 = 6;
+    std.debug.print("{d}", .{n});
+    while (n != 1) {
+        n = if (n % 2 == 0) n / 2 else 3 * n + 1;
+        std.debug.print(" -> {d}", .{n});
     }
-    std.debug.print("longest under 1000: {d} ({d} steps)\n", .{ best, best_steps });
+    std.debug.print("\n", .{});
+    std.debug.print("steps(27) = {d}\n", .{collatzSteps(27)});
 }

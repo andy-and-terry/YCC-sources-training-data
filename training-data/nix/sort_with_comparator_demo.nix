@@ -1,8 +1,13 @@
 let
-  words = [ "pear" "fig" "banana" "kiwi" "apple" ];
-  byLength = builtins.sort (a: b:
-    let la = builtins.stringLength a; lb = builtins.stringLength b; in
-    if la == lb then a < b else la < lb) words;
-  descending = builtins.sort (a: b: a > b) [ 3 1 4 1 5 9 2 6 ];
+  people = [
+    { n = "bob"; age = 30; }
+    { n = "amy"; age = 25; }
+    { n = "cat"; age = 35; }
+  ];
 in
-  { inherit byLength descending; }
+{
+  byAge = map (p: p.n) (builtins.sort (a: b: a.age < b.age) people);
+  byAgeDesc = map (p: p.n) (builtins.sort (a: b: a.age > b.age) people);
+  byName = map (p: p.n) (builtins.sort (a: b: a.n < b.n) people);
+  numbers = builtins.sort builtins.lessThan [ 5 3 9 1 ];
+}

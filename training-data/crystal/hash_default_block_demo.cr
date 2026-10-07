@@ -1,13 +1,10 @@
-word_groups = Hash(Int32, Array(String)).new { |hash, key| hash[key] = [] of String }
+# Hash with a default block: group and count without key checks.
+words = %w[apple avocado banana blueberry cherry apricot]
 
-%w(apple fig kiwi banana plum cherry).each do |word|
-  word_groups[word.size] << word
-end
-
-word_groups.keys.sort.each do |len|
-  puts "#{len}: #{word_groups[len].join(", ")}"
-end
+groups = Hash(Char, Array(String)).new { |h, k| h[k] = [] of String }
+words.each { |w| groups[w[0]] << w }
+groups.each { |letter, list| puts "#{letter}: #{list.join(", ")}" }
 
 counts = Hash(Char, Int32).new(0)
-"mississippi".each_char { |c| counts[c] += 1 }
-puts counts
+words.each { |w| counts[w[0]] += 1 }
+p counts

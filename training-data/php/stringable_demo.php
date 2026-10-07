@@ -10,13 +10,13 @@ class Money implements Stringable
     }
 }
 
-function show(Stringable|string $s): void
+function show(string|Stringable $value): void
 {
-    echo "-> $s\n";
+    echo $value, "\n";
 }
 
-$m = new Money(1999);
+$m = new Money(12345);
 show($m);
 show('plain');
-echo strlen((string) $m), "\n";
 var_dump($m instanceof Stringable);
+echo strlen((string) $m), "\n";

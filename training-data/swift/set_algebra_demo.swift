@@ -1,17 +1,17 @@
-let swift: Set<String> = ["closures", "generics", "protocols", "optionals"]
-let kotlin: Set<String> = ["closures", "generics", "coroutines", "optionals"]
+let a: Set = [1, 2, 3, 4, 5]
+let b: Set = [4, 5, 6, 7]
 
-print(swift.intersection(kotlin).sorted())
-print(swift.union(kotlin).sorted())
-print(swift.subtracting(kotlin).sorted())
-print(swift.symmetricDifference(kotlin).sorted())
+print("union:", a.union(b).sorted())
+print("intersection:", a.intersection(b).sorted())
+print("difference:", a.subtracting(b).sorted())
+print("symmetric difference:", a.symmetricDifference(b).sorted())
 
-let core: Set = ["closures", "generics"]
-print(core.isSubset(of: swift))
-print(swift.isSuperset(of: core))
-print(swift.isDisjoint(with: ["coroutines"]))
+let small: Set = [1, 2]
+print(small.isSubset(of: a), a.isSuperset(of: small))
+print(a.isDisjoint(with: [10, 11]))
 
-var seen = Set<Int>()
-let numbers = [3, 1, 3, 2, 1]
-let unique = numbers.filter { seen.insert($0).inserted }
-print(unique)
+var seen = Set<String>()
+for item in ["x", "y", "x", "z", "y"] {
+    let (inserted, _) = seen.insert(item)
+    if !inserted { print("duplicate:", item) }
+}

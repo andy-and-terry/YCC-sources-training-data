@@ -1,7 +1,9 @@
-;; Pascal's triangle built row by row.
-
+;; Pascal's triangle rows
 (define (next-row row)
-  (map + (cons 0 row) (append row '(0))))
+  (let loop ((prev row) (acc '(1)))
+    (if (null? (cdr prev))
+        (reverse (cons 1 acc))
+        (loop (cdr prev) (cons (+ (car prev) (cadr prev)) acc)))))
 
 (define (pascal n)
   (let loop ((i 0) (row '(1)) (rows '()))
@@ -9,5 +11,4 @@
         (reverse rows)
         (loop (+ i 1) (next-row row) (cons row rows)))))
 
-(for-each (lambda (row) (display row) (newline))
-          (pascal 6))
+(for-each (lambda (r) (display r) (newline)) (pascal 6))

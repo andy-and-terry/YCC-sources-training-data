@@ -1,17 +1,15 @@
 extends Node
 
-func pascal(n: int) -> Array:
-	var rows: Array = []
+func pascal_row(n: int) -> Array[int]:
+	var row: Array[int] = [1]
 	for i in range(n):
-		var row: Array = []
-		for j in range(i + 1):
-			if j == 0 or j == i:
-				row.append(1)
-			else:
-				row.append(rows[i - 1][j - 1] + rows[i - 1][j])
-		rows.append(row)
-	return rows
+		var next: Array[int] = [1]
+		for j in range(row.size() - 1):
+			next.append(row[j] + row[j + 1])
+		next.append(1)
+		row = next
+	return row
 
 func _ready():
-	for row in pascal(6):
-		print(" ".join(row.map(func(x): return str(x))))
+	for i in range(7):
+		print(pascal_row(i))

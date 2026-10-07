@@ -1,32 +1,22 @@
-module math_utils
+module geometry
     implicit none
 contains
+    pure function triangle_area(base, height) result(area)
+        real, intent(in) :: base, height
+        real :: area
+        area = 0.5 * base * height
+    end function triangle_area
 
-    pure function hypotenuse(a, b) result(h)
-        real, intent(in) :: a, b
-        real :: h
-        h = sqrt(a * a + b * b)
-    end function hypotenuse
-
-    pure function clamp(x, lo, hi) result(r)
+    pure integer function clamp(x, lo, hi)
         integer, intent(in) :: x, lo, hi
-        integer :: r
-        r = max(lo, min(hi, x))
+        clamp = max(lo, min(hi, x))
     end function clamp
-
-    pure function mean(values) result(m)
-        real, intent(in) :: values(:)
-        real :: m
-        m = sum(values) / real(size(values))
-    end function mean
-
-end module math_utils
+end module geometry
 
 program pure_function_demo
-    use math_utils
+    use geometry
     implicit none
-
-    print *, hypotenuse(3.0, 4.0)
-    print *, clamp(15, 0, 10), clamp(-3, 0, 10), clamp(5, 0, 10)
-    print *, mean([1.0, 2.0, 3.0, 4.0])
+    print '(F6.2)', triangle_area(3.0, 4.0)
+    print '(I0)', clamp(15, 0, 10)
+    print '(I0)', clamp(-3, 0, 10)
 end program pure_function_demo

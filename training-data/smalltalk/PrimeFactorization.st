@@ -1,19 +1,16 @@
-Object subclass: PrimeFactorization [
-    PrimeFactorization class >> of: aNumber [
+Object subclass: PrimeFactors [
+    PrimeFactors class >> of: anInteger [
         | n d factors |
-        n := aNumber.
+        n := anInteger.
         d := 2.
         factors := OrderedCollection new.
-        [ d * d <= n ] whileTrue: [
-            [ n \\ d = 0 ] whileTrue: [
-                factors add: d.
-                n := n // d ].
-            d := d + 1 ].
-        n > 1 ifTrue: [ factors add: n ].
+        [ n > 1 ] whileTrue: [
+            [ n \\ d = 0 ] whileTrue: [ factors add: d. n := n // d ].
+            d := d + 1.
+            d * d > n ifTrue: [ n > 1 ifTrue: [ factors add: n. n := 1 ] ] ].
         ^factors
     ]
 ]
 
-Transcript showCr: (PrimeFactorization of: 360) printString.
-Transcript showCr: (PrimeFactorization of: 97) printString.
-Transcript showCr: (PrimeFactorization of: 1001) printString.
+Transcript showCr: (PrimeFactors of: 360) asArray printString.
+Transcript showCr: (PrimeFactors of: 97) asArray printString.

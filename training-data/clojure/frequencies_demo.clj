@@ -3,7 +3,9 @@
 (def freq (frequencies words))
 (println freq)
 
-(println (sort-by val > freq))
+;; most common first
+(println (sort-by (comp - val) freq))
 (println (key (apply max-key val freq)))
+
+;; frequencies work on any seqable, e.g. characters
 (println (frequencies "mississippi"))
-(println (group-by count words))

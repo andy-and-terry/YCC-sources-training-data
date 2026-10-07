@@ -1,13 +1,14 @@
 #!/usr/bin/awk -f
 BEGIN {
     rows = 6
-    for (i = 0; i < rows; i++) {
+    row[0] = 1
+    n = 1
+    for (r = 1; r <= rows; r++) {
         line = ""
-        for (j = 0; j <= i; j++) {
-            if (j == 0 || j == i) t[i, j] = 1
-            else t[i, j] = t[i - 1, j - 1] + t[i - 1, j]
-            line = line (j ? " " : "") t[i, j]
-        }
+        for (i = 0; i < n; i++) line = line (i ? " " : "") row[i]
         print line
+        for (i = n; i >= 1; i--) row[i] = row[i] + (i < n ? row[i - 1] : 0)
+        row[n] = 1
+        n++
     }
 }

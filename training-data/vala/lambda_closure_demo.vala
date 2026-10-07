@@ -12,21 +12,23 @@ IntOp make_counter() {
     };
 }
 
-void apply_all(int[] values, IntOp op) {
-    foreach (int v in values) {
-        stdout.printf("%d ", op(v));
-    }
-    stdout.printf("\n");
-}
-
 void main() {
     var add5 = make_adder(5);
     stdout.printf("%d\n", add5(10));
 
     var counter = make_counter();
     counter(1);
-    counter(1);
-    stdout.printf("%d\n", counter(3));
+    counter(2);
+    stdout.printf("counter: %d\n", counter(3));
 
-    apply_all({ 1, 2, 3 }, (x) => x * x);
+    int[] data = {1, 2, 3, 4};
+    int sum = 0;
+    IntOp accumulate = (x) => {
+        sum += x;
+        return sum;
+    };
+    foreach (int d in data) {
+        accumulate(d);
+    }
+    stdout.printf("sum: %d\n", sum);
 }

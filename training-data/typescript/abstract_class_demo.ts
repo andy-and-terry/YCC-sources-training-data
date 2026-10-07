@@ -1,6 +1,5 @@
 abstract class Shape {
   constructor(public readonly name: string) {}
-
   abstract area(): number;
   abstract perimeter(): number;
 
@@ -10,20 +9,20 @@ abstract class Shape {
 }
 
 class Circle extends Shape {
-  constructor(private radius: number) {
+  constructor(private r: number) {
     super("Circle");
   }
   area(): number {
-    return Math.PI * this.radius ** 2;
+    return Math.PI * this.r ** 2;
   }
   perimeter(): number {
-    return 2 * Math.PI * this.radius;
+    return 2 * Math.PI * this.r;
   }
 }
 
-class Rectangle extends Shape {
+class Rect extends Shape {
   constructor(private w: number, private h: number) {
-    super("Rectangle");
+    super("Rect");
   }
   area(): number {
     return this.w * this.h;
@@ -33,6 +32,5 @@ class Rectangle extends Shape {
   }
 }
 
-const shapes: Shape[] = [new Circle(1.5), new Rectangle(3, 4)];
+const shapes: Shape[] = [new Circle(1.5), new Rect(2, 3)];
 shapes.forEach((s) => console.log(s.describe()));
-// new Shape("x"); // Error: cannot create an instance of an abstract class

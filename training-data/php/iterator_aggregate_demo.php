@@ -2,30 +2,30 @@
 
 class Playlist implements IteratorAggregate, Countable
 {
-    private array $songs = [];
+    private array $tracks = [];
 
-    public function add(string $song): static
+    public function add(string $title): static
     {
-        $this->songs[] = $song;
+        $this->tracks[] = $title;
         return $this;
     }
 
     public function getIterator(): Generator
     {
-        foreach ($this->songs as $i => $song) {
-            yield $i + 1 => $song;
+        foreach ($this->tracks as $i => $t) {
+            yield $i + 1 => $t;
         }
     }
 
     public function count(): int
     {
-        return count($this->songs);
+        return count($this->tracks);
     }
 }
 
 $p = (new Playlist())->add('Intro')->add('Verse')->add('Outro');
-foreach ($p as $n => $song) {
-    echo "$n. $song\n";
+foreach ($p as $n => $title) {
+    echo "$n. $title\n";
 }
 echo count($p), " tracks\n";
-print_r(iterator_to_array($p));
+echo implode(' | ', iterator_to_array($p)), "\n";

@@ -1,29 +1,18 @@
-interface Inventory {
-  [item: string]: number;
+interface Scores {
+  [student: string]: number;
 }
 
-const stock: Inventory = { apples: 4, pears: 0 };
-stock["plums"] = 12;
 
-function totalItems(inv: Inventory): number {
-  return Object.values(inv).reduce((sum, n) => sum + n, 0);
-}
-console.log(totalItems(stock));
+const scores: Scores = { alice: 90, bob: 72 };
+scores["carol"] = 85;
 
-// Known keys mixed with an index signature must be compatible with it.
-interface Config {
-  name: string;
-  retries: number;
-  [extra: string]: string | number;
-}
-const cfg: Config = { name: "svc", retries: 3, region: "eu" };
-console.log(cfg.region);
+let total = 0;
+for (const name in scores) total += scores[name];
+console.log("average:", total / Object.keys(scores).length);
 
-// Template literal index signatures
-type DataAttrs = { [key: `data-${string}`]: string };
-const attrs: DataAttrs = { "data-id": "7", "data-role": "admin" };
-console.log(attrs["data-role"]);
+type Handlers = { [K in `on${Capitalize<"click" | "hover">}`]?: () => void };
+const h: Handlers = { onClick: () => console.log("clicked") };
+h.onClick?.();
 
-// Safer lookups with noUncheckedIndexedAccess-style handling
-const count = stock["bananas"] ?? 0;
-console.log(count);
+const lookup: Record<number, string> = { 1: "one", 2: "two" };
+console.log(lookup[2], lookup[3] ?? "missing");

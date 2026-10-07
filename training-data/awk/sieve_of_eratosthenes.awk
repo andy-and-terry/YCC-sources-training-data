@@ -5,8 +5,6 @@ BEGIN {
     for (i = 2; i * i <= limit; i++)
         if (!composite[i])
             for (j = i * i; j <= limit; j += i) composite[j] = 1
-    out = ""
-    for (i = 2; i <= limit; i++)
-        if (!composite[i]) out = out (out == "" ? "" : " ") i
+    for (i = 2; i <= limit; i++) if (!composite[i]) out = out (out == "" ? "" : " ") i
     print out
 }

@@ -1,18 +1,21 @@
-;; Low-level iteration with tagbody and go.
+;; TAGBODY/GO is the low-level construct underneath loops
+(let ((i 0))
+  (tagbody
+   top
+     (when (>= i 5) (go end))
+     (format t "i = ~d~%" i)
+     (incf i)
+     (go top)
+   end
+     (format t "done~%")))
+
 (defun count-down (n)
-  (let ((i n))
-    (tagbody
-     top
-       (when (zerop i) (go done))
-       (format t "~d " i)
-       (decf i)
-       (go top)
-     done
-       (format t "liftoff!~%"))))
+  (prog ((k n))
+   again
+     (when (zerop k) (return :liftoff))
+     (format t "~d " k)
+     (decf k)
+     (go again)))
 
-(count-down 5)
-
-(print (do ((i 0 (1+ i))
-            (acc nil (cons i acc)))
-           ((= i 5) (nreverse acc))))
+(print (count-down 3))
 (terpri)

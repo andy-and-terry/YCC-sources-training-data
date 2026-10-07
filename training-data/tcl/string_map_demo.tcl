@@ -1,15 +1,10 @@
-# string map performs all replacements in one pass, left to right.
-set template {Hello {name}, you have {count} new messages.}
-puts [string map {{{name}} Ada {{count}} 3} $template]
+set text "the cat sat on the mat"
+puts [string map {cat dog mat rug} $text]
 
-# Order matters when keys overlap: first matching key wins.
-puts [string map {a 1 aa 2} "aaa"]
-puts [string map {aa 2 a 1} "aaa"]
+# string map applies all pairs in a single pass, so swaps work
+puts [string map {a b b a} "abba cab"]
 
-# Escape HTML special characters.
-proc html_escape {s} {
-    string map {& &amp; < &lt; > &gt; \" &quot;} $s
-}
-puts [html_escape {<a href="x">Tom & Jerry</a>}]
+puts [string map -nocase {HELLO bye} "Hello world"]
 
-puts [string map -nocase {HELLO bye} "Hello hello"]
+set template "Dear @name@, your balance is @amount@."
+puts [string map [list @name@ Alice @amount@ \$42.50] $template]

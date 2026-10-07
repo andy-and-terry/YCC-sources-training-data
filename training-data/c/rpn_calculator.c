@@ -1,38 +1,37 @@
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
-/* Evaluate a space-separated reverse Polish notation expression. */
-static int rpn(const char *expr, double *out) {
-    double stack[64];
-    int sp = 0;
-    char buf[256];
-    strncpy(buf, expr, sizeof buf - 1);
-    buf[sizeof buf - 1] = '\0';
-    for (char *tok = strtok(buf, " "); tok; tok = strtok(NULL, " ")) {
-        if (strlen(tok) == 1 && strchr("+-*/", tok[0])) {
-            if (sp < 2) return -1;
-            double b = stack[--sp], a = stack[--sp];
-            switch (tok[0]) {
-                case '+': stack[sp++] = a + b; break;
-                case '-': stack[sp++] = a - b; break;
-                case '*': stack[sp++] = a * b; break;
-                case '/': stack[sp++] = a / b; break;
-            }
-        } else if (sp < 64) {
-            stack[sp++] = atof(tok);
-        } else {
-            return -1;
+/* Evaluate a postfix (RPN) expression using a fixed-size stack. */
+static int eval_rpn(const char *s, double *result) {
+    double st[32];
+    int top = 0;
+    while (*s) {
+        if (isspace((unsigned char)*s)) { s++; continue; }
+        if (isdigit((unsigned char)*s)) {
+            char *end;
+            st[top++] = strtod(s, &end);
+            s = end;
+            continue;
         }
+        if (top < 2) return -1;
+        double b = st[--top], a = st[--top];
+        switch (*s) {
+            case '+': st[top++] = a + b; break;
+            case '-': st[top++] = a - b; break;
+            case '*': st[top++] = a * b; break;
+            case '/': st[top++] = a / b; break;
+            default: return -1;
+        }
+        s++;
     }
-    if (sp != 1) return -1;
-    *out = stack[0];
+    if (top != 1) return -1;
+    *result = st[0];
     return 0;
 }
 
 int main(void) {
     double r;
-    if (rpn("3 4 + 2 *", &r) == 0) printf("%g\n", r);
-    if (rpn("5 1 2 + 4 * + 3 -", &r) == 0) printf("%g\n", r);
+    if (eval_rpn("3 4 + 2 * 7 /", &r) == 0) printf("result = %g\n", r);
     return 0;
 }

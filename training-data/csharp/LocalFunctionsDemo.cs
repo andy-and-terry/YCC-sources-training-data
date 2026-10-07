@@ -3,37 +3,28 @@ using System.Collections.Generic;
 
 class LocalFunctionsDemo
 {
-    static IEnumerable<int> Range(int start, int count)
+    static IEnumerable<int> Take(int count)
     {
-        if (count < 0)
-            throw new ArgumentOutOfRangeException(nameof(count));
+        if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
         return Iterate();
 
         IEnumerable<int> Iterate()
         {
-            for (int i = 0; i < count; i++)
-                yield return start + i;
+            for (int i = 0; i < count; i++) yield return i;
         }
     }
 
-    static long Factorial(int n)
+    static int Fib(int n)
     {
-        return Loop(n, 1);
-
-        static long Loop(int k, long acc) => k <= 1 ? acc : Loop(k - 1, acc * k);
+        return Go(n);
+        static int Go(int k) => k < 2 ? k : Go(k - 1) + Go(k - 2);
     }
 
     static void Main()
     {
-        Console.WriteLine(string.Join(",", Range(3, 4)));
-        Console.WriteLine(Factorial(10));
-        try
-        {
-            Range(0, -1);
-        }
-        catch (ArgumentOutOfRangeException ex)
-        {
-            Console.WriteLine($"Eager validation: {ex.ParamName}");
-        }
+        Console.WriteLine(string.Join(",", Take(5)));
+        Console.WriteLine(Fib(10));
+        try { Take(-1); }
+        catch (ArgumentOutOfRangeException) { Console.WriteLine("validated eagerly"); }
     }
 }

@@ -1,8 +1,7 @@
-nextRow :: [Integer] -> [Integer]
-nextRow row = zipWith (+) (0 : row) (row ++ [0])
-
-pascal :: Int -> [[Integer]]
-pascal n = take n (iterate nextRow [1])
+pascal :: [[Integer]]
+pascal = iterate next [1]
+  where
+    next row = zipWith (+) (0 : row) (row ++ [0])
 
 main :: IO ()
-main = mapM_ (putStrLn . unwords . map show) (pascal 6)
+main = mapM_ (putStrLn . unwords . map show) (take 8 pascal)

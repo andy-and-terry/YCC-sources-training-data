@@ -1,29 +1,29 @@
 const std = @import("std");
 
-const Color = enum(u8) {
-    red = 1,
-    green = 2,
-    blue = 4,
+const Direction = enum {
+    north,
+    east,
+    south,
+    west,
 
-    fn isWarm(self: Color) bool {
-        return self == .red;
+    fn turnRight(self: Direction) Direction {
+        return switch (self) {
+            .north => .east,
+            .east => .south,
+            .south => .west,
+            .west => .north,
+        };
     }
 
-    fn name(self: Color) []const u8 {
-        return @tagName(self);
+    fn opposite(self: Direction) Direction {
+        return self.turnRight().turnRight();
     }
 };
 
 pub fn main() void {
-    const c = Color.green;
-    std.debug.print("{s} = {d}\n", .{ c.name(), @intFromEnum(c) });
-    std.debug.print("warm: {any}\n", .{Color.red.isWarm()});
-
-    const from_int: Color = @enumFromInt(4);
-    std.debug.print("{s}\n", .{from_int.name()});
-
-    inline for (std.meta.fields(Color)) |f| {
-        std.debug.print("{s} -> {d}\n", .{ f.name, f.value });
+    var d = Direction.north;
+    for (0..5) |_| {
+        std.debug.print("{s} (opposite {s}, value {d})\n", .{ @tagName(d), @tagName(d.opposite()), @intFromEnum(d) });
+        d = d.turnRight();
     }
-    std.debug.print("parsed: {any}\n", .{std.meta.stringToEnum(Color, "blue")});
 }

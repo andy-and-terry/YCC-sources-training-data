@@ -2,12 +2,10 @@
 -export([run/0]).
 
 run() ->
-    S1 = io_lib:format("~5.2f|~-8s|~8s|", [3.14159, "left", "right"]),
-    io:format("~s~n", [S1]),
-    io:format("~p ~w ~s~n", ["str", "str", "str"]),
+    Str = lists:flatten(io_lib:format("~s has ~B items costing ~.2f", ["cart", 3, 9.5])),
+    io:format("~s~n", [Str]),
+    io:format("~10s|~-10s|~n", ["right", "left"]),
+    io:format("~p ~w~n", ["text", "text"]),
+    io:format("~.16B ~.2B~n", [255, 5]),
     io:format("~e~n", [12345.678]),
-    io:format("~.16B ~.2B ~c~n", [255, 5, $A]),
-    io:format("~*.*.0f~n", [8, 2, 2.5]),
-    Flat = lists:flatten(io_lib:format("~p-~p", [1, 2])),
-    io:format("~s ~p~n", [Flat, length(Flat)]),
-    io:format("~~ tilde and ~n newline~n").
+    io:format("~c~c~n", [$o, $k]).

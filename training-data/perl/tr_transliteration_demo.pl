@@ -8,11 +8,15 @@ print "$upper\n";
 my $vowels = ($text =~ tr/aeiouAEIOU//);
 print "vowels: $vowels\n";
 
-(my $rot13 = $text) =~ tr/A-Za-z/N-ZA-Mn-za-m/;
-print "rot13: $rot13\n";
+(my $squeezed = "aabbccdd") =~ tr/a-z//s;
+print "$squeezed\n";
 
-(my $squeezed = "aaabbbccc") =~ tr/a-z//s;
-print "squeezed: $squeezed\n";
+(my $digits = "tel: 555-1234") =~ tr/0-9//cd;
+print "$digits\n";
 
-(my $digits_only = "a1b2c3") =~ tr/0-9//cd;
-print "digits: $digits_only\n";
+my $rot13 = "Hello";
+$rot13 =~ tr/A-Za-z/N-ZA-Mn-za-m/;
+print "$rot13\n";
+
+my $renamed = $text =~ tr/lo/01/r;
+print "$renamed\n";

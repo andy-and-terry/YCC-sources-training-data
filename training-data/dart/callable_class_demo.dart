@@ -2,28 +2,24 @@ class Multiplier {
   final int factor;
   const Multiplier(this.factor);
 
-  int call(int value) => value * factor;
+  int call(int x) => x * factor;
 }
 
-class Pipeline {
-  final List<int Function(int)> _steps = [];
-
-  Pipeline add(int Function(int) step) {
-    _steps.add(step);
-    return this;
-  }
-
-  int call(int input) => _steps.fold(input, (acc, step) => step(acc));
+class Counter {
+  int _n = 0;
+  int call() => ++_n;
 }
 
 void main() {
   const triple = Multiplier(3);
-  print(triple(7));
-  print([1, 2, 3].map(triple.call).toList());
+  print(triple(5));
+  print([1, 2, 3].map(triple).toList());
 
-  final pipe = Pipeline()
-      .add(Multiplier(2).call)
-      .add((x) => x + 1)
-      .add(triple.call);
-  print(pipe(5));
+  final next = Counter();
+  next();
+  next();
+  print(next());
+
+  Function f = triple;
+  print(f(10));
 }

@@ -1,13 +1,11 @@
-print(bitwAnd(12L, 10L))
-print(bitwOr(12L, 10L))
-print(bitwXor(12L, 10L))
+a <- 12L  # 1100
+b <- 10L  # 1010
+print(bitwAnd(a, b))
+print(bitwOr(a, b))
+print(bitwXor(a, b))
 print(bitwShiftL(1L, 4L))
 print(bitwShiftR(256L, 3L))
 print(bitwNot(5L))
-
-is_power_of_two <- function(n) n > 0 && bitwAnd(n, n - 1L) == 0
-
-print(sapply(c(1L, 6L, 8L, 64L, 100L), is_power_of_two))
 
 popcount <- function(n) {
   count <- 0L
@@ -17,6 +15,5 @@ popcount <- function(n) {
   }
   count
 }
-
 print(popcount(255L))
-print(rev(as.integer(intToBits(10L))[1:8]))
+print(rev(as.integer(intToBits(5L))[1:8]))

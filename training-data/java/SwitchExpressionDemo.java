@@ -1,28 +1,27 @@
 public class SwitchExpressionDemo {
-    enum Day { MON, TUE, WED, THU, FRI, SAT, SUN }
+    enum Level { LOW, MEDIUM, HIGH }
 
-    static int letters(Day d) {
-        return switch (d) {
-            case MON, FRI, SUN -> 6;
-            case TUE -> 7;
-            case THU, SAT -> 8;
-            case WED -> {
-                int base = 9;
-                yield base;
+    static int score(Level l) {
+        return switch (l) {
+            case LOW -> 1;
+            case MEDIUM -> 5;
+            case HIGH -> 10;
+        };
+    }
+
+    static String describe(int n) {
+        return switch (n) {
+            case 1, 2, 3 -> "small";
+            case 4, 5, 6 -> "medium";
+            default -> {
+                String s = n > 100 ? "huge" : "large";
+                yield s;
             }
         };
     }
 
-    static String classify(int n) {
-        return switch (Integer.signum(n)) {
-            case -1 -> "negative";
-            case 0 -> "zero";
-            default -> "positive";
-        };
-    }
-
     public static void main(String[] args) {
-        for (Day d : Day.values()) System.out.println(d + " " + letters(d));
-        System.out.println(classify(-5) + " " + classify(0) + " " + classify(7));
+        for (Level l : Level.values()) System.out.println(l + " " + score(l));
+        System.out.println(describe(2) + " " + describe(5) + " " + describe(50) + " " + describe(500));
     }
 }

@@ -1,19 +1,13 @@
 void main() {
-  final buffer = StringBuffer();
-  buffer.write('Hello');
-  buffer.write(', ');
-  buffer.writeln('World');
-  buffer.writeAll(['a', 'b', 'c'], '-');
-  buffer.writeCharCode(33);
-
-  print(buffer.toString());
-  print('length: ${buffer.length}');
-
-  buffer.clear();
+  final sb = StringBuffer();
   for (var i = 1; i <= 5; i++) {
-    buffer.write(i);
-    if (i < 5) buffer.write(',');
+    if (i > 1) sb.write(', ');
+    sb.write(i);
   }
-  print(buffer);
-  print(buffer.isEmpty);
+  sb.writeln('!');
+  sb.writeAll(['a', 'b', 'c'], '-');
+  print(sb.toString());
+  print(sb.length);
+  sb.clear();
+  print(sb.isEmpty);
 }

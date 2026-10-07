@@ -1,19 +1,22 @@
-config = %{
-  server: %{host: "localhost", ports: [80, 443]},
-  users: [%{name: "ann", role: :admin}, %{name: "bob", role: :guest}]
+data = %{
+  user: %{name: "Ann", langs: ["elixir", "go"], address: %{city: "Oslo"}},
+  scores: [%{id: 1, pts: 10}, %{id: 2, pts: 20}]
 }
 
-IO.inspect(get_in(config, [:server, :host]))
-IO.inspect(get_in(config, [:users, Access.at(1), :name]))
-IO.inspect(get_in(config, [:server, :missing, :deep]))
+IO.inspect(get_in(data, [:user, :address, :city]))
+IO.inspect(get_in(data, [:user, :missing, :city]))
+IO.inspect(get_in(data, [:scores, Access.all(), :pts]))
+IO.inspect(get_in(data, [:user, :langs, Access.at(0)]))
 
-config = put_in(config, [:server, :host], "example.com")
-config = update_in(config, [:users, Access.all(), :role], fn _ -> :member end)
-config = update_in(config.server.ports, &[8080 | &1])
+updated = put_in(data, [:user, :address, :city], "Bergen")
+IO.inspect(updated.user.address)
 
-IO.inspect(config.server)
-IO.inspect(Enum.map(config.users, & &1.role))
+bumped = update_in(data, [:scores, Access.all(), :pts], &(&1 * 2))
+IO.inspect(bumped.scores)
 
-{old, config} = pop_in(config, [:server, :ports])
+{old, new} = get_and_update_in(data, [:user, :name], fn n -> {n, String.upcase(n)} end)
 IO.inspect(old)
-IO.inspect(Map.keys(config.server))
+IO.inspect(new.user.name)
+
+IO.inspect(pop_in(data, [:user, :langs]) |> elem(0))
+IO.inspect(data.user.address.city)

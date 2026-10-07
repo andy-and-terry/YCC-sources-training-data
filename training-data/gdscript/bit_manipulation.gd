@@ -1,8 +1,5 @@
 extends Node
 
-func is_power_of_two(n: int) -> bool:
-	return n > 0 and (n & (n - 1)) == 0
-
 func count_bits(n: int) -> int:
 	var c := 0
 	while n != 0:
@@ -11,11 +8,12 @@ func count_bits(n: int) -> int:
 	return c
 
 func _ready():
-	print(is_power_of_two(64), " ", is_power_of_two(65))
-	print(count_bits(0b101101))
-	print(6 ^ 3)
-	print(1 << 10)
-	print(-16 >> 2)
-	print(0b1100 | 0b0011)
-	print(~5)
-	print(12 & 10)
+	var x := 0b101100
+	print(count_bits(x))
+	print(x & 0xF, " ", x | 1, " ", x ^ 0xFF)
+	print(x << 2, " ", x >> 2)
+	print((x & (1 << 2)) != 0)
+	x |= 1
+	x &= ~(1 << 5)
+	print(x)
+	print("power of two: ", 64 & 63 == 0)

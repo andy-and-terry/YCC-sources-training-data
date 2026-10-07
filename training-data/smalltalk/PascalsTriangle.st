@@ -1,24 +1,9 @@
-Object subclass: PascalsTriangle [
-    PascalsTriangle class >> nextRow: row [
-        | next |
-        next := OrderedCollection new.
-        next add: 1.
-        1 to: row size - 1 do: [ :i |
-            next add: (row at: i) + (row at: i + 1) ].
-        next add: 1.
-        ^next asArray
-    ]
-
-    PascalsTriangle class >> rows: n [
-        | rows row |
-        rows := OrderedCollection new.
-        row := #(1).
-        n timesRepeat: [
-            rows add: row.
-            row := self nextRow: row ].
-        ^rows
-    ]
-]
-
-(PascalsTriangle rows: 6) do: [ :row |
-    Transcript showCr: row printString ].
+| row |
+row := OrderedCollection with: 1.
+6 timesRepeat: [
+    Transcript showCr: (row inject: '' into: [ :acc :x | acc, x printString, ' ' ]).
+    row := (0 to: row size) collect: [ :i |
+        (i = 0 or: [ i = row size ])
+            ifTrue: [ 1 ]
+            ifFalse: [ (row at: i) + (row at: i + 1) ] ]
+].

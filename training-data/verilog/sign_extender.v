@@ -1,14 +1,12 @@
 module sign_extender #(
-    parameter IN_WIDTH = 8,
-    parameter OUT_WIDTH = 16
+    parameter IN_W = 8,
+    parameter OUT_W = 16
 ) (
-    input wire [IN_WIDTH-1:0] in,
-    input wire is_signed,
-    output wire [OUT_WIDTH-1:0] out
+    input wire [IN_W-1:0] in,
+    output wire [OUT_W-1:0] out
 );
 
-wire fill = is_signed & in[IN_WIDTH-1];
-
-assign out = {{(OUT_WIDTH-IN_WIDTH){fill}}, in};
+// Replicate the sign bit into the upper bits
+assign out = {{(OUT_W-IN_W){in[IN_W-1]}}, in};
 
 endmodule

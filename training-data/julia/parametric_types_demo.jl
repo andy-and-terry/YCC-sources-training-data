@@ -3,20 +3,16 @@ struct Pair{A,B}
     second::B
 end
 
-Base.show(io::IO, p::Pair) = print(io, "(", p.first, ", ", p.second, ")")
-
 swap(p::Pair{A,B}) where {A,B} = Pair{B,A}(p.second, p.first)
 
-struct Stack{T}
-    items::Vector{T}
+struct Box{T<:Number}
+    value::T
 end
-Stack{T}() where {T} = Stack{T}(T[])
 
-Base.push!(s::Stack{T}, x::T) where {T} = (push!(s.items, x); s)
-Base.length(s::Stack) = length(s.items)
+Base.:+(a::Box{T}, b::Box{T}) where {T} = Box{T}(a.value + b.value)
 
-function largest(xs::AbstractVector{T}) where {T<:Real}
-    best = first(xs)
+function largest(xs::Vector{T}) where {T<:Real}
+    best = xs[1]
     for x in xs
         x > best && (best = x)
     end
@@ -24,10 +20,10 @@ function largest(xs::AbstractVector{T}) where {T<:Real}
 end
 
 p = Pair(1, "one")
-println(p, " -> ", swap(p))
 println(typeof(p))
-
-s = Stack{Int}()
-push!(s, 1); push!(s, 2)
-println(length(s))
-println(largest([3, 9, 4]), " ", largest([1.5, 0.2]))
+println(swap(p))
+println(Box(2) + Box(3))
+println(typeof(Box(2.5)))
+println(largest([3, 9, 4]))
+println(largest([1.5, 0.5]))
+println(Vector{Int} <: AbstractVector{Int})

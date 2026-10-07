@@ -1,31 +1,21 @@
 import std.stdio;
 import std.sumtype;
-import std.math : PI;
 
-struct Circle { double radius; }
+struct Circle { double r; }
 struct Rect { double w, h; }
-struct Triangle { double base, height; }
-
-alias Shape = SumType!(Circle, Rect, Triangle);
+alias Shape = SumType!(Circle, Rect);
 
 double area(Shape s) {
     return s.match!(
-        (Circle c) => PI * c.radius * c.radius,
-        (Rect r) => r.w * r.h,
-        (Triangle t) => 0.5 * t.base * t.height
-    );
-}
-
-string name(Shape s) {
-    return s.match!(
-        (Circle _) => "circle",
-        (Rect _) => "rect",
-        (Triangle _) => "triangle"
+        (Circle c) => 3.14159 * c.r * c.r,
+        (Rect r) => r.w * r.h
     );
 }
 
 void main() {
-    Shape[] shapes = [Shape(Circle(1.0)), Shape(Rect(2, 3)), Shape(Triangle(4, 5))];
-    foreach (s; shapes)
-        writefln("%s: %.2f", name(s), area(s));
+    Shape a = Circle(2.0);
+    Shape b = Rect(3.0, 4.0);
+    writeln(area(a));
+    writeln(area(b));
+    writeln(b.match!((Circle _) => "circle", (Rect _) => "rect"));
 }

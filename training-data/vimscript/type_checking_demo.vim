@@ -1,30 +1,21 @@
-function! TypeName(value)
-  let t = type(a:value)
-  if t == v:t_number
+function! TypeName(val)
+  let t = type(a:val)
+  if t == type(0)
     return 'number'
-  elseif t == v:t_string
+  elseif t == type('')
     return 'string'
-  elseif t == v:t_list
+  elseif t == type([])
     return 'list'
-  elseif t == v:t_dict
+  elseif t == type({})
     return 'dict'
-  elseif t == v:t_float
+  elseif t == type(1.0)
     return 'float'
-  elseif t == v:t_func
+  elseif t == type(function('type'))
     return 'funcref'
-  elseif t == v:t_bool
-    return 'bool'
   endif
   return 'other'
 endfunction
 
-for Item in [1, 'a', [1], {'k': 1}, 1.5, function('strlen'), v:true]
-  echo TypeName(Item)
+for V in [1, 'a', [1], {'k': 1}, 2.5, function('len')]
+  echo TypeName(V)
 endfor
-
-echo exists('g:not_defined')
-let g:defined = 1
-echo exists('g:defined')
-echo exists('*strlen')
-echo has('patch-8.0.0')
-echo empty([]) . empty('') . empty({}) . empty(0)

@@ -5,21 +5,17 @@ class Counter
     private int $count = 5;
 }
 
+// Bind a closure to an object so it can read private state.
 $peek = function () {
     return $this->count;
 };
-
 $bound = Closure::bind($peek, new Counter(), Counter::class);
 echo $bound(), "\n";
 
-$inc = fn(int $by) => fn(int $x) => $x + $by;
-echo $inc(10)(5), "\n";
+$c = new Counter();
+$inc = Closure::bind(function () { return ++$this->count; }, $c, Counter::class);
+$inc();
+echo $inc(), "\n";
 
-$multiplier = 3;
-$byValue = function ($x) use ($multiplier) { return $x * $multiplier; };
-$byRef = function ($x) use (&$multiplier) { return $x * $multiplier; };
-$multiplier = 4;
-echo $byValue(2), " ", $byRef(2), "\n";
-
-$static = static fn() => isset($this);
-var_dump($static());
+$static = static fn(int $x): int => $x * 2;
+echo $static(21), "\n";

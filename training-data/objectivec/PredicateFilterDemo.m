@@ -1,18 +1,14 @@
 #import <Foundation/Foundation.h>
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        NSArray<NSDictionary *> *people = @[
-            @{ @"name": @"Ann", @"age": @31 },
-            @{ @"name": @"Bob", @"age": @17 },
-            @{ @"name": @"Cy", @"age": @45 },
-        ];
-        NSPredicate *adults = [NSPredicate predicateWithFormat:@"age >= %d", 18];
-        NSArray *filtered = [people filteredArrayUsingPredicate:adults];
-        NSLog(@"adults: %@", [filtered valueForKey:@"name"]);
-
-        NSPredicate *startsWithA = [NSPredicate predicateWithFormat:@"name BEGINSWITH[c] %@", @"a"];
-        NSLog(@"A-names: %@", [[people filteredArrayUsingPredicate:startsWithA] valueForKey:@"name"]);
+        NSArray<NSString *> *words = @[ @"apple", @"banana", @"avocado", @"cherry" ];
+        NSPredicate *p = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"a"];
+        NSLog(@"%@", [words filteredArrayUsingPredicate:p]);
+        NSPredicate *len = [NSPredicate predicateWithBlock:^BOOL(NSString *s, NSDictionary *b) {
+            return s.length > 5;
+        }];
+        NSLog(@"%@", [words filteredArrayUsingPredicate:len]);
     }
     return 0;
 }

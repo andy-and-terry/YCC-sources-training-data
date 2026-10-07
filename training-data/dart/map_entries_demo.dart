@@ -1,22 +1,23 @@
 void main() {
-  final prices = {'apple': 1.2, 'pear': 0.8, 'kiwi': 2.5};
+  final stock = {'apple': 3, 'pear': 0, 'plum': 7};
 
-  for (final MapEntry(:key, :value) in prices.entries) {
-    print('$key costs $value');
+  for (final e in stock.entries) {
+    print('${e.key} -> ${e.value}');
   }
 
-  final doubled = prices.map((k, v) => MapEntry(k, v * 2));
+  final doubled = stock.map((k, v) => MapEntry(k, v * 2));
   print(doubled);
 
-  final expensive = Map.fromEntries(prices.entries.where((e) => e.value > 1.0));
-  print(expensive);
+  final inStock = Map.fromEntries(stock.entries.where((e) => e.value > 0));
+  print(inStock);
 
-  final sorted = prices.entries.toList()..sort((a, b) => a.value.compareTo(b.value));
-  print(sorted.map((e) => e.key).toList());
+  stock.putIfAbsent('fig', () => 1);
+  stock.update('apple', (v) => v + 10);
+  stock.update('kiwi', (v) => v + 1, ifAbsent: () => 5);
+  stock.removeWhere((k, v) => v == 0);
+  print(stock);
 
-  prices.putIfAbsent('plum', () => 3.0);
-  prices.update('apple', (v) => v + 1);
-  prices.update('fig', (v) => v, ifAbsent: () => 4.0);
-  prices.removeWhere((k, v) => v > 3.5);
-  print(prices);
+  final inverted = {for (final e in stock.entries) e.value: e.key};
+  print(inverted);
+  print(stock['missing'] ?? -1);
 }

@@ -1,19 +1,16 @@
-console.log("1 sync start");
+// Execution order: synchronous code, process.nextTick, microtasks (promises,
+// queueMicrotask), then timers and setImmediate.
+console.log('1 sync start');
 
-setTimeout(() => console.log("5 setTimeout"), 0);
+setTimeout(() => console.log('7 setTimeout 0'), 0);
+setImmediate(() => console.log('8 setImmediate'));
 
-setImmediate(() => console.log("6 setImmediate"));
-
-Promise.resolve().then(() => console.log("3 promise microtask"));
-
-queueMicrotask(() => console.log("4 queueMicrotask"));
-
-process.nextTick(() => console.log("2.5 nextTick"));
+Promise.resolve().then(() => console.log('4 promise then'));
+queueMicrotask(() => console.log('5 queueMicrotask'));
+process.nextTick(() => console.log('3 nextTick'));
 
 (async () => {
-  console.log("2 async fn runs synchronously until first await");
+  console.log('2 async fn body runs synchronously');
   await null;
-  console.log("4.5 after await");
+  console.log('6 after await');
 })();
-
-console.log("2.1 sync end");

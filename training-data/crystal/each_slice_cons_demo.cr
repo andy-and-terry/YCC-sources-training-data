@@ -1,18 +1,9 @@
-numbers = (1..10).to_a
+# Chunking and sliding windows over collections.
+nums = (1..7).to_a
 
-numbers.each_slice(3) do |slice|
-  puts "slice: #{slice}"
-end
+nums.each_slice(3) { |chunk| p chunk }
 
-numbers.each_cons(4).first(2).each do |window|
-  puts "window: #{window}"
-end
+nums.each_cons(3) { |win| puts "#{win} sum=#{win.sum}" }
 
-moving_avg = numbers.each_cons(3).map { |w| w.sum / 3.0 }.to_a
-puts moving_avg
-
-evens, odds = numbers.partition(&.even?)
-puts evens, odds
-
-puts numbers.zip(numbers.rotate).first(3)
-puts numbers.group_by { |n| n % 3 }
+p nums.in_groups_of(3, 0)
+p nums.partition(&.even?)

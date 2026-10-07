@@ -4,41 +4,40 @@ enum Shape {
     case point
 }
 
-func describe(_ value: Any) -> String {
-    switch value {
-    case let n as Int where n < 0:
-        return "negative int \(n)"
-    case 0 as Int:
-        return "zero"
-    case let n as Int:
-        return "int \(n)"
-    case let s as String where s.isEmpty:
-        return "empty string"
-    case let s as String:
-        return "string '\(s)'"
-    case let (a, b) as (Int, Int):
-        return "pair summing to \(a + b)"
-    default:
-        return "something else"
-    }
-}
-
-func area(_ shape: Shape) -> Double {
+func describe(_ shape: Shape) -> String {
     switch shape {
-    case .circle(let r): return Double.pi * r * r
-    case .rect(let w, let h): return w * h
-    case .point: return 0
+    case .circle(let r) where r > 10:
+        return "large circle"
+    case .circle:
+        return "circle"
+    case .rect(let w, let h) where w == h:
+        return "square \(w)"
+    case .rect(let w, let h):
+        return "rect \(w)x\(h)"
+    case .point:
+        return "point"
     }
 }
 
-for item: Any in [-4, 0, 9, "", "hi", (2, 3), 3.5] {
-    print(describe(item))
+func classify(_ n: Int) -> String {
+    switch n {
+    case ..<0: return "negative"
+    case 0: return "zero"
+    case 1...9: return "digit"
+    case let x where x.isMultiple(of: 2): return "big even"
+    default: return "big odd"
+    }
 }
-print(area(.rect(width: 2, height: 3)))
 
-let age = 27
-switch age {
-case 0..<13: print("child")
-case 13...19: print("teen")
-default: print("adult")
+func pair(_ p: (Int, Int)) -> String {
+    switch p {
+    case (0, 0): return "origin"
+    case (let x, 0): return "x-axis at \(x)"
+    case (0, let y): return "y-axis at \(y)"
+    default: return "elsewhere"
+    }
 }
+
+print(describe(.circle(radius: 11)), describe(.rect(width: 2, height: 2)), describe(.point))
+print(classify(-3), classify(5), classify(42), classify(43))
+print(pair((0, 0)), pair((4, 0)), pair((0, 7)), pair((1, 1)))

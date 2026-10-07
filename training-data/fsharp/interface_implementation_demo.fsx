@@ -12,13 +12,7 @@ type Circle(r: float) =
         member _.Area = System.Math.PI * r * r
         member _.Name = "circle"
 
-let describe (s: IShape) = sprintf "%s: %.2f" s.Name s.Area
+let shapes: IShape list = [ Rect(2.0, 3.0); Circle(1.5) ]
 
-let shapes: IShape list = [ Rect(2.0, 3.0); Circle(1.0) ]
-shapes |> List.iter (describe >> printfn "%s")
-
-let unitShape =
-    { new IShape with
-        member _.Area = 1.0
-        member _.Name = "unit" }
-printfn "%s" (describe unitShape)
+for s in shapes do
+    printfn "%s: %.2f" s.Name s.Area

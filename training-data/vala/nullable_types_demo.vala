@@ -1,28 +1,24 @@
 string? find_name(int id) {
-    if (id == 1) return "Ada";
-    if (id == 2) return "Linus";
+    if (id == 1) {
+        return "Ada";
+    }
     return null;
 }
 
-void greet(string? name) {
-    if (name == null) {
-        stdout.printf("Hello, stranger\n");
-    } else {
-        stdout.printf("Hello, %s\n", name);
-    }
-}
-
 void main() {
-    greet(find_name(1));
-    greet(find_name(99));
+    for (int id = 1; id <= 2; id++) {
+        string? name = find_name(id);
+        if (name != null) {
+            stdout.printf("found: %s\n", name);
+        } else {
+            stdout.printf("id %d not found\n", id);
+        }
+    }
 
-    // Null coalescing operator
-    string display = find_name(3) ?? "unknown";
-    stdout.printf("%s\n", display);
+    string fallback = find_name(2) ?? "unknown";
+    stdout.printf("%s\n", fallback);
 
-    int? maybe = null;
-    stdout.printf("%s\n", maybe == null ? "no value" : "has value");
-
-    string? s = find_name(2);
-    stdout.printf("%d\n", s != null ? s.length : 0);
+    string? maybe = find_name(1);
+    stdout.printf("length: %d\n", maybe.length);
+    stdout.printf("forced: %s\n", maybe);
 }

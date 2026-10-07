@@ -1,14 +1,16 @@
 function! Collatz(n)
+  let seq = [a:n]
   let n = a:n
-  let seq = [n]
   while n != 1
-    let n = n % 2 == 0 ? n / 2 : 3 * n + 1
+    if n % 2 == 0
+      let n = n / 2
+    else
+      let n = 3 * n + 1
+    endif
     call add(seq, n)
   endwhile
   return seq
 endfunction
 
-let s = Collatz(6)
-echo s
-echo 'steps: ' . (len(s) - 1)
-echo 'peak: ' . max(Collatz(27))
+echo Collatz(6)
+echo len(Collatz(27)) - 1

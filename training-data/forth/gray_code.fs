@@ -1,21 +1,12 @@
-: >GRAY ( n -- g ) DUP 1 RSHIFT XOR ;
+\ Binary-reflected Gray code
+: >GRAY ( n -- g )  DUP 1 RSHIFT XOR ;
 
 : GRAY> ( g -- n )
-  0
-  BEGIN OVER WHILE
-    OVER XOR
-    SWAP 1 RSHIFT SWAP
-  REPEAT
-  NIP ;
+  0 SWAP                       \ n g
+  BEGIN DUP WHILE TUCK XOR SWAP 1 RSHIFT REPEAT
+  DROP ;
 
-: .BIN3 ( n -- )
-  BASE @ >R 2 BASE !
-  0 <# # # # #> TYPE
-  R> BASE ! ;
+: .BIN ( n -- )  BASE @ SWAP 2 BASE ! 0 <# # # # #> TYPE BASE ! ;
 
-: DEMO ( -- )
-  8 0 DO
-    I >GRAY DUP .BIN3 SPACE GRAY> . CR
-  LOOP ;
-
-DEMO
+8 0 DO I >GRAY .BIN SPACE LOOP CR
+5 >GRAY GRAY> . CR

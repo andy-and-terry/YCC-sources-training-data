@@ -1,23 +1,22 @@
 public class PascalTriangle {
-    public static List<List<Integer>> generate(Integer rows) {
-        List<List<Integer>> triangle = new List<List<Integer>>();
-        for (Integer i = 0; i < rows; i++) {
+    public static List<List<Integer>> build(Integer rows) {
+        List<List<Integer>> tri = new List<List<Integer>>();
+        for (Integer r = 0; r < rows; r++) {
             List<Integer> row = new List<Integer>();
-            for (Integer j = 0; j <= i; j++) {
-                if (j == 0 || j == i) {
+            for (Integer c = 0; c <= r; c++) {
+                if (c == 0 || c == r) {
                     row.add(1);
                 } else {
-                    List<Integer> prev = triangle.get(i - 1);
-                    row.add(prev.get(j - 1) + prev.get(j));
+                    row.add(tri[r - 1][c - 1] + tri[r - 1][c]);
                 }
             }
-            triangle.add(row);
+            tri.add(row);
         }
-        return triangle;
+        return tri;
     }
 
-    public static void main() {
-        for (List<Integer> row : generate(6)) {
+    public static void run() {
+        for (List<Integer> row : build(5)) {
             System.debug(String.join(row, ' '));
         }
     }

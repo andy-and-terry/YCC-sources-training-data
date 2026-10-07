@@ -1,27 +1,23 @@
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 
-fn k_smallest(nums: &[i32], k: usize) -> Vec<i32> {
-    let mut heap = BinaryHeap::new();
-    for &n in nums {
-        heap.push(n);
-        if heap.len() > k {
-            heap.pop(); // drop the largest
-        }
-    }
-    let mut out = heap.into_vec();
-    out.sort();
-    out
-}
-
 fn main() {
+    let mut max_heap = BinaryHeap::from(vec![3, 1, 4, 1, 5]);
+    println!("{:?}", max_heap.pop());
+
     let mut min_heap = BinaryHeap::new();
-    for x in [5, 1, 8, 3, 2] {
+    for x in [5, 2, 8, 1] {
         min_heap.push(Reverse(x));
     }
     while let Some(Reverse(x)) = min_heap.pop() {
         print!("{} ", x);
     }
     println!();
-    println!("{:?}", k_smallest(&[9, 4, 7, 1, 8, 2, 6], 3));
+
+    // Tuples order lexicographically: (priority, name)
+    let mut tasks = BinaryHeap::new();
+    tasks.push((2, "write"));
+    tasks.push((9, "deploy"));
+    tasks.push((5, "test"));
+    println!("{:?}", tasks.into_sorted_vec());
 }

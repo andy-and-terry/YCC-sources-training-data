@@ -8,5 +8,5 @@
             ([_ (in-range n)])
     (values (cons row rows) (next-row row))))
 
-(for ([row (pascal 6)])
-  (displayln row))
+(for ([r (pascal 6)])
+  (displayln (string-join (map number->string r) " ")))

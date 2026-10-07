@@ -1,21 +1,15 @@
 program character_functions_demo
     implicit none
     character(len=20) :: s
-    character(len=:), allocatable :: t
+    s = "  Hello, Fortran  "
 
-    s = '  Fortran strings'
-    print '(3a)', '[', s, ']'
-    print '(3a)', '[', trim(s), ']'
-    print '(3a)', '[', trim(adjustl(s)), ']'
-    print *, 'len / len_trim: ', len(s), len_trim(s)
-    print *, 'index of "str": ', index(s, 'str')
-    print *, 'scan vowels: ', scan(s, 'aeiou')
-    print *, 'verify letters: ', verify(trim(adjustl(s)), 'abcdefghijklmnopqrstuvwxyzFS ')
-
-    t = 'abc' // 'def'
-    print *, t, len(t)
-    print *, t(2:4)
-    print *, repeat('=-', 5)
-    print *, iachar('A'), achar(98)
-    print *, lge('apple', 'banana'), llt('apple', 'banana')
+    print '(A, I0)', "len: ", len(s)
+    print '(A, I0)', "len_trim: ", len_trim(s)
+    print '(A, A, A)', "[", trim(adjustl(s)), "]"
+    print '(A, I0)', "index of Fortran: ", index(s, "Fortran")
+    print '(A, I0)', "scan for vowels: ", scan(s, "aeiou")
+    print '(A, I0)', "verify (first non-blank): ", verify(s, " ")
+    print '(A, I0)', "iachar('A'): ", iachar("A")
+    print '(A, A)', "achar(97): ", achar(97)
+    print '(A, L1)', "lexical compare: ", llt("apple", "banana")
 end program character_functions_demo

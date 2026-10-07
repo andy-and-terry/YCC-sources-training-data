@@ -1,20 +1,17 @@
 open System
 
 [<Flags>]
-type Permissions =
+type Permission =
     | None = 0
     | Read = 1
     | Write = 2
     | Execute = 4
 
-let perms = Permissions.Read ||| Permissions.Write
+let perms = Permission.Read ||| Permission.Write
+
 printfn "%A" perms
-printfn "%b" (perms.HasFlag Permissions.Write)
-printfn "%b" ((perms &&& Permissions.Execute) = Permissions.None)
-
-let withExec = perms ||| Permissions.Execute
-printfn "%d" (int withExec)
-printfn "%A" (withExec &&& ~~~Permissions.Read)
-
-let parsed = Enum.Parse(typeof<Permissions>, "Read, Execute") :?> Permissions
-printfn "%A" parsed
+printfn "can read: %b" (perms.HasFlag Permission.Read)
+printfn "can execute: %b" (perms.HasFlag Permission.Execute)
+printfn "toggled: %A" (perms ^^^ Permission.Write)
+printfn "raw value: %d" (int perms)
+printfn "parsed: %A" (Enum.Parse(typeof<Permission>, "Read, Execute") :?> Permission)

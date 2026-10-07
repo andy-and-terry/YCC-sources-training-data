@@ -1,53 +1,39 @@
 const std = @import("std");
 
-const N = 3;
+const Rows = 3;
+const Cols = 4;
 
-fn spiral(m: [N][N]i32, out: *[N * N]i32) void {
-    var top: i32 = 0;
-    var bottom: i32 = N - 1;
-    var left: i32 = 0;
-    var right: i32 = N - 1;
-    var k: usize = 0;
+pub fn main() void {
+    const m = [Rows][Cols]u8{
+        .{ 1, 2, 3, 4 },
+        .{ 5, 6, 7, 8 },
+        .{ 9, 10, 11, 12 },
+    };
+
+    var top: isize = 0;
+    var bottom: isize = Rows - 1;
+    var left: isize = 0;
+    var right: isize = Cols - 1;
 
     while (top <= bottom and left <= right) {
         var c = left;
-        while (c <= right) : (c += 1) {
-            out[k] = m[@intCast(top)][@intCast(c)];
-            k += 1;
-        }
+        while (c <= right) : (c += 1) std.debug.print("{d} ", .{m[@intCast(top)][@intCast(c)]});
         top += 1;
+
         var r = top;
-        while (r <= bottom) : (r += 1) {
-            out[k] = m[@intCast(r)][@intCast(right)];
-            k += 1;
-        }
+        while (r <= bottom) : (r += 1) std.debug.print("{d} ", .{m[@intCast(r)][@intCast(right)]});
         right -= 1;
+
         if (top <= bottom) {
             c = right;
-            while (c >= left) : (c -= 1) {
-                out[k] = m[@intCast(bottom)][@intCast(c)];
-                k += 1;
-            }
+            while (c >= left) : (c -= 1) std.debug.print("{d} ", .{m[@intCast(bottom)][@intCast(c)]});
             bottom -= 1;
         }
         if (left <= right) {
             r = bottom;
-            while (r >= top) : (r -= 1) {
-                out[k] = m[@intCast(r)][@intCast(left)];
-                k += 1;
-            }
+            while (r >= top) : (r -= 1) std.debug.print("{d} ", .{m[@intCast(r)][@intCast(left)]});
             left += 1;
         }
     }
-}
-
-pub fn main() void {
-    const grid = [N][N]i32{
-        .{ 1, 2, 3 },
-        .{ 4, 5, 6 },
-        .{ 7, 8, 9 },
-    };
-    var out: [N * N]i32 = undefined;
-    spiral(grid, &out);
-    std.debug.print("{any}\n", .{out});
+    std.debug.print("\n", .{});
 }

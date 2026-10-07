@@ -1,19 +1,20 @@
 -module(closures_demo).
--export([run/0, make_adder/1, compose/2]).
+-export([run/0, make_adder/1, make_counter_fun/0]).
 
-make_adder(N) -> fun(X) -> X + N end.
+make_adder(N) ->
+    fun(X) -> X + N end.
 
-compose(F, G) -> fun(X) -> F(G(X)) end.
+make_counter_fun() ->
+    Gen = fun Loop(Count) ->
+        fun() -> {Count, Loop(Count + 1)} end
+    end,
+    Gen(0).
 
 run() ->
     Add5 = make_adder(5),
-    Double = fun(X) -> X * 2 end,
     io:format("~p~n", [Add5(10)]),
-    io:format("~p~n", [(compose(Add5, Double))(10)]),
     io:format("~p~n", [lists:map(make_adder(1), [1, 2, 3])]),
-    Fact = fun F(0) -> 1; F(N) -> N * F(N - 1) end,
-    io:format("~p~n", [Fact(10)]),
-    Counter = lists:foldl(fun(X, Acc) -> Acc + X end, 0, lists:seq(1, 100)),
-    io:format("~p~n", [Counter]),
-    Mod = fun lists:reverse/1,
-    io:format("~p~n", [Mod([1, 2, 3])]).
+    C0 = make_counter_fun(),
+    {V0, C1} = C0(),
+    {V1, _C2} = C1(),
+    io:format("~p ~p~n", [V0, V1]).

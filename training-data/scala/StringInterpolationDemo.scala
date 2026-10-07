@@ -1,31 +1,11 @@
 object StringInterpolationDemo {
-  case class Point(x: Int, y: Int)
-
   def main(args: Array[String]): Unit = {
-    val name = "Scala"
-    val version = 2.13
-    val p = Point(3, 4)
-
-    println(s"Hello, $name! Sum is ${1 + 2}")
-    println(s"Point: $p, x=${p.x}")
-    println(f"Version: $version%.1f, padded: ${42}%05d, hex: ${255}%x")
-    println(f"${"left"}%-8s|${"right"}%8s|")
-    println(raw"No\nescape here: $name")
+    val name = "Ada"
+    val score = 93.456
+    println(s"Hello, $name! Next year: ${2024 + 1}")
+    println(f"Score: $score%.2f, padded: $score%10.1f|")
+    println(raw"No escape: \n stays literal for $name")
     println(s"""Multi-line
-               |  with margin $name
-               |done""".stripMargin)
-
-    implicit class JsonHelper(val sc: StringContext) {
-      def json(args: Any*): String = {
-        val parts = sc.parts.iterator
-        val vals = args.iterator
-        val sb = new StringBuilder(parts.next())
-        while (vals.hasNext) {
-          sb.append("\"").append(vals.next()).append("\"").append(parts.next())
-        }
-        sb.toString
-      }
-    }
-    println(json"""{"name": $name, "lang": ${"jvm"}}""")
+               |  with margin for $name""".stripMargin)
   }
 }
