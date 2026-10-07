@@ -1,35 +1,34 @@
 <?php
 
-function heapify(array &$arr, int $n, int $i): void
+function heapify(array &$items, int $n, int $i): void
 {
     $largest = $i;
     $left = 2 * $i + 1;
     $right = 2 * $i + 2;
 
-    if ($left < $n && $arr[$left] > $arr[$largest]) {
+    if ($left < $n && $items[$left] > $items[$largest]) {
         $largest = $left;
     }
-    if ($right < $n && $arr[$right] > $arr[$largest]) {
+    if ($right < $n && $items[$right] > $items[$largest]) {
         $largest = $right;
     }
     if ($largest !== $i) {
-        [$arr[$i], $arr[$largest]] = [$arr[$largest], $arr[$i]];
-        heapify($arr, $n, $largest);
+        [$items[$i], $items[$largest]] = [$items[$largest], $items[$i]];
+        heapify($items, $n, $largest);
     }
 }
 
-function heapSort(array $arr): array
+function heapSort(array $items): array
 {
-    $n = count($arr);
+    $n = count($items);
     for ($i = intdiv($n, 2) - 1; $i >= 0; $i--) {
-        heapify($arr, $n, $i);
+        heapify($items, $n, $i);
     }
     for ($i = $n - 1; $i > 0; $i--) {
-        [$arr[0], $arr[$i]] = [$arr[$i], $arr[0]];
-        heapify($arr, $i, 0);
+        [$items[0], $items[$i]] = [$items[$i], $items[0]];
+        heapify($items, $i, 0);
     }
-    return $arr;
+    return $items;
 }
 
-$data = [5, 3, 8, 1, 9, 2, 7];
-echo implode(',', heapSort($data)) . "\n";
+echo implode(',', heapSort([5, 3, 8, 1, 9, 2])) . "\n";

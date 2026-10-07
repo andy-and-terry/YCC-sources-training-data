@@ -1,42 +1,43 @@
 CREATE OR REPLACE TYPE int_table AS TABLE OF NUMBER;
 /
 
-CREATE OR REPLACE PROCEDURE quicksort(
-    p_arr IN OUT NOCOPY int_table,
-    p_low IN NUMBER,
-    p_high IN NUMBER
-) IS
-    v_pivot NUMBER;
-    v_i NUMBER;
-    v_temp NUMBER;
+CREATE OR REPLACE PROCEDURE quicksort(arr IN OUT NOCOPY int_table, lo IN NUMBER, hi IN NUMBER) IS
+    pivot NUMBER;
+    i NUMBER;
+    temp NUMBER;
 BEGIN
-    IF p_low < p_high THEN
-        v_pivot := p_arr(p_high);
-        v_i := p_low - 1;
-        FOR j IN p_low..p_high - 1 LOOP
-            IF p_arr(j) <= v_pivot THEN
-                v_i := v_i + 1;
-                v_temp := p_arr(v_i);
-                p_arr(v_i) := p_arr(j);
-                p_arr(j) := v_temp;
+    IF lo < hi THEN
+        pivot := arr(hi);
+        i := lo - 1;
+        FOR j IN lo..hi - 1 LOOP
+            IF arr(j) <= pivot THEN
+                i := i + 1;
+                temp := arr(i);
+                arr(i) := arr(j);
+                arr(j) := temp;
             END IF;
         END LOOP;
-        v_temp := p_arr(v_i + 1);
-        p_arr(v_i + 1) := p_arr(p_high);
-        p_arr(p_high) := v_temp;
+        temp := arr(i + 1);
+        arr(i + 1) := arr(hi);
+        arr(hi) := temp;
 
-        quicksort(p_arr, p_low, v_i);
-        quicksort(p_arr, v_i + 2, p_high);
+        quicksort(arr, lo, i);
+        quicksort(arr, i + 2, hi);
     END IF;
 END quicksort;
 /
 
-CREATE OR REPLACE PROCEDURE print_quicksorted IS
-    v_data int_table := int_table(5, 3, 8, 1, 9, 2, 7);
+DECLARE
+    arr int_table := int_table(5, 3, 8, 1, 9, 2);
+    out_str VARCHAR2(200) := '';
 BEGIN
-    quicksort(v_data, 1, v_data.COUNT);
-    FOR i IN 1..v_data.COUNT LOOP
-        DBMS_OUTPUT.PUT_LINE(v_data(i));
+    quicksort(arr, 1, arr.COUNT);
+    FOR i IN 1..arr.COUNT LOOP
+        out_str := out_str || arr(i);
+        IF i < arr.COUNT THEN
+            out_str := out_str || ' ';
+        END IF;
     END LOOP;
-END print_quicksorted;
+    DBMS_OUTPUT.PUT_LINE(out_str);
+END;
 /

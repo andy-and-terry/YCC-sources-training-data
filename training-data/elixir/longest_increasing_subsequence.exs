@@ -1,27 +1,21 @@
-defmodule LIS do
-  def length_of(nums) do
-    nums
-    |> Enum.reduce([], fn num, tails -> insert(tails, num) end)
-    |> length()
-  end
+defmodule LongestIncreasingSubsequence do
+  # Patience-sorting approach: `tails` keeps the smallest possible tail
+  # value for an increasing subsequence of each length seen so far.
+  def length_of_lis([]), do: 0
 
-  defp insert(tails, num) do
-    case find_index(tails, num, 0) do
-      nil -> tails ++ [num]
-      idx -> List.replace_at(tails, idx, num)
-    end
-  end
+  def length_of_lis(nums) do
+    tails =
+      Enum.reduce(nums, [], fn n, tails ->
+        case Enum.find_index(tails, &(&1 >= n)) do
+          nil -> tails ++ [n]
+          index -> List.replace_at(tails, index, n)
+        end
+      end)
 
-  defp find_index([], _num, _idx), do: nil
-
-  defp find_index([head | rest], num, idx) do
-    if head >= num do
-      idx
-    else
-      find_index(rest, num, idx + 1)
-    end
+    length(tails)
   end
 end
 
-IO.inspect(LIS.length_of([10, 9, 2, 5, 3, 7, 101, 18]))
-IO.inspect(LIS.length_of([0, 1, 0, 3, 2, 3]))
+IO.inspect(LongestIncreasingSubsequence.length_of_lis([10, 9, 2, 5, 3, 7, 101, 18]))
+IO.inspect(LongestIncreasingSubsequence.length_of_lis([0, 1, 0, 3, 2, 3]))
+IO.inspect(LongestIncreasingSubsequence.length_of_lis([]))

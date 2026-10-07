@@ -5,7 +5,7 @@ function DoublyLinkedList.new()
   return setmetatable({ head = nil, tail = nil, size = 0 }, DoublyLinkedList)
 end
 
-function DoublyLinkedList:pushBack(value)
+function DoublyLinkedList:push_back(value)
   local node = { value = value, prev = self.tail, next = nil }
   if self.tail then
     self.tail.next = node
@@ -16,7 +16,7 @@ function DoublyLinkedList:pushBack(value)
   self.size = self.size + 1
 end
 
-function DoublyLinkedList:pushFront(value)
+function DoublyLinkedList:push_front(value)
   local node = { value = value, prev = nil, next = self.head }
   if self.head then
     self.head.prev = node
@@ -27,34 +27,47 @@ function DoublyLinkedList:pushFront(value)
   self.size = self.size + 1
 end
 
-function DoublyLinkedList:popFront()
-  if not self.head then return nil end
-  local node = self.head
-  self.head = node.next
-  if self.head then
-    self.head.prev = nil
+function DoublyLinkedList:pop_back()
+  if not self.tail then return nil end
+  local node = self.tail
+  self.tail = node.prev
+  if self.tail then
+    self.tail.next = nil
   else
-    self.tail = nil
+    self.head = nil
   end
   self.size = self.size - 1
   return node.value
 end
 
-function DoublyLinkedList:toTable()
-  local result = {}
+function DoublyLinkedList:to_table()
+  local out = {}
   local node = self.head
   while node do
-    table.insert(result, node.value)
+    table.insert(out, node.value)
     node = node.next
   end
-  return result
+  return out
+end
+
+function DoublyLinkedList:to_table_reverse()
+  local out = {}
+  local node = self.tail
+  while node do
+    table.insert(out, node.value)
+    node = node.prev
+  end
+  return out
 end
 
 local list = DoublyLinkedList.new()
-list:pushBack(2)
-list:pushBack(3)
-list:pushFront(1)
-print(table.concat(list:toTable(), " "))
-print(list:popFront())
-print(table.concat(list:toTable(), " "))
-print(list.size)
+list:push_back(1)
+list:push_back(2)
+list:push_back(3)
+list:push_front(0)
+
+print(table.concat(list:to_table(), " "))
+print(table.concat(list:to_table_reverse(), " "))
+print(list:pop_back())
+print(table.concat(list:to_table(), " "))
+print("size:", list.size)

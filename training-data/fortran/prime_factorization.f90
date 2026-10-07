@@ -1,20 +1,16 @@
 program prime_factorization
     implicit none
-    integer :: num, d, cnt
-    integer :: factors(20)
+    integer :: num, factor
 
     num = 360
-    d = 2
-    cnt = 0
+    factor = 2
 
     do while (num > 1)
-        do while (mod(num, d) == 0)
-            cnt = cnt + 1
-            factors(cnt) = d
-            num = num / d
-        end do
-        d = d + 1
+        if (mod(num, factor) == 0) then
+            print *, factor
+            num = num / factor
+        else
+            factor = factor + 1
+        end if
     end do
-
-    print *, factors(1:cnt)
 end program prime_factorization

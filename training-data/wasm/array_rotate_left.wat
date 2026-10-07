@@ -2,30 +2,26 @@
   (memory (export "memory") 1)
 
   (func $array_rotate_left (export "array_rotate_left")
-        (param $base i32) (param $len i32) (param $k i32) (param $scratch i32)
+        (param $base i32) (param $len i32) (param $k i32) (param $temp_base i32)
     (local $i i32)
+    (local $shift i32)
+    (local $src i32)
+    (local.set $shift (i32.rem_s (local.get $k) (local.get $len)))
     (local.set $i (i32.const 0))
-    (block $save_done
-      (loop $save
-        (br_if $save_done (i32.ge_s (local.get $i) (local.get $k)))
-        (i32.store (i32.add (local.get $scratch) (i32.mul (local.get $i) (i32.const 4)))
-                   (i32.load (i32.add (local.get $base) (i32.mul (local.get $i) (i32.const 4)))))
+    (block $copy_done
+      (loop $copy_loop
+        (br_if $copy_done (i32.ge_s (local.get $i) (local.get $len)))
+        (local.set $src (i32.rem_s (i32.add (local.get $i) (local.get $shift)) (local.get $len)))
+        (i32.store (i32.add (local.get $temp_base) (i32.mul (local.get $i) (i32.const 4)))
+          (i32.load (i32.add (local.get $base) (i32.mul (local.get $src) (i32.const 4)))))
         (local.set $i (i32.add (local.get $i) (i32.const 1)))
-        (br $save)))
+        (br $copy_loop)))
     (local.set $i (i32.const 0))
-    (block $shift_done
-      (loop $shift
-        (br_if $shift_done (i32.ge_s (local.get $i) (i32.sub (local.get $len) (local.get $k))))
+    (block $store_done
+      (loop $store_loop
+        (br_if $store_done (i32.ge_s (local.get $i) (local.get $len)))
         (i32.store (i32.add (local.get $base) (i32.mul (local.get $i) (i32.const 4)))
-                   (i32.load (i32.add (local.get $base) (i32.mul (i32.add (local.get $i) (local.get $k)) (i32.const 4)))))
+          (i32.load (i32.add (local.get $temp_base) (i32.mul (local.get $i) (i32.const 4)))))
         (local.set $i (i32.add (local.get $i) (i32.const 1)))
-        (br $shift)))
-    (local.set $i (i32.const 0))
-    (block $restore_done
-      (loop $restore
-        (br_if $restore_done (i32.ge_s (local.get $i) (local.get $k)))
-        (i32.store (i32.add (local.get $base) (i32.mul (i32.add (i32.sub (local.get $len) (local.get $k)) (local.get $i)) (i32.const 4)))
-                   (i32.load (i32.add (local.get $scratch) (i32.mul (local.get $i) (i32.const 4)))))
-        (local.set $i (i32.add (local.get $i) (i32.const 1)))
-        (br $restore))))
+        (br $store_loop))))
 )

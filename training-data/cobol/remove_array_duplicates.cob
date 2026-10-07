@@ -1,0 +1,41 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. REMOVEDUPLICATES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 SOURCE-ARR.
+           05 SOURCE-ITEM PIC 9(2) OCCURS 8 TIMES.
+       01 UNIQUE-ARR.
+           05 UNIQUE-ITEM PIC 9(2) OCCURS 8 TIMES VALUE 0.
+       01 UNIQUE-COUNT PIC 9(2) VALUE 0.
+       01 I PIC 9(2).
+       01 J PIC 9(2).
+       01 FOUND-DUP PIC X VALUE "N".
+
+       PROCEDURE DIVISION.
+           MOVE 5 TO SOURCE-ITEM(1)
+           MOVE 3 TO SOURCE-ITEM(2)
+           MOVE 5 TO SOURCE-ITEM(3)
+           MOVE 8 TO SOURCE-ITEM(4)
+           MOVE 3 TO SOURCE-ITEM(5)
+           MOVE 9 TO SOURCE-ITEM(6)
+           MOVE 8 TO SOURCE-ITEM(7)
+           MOVE 1 TO SOURCE-ITEM(8)
+
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 8
+               MOVE "N" TO FOUND-DUP
+               PERFORM VARYING J FROM 1 BY 1 UNTIL J > UNIQUE-COUNT
+                   IF UNIQUE-ITEM(J) = SOURCE-ITEM(I)
+                       MOVE "Y" TO FOUND-DUP
+                   END-IF
+               END-PERFORM
+               IF FOUND-DUP = "N"
+                   ADD 1 TO UNIQUE-COUNT
+                   MOVE SOURCE-ITEM(I) TO UNIQUE-ITEM(UNIQUE-COUNT)
+               END-IF
+           END-PERFORM
+
+           DISPLAY "UNIQUE COUNT: " UNIQUE-COUNT
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > UNIQUE-COUNT
+               DISPLAY UNIQUE-ITEM(I)
+           END-PERFORM
+           STOP RUN.

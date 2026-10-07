@@ -1,42 +1,24 @@
 program CountingSortDemo;
 
 const
-  MaxValue = 100;
+  N = 8;
+  MaxVal = 9;
 
-type
-  IntArray = array[0..99] of Integer;
-  CountArray = array[0..MaxValue] of Integer;
-
-procedure CountingSort(var arr: IntArray; n: Integer);
 var
-  count: CountArray;
-  output: IntArray;
-  i, v: Integer;
+  nums: array[0..N-1] of Integer = (4, 2, 2, 8, 3, 3, 1, 0);
+  counts: array[0..MaxVal] of Integer;
+  sorted: array[0..N-1] of Integer;
+  i, j, pos: Integer;
 begin
-  for i := 0 to MaxValue do
-    count[i] := 0;
-  for i := 0 to n - 1 do
-    count[arr[i]] := count[arr[i]] + 1;
-  for i := 1 to MaxValue do
-    count[i] := count[i] + count[i - 1];
-  for i := n - 1 downto 0 do
+  for i := 0 to MaxVal do counts[i] := 0;
+  for i := 0 to N - 1 do counts[nums[i]] := counts[nums[i]] + 1;
+  for i := 1 to MaxVal do counts[i] := counts[i] + counts[i - 1];
+  for i := N - 1 downto 0 do
   begin
-    v := arr[i];
-    output[count[v] - 1] := v;
-    count[v] := count[v] - 1;
+    pos := counts[nums[i]] - 1;
+    sorted[pos] := nums[i];
+    counts[nums[i]] := counts[nums[i]] - 1;
   end;
-  for i := 0 to n - 1 do
-    arr[i] := output[i];
-end;
-
-var
-  data: IntArray;
-  i: Integer;
-begin
-  data[0] := 4; data[1] := 2; data[2] := 2; data[3] := 8;
-  data[4] := 3; data[5] := 3; data[6] := 1; data[7] := 0;
-  CountingSort(data, 8);
-  for i := 0 to 7 do
-    Write(data[i], ' ');
+  for j := 0 to N - 1 do Write(sorted[j], ' ');
   WriteLn;
 end.

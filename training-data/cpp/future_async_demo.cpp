@@ -1,26 +1,27 @@
-#include <iostream>
 #include <future>
-#include <thread>
-#include <vector>
+#include <iostream>
 #include <numeric>
+#include <vector>
 
-long sumRange(long start, long end) {
-    long total = 0;
-    for (long i = start; i < end; ++i) total += i;
-    return total;
+long partialSum(const std::vector<int>& data, size_t begin, size_t end) {
+    return std::accumulate(data.begin() + begin, data.begin() + end, 0L);
 }
 
 int main() {
-    std::future<long> f1 = std::async(std::launch::async, sumRange, 0, 500000);
-    std::future<long> f2 = std::async(std::launch::async, sumRange, 500000, 1000000);
+    std::vector<int> data(1000);
+    std::iota(data.begin(), data.end(), 1);
 
-    long result = f1.get() + f2.get();
-    std::cout << "sum 0..999999 = " << result << std::endl;
+    size_t mid = data.size() / 2;
+    std::future<long> firstHalf = std::async(std::launch::async, partialSum, std::cref(data), 0, mid);
+    std::future<long> secondHalf = std::async(std::launch::async, partialSum, std::cref(data), mid, data.size());
 
-    std::promise<int> prom;
-    std::future<int> fut = prom.get_future();
-    std::thread producer([&prom]() { prom.set_value(42); });
-    std::cout << "promise value: " << fut.get() << std::endl;
+    long total = firstHalf.get() + secondHalf.get();
+    std::cout << "total: " << total << std::endl;
+
+    std::promise<int> promise;
+    std::future<int> promised = promise.get_future();
+    std::thread producer([&promise]() { promise.set_value(42); });
+    std::cout << "promised value: " << promised.get() << std::endl;
     producer.join();
 
     return 0;

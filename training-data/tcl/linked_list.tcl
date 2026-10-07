@@ -1,28 +1,33 @@
-set head ""
-
-proc ll_push_front {value} {
-    global head
-    set head [dict create value $value next $head]
+proc ll_new {} {
+    return {}
 }
 
-proc ll_to_list {} {
-    global head
-    set result {}
-    set node $head
-    while {$node ne ""} {
-        lappend result [dict get $node value]
-        set node [dict get $node next]
+proc ll_push_front {list value} {
+    return [linsert $list 0 $value]
+}
+
+proc ll_push_back {list value} {
+    lappend list $value
+    return $list
+}
+
+proc ll_remove {list value} {
+    set idx [lsearch $list $value]
+    if {$idx == -1} {
+        return $list
     }
-    return $result
+    return [lreplace $list $idx $idx]
 }
 
-proc ll_length {} {
-    return [llength [ll_to_list]]
+proc ll_print {list} {
+    puts [join $list " -> "]
 }
 
-foreach v {3 2 1} {
-    ll_push_front $v
-}
+set nodes [ll_new]
+set nodes [ll_push_back $nodes 1]
+set nodes [ll_push_back $nodes 2]
+set nodes [ll_push_front $nodes 0]
+ll_print $nodes
 
-puts [ll_to_list]
-puts [ll_length]
+set nodes [ll_remove $nodes 1]
+ll_print $nodes

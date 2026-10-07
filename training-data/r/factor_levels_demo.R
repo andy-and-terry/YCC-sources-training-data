@@ -1,0 +1,13 @@
+sizes <- factor(c("M", "S", "L", "M"), levels = c("S", "M", "L"), ordered = TRUE)
+print(sizes)
+print(as.integer(sizes))
+print(sizes < "L")
+print(levels(sizes))
+print(table(sizes))
+
+f <- factor(c("x", "y", "x"))
+levels(f) <- c("ex", "why")
+print(f)
+print(droplevels(f[f == "ex"]))
+print(nlevels(f))
+print(as.character(f))

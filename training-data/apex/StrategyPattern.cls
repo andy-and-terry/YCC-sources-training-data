@@ -1,51 +1,58 @@
 public class StrategyPattern {
-    public interface PricingStrategy {
-        Double price(Double baseAmount);
+    public interface DiscountStrategy {
+        Decimal apply(Decimal amount);
     }
 
-    public class RegularPricing implements PricingStrategy {
-        public Double price(Double baseAmount) {
-            return baseAmount;
+    public class NoDiscount implements DiscountStrategy {
+        public Decimal apply(Decimal amount) {
+            return amount;
         }
     }
 
-    public class MemberDiscountPricing implements PricingStrategy {
-        public Double price(Double baseAmount) {
-            return baseAmount * 0.9;
+    public class PercentageDiscount implements DiscountStrategy {
+        private Decimal percent;
+
+        public PercentageDiscount(Decimal percent) {
+            this.percent = percent;
+        }
+
+        public Decimal apply(Decimal amount) {
+            return amount - (amount * percent / 100);
         }
     }
 
-    public class ClearancePricing implements PricingStrategy {
-        public Double price(Double baseAmount) {
-            return baseAmount * 0.5;
+    public class FlatDiscount implements DiscountStrategy {
+        private Decimal flatAmount;
+
+        public FlatDiscount(Decimal flatAmount) {
+            this.flatAmount = flatAmount;
+        }
+
+        public Decimal apply(Decimal amount) {
+            return Math.max(0, amount - flatAmount);
         }
     }
 
-    public class Checkout {
-        private PricingStrategy strategy;
+    public class PriceCalculator {
+        private DiscountStrategy strategy;
 
-        public Checkout(PricingStrategy strategy) {
+        public PriceCalculator(DiscountStrategy strategy) {
             this.strategy = strategy;
         }
 
-        public void setStrategy(PricingStrategy strategy) {
-            this.strategy = strategy;
-        }
-
-        public Double total(Double baseAmount) {
-            return strategy.price(baseAmount);
+        public Decimal calculate(Decimal amount) {
+            return strategy.apply(amount);
         }
     }
 
     public static void main() {
-        StrategyPattern outer = new StrategyPattern();
-        Checkout checkout = outer.new Checkout(outer.new RegularPricing());
-        System.debug(checkout.total(100.0));
+        PriceCalculator calc = new PriceCalculator(new PercentageDiscount(10));
+        System.debug(calc.calculate(200));
 
-        checkout.setStrategy(outer.new MemberDiscountPricing());
-        System.debug(checkout.total(100.0));
+        calc = new PriceCalculator(new FlatDiscount(15));
+        System.debug(calc.calculate(200));
 
-        checkout.setStrategy(outer.new ClearancePricing());
-        System.debug(checkout.total(100.0));
+        calc = new PriceCalculator(new NoDiscount());
+        System.debug(calc.calculate(200));
     }
 }

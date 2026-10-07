@@ -1,0 +1,28 @@
+(defparameter *graph*
+  '((a . ((b . 4) (c . 1)))
+    (b . ((d . 1)))
+    (c . ((b . 1) (d . 5)))
+    (d . ())))
+
+(defun dijkstra (start nodes)
+  (let ((dist (make-hash-table))
+        (visited (make-hash-table)))
+    (dolist (n nodes) (setf (gethash n dist) most-positive-fixnum))
+    (setf (gethash start dist) 0)
+    (dotimes (i (length nodes))
+      (let ((u nil) (best most-positive-fixnum))
+        (dolist (n nodes)
+          (when (and (not (gethash n visited)) (< (gethash n dist) best))
+            (setf u n)
+            (setf best (gethash n dist))))
+        (when u
+          (setf (gethash u visited) t)
+          (dolist (edge (cdr (assoc u *graph*)))
+            (let ((v (car edge)) (w (cdr edge)))
+              (when (< (+ (gethash u dist) w) (gethash v dist))
+                (setf (gethash v dist) (+ (gethash u dist) w))))))))
+    dist))
+
+(let ((dist (dijkstra 'a '(a b c d))))
+  (dolist (n '(a b c d))
+    (format t "distance to ~a: ~a~%" n (gethash n dist))))

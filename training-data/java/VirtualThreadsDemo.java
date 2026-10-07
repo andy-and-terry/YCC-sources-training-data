@@ -2,37 +2,32 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class VirtualThreadsDemo {
+    static int slowTask(int id) {
+        try {
+            Thread.sleep(5);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        return id * id;
+    }
+
     public static void main(String[] args) throws Exception {
-        AtomicInteger completed = new AtomicInteger(0);
-
         try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
-            Future<Boolean> virtualCheck = executor.submit(() -> Thread.currentThread().isVirtual());
-
             List<Future<Integer>> futures = List.of(1, 2, 3, 4, 5).stream()
-                .map(n -> executor.submit(() -> {
-                    Thread.sleep(10);
-                    completed.incrementAndGet();
-                    return n * n;
-                }))
+                .map(id -> executor.submit(() -> slowTask(id)))
                 .collect(Collectors.toList());
 
-            List<Integer> squares = futures.stream()
-                .map(f -> {
-                    try {
-                        return f.get();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .collect(Collectors.toList());
+            int total = 0;
+            for (Future<Integer> future : futures) {
+                total += future.get();
+            }
+            System.out.println("total: " + total);
 
-            System.out.println(squares);
-            System.out.println("tasks completed: " + completed.get());
-            System.out.println("virtual: " + virtualCheck.get());
+            Thread virtual = Thread.ofVirtual().start(() -> System.out.println("virtual: " + Thread.currentThread().isVirtual()));
+            virtual.join();
         }
     }
 }

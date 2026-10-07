@@ -1,35 +1,46 @@
 #include <stdio.h>
-#include <stdlib.h>
 
-#define N 8
+#define N 6
 
-int is_safe(int *cols, int row, int col) {
-    for (int r = 0; r < row; r++) {
-        int c = cols[r];
-        if (c == col || abs(c - col) == abs(r - row)) {
-            return 0;
-        }
+int columns[N];
+int solution_count = 0;
+
+int is_safe(int row, int col) {
+    for (int prev_row = 0; prev_row < row; prev_row++) {
+        int prev_col = columns[prev_row];
+        if (prev_col == col) return 0;
+        if (prev_row - prev_col == row - col) return 0;
+        if (prev_row + prev_col == row + col) return 0;
     }
     return 1;
 }
 
-int solve(int *cols, int row, int n) {
-    if (row == n) {
-        return 1;
+void print_solution(void) {
+    for (int row = 0; row < N; row++) {
+        for (int col = 0; col < N; col++) {
+            putchar(columns[row] == col ? 'Q' : '.');
+        }
+        putchar('\n');
     }
-    int count = 0;
-    for (int col = 0; col < n; col++) {
-        if (is_safe(cols, row, col)) {
-            cols[row] = col;
-            count += solve(cols, row + 1, n);
+    printf("\n");
+}
+
+void solve(int row) {
+    if (row == N) {
+        solution_count++;
+        if (solution_count == 1) print_solution();
+        return;
+    }
+    for (int col = 0; col < N; col++) {
+        if (is_safe(row, col)) {
+            columns[row] = col;
+            solve(row + 1);
         }
     }
-    return count;
 }
 
 int main(void) {
-    int cols[N];
-    int total = solve(cols, 0, N);
-    printf("solutions for %d-queens: %d\n", N, total);
+    solve(0);
+    printf("total solutions for %d-queens: %d\n", N, solution_count);
     return 0;
 }

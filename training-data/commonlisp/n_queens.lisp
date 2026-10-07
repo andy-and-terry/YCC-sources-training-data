@@ -1,0 +1,20 @@
+(defun safe-p (positions row col)
+  (loop for r from 0 below row
+        for c = (aref positions r)
+        never (or (= c col) (= (abs (- c col)) (- row r)))))
+
+(defun solve-n-queens (n)
+  (let ((positions (make-array n))
+        (count 0))
+    (labels ((place (row)
+               (if (= row n)
+                   (incf count)
+                   (dotimes (col n)
+                     (setf (aref positions row) col)
+                     (when (safe-p positions row col)
+                       (place (1+ row)))))))
+      (place 0))
+    count))
+
+(format t "solutions for 6 queens: ~a~%" (solve-n-queens 6))
+(format t "solutions for 8 queens: ~a~%" (solve-n-queens 8))

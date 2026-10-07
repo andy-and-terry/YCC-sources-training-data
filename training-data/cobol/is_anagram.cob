@@ -1,0 +1,58 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ISANAGRAM.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 ALPHABET-STRING PIC X(26) VALUE "ABCDEFGHIJKLMNOPQRSTUVWXYZ".
+       01 ALPHABET-TABLE REDEFINES ALPHABET-STRING.
+           05 ALPHABET-LETTER PIC X OCCURS 26 TIMES.
+       01 WORD-ONE PIC X(10) VALUE "LISTEN".
+       01 WORD-TWO PIC X(10) VALUE "SILENT".
+       01 COUNT-ONE.
+           05 COUNT-ONE-LETTER PIC 9(2) OCCURS 26 TIMES VALUE 0.
+       01 COUNT-TWO.
+           05 COUNT-TWO-LETTER PIC 9(2) OCCURS 26 TIMES VALUE 0.
+       01 CHAR-INDEX PIC 9(2).
+       01 CURRENT-CHAR PIC X.
+       01 I PIC 9(2).
+       01 LETTER-POS PIC 9(2).
+       01 IS-ANAGRAM PIC X VALUE "Y".
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING CHAR-INDEX FROM 1 BY 1 UNTIL CHAR-INDEX > 6
+               MOVE WORD-ONE(CHAR-INDEX:1) TO CURRENT-CHAR
+               MOVE 0 TO LETTER-POS
+               PERFORM VARYING I FROM 1 BY 1 UNTIL I > 26
+                   IF ALPHABET-LETTER(I) = CURRENT-CHAR
+                       MOVE I TO LETTER-POS
+                   END-IF
+               END-PERFORM
+               IF LETTER-POS > 0
+                   ADD 1 TO COUNT-ONE-LETTER(LETTER-POS)
+               END-IF
+           END-PERFORM
+
+           PERFORM VARYING CHAR-INDEX FROM 1 BY 1 UNTIL CHAR-INDEX > 6
+               MOVE WORD-TWO(CHAR-INDEX:1) TO CURRENT-CHAR
+               MOVE 0 TO LETTER-POS
+               PERFORM VARYING I FROM 1 BY 1 UNTIL I > 26
+                   IF ALPHABET-LETTER(I) = CURRENT-CHAR
+                       MOVE I TO LETTER-POS
+                   END-IF
+               END-PERFORM
+               IF LETTER-POS > 0
+                   ADD 1 TO COUNT-TWO-LETTER(LETTER-POS)
+               END-IF
+           END-PERFORM
+
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 26
+               IF COUNT-ONE-LETTER(I) NOT = COUNT-TWO-LETTER(I)
+                   MOVE "N" TO IS-ANAGRAM
+               END-IF
+           END-PERFORM
+
+           IF IS-ANAGRAM = "Y"
+               DISPLAY WORD-ONE " AND " WORD-TWO " ARE ANAGRAMS"
+           ELSE
+               DISPLAY WORD-ONE " AND " WORD-TWO " ARE NOT ANAGRAMS"
+           END-IF
+           STOP RUN.
