@@ -1,0 +1,7 @@
+(def people [{:name "Cy" :age 30} {:name "Al" :age 25} {:name "Bo" :age 30}])
+(println (map :name (sort-by :age people)))
+(println (map :name (sort-by :age > people)))
+(println (map :name (sort-by (juxt (comp - :age) :name) people)))
+(println (sort (fn [a b] (compare (count a) (count b))) ["ccc" "a" "bb"]))
+(println (sort-by identity #(compare %2 %1) [3 1 2]))
+(println (reverse (sort [3 1 2])))

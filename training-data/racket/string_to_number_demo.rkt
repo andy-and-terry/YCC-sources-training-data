@@ -1,0 +1,23 @@
+#lang racket
+
+(displayln (string->number "42"))
+(displayln (string->number "3.14"))
+(displayln (string->number "1/3"))
+(displayln (string->number "abc"))
+(displayln (string->number "ff" 16))
+(displayln (number->string 255 2))
+(displayln (exact->inexact 1/3))
+(displayln (inexact->exact 0.5))
+(displayln (quotient 17 5))
+(displayln (remainder -17 5))
+(displayln (modulo -17 5))
+(displayln (exact-round 2.5))
+(displayln (exact-floor 2.9))
+(displayln (expt 2 100))
+(displayln (sqrt -4))
+(displayln (integer-sqrt 50))
+
+(define (safe-parse s)
+  (define n (string->number s))
+  (if (number? n) n 0))
+(displayln (map safe-parse '("1" "x" "2.5")))

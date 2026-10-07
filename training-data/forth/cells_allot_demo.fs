@@ -1,0 +1,17 @@
+\ Allocating and indexing a cell array with CREATE / ALLOT
+
+CREATE SCORES 5 CELLS ALLOT
+
+: SCORE@ ( i -- n ) CELLS SCORES + @ ;
+: SCORE! ( n i -- ) CELLS SCORES + ! ;
+
+: FILL-SCORES 5 0 DO I I * 10 + I SCORE! LOOP ;
+
+: SHOW-SCORES 5 0 DO I SCORE@ . LOOP CR ;
+
+: TOTAL ( -- n ) 0 5 0 DO I SCORE@ + LOOP ;
+
+SCORES 5 CELLS ERASE
+FILL-SCORES
+SHOW-SCORES
+TOTAL . CR

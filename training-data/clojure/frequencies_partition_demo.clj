@@ -1,0 +1,6 @@
+(println (frequencies "mississippi"))
+(println (partition 3 [1 2 3 4 5 6 7]))
+(println (partition 3 3 [0] [1 2 3 4 5 6 7]))
+(println (partition-all 3 [1 2 3 4 5 6 7]))
+(println (partition-by even? [2 4 1 3 6 8 5]))
+(println (partition 2 1 [1 2 3 4]))

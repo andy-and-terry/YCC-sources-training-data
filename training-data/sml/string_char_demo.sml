@@ -1,0 +1,18 @@
+val s = "Hello, World"
+
+val () = print (Int.toString (String.size s) ^ "\n")
+val () = print (String.map Char.toUpper s ^ "\n")
+val () = print (String.substring (s, 7, 5) ^ "\n")
+val () = print (implode (rev (explode s)) ^ "\n")
+val () = print (String.concatWith "-" (String.tokens Char.isSpace "a b  c") ^ "\n")
+val () = print (String.concat ["a", "b", "c"] ^ "\n")
+val () = print (Bool.toString (String.isPrefix "He" s) ^ "\n")
+val () = print (Bool.toString (String.isSubstring "World" s) ^ "\n")
+val () = print (Int.toString (length (String.fields (fn c => c = #",") "a,b,,c")) ^ "\n")
+val () = print (Char.toString (String.sub (s, 4)) ^ "\n")
+val () = print (Int.toString (Char.ord #"A") ^ "\n")
+val () = print (String.str (Char.chr 98) ^ "\n")
+val () = print (Int.toString (valOf (Int.fromString "123abc")) ^ "\n")
+val () = print (Real.toString (valOf (Real.fromString "2.5")) ^ "\n")
+val () = print (Bool.toString (String.< ("apple", "banana")) ^ "\n")
+val () = print (String.translate (fn c => if c = #"l" then "L" else str c) s ^ "\n")

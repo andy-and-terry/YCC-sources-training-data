@@ -1,0 +1,18 @@
+m <- matrix(1:12, nrow = 3, byrow = TRUE,
+            dimnames = list(c("r1", "r2", "r3"), c("a", "b", "c", "d")))
+print(m)
+print(m["r2", "c"])
+print(m[2, ])
+print(m[, c("a", "d")])
+print(m[m > 6])
+print(m[-1, -1])
+print(dim(m))
+print(rowSums(m))
+print(colMeans(m))
+m[m %% 2 == 0] <- 0L
+print(m)
+print(which(m == 0, arr.ind = TRUE)[1:2, ])
+print(rbind(m, total = colSums(m)))
+print(cbind(1:2, c("x", "y")))
+print(diag(3))
+print(upper.tri(matrix(1:9, 3)))
