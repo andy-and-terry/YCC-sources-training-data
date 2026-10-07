@@ -1,41 +1,35 @@
-abstract class Vehicle
-  abstract def describe : String
+abstract class ShapeBase
+  abstract def area : Float64
 end
 
-class Car < Vehicle
-  def describe : String
-    "a car with 4 wheels"
+class CircleShape < ShapeBase
+  def initialize(@radius : Float64)
+  end
+
+  def area : Float64
+    Math::PI * @radius ** 2
   end
 end
 
-class Motorcycle < Vehicle
-  def describe : String
-    "a motorcycle with 2 wheels"
+class SquareShape < ShapeBase
+  def initialize(@side : Float64)
+  end
+
+  def area : Float64
+    @side ** 2
   end
 end
 
-class Truck < Vehicle
-  def describe : String
-    "a truck with 6 wheels"
+def shape_factory(kind : String, param : Float64) : ShapeBase
+  case kind
+  when "circle"
+    CircleShape.new(param)
+  when "square"
+    SquareShape.new(param)
+  else
+    raise ArgumentError.new("unknown shape: #{kind}")
   end
 end
 
-class VehicleFactory
-  def self.create(kind : String) : Vehicle
-    case kind
-    when "car"
-      Car.new
-    when "motorcycle"
-      Motorcycle.new
-    when "truck"
-      Truck.new
-    else
-      raise ArgumentError.new("unknown vehicle kind: #{kind}")
-    end
-  end
-end
-
-["car", "motorcycle", "truck"].each do |kind|
-  vehicle = VehicleFactory.create(kind)
-  puts vehicle.describe
-end
+puts shape_factory("circle", 2.0).area
+puts shape_factory("square", 3.0).area

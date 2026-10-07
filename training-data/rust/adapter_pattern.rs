@@ -1,34 +1,57 @@
-// Adapter: wrap an existing type behind the trait client code
-// expects, without modifying the wrapped type itself.
+// The adapter pattern wraps an incompatible type behind the interface
+// callers expect, without modifying either side.
+trait PowerSource {
+    fn voltage(&self) -> u32;
+}
 
-struct LegacyPrinter;
+struct EuropeanSocket;
 
-impl LegacyPrinter {
-    fn print_inches(&self, value: f64) {
-        println!("legacy: {value} inches");
+impl EuropeanSocket {
+    fn output_voltage(&self) -> u32 {
+        230
     }
 }
 
-trait MetricPrinter {
-    fn print_cm(&self, value_cm: f64);
-}
+struct UsAppliance;
 
-struct MetricPrinterAdapter {
-    legacy: LegacyPrinter,
-}
-
-impl MetricPrinter for MetricPrinterAdapter {
-    fn print_cm(&self, value_cm: f64) {
-        self.legacy.print_inches(value_cm / 2.54);
+impl UsAppliance {
+    fn plug_in(&self, source: &dyn PowerSource) {
+        println!("appliance receives {}V", source.voltage());
+        if source.voltage() > 120 {
+            println!("warning: voltage too high, appliance may be damaged");
+        } else {
+            println!("appliance running normally");
+        }
     }
 }
 
-fn describe(printer: &dyn MetricPrinter, value_cm: f64) {
-    printer.print_cm(value_cm);
+// The adapter implements the trait the client expects, translating
+// calls to the adaptee's incompatible interface underneath.
+struct EuroToUsAdapter {
+    socket: EuropeanSocket,
+}
+
+impl PowerSource for EuroToUsAdapter {
+    fn voltage(&self) -> u32 {
+        // a real step-down transformer would do this conversion
+        self.socket.output_voltage() / 2
+    }
+}
+
+struct DirectUsSocket;
+
+impl PowerSource for DirectUsSocket {
+    fn voltage(&self) -> u32 {
+        120
+    }
 }
 
 fn main() {
-    let adapter = MetricPrinterAdapter { legacy: LegacyPrinter };
-    describe(&adapter, 25.4);
-    describe(&adapter, 5.08);
+    let appliance = UsAppliance;
+
+    let us_socket = DirectUsSocket;
+    appliance.plug_in(&us_socket);
+
+    let adapter = EuroToUsAdapter { socket: EuropeanSocket };
+    appliance.plug_in(&adapter);
 }

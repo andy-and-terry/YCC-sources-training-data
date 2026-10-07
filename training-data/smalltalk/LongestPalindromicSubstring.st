@@ -1,26 +1,26 @@
 Object subclass: LongestPalindromicSubstring [
-    LongestPalindromicSubstring class >> in: s [
-        | best expand |
-        s isEmpty ifTrue: [ ^'' ].
-        best := s copyFrom: 1 to: 1.
-        expand := [ :left :right |
-            | l r |
-            l := left. r := right.
-            [ l >= 1 and: [ r <= s size and: [ (s at: l) = (s at: r) ] ] ]
-                whileTrue: [ l := l - 1. r := r + 1 ].
-            s copyFrom: l + 1 to: r - 1
-        ].
-        1 to: s size do: [ :i |
+    LongestPalindromicSubstring class >> in: aString [
+        | best |
+        best := ''.
+        1 to: aString size do: [ :center |
             | odd even |
-            odd := expand value: i value: i.
+            odd := self expandFrom: aString left: center right: center.
+            even := self expandFrom: aString left: center right: center + 1.
             odd size > best size ifTrue: [ best := odd ].
-            even := expand value: i value: i + 1.
             even size > best size ifTrue: [ best := even ].
         ].
         ^best
+    ]
+
+    LongestPalindromicSubstring class >> expandFrom: aString left: l right: r [
+        | left right |
+        left := l.
+        right := r.
+        [ left >= 1 and: [ right <= aString size and: [ (aString at: left) = (aString at: right) ] ] ]
+            whileTrue: [ left := left - 1. right := right + 1 ].
+        ^aString copyFrom: left + 1 to: right - 1
     ]
 ]
 
 Transcript showCr: (LongestPalindromicSubstring in: 'babad').
 Transcript showCr: (LongestPalindromicSubstring in: 'cbbd').
-Transcript showCr: (LongestPalindromicSubstring in: 'a').

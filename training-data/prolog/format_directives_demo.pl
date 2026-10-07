@@ -1,14 +1,15 @@
-% format/2 renders a control string against an argument list: ~a for
-% atoms, ~d for integers, ~Nf for fixed-point floats, ~w for arbitrary
-% terms via write/1, ~n for a newline, and ~t/~N| to pad output out to a
-% given column (handy for aligning a report into columns).
-:- format("Hello, ~a! You are ~d years old.~n", [alice, 30]).
-
-:- format("Pi is approximately ~2f~n", [3.14159]).
-
-:- format("List: ~w~n", [[1, 2, 3]]).
-
-:- forall(
-       member(Name-Score, [alice-95, bob-82, carol-77]),
-       format("~w~t~15|~d~n", [Name, Score])
-   ).
+:- format("~a and ~w~n", [atom, 'quoted atom']).
+:- format("~q~n", ['needs quotes']).
+:- format("~d ~D~n", [1234567, 1234567]).
+:- format("~2f ~e~n", [3.14159, 31415.9]).
+:- format("~s~n", [[104, 105]]).
+:- format("~t~w~10||~n", [right]).
+:- format("~w~t~10||~n", [left]).
+:- format("~t~w~t~10||~n", [mid]).
+:- format("~`-t~30|~n").
+:- format("~8|abc~n").
+:- format("~c~c~n", [72, 105]).
+:- format("~i~w~n", [skipped, shown]).
+:- format("~8r ~16r ~8R ~16R~n", [64, 255, 64, 255]).
+:- format("~p~n", [foo(bar)]).
+:- format(atom(A), "~w-~w", [a, b]), writeln(A).

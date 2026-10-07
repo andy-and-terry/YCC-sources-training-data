@@ -1,25 +1,30 @@
 -module(selective_receive_demo).
 -export([run/0]).
 
-%% Erlang's `receive` scans the mailbox for the first message matching one
-%% of its clauses, skipping (but not discarding) anything that doesn't
-%% match. That lets a process pick an "urgent" message out of order and
-%% deal with everything else afterwards, in its original relative order.
+%% Erlang's `receive` scans the process mailbox for the first message that
+%% matches one of its clauses, not simply the oldest message. Sending two
+%% `low` messages around a `high` one, but matching on `high` first below,
+%% shows that a matching message is plucked out of the mailbox regardless
+%% of arrival order -- no explicit priority queue needed.
 
 run() ->
-    self() ! {normal, 1},
-    self() ! {normal, 2},
-    self() ! {urgent, "fire"},
-    self() ! {normal, 3},
-    Urgent = receive
-        {urgent, Msg} -> Msg
-    end,
-    Rest = drain(),
-    {Urgent, Rest}.
+    self() ! {low, "background job"},
+    self() ! {high, "urgent alert"},
+    self() ! {low, "cleanup task"},
+    Urgent = take_high(),
+    io:format("handled first: ~p~n", [Urgent]),
+    drain().
+
+take_high() ->
+    receive
+        {high, Msg} -> Msg
+    end.
 
 drain() ->
     receive
-        {normal, N} -> [N | drain()]
+        {Priority, Msg} ->
+            io:format("draining ~p: ~p~n", [Priority, Msg]),
+            drain()
     after 0 ->
-        []
+        ok
     end.

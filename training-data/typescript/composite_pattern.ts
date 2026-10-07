@@ -1,35 +1,49 @@
-interface FileSystemNode {
-  name: string;
-  size(): number;
+interface FileSystemComponent {
+  getName(): string;
+  getSize(): number;
 }
 
-class FileLeaf implements FileSystemNode {
-  constructor(public name: string, private bytes: number) {}
+class FileLeaf implements FileSystemComponent {
+  constructor(private name: string, private size: number) {}
 
-  size(): number {
-    return this.bytes;
+  getName(): string {
+    return this.name;
+  }
+
+  getSize(): number {
+    return this.size;
   }
 }
 
-class Directory implements FileSystemNode {
-  private children: FileSystemNode[] = [];
+class Directory implements FileSystemComponent {
+  private children: FileSystemComponent[] = [];
 
-  constructor(public name: string) {}
+  constructor(private name: string) {}
 
-  add(node: FileSystemNode): void {
-    this.children.push(node);
+  add(component: FileSystemComponent): void {
+    this.children.push(component);
   }
 
-  size(): number {
-    return this.children.reduce((total, child) => total + child.size(), 0);
+  getName(): string {
+    return this.name;
+  }
+
+  getSize(): number {
+    return this.children.reduce((total, child) => total + child.getSize(), 0);
   }
 }
 
-const root = new Directory("root");
-const src = new Directory("src");
-src.add(new FileLeaf("index.ts", 120));
-src.add(new FileLeaf("utils.ts", 80));
+const root = new Directory('root');
+const src = new Directory('src');
+src.add(new FileLeaf('index.ts', 120));
+src.add(new FileLeaf('utils.ts', 80));
+
+const docs = new Directory('docs');
+docs.add(new FileLeaf('readme.md', 40));
+
 root.add(src);
-root.add(new FileLeaf("README.md", 40));
+root.add(docs);
+root.add(new FileLeaf('package.json', 30));
 
-console.log(root.size());
+console.log(root.getSize());
+console.log(src.getSize());

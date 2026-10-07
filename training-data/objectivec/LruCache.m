@@ -1,94 +1,67 @@
-#include <stdio.h>
+#import <Foundation/Foundation.h>
 
-// Deliberately Foundation-free: this sandbox only has bare clang (no
-// Foundation framework), so this uses a plain C struct + arrays
-// instead of NSDictionary. get/put are O(capacity) via linear scan
-// and array shifting rather than hash-map backed, which keeps the
-// eviction logic (move most-recently-used to the end) easy to follow.
+// A fixed-capacity cache that evicts the least recently used entry.
+// Recency is tracked with an order array of keys; the most recently
+// touched key is always moved to the end.
+@interface LruCache : NSObject
+- (instancetype)initWithCapacity:(NSInteger)capacity;
+- (void)putKey:(NSString *)key value:(id)value;
+- (id)getKey:(NSString *)key;
+@end
 
-#define CAPACITY 3
-
-typedef struct {
-    int capacity;
-    int size;
-    int keys[16];
-    int values[16];
-} LruCache;
-
-void lruInit(LruCache *cache, int capacity) {
-    cache->capacity = capacity;
-    cache->size = 0;
+@implementation LruCache {
+    NSInteger _capacity;
+    NSMutableDictionary<NSString *, id> *_store;
+    NSMutableArray<NSString *> *_order;
 }
 
-int lruIndexOf(LruCache *cache, int key) {
-    for (int i = 0; i < cache->size; i++) {
-        if (cache->keys[i] == key) return i;
+- (instancetype)initWithCapacity:(NSInteger)capacity {
+    self = [super init];
+    if (self) {
+        _capacity = capacity;
+        _store = [NSMutableDictionary dictionary];
+        _order = [NSMutableArray array];
     }
-    return -1;
+    return self;
 }
 
-void lruTouch(LruCache *cache, int idx) {
-    int k = cache->keys[idx];
-    int v = cache->values[idx];
-    for (int i = idx; i < cache->size - 1; i++) {
-        cache->keys[i] = cache->keys[i + 1];
-        cache->values[i] = cache->values[i + 1];
+- (void)touchKey:(NSString *)key {
+    [_order removeObject:key];
+    [_order addObject:key];
+}
+
+- (void)putKey:(NSString *)key value:(id)value {
+    if (_store[key] == nil && _store.count >= (NSUInteger)_capacity) {
+        NSString *oldest = _order.firstObject;
+        if (oldest) {
+            [_store removeObjectForKey:oldest];
+            [_order removeObjectAtIndex:0];
+        }
     }
-    cache->keys[cache->size - 1] = k;
-    cache->values[cache->size - 1] = v;
+    _store[key] = value;
+    [self touchKey:key];
 }
 
-int lruGet(LruCache *cache, int key) {
-    int idx = lruIndexOf(cache, key);
-    if (idx == -1) return -1;
-    int value = cache->values[idx];
-    lruTouch(cache, idx);
+- (id)getKey:(NSString *)key {
+    id value = _store[key];
+    if (value != nil) {
+        [self touchKey:key];
+    }
     return value;
 }
 
-void lruPut(LruCache *cache, int key, int value) {
-    int idx = lruIndexOf(cache, key);
-    if (idx != -1) {
-        cache->values[idx] = value;
-        lruTouch(cache, idx);
-        return;
+@end
+
+int main(int argc, const char *argv[]) {
+    @autoreleasepool {
+        LruCache *cache = [[LruCache alloc] initWithCapacity:2];
+        [cache putKey:@"a" value:@1];
+        [cache putKey:@"b" value:@2];
+        NSLog(@"a = %@", [cache getKey:@"a"]);
+        [cache putKey:@"c" value:@3];
+        NSLog(@"b = %@", [cache getKey:@"b"]);
+        NSLog(@"a = %@", [cache getKey:@"a"]);
+        NSLog(@"c = %@", [cache getKey:@"c"]);
     }
-    if (cache->size == cache->capacity) {
-        for (int i = 0; i < cache->size - 1; i++) {
-            cache->keys[i] = cache->keys[i + 1];
-            cache->values[i] = cache->values[i + 1];
-        }
-        cache->size--;
-    }
-    cache->keys[cache->size] = key;
-    cache->values[cache->size] = value;
-    cache->size++;
-}
-
-void lruPrint(LruCache *cache) {
-    printf("[");
-    for (int i = 0; i < cache->size; i++) {
-        printf("%d:%d%s", cache->keys[i], cache->values[i], (i == cache->size - 1) ? "" : ", ");
-    }
-    printf("]\n");
-}
-
-int main(void) {
-    LruCache cache;
-    lruInit(&cache, CAPACITY);
-
-    lruPut(&cache, 1, 100);
-    lruPut(&cache, 2, 200);
-    lruPut(&cache, 3, 300);
-    lruPrint(&cache);
-
-    printf("get(1) = %d\n", lruGet(&cache, 1));
-    lruPrint(&cache);
-
-    lruPut(&cache, 4, 400);
-    lruPrint(&cache);
-
-    printf("get(2) = %d\n", lruGet(&cache, 2));
-
     return 0;
 }

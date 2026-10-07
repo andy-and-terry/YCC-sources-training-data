@@ -1,26 +1,20 @@
 use strict;
 use warnings;
 
-# A self-balancing binary search tree (AVL tree): after every insert, the
-# tree is rebalanced with single/double rotations so the height difference
-# between left and right subtrees never exceeds 1.
-
 sub node_height {
     my ($node) = @_;
-    return 0 unless defined $node;
-    return $node->{height};
+    return defined $node ? $node->{height} : 0;
 }
 
 sub update_height {
     my ($node) = @_;
-    my $lh = node_height($node->{left});
-    my $rh = node_height($node->{right});
-    $node->{height} = 1 + ($lh > $rh ? $lh : $rh);
+    my $left = node_height($node->{left});
+    my $right = node_height($node->{right});
+    $node->{height} = 1 + ($left > $right ? $left : $right);
 }
 
 sub balance_factor {
     my ($node) = @_;
-    return 0 unless defined $node;
     return node_height($node->{left}) - node_height($node->{right});
 }
 
@@ -46,15 +40,14 @@ sub rotate_left {
     return $y;
 }
 
-sub insert {
+sub avl_insert {
     my ($node, $value) = @_;
-    return { value => $value, left => undef, right => undef, height => 1 }
-        unless defined $node;
+    return { value => $value, left => undef, right => undef, height => 1 } unless defined $node;
 
     if ($value < $node->{value}) {
-        $node->{left} = insert($node->{left}, $value);
+        $node->{left} = avl_insert($node->{left}, $value);
     } elsif ($value > $node->{value}) {
-        $node->{right} = insert($node->{right}, $value);
+        $node->{right} = avl_insert($node->{right}, $value);
     } else {
         return $node;
     }
@@ -62,42 +55,31 @@ sub insert {
     update_height($node);
     my $balance = balance_factor($node);
 
-    # Left-left
     if ($balance > 1 && $value < $node->{left}{value}) {
         return rotate_right($node);
     }
-    # Right-right
     if ($balance < -1 && $value > $node->{right}{value}) {
         return rotate_left($node);
     }
-    # Left-right
     if ($balance > 1 && $value > $node->{left}{value}) {
         $node->{left} = rotate_left($node->{left});
         return rotate_right($node);
     }
-    # Right-left
     if ($balance < -1 && $value < $node->{right}{value}) {
         $node->{right} = rotate_right($node->{right});
         return rotate_left($node);
     }
-
     return $node;
 }
 
 sub inorder {
-    my ($node, $acc) = @_;
-    return unless defined $node;
-    inorder($node->{left}, $acc);
-    push @$acc, $node->{value};
-    inorder($node->{right}, $acc);
+    my ($node) = @_;
+    return () unless defined $node;
+    return (inorder($node->{left}), $node->{value}, inorder($node->{right}));
 }
 
 my $root;
-for my $value (10, 20, 30, 40, 50, 25) {
-    $root = insert($root, $value);
-}
+$root = avl_insert($root, $_) for (10, 20, 30, 40, 50, 25);
 
-my @sorted;
-inorder($root, \@sorted);
-print join(",", @sorted), "\n";
+print join(" ", inorder($root)), "\n";
 print "root: $root->{value}, height: $root->{height}\n";

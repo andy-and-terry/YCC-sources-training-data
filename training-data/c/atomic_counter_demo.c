@@ -1,9 +1,9 @@
-#include <stdio.h>
 #include <pthread.h>
 #include <stdatomic.h>
+#include <stdio.h>
 
 #define NUM_THREADS 8
-#define INCREMENTS_PER_THREAD 100000
+#define INCREMENTS_PER_THREAD 10000
 
 atomic_int counter = 0;
 
@@ -25,7 +25,7 @@ int main(void) {
         pthread_join(threads[i], NULL);
     }
 
-    printf("final counter = %d (expected %d)\n",
+    printf("final counter: %d (expected %d)\n",
            atomic_load(&counter), NUM_THREADS * INCREMENTS_PER_THREAD);
     return 0;
 }

@@ -1,32 +1,27 @@
-// Legacy interface the client code already depends on.
-interface MediaPlayer {
-    fun play(fileName: String)
+// A legacy API with an incompatible interface, adapted to the shape the
+// rest of the application expects.
+class LegacyXmlReader {
+    fun fetchXmlPayload(): String = "<point><x>3</x><y>4</y></point>"
 }
 
-// Incompatible third-party API we want to reuse without changing it.
-class AdvancedAudioPlayer {
-    fun playFlacFile(fileName: String) {
-        println("playing flac file: $fileName")
+interface JsonSource {
+    fun fetchJson(): String
+}
+
+class XmlToJsonAdapter(private val legacy: LegacyXmlReader) : JsonSource {
+    override fun fetchJson(): String {
+        val xml = legacy.fetchXmlPayload()
+        val x = Regex("<x>(.*?)</x>").find(xml)?.groupValues?.get(1) ?: "0"
+        val y = Regex("<y>(.*?)</y>").find(xml)?.groupValues?.get(1) ?: "0"
+        return """{"x":$x,"y":$y}"""
     }
 }
 
-// Adapter makes AdvancedAudioPlayer usable wherever a MediaPlayer is expected.
-class FlacPlayerAdapter(private val advancedPlayer: AdvancedAudioPlayer) : MediaPlayer {
-    override fun play(fileName: String) {
-        advancedPlayer.playFlacFile(fileName)
-    }
-}
-
-class Mp3Player : MediaPlayer {
-    override fun play(fileName: String) {
-        println("playing mp3 file: $fileName")
-    }
+fun printJson(source: JsonSource) {
+    println(source.fetchJson())
 }
 
 fun main() {
-    val players: List<MediaPlayer> = listOf(
-        Mp3Player(),
-        FlacPlayerAdapter(AdvancedAudioPlayer())
-    )
-    players.forEach { it.play("track.audio") }
+    val adapter = XmlToJsonAdapter(LegacyXmlReader())
+    printJson(adapter)
 }

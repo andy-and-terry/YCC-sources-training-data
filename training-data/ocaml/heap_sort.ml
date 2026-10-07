@@ -1,17 +1,17 @@
-let sift_down arr n start =
-  let rec loop i =
+let sift_down arr n i =
+  let rec go i =
     let largest = ref i in
-    let l = (2 * i) + 1 and r = (2 * i) + 2 in
-    if l < n && arr.(l) > arr.(!largest) then largest := l;
-    if r < n && arr.(r) > arr.(!largest) then largest := r;
-    if !largest <> i then begin
+    let left = (2 * i) + 1 in
+    let right = (2 * i) + 2 in
+    if left < n && arr.(left) > arr.(!largest) then largest := left;
+    if right < n && arr.(right) > arr.(!largest) then largest := right;
+    if !largest <> i then (
       let tmp = arr.(i) in
       arr.(i) <- arr.(!largest);
       arr.(!largest) <- tmp;
-      loop !largest
-    end
+      go !largest)
   in
-  loop start
+  go i
 
 let heap_sort arr =
   let n = Array.length arr in
@@ -23,10 +23,11 @@ let heap_sort arr =
     arr.(0) <- arr.(i);
     arr.(i) <- tmp;
     sift_down arr i 0
-  done
+  done;
+  arr
 
 let () =
-  let arr = [| 5; 2; 8; 1; 9; 3; 7 |] in
-  heap_sort arr;
-  Array.iter (fun x -> Printf.printf "%d " x) arr;
+  let arr = [| 5; 3; 8; 1; 9; 2; 7 |] in
+  let sorted = heap_sort arr in
+  Array.iter (fun n -> Printf.printf "%d " n) sorted;
   print_newline ()

@@ -1,25 +1,24 @@
-;; R7RS string ports: build up a string in memory with an output string
-;; port, then re-parse it token by token with an input string port.
+;; R7RS string ports: build a string incrementally with an output
+;; port, and read structured data back out of an input string port.
 
-(define (numbers->string nums)
-  (let ((port (open-output-string)))
-    (for-each
-      (lambda (n)
-        (write n port)
-        (write-char #\space port))
-      nums)
-    (get-output-string port)))
+(define (join-with-commas lst)
+  (let ((out (open-output-string)))
+    (let loop ((xs lst) (first? #t))
+      (cond ((null? xs) (get-output-string out))
+            (else
+             (if (not first?) (write-char #\, out))
+             (write (car xs) out)
+             (loop (cdr xs) #f))))))
 
-(define (string->numbers str)
-  (let ((port (open-input-string str)))
-    (let loop ((acc '()))
-      (let ((x (read port)))
-        (if (eof-object? x)
-            (reverse acc)
-            (loop (cons x acc)))))))
+(define (sum-from-string s)
+  (let ((in (open-input-string s)))
+    (let loop ((total 0))
+      (let ((n (read in)))
+        (if (eof-object? n)
+            total
+            (loop (+ total n)))))))
 
-(define serialized (numbers->string '(1 2 3 42 -7)))
-(display serialized)
+(display (join-with-commas '(1 2 3 "four" 5)))
 (newline)
-(display (string->numbers serialized))
+(display (sum-from-string "10 20 30 40"))
 (newline)

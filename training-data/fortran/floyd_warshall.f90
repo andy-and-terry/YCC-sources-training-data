@@ -8,12 +8,12 @@ program floyd_warshall
     do i = 1, n
         dist(i, i) = 0
     end do
-
     dist(1, 2) = 3
     dist(1, 3) = 8
     dist(2, 4) = 1
-    dist(3, 1) = 4
-    dist(4, 3) = 2
+    dist(3, 2) = 4
+    dist(4, 1) = 2
+    dist(4, 3) = 5
 
     do k = 1, n
         do i = 1, n

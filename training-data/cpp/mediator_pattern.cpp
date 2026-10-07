@@ -3,72 +3,58 @@
 #include <string>
 #include <vector>
 
-class Mediator;
-
-class Colleague {
-public:
-    explicit Colleague(std::string name) : name_(std::move(name)) {}
-    virtual ~Colleague() = default;
-    void setMediator(Mediator* mediator) { mediator_ = mediator; }
-    const std::string& name() const { return name_; }
-    virtual void receive(const std::string& from, const std::string& message) = 0;
-
-protected:
-    std::string name_;
-    Mediator* mediator_ = nullptr;
-};
+class Colleague;
 
 class Mediator {
 public:
-    virtual ~Mediator() = default;
     virtual void broadcast(Colleague* sender, const std::string& message) = 0;
+    virtual ~Mediator() = default;
+};
+
+class Colleague {
+public:
+    Colleague(Mediator& mediator, std::string name) : mediator(mediator), name(std::move(name)) {}
+    virtual ~Colleague() = default;
+
+    void send(const std::string& message) { mediator.broadcast(this, message); }
+
+    virtual void receive(const std::string& from, const std::string& message) {
+        std::cout << name << " received from " << from << ": " << message << std::endl;
+    }
+
+    const std::string& getName() const { return name; }
+
+protected:
+    Mediator& mediator;
+    std::string name;
 };
 
 class ChatRoom : public Mediator {
 public:
-    void join(std::shared_ptr<Colleague> member) {
-        member->setMediator(this);
-        members_.push_back(member);
-    }
+    void join(std::shared_ptr<Colleague> member) { members.push_back(member); }
 
     void broadcast(Colleague* sender, const std::string& message) override {
-        for (const auto& member : members_) {
-            if (member.get() != sender) {
-                member->receive(sender->name(), message);
-            }
+        for (auto& member : members) {
+            if (member.get() != sender) member->receive(sender->getName(), message);
         }
     }
 
 private:
-    std::vector<std::shared_ptr<Colleague>> members_;
-};
-
-class ChatUser : public Colleague {
-public:
-    using Colleague::Colleague;
-
-    void say(const std::string& message) {
-        std::cout << name_ << " sends: " << message << std::endl;
-        mediator_->broadcast(this, message);
-    }
-
-    void receive(const std::string& from, const std::string& message) override {
-        std::cout << "  " << name_ << " received from " << from << ": " << message << std::endl;
-    }
+    std::vector<std::shared_ptr<Colleague>> members;
 };
 
 int main() {
     ChatRoom room;
-    auto alice = std::make_shared<ChatUser>("Alice");
-    auto bob = std::make_shared<ChatUser>("Bob");
-    auto carol = std::make_shared<ChatUser>("Carol");
+    auto alice = std::make_shared<Colleague>(room, "Alice");
+    auto bob = std::make_shared<Colleague>(room, "Bob");
+    auto carol = std::make_shared<Colleague>(room, "Carol");
 
     room.join(alice);
     room.join(bob);
     room.join(carol);
 
-    alice->say("hello everyone");
-    bob->say("hi Alice");
+    alice->send("hello everyone");
+    bob->send("hi Alice");
 
     return 0;
 }

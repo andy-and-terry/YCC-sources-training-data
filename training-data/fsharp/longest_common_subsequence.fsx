@@ -1,16 +1,13 @@
-let lcs (s1: string) (s2: string) =
-    let m = s1.Length
-    let n = s2.Length
-    let dp = Array2D.create (m + 1) (n + 1) 0
-
+let lcs (a: string) (b: string) =
+    let m, n = a.Length, b.Length
+    let table = Array2D.create (m + 1) (n + 1) 0
     for i in 1 .. m do
         for j in 1 .. n do
-            if s1.[i - 1] = s2.[j - 1] then
-                dp.[i, j] <- dp.[i - 1, j - 1] + 1
+            if a.[i - 1] = b.[j - 1] then
+                table.[i, j] <- table.[i - 1, j - 1] + 1
             else
-                dp.[i, j] <- max dp.[i - 1, j] dp.[i, j - 1]
-
-    dp.[m, n]
+                table.[i, j] <- max table.[i - 1, j] table.[i, j - 1]
+    table.[m, n]
 
 printfn "%d" (lcs "ABCBDAB" "BDCABA")
-printfn "%d" (lcs "AGGTAB" "GXTXAYB")
+printfn "%d" (lcs "programming" "gaming")

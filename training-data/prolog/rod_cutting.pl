@@ -1,23 +1,14 @@
-% Rod cutting: given a price for every cut length, find the maximum
-% total revenue obtainable by cutting a rod of length N into pieces.
-% Prices is 1-indexed (Prices' first element is the price of length 1).
-rod_cutting(_, 0, 0) :- !.
-rod_cutting(Prices, Length, MaxRevenue) :-
-    Length > 0,
-    findall(
-        Revenue,
-        ( nth1(CutLen, Prices, Price),
-          CutLen =< Length,
-          Remaining is Length - CutLen,
-          rod_cutting(Prices, Remaining, RemRevenue),
-          Revenue is Price + RemRevenue
-        ),
-        Revenues
-    ),
-    max_list(Revenues, MaxRevenue).
+price(1, 1). price(2, 5). price(3, 8). price(4, 9).
+price(5, 10). price(6, 17). price(7, 17). price(8, 20).
 
-:- rod_cutting([1, 5, 8, 9, 10, 17, 17, 20], 8, Revenue),
-   writeln(Revenue).
+best_revenue(0, 0) :- !.
+best_revenue(N, Best) :-
+    N > 0,
+    findall(Revenue,
+        (price(Len, Price), Len =< N, Rest is N - Len,
+         best_revenue(Rest, RestRevenue), Revenue is Price + RestRevenue),
+        Revenues),
+    Revenues \= [],
+    max_list(Revenues, Best).
 
-:- rod_cutting([1, 5, 8, 9, 10, 17, 17, 20], 4, Revenue),
-   writeln(Revenue).
+:- best_revenue(8, Best), writeln(Best).

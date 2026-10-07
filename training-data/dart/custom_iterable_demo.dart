@@ -1,34 +1,35 @@
-class Range extends Iterable<int> {
+import 'dart:collection';
+
+class Range with IterableMixin<int> {
   final int start;
   final int end;
-  final int step;
 
-  Range(this.start, this.end, {this.step = 1});
+  Range(this.start, this.end);
 
   @override
-  Iterator<int> get iterator => _RangeIterator(start, end, step);
+  Iterator<int> get iterator => _RangeIterator(start, end);
 }
 
 class _RangeIterator implements Iterator<int> {
   final int end;
-  final int step;
   int _current;
 
-  _RangeIterator(int start, this.end, this.step) : _current = start - step;
+  _RangeIterator(int start, this.end) : _current = start - 1;
 
   @override
   int get current => _current;
 
   @override
   bool moveNext() {
-    _current += step;
-    return _current < end;
+    if (_current + 1 >= end) return false;
+    _current++;
+    return true;
   }
 }
 
 void main() {
-  final range = Range(0, 10, step: 2);
+  final range = Range(1, 6);
   print(range.toList());
-  print(range.where((n) => n > 4).toList());
-  print(range.length);
+  print(range.map((n) => n * n).toList());
+  print(range.where((n) => n.isEven).toList());
 }

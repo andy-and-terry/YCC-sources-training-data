@@ -1,31 +1,29 @@
 using System;
 
-record struct Point3D(double X, double Y, double Z)
+readonly record struct Money(decimal Amount, string Currency)
 {
-    public double Length() => Math.Sqrt(X * X + Y * Y + Z * Z);
+    public Money Add(Money other)
+    {
+        if (Currency != other.Currency) throw new InvalidOperationException("currency mismatch");
+        return this with { Amount = Amount + other.Amount };
+    }
 }
 
 class RecordStructDemo
 {
-    static void Scale(Point3D p, double factor)
-    {
-        p.X *= factor;
-        p.Y *= factor;
-        p.Z *= factor;
-    }
-
     static void Main()
     {
-        var a = new Point3D(1, 2, 2);
-        var b = a;
-        b.X = 100;
+        var price = new Money(19.99m, "USD");
+        var tax = new Money(1.60m, "USD");
+        var total = price.Add(tax);
 
-        Console.WriteLine(a);
-        Console.WriteLine(b);
-        Console.WriteLine(a == b);
-        Console.WriteLine(a.Length());
+        Console.WriteLine(total);
+        Console.WriteLine(price == new Money(19.99m, "USD"));
+        Console.WriteLine(price.Equals(total));
 
-        Scale(a, 2);
-        Console.WriteLine(a);
+        Money a = price;
+        Money b = a;
+        b = b with { Amount = 0 };
+        Console.WriteLine($"a={a} b={b}");
     }
 }

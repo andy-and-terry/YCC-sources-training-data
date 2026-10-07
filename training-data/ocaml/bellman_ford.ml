@@ -1,15 +1,22 @@
-let bellman_ford n edges source =
-  let dist = Array.make n max_int in
-  dist.(source) <- 0;
-  for _ = 1 to n - 1 do
+(* Unlike Dijkstra, Bellman-Ford relaxes every edge |V| - 1 times, which
+   still works correctly with negative edge weights as long as there is
+   no negative-weight cycle reachable from the source. *)
+let bellman_ford nodes edges source =
+  let dist = Hashtbl.create 16 in
+  List.iter (fun n -> Hashtbl.replace dist n max_int) nodes;
+  Hashtbl.replace dist source 0;
+  for _ = 1 to List.length nodes - 1 do
     List.iter
-      (fun (u, v, w) ->
-        if dist.(u) <> max_int && dist.(u) + w < dist.(v) then dist.(v) <- dist.(u) + w)
+      (fun (from_node, to_node, weight) ->
+        let from_dist = Hashtbl.find dist from_node in
+        if from_dist <> max_int && from_dist + weight < Hashtbl.find dist to_node then
+          Hashtbl.replace dist to_node (from_dist + weight))
       edges
   done;
   dist
 
 let () =
-  let edges = [ (0, 1, 4); (0, 2, 1); (2, 1, 2); (1, 3, 1); (2, 3, 5) ] in
-  let dist = bellman_ford 4 edges 0 in
-  Array.iteri (fun i d -> Printf.printf "dist[%d] = %d\n" i d) dist
+  let nodes = [ "a"; "b"; "c"; "d" ] in
+  let edges = [ ("a", "b", 4); ("a", "c", 5); ("b", "c", -3); ("c", "d", 2); ("b", "d", 6) ] in
+  let dist = bellman_ford nodes edges "a" in
+  List.iter (fun n -> Printf.printf "%s: %d\n" n (Hashtbl.find dist n)) nodes

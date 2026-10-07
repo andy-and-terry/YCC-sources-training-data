@@ -1,17 +1,13 @@
-def floyd_warshall(num_nodes : Int32, edges : Array(Tuple(Int32, Int32, Int32))) : Array(Array(Int32))
-  inf = Int32::MAX // 2
-  dist = Array.new(num_nodes) { Array.new(num_nodes, inf) }
-  num_nodes.times { |i| dist[i][i] = 0 }
-  edges.each do |u, v, w|
-    dist[u][v] = w
-  end
+def floyd_warshall(graph : Array(Array(Int32))) : Array(Array(Int32))
+  n = graph.size
+  dist = graph.map(&.dup)
 
-  num_nodes.times do |k|
-    num_nodes.times do |i|
-      num_nodes.times do |j|
-        if dist[i][k] + dist[k][j] < dist[i][j]
-          dist[i][j] = dist[i][k] + dist[k][j]
-        end
+  n.times do |k|
+    n.times do |i|
+      n.times do |j|
+        next if dist[i][k] == Int32::MAX || dist[k][j] == Int32::MAX
+        through_k = dist[i][k] + dist[k][j]
+        dist[i][j] = through_k if through_k < dist[i][j]
       end
     end
   end
@@ -19,14 +15,12 @@ def floyd_warshall(num_nodes : Int32, edges : Array(Tuple(Int32, Int32, Int32)))
   dist
 end
 
-edges = [
-  {0, 1, 3},
-  {0, 2, 8},
-  {1, 2, 2},
-  {2, 3, 1},
-  {3, 0, 4},
+inf = Int32::MAX
+graph = [
+  [0, 3, inf, 7],
+  [8, 0, 2, inf],
+  [5, inf, 0, 1],
+  [2, inf, inf, 0],
 ]
 
-floyd_warshall(4, edges).each do |row|
-  puts row.join(" ")
-end
+floyd_warshall(graph).each { |row| puts row.inspect }

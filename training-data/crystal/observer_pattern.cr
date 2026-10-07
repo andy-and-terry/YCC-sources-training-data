@@ -1,47 +1,33 @@
 module Observer
-  abstract def update(event : String) : Nil
+  abstract def on_update(temperature : Float64)
 end
 
-class EventPublisher
+class ConsoleObserver
+  include Observer
+
+  def initialize(@name : String)
+  end
+
+  def on_update(temperature : Float64)
+    puts "#{@name}: temperature is now #{temperature}"
+  end
+end
+
+class WeatherStation
   def initialize
     @observers = [] of Observer
   end
 
-  def subscribe(observer : Observer) : Nil
+  def subscribe(observer : Observer)
     @observers << observer
   end
 
-  def publish(event : String) : Nil
-    @observers.each(&.update(event))
+  def set_temperature(value : Float64)
+    @observers.each(&.on_update(value))
   end
 end
 
-class LoggingObserver
-  include Observer
-
-  def update(event : String) : Nil
-    puts "[log] #{event}"
-  end
-end
-
-class CountingObserver
-  include Observer
-
-  getter count : Int32 = 0
-
-  def update(event : String) : Nil
-    @count += 1
-  end
-end
-
-publisher = EventPublisher.new
-logger = LoggingObserver.new
-counter = CountingObserver.new
-
-publisher.subscribe(logger)
-publisher.subscribe(counter)
-
-publisher.publish("user_signed_up")
-publisher.publish("user_logged_in")
-
-puts "events seen: #{counter.count}"
+station = WeatherStation.new
+station.subscribe(ConsoleObserver.new("sensor-a"))
+station.subscribe(ConsoleObserver.new("sensor-b"))
+station.set_temperature(25.5)

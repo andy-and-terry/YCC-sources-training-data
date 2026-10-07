@@ -1,17 +1,18 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAXN 256
+#define MAX_LEN 256
 
-void z_array(const char *s, int n, int z[]) {
+void compute_z(const char *s, int z[]) {
+    int n = (int)strlen(s);
     int l = 0, r = 0;
-    z[0] = 0;
+    z[0] = n;
+
     for (int i = 1; i < n; i++) {
         z[i] = 0;
         if (i < r) {
-            int mirror = z[i - l];
             int remaining = r - i;
-            z[i] = mirror < remaining ? mirror : remaining;
+            z[i] = (z[i - l] < remaining) ? z[i - l] : remaining;
         }
         while (i + z[i] < n && s[z[i]] == s[i + z[i]]) z[i]++;
         if (i + z[i] > r) {
@@ -21,26 +22,24 @@ void z_array(const char *s, int n, int z[]) {
     }
 }
 
-/* Find all occurrences of `pattern` in `text` using the Z-array of
-   pattern + '\x01' + text. */
-void z_search(const char *pattern, const char *text) {
-    char combined[MAXN];
-    int plen = (int)strlen(pattern);
-    int tlen = (int)strlen(text);
-    snprintf(combined, sizeof(combined), "%s\x01%s", pattern, text);
-    int n = plen + 1 + tlen;
+void find_occurrences(const char *text, const char *pattern) {
+    char combined[MAX_LEN];
+    int pattern_len = (int)strlen(pattern);
+    snprintf(combined, sizeof(combined), "%s$%s", pattern, text);
 
-    int z[MAXN];
-    z_array(combined, n, z);
+    int z[MAX_LEN];
+    compute_z(combined, z);
 
-    for (int i = plen + 1; i < n; i++) {
-        if (z[i] >= plen) {
-            printf("match at text index %d\n", i - plen - 1);
-        }
+    int total = (int)strlen(combined);
+    printf("matches at:");
+    for (int i = pattern_len + 1; i < total; i++) {
+        if (z[i] == pattern_len) printf(" %d", i - pattern_len - 1);
     }
+    printf("\n");
 }
 
 int main(void) {
-    z_search("aba", "ababcabababc");
+    find_occurrences("abxabcabcaby", "abc");
+    find_occurrences("aaaaa", "aa");
     return 0;
 }

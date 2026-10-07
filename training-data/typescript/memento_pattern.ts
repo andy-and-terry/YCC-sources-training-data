@@ -7,7 +7,7 @@ class EditorMemento {
 }
 
 class Editor {
-  private content = "";
+  private content = '';
 
   type(text: string): void {
     this.content += text;
@@ -41,16 +41,17 @@ class EditHistory {
 const editor = new Editor();
 const editHistory = new EditHistory();
 
-editor.type("Hello");
+editor.type('Hello');
 editHistory.push(editor.save());
-editor.type(", world");
-editHistory.push(editor.save());
-editor.type("!");
 
+editor.type(', world');
+editHistory.push(editor.save());
+
+editor.type('!!!');
 console.log(editor.getContent());
 
-const last = editHistory.pop();
-if (last) {
-  editor.restore(last);
-}
+editor.restore(editHistory.pop()!);
+console.log(editor.getContent());
+
+editor.restore(editHistory.pop()!);
 console.log(editor.getContent());

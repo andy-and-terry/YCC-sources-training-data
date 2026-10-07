@@ -1,29 +1,26 @@
-module DictDemo exposing (ageOf, incrementAge, initialAges, namesOver30)
+module DictDemo exposing (inventory, restock, totalItems)
 
 import Dict exposing (Dict)
 
 
-initialAges : Dict String Int
-initialAges =
-    Dict.fromList
-        [ ( "Alice", 30 )
-        , ( "Bob", 25 )
-        , ( "Carol", 35 )
-        ]
+inventory : Dict String Int
+inventory =
+    Dict.fromList [ ( "apple", 3 ), ( "pear", 0 ), ( "plum", 7 ) ]
 
 
-ageOf : String -> Dict String Int -> Maybe Int
-ageOf name ages =
-    Dict.get name ages
+restock : String -> Int -> Dict String Int -> Dict String Int
+restock name qty =
+    Dict.update name
+        (\current ->
+            case current of
+                Just n ->
+                    Just (n + qty)
+
+                Nothing ->
+                    Just qty
+        )
 
 
-incrementAge : String -> Dict String Int -> Dict String Int
-incrementAge name ages =
-    Dict.update name (Maybe.map (\age -> age + 1)) ages
-
-
-namesOver30 : Dict String Int -> List String
-namesOver30 ages =
-    ages
-        |> Dict.filter (\_ age -> age > 30)
-        |> Dict.keys
+totalItems : Dict String Int -> Int
+totalItems =
+    Dict.foldl (\_ n acc -> n + acc) 0

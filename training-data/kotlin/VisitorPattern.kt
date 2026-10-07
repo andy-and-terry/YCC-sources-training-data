@@ -1,33 +1,39 @@
-interface Expr {
-    fun <R> accept(visitor: ExprVisitor<R>): R
+sealed interface Shape {
+    fun <R> accept(visitor: ShapeVisitor<R>): R
 }
 
-class NumberExpr(val value: Int) : Expr {
-    override fun <R> accept(visitor: ExprVisitor<R>): R = visitor.visitNumber(this)
+class Circle(val radius: Double) : Shape {
+    override fun <R> accept(visitor: ShapeVisitor<R>): R = visitor.visitCircle(this)
 }
 
-class AddExpr(val left: Expr, val right: Expr) : Expr {
-    override fun <R> accept(visitor: ExprVisitor<R>): R = visitor.visitAdd(this)
+class Rectangle(val width: Double, val height: Double) : Shape {
+    override fun <R> accept(visitor: ShapeVisitor<R>): R = visitor.visitRectangle(this)
 }
 
-interface ExprVisitor<R> {
-    fun visitNumber(expr: NumberExpr): R
-    fun visitAdd(expr: AddExpr): R
+interface ShapeVisitor<R> {
+    fun visitCircle(circle: Circle): R
+    fun visitRectangle(rectangle: Rectangle): R
 }
 
-class EvalVisitor : ExprVisitor<Int> {
-    override fun visitNumber(expr: NumberExpr): Int = expr.value
-    override fun visitAdd(expr: AddExpr): Int = expr.left.accept(this) + expr.right.accept(this)
+class AreaVisitor : ShapeVisitor<Double> {
+    override fun visitCircle(circle: Circle): Double = Math.PI * circle.radius * circle.radius
+    override fun visitRectangle(rectangle: Rectangle): Double = rectangle.width * rectangle.height
 }
 
-class PrintVisitor : ExprVisitor<String> {
-    override fun visitNumber(expr: NumberExpr): String = expr.value.toString()
-    override fun visitAdd(expr: AddExpr): String =
-        "(${expr.left.accept(this)} + ${expr.right.accept(this)})"
+class DescriptionVisitor : ShapeVisitor<String> {
+    override fun visitCircle(circle: Circle): String = "circle(r=${circle.radius})"
+    override fun visitRectangle(rectangle: Rectangle): String =
+        "rectangle(${rectangle.width}x${rectangle.height})"
 }
 
 fun main() {
-    val expr: Expr = AddExpr(NumberExpr(1), AddExpr(NumberExpr(2), NumberExpr(3)))
-    println(expr.accept(EvalVisitor()))
-    println(expr.accept(PrintVisitor()))
+    val shapes: List<Shape> = listOf(Circle(2.0), Rectangle(3.0, 4.0))
+    val areaVisitor = AreaVisitor()
+    val descriptionVisitor = DescriptionVisitor()
+
+    for (shape in shapes) {
+        val description = shape.accept(descriptionVisitor)
+        val area = shape.accept(areaVisitor)
+        println("$description -> area=$area")
+    }
 }

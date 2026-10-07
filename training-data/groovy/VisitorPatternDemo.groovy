@@ -1,29 +1,56 @@
-interface Visitor {
-    int visitNumber(NumberExpr n)
-    int visitAdd(AddExpr a)
+interface ShapeVisitor {
+    double visitCircle(Circle circle)
+    double visitSquare(Square square)
 }
 
-interface Expr {
-    int accept(Visitor v)
+interface Shape {
+    double accept(ShapeVisitor visitor)
 }
 
-class NumberExpr implements Expr {
-    int value
-    NumberExpr(int value) { this.value = value }
-    int accept(Visitor v) { return v.visitNumber(this) }
+class Circle implements Shape {
+    double radius
+
+    Circle(double radius) { this.radius = radius }
+
+    double accept(ShapeVisitor visitor) {
+        return visitor.visitCircle(this)
+    }
 }
 
-class AddExpr implements Expr {
-    Expr left
-    Expr right
-    AddExpr(Expr left, Expr right) { this.left = left; this.right = right }
-    int accept(Visitor v) { return v.visitAdd(this) }
+class Square implements Shape {
+    double side
+
+    Square(double side) { this.side = side }
+
+    double accept(ShapeVisitor visitor) {
+        return visitor.visitSquare(this)
+    }
 }
 
-class EvalVisitor implements Visitor {
-    int visitNumber(NumberExpr n) { return n.value }
-    int visitAdd(AddExpr a) { return a.left.accept(this) + a.right.accept(this) }
+class AreaVisitor implements ShapeVisitor {
+    double visitCircle(Circle circle) {
+        return Math.PI * circle.radius * circle.radius
+    }
+
+    double visitSquare(Square square) {
+        return square.side * square.side
+    }
 }
 
-def expr = new AddExpr(new NumberExpr(1), new AddExpr(new NumberExpr(2), new NumberExpr(3)))
-println expr.accept(new EvalVisitor())
+class PerimeterVisitor implements ShapeVisitor {
+    double visitCircle(Circle circle) {
+        return 2 * Math.PI * circle.radius
+    }
+
+    double visitSquare(Square square) {
+        return 4 * square.side
+    }
+}
+
+def shapes = [new Circle(3.0), new Square(4.0)]
+def areaVisitor = new AreaVisitor()
+def perimeterVisitor = new PerimeterVisitor()
+
+shapes.each { shape ->
+    println "area=${shape.accept(areaVisitor).round(2)} perimeter=${shape.accept(perimeterVisitor).round(2)}"
+}

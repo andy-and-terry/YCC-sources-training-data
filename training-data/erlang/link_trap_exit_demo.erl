@@ -1,23 +1,29 @@
 -module(link_trap_exit_demo).
 -export([run/0, worker/1]).
 
-%% Unlike erlang:monitor/2 (one-way, always delivers a 'DOWN' message),
-%% spawn_link/3 creates a bidirectional link: by default either side's
-%% crash kills the other too. Trapping exits turns that crash into an
-%% ordinary {'EXIT', Pid, Reason} message instead, which is how
-%% supervisors implement fault isolation without OTP's supervisor module.
+%% Demonstrates process links with `trap_exit`: when a linked process
+%% crashes, a process that is trapping exits receives an
+%% `{'EXIT', Pid, Reason}` message instead of also crashing, so it can log
+%% the failure (or restart the worker) itself rather than taking the whole
+%% supervising process down with it.
 
-worker(Behavior) ->
+worker(crash) ->
+    exit(boom);
+worker(ok) ->
     receive
-        stop -> ok;
-        crash -> exit(Behavior)
+        {work, From} -> From ! {result, 42}
     end.
 
 run() ->
     process_flag(trap_exit, true),
-    Pid = spawn_link(?MODULE, worker, [boom]),
-    Pid ! crash,
+    Pid1 = spawn_link(?MODULE, worker, [crash]),
     receive
-        {'EXIT', Pid, Reason} ->
-            io:format("linked worker exited: ~p~n", [Reason])
+        {'EXIT', Pid1, Reason} ->
+            io:format("worker ~p crashed: ~p~n", [Pid1, Reason])
+    end,
+    Pid2 = spawn_link(?MODULE, worker, [ok]),
+    Pid2 ! {work, self()},
+    receive
+        {result, Value} ->
+            io:format("worker returned: ~p~n", [Value])
     end.

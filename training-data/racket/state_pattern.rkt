@@ -1,21 +1,18 @@
 #lang racket
 
-;; State: behavior dispatched off a mutable "state" field on a struct
-;; rather than a chain of if/else on a status flag.
-
-(struct traffic-light (state) #:mutable #:transparent)
-
-(define (next-state! light)
-  (set-traffic-light-state!
-   light
-   (match (traffic-light-state light)
-     ['red 'green]
-     ['green 'yellow]
-     ['yellow 'red])))
-
 (require racket/match)
 
-(define light (traffic-light 'red))
-(for ([_ (in-range 4)])
-  (displayln (traffic-light-state light))
-  (next-state! light))
+;; The state pattern is just a pure function from one state to the
+;; next -- `match` replaces the usual State subclass hierarchy.
+(define (next-state state)
+  (match state
+    ['red 'green]
+    ['green 'yellow]
+    ['yellow 'red]))
+
+(define (run-light state steps)
+  (when (> steps 0)
+    (displayln state)
+    (run-light (next-state state) (sub1 steps))))
+
+(run-light 'red 4)

@@ -3,31 +3,27 @@ local function expand_around_center(s, left, right)
     left = left - 1
     right = right + 1
   end
-  -- the loop overshoots by one step on both sides
   return left + 1, right - 1
 end
 
-local function longest_palindromic_substring(s)
-  if #s == 0 then
-    return ""
-  end
+local function longest_palindrome(s)
+  local best_start, best_len = 1, 0
 
-  local best_start, best_end = 1, 1
   for i = 1, #s do
     local l1, r1 = expand_around_center(s, i, i)
-    if r1 - l1 > best_end - best_start then
-      best_start, best_end = l1, r1
+    if r1 - l1 + 1 > best_len then
+      best_start, best_len = l1, r1 - l1 + 1
     end
 
     local l2, r2 = expand_around_center(s, i, i + 1)
-    if r2 - l2 > best_end - best_start then
-      best_start, best_end = l2, r2
+    if r2 - l2 + 1 > best_len then
+      best_start, best_len = l2, r2 - l2 + 1
     end
   end
 
-  return s:sub(best_start, best_end)
+  return s:sub(best_start, best_start + best_len - 1)
 end
 
-print(longest_palindromic_substring("babad"))
-print(longest_palindromic_substring("cbbd"))
-print(longest_palindromic_substring("a"))
+print(longest_palindrome("babad"))
+print(longest_palindrome("cbbd"))
+print(longest_palindrome("forgeeksskeegfor"))

@@ -1,38 +1,37 @@
-abstract class Vehicle {
-  String describe();
+import 'dart:math';
 
-  factory Vehicle(String kind) {
-    switch (kind) {
-      case 'car':
-        return Car();
-      case 'motorcycle':
-        return Motorcycle();
-      case 'truck':
-        return Truck();
-      default:
-        throw ArgumentError('unknown vehicle kind: $kind');
-    }
+abstract class Shape {
+  double area();
+}
+
+class CircleShape implements Shape {
+  final double radius;
+  CircleShape(this.radius);
+
+  @override
+  double area() => pi * radius * radius;
+}
+
+class SquareShape implements Shape {
+  final double side;
+  SquareShape(this.side);
+
+  @override
+  double area() => side * side;
+}
+
+Shape shapeFactory(String kind, double param) {
+  switch (kind) {
+    case 'circle':
+      return CircleShape(param);
+    case 'square':
+      return SquareShape(param);
+    default:
+      throw ArgumentError('unknown shape: $kind');
   }
-}
-
-class Car implements Vehicle {
-  @override
-  String describe() => 'a car with 4 wheels';
-}
-
-class Motorcycle implements Vehicle {
-  @override
-  String describe() => 'a motorcycle with 2 wheels';
-}
-
-class Truck implements Vehicle {
-  @override
-  String describe() => 'a truck with 6 wheels';
 }
 
 void main() {
-  for (final kind in ['car', 'motorcycle', 'truck']) {
-    final vehicle = Vehicle(kind);
-    print(vehicle.describe());
-  }
+  print(shapeFactory('circle', 2.0).area());
+  print(shapeFactory('square', 3.0).area());
 }

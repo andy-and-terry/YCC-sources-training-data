@@ -1,42 +1,25 @@
 Object subclass: RunLengthEncoding [
-    RunLengthEncoding class >> encode: s [
-        | result i n count |
-        n := s size.
-        n = 0 ifTrue: [ ^'' ].
-        result := WriteStream on: String new.
-        i := 1.
-        [ i <= n ] whileTrue: [
+    RunLengthEncoding class >> encode: aString [
+        | stream count previous |
+        aString isEmpty ifTrue: [ ^'' ].
+        stream := WriteStream on: String new.
+        previous := aString first.
+        count := 1.
+        2 to: aString size do: [ :i |
             | ch |
-            ch := s at: i.
-            count := 1.
-            [ i + count <= n and: [ (s at: i + count) = ch ] ]
-                whileTrue: [ count := count + 1 ].
-            result nextPutAll: count printString.
-            result nextPut: ch.
-            i := i + count.
+            ch := aString at: i.
+            ch = previous
+                ifTrue: [ count := count + 1 ]
+                ifFalse: [
+                    stream nextPutAll: count printString; nextPut: previous.
+                    previous := ch.
+                    count := 1.
+                ]
         ].
-        ^result contents
-    ]
-
-    RunLengthEncoding class >> decode: s [
-        | result i n numStart |
-        result := WriteStream on: String new.
-        n := s size.
-        i := 1.
-        [ i <= n ] whileTrue: [
-            | ch count numStr |
-            numStart := i.
-            [ (s at: i) isDigit ] whileTrue: [ i := i + 1 ].
-            numStr := s copyFrom: numStart to: i - 1.
-            count := numStr asInteger.
-            ch := s at: i.
-            count timesRepeat: [ result nextPut: ch ].
-            i := i + 1.
-        ].
-        ^result contents
+        stream nextPutAll: count printString; nextPut: previous.
+        ^stream contents
     ]
 ]
 
-Transcript showCr: (RunLengthEncoding encode: 'aaabbbcccc').
-Transcript showCr: (RunLengthEncoding decode: (RunLengthEncoding encode: 'aaabbbcccc')).
-Transcript showCr: (RunLengthEncoding encode: 'abcd').
+Transcript showCr: (RunLengthEncoding encode: 'aaabbbccd').
+Transcript showCr: (RunLengthEncoding encode: 'wwwwaaadexxxxxx').

@@ -1,43 +1,43 @@
 <?php
 
-// GoF Prototype pattern: new objects are produced by cloning an existing
-// instance rather than calling `new`. __clone() shows the deep-copy hook
-// needed whenever a property itself holds an object.
-
-class Address
+abstract class Document
 {
-    public function __construct(public string $city)
+    /** @var string[] */
+    protected array $tags = [];
+
+    abstract public function clone(): static;
+
+    public function addTag(string $tag): void
     {
+        $this->tags[] = $tag;
+    }
+
+    public function tags(): array
+    {
+        return $this->tags;
     }
 }
 
-class Employee
+class Report extends Document
 {
-    public array $skills;
-
-    public function __construct(public string $name, public Address $address, array $skills = [])
+    public function __construct(public string $title, public array $sections = [])
     {
-        $this->skills = $skills;
     }
 
-    public function __clone(): void
+    public function clone(): static
     {
-        // Without this, the clone would share the same Address instance
-        // as the original, so mutating one would leak into the other.
-        $this->address = clone $this->address;
+        $copy = new static($this->title, $this->sections);
+        $copy->tags = $this->tags;
+        return $copy;
     }
 }
 
-$original = new Employee('Ada', new Address('London'), ['php', 'perl']);
+$original = new Report('Q3 Summary', ['intro', 'numbers']);
+$original->addTag('draft');
 
-$shallowCopy = $original;
-$deepClone = clone $original;
+$copy = $original->clone();
+$copy->title = 'Q3 Summary (copy)';
+$copy->addTag('review');
 
-$deepClone->name = 'Grace';
-$deepClone->address->city = 'Boston';
-$deepClone->skills[] = 'plsql';
-
-echo "original: {$original->name} in {$original->address->city}, skills: " . implode(',', $original->skills) . "\n";
-echo "clone:    {$deepClone->name} in {$deepClone->address->city}, skills: " . implode(',', $deepClone->skills) . "\n";
-echo ($original === $shallowCopy ? 'same object' : 'different object') . "\n";
-echo ($original === $deepClone ? 'same object' : 'different object') . "\n";
+echo "{$original->title}: " . implode(',', $original->tags()) . "\n";
+echo "{$copy->title}: " . implode(',', $copy->tags()) . "\n";

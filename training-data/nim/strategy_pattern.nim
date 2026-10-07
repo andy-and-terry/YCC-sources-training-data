@@ -1,35 +1,39 @@
 type
-  SortStrategy = proc (data: seq[int]): seq[int]
+  DiscountStrategy = ref object of RootObj
 
-proc bubbleSort(data: seq[int]): seq[int] =
-  result = data
-  for i in 0 ..< result.len:
-    for j in 0 ..< result.len - i - 1:
-      if result[j] > result[j + 1]:
-        swap(result[j], result[j + 1])
-
-proc insertionSort(data: seq[int]): seq[int] =
-  result = data
-  for i in 1 ..< result.len:
-    let key = result[i]
-    var j = i - 1
-    while j >= 0 and result[j] > key:
-      result[j + 1] = result[j]
-      dec j
-    result[j + 1] = key
+method applyDiscount(s: DiscountStrategy, price: float): float {.base.} =
+  discard
 
 type
-  Sorter = object
-    strategy: SortStrategy
+  NoDiscount = ref object of DiscountStrategy
+  PercentOffDiscount = ref object of DiscountStrategy
+    percent: float
+  FlatOffDiscount = ref object of DiscountStrategy
+    amount: float
 
-proc newSorter(strategy: SortStrategy): Sorter =
-  Sorter(strategy: strategy)
+method applyDiscount(s: NoDiscount, price: float): float =
+  price
 
-proc sort(s: Sorter, data: seq[int]): seq[int] =
-  s.strategy(data)
+method applyDiscount(s: PercentOffDiscount, price: float): float =
+  price - price * (s.percent / 100.0)
 
-let data = @[5, 2, 8, 1, 9, 3]
-let bubbleSorter = newSorter(bubbleSort)
-let insertionSorter = newSorter(insertionSort)
-echo sort(bubbleSorter, data)
-echo sort(insertionSorter, data)
+method applyDiscount(s: FlatOffDiscount, price: float): float =
+  max(0.0, price - s.amount)
+
+type
+  Cart = ref object
+    strategy: DiscountStrategy
+
+proc newCart(strategy: DiscountStrategy): Cart =
+  Cart(strategy: strategy)
+
+proc checkout(c: Cart, price: float): float =
+  c.strategy.applyDiscount(price)
+
+let regularCart = newCart(NoDiscount())
+let saleCart = newCart(PercentOffDiscount(percent: 20.0))
+let couponCart = newCart(FlatOffDiscount(amount: 5.0))
+
+echo checkout(regularCart, 100.0)
+echo checkout(saleCart, 100.0)
+echo checkout(couponCart, 100.0)

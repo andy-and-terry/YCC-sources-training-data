@@ -1,21 +1,19 @@
 #!/usr/bin/awk -f
 # Sorts a fixed list of numbers ascending using insertion sort.
-function insertion_sort(arr, n,    i, j, key) {
+BEGIN {
+    split("5 3 8 1 9 2", nums, " ")
+    n = 6
     for (i = 2; i <= n; i++) {
-        key = arr[i]
+        key = nums[i]
         j = i - 1
-        while (j >= 1 && arr[j] > key) {
-            arr[j + 1] = arr[j]
+        while (j >= 1 && nums[j] > key) {
+            nums[j + 1] = nums[j]
             j--
         }
-        arr[j + 1] = key
+        nums[j + 1] = key
     }
-}
-BEGIN {
-    n = split("5 2 9 1 5 6 3", nums, " ")
-    insertion_sort(nums, n)
     for (i = 1; i <= n; i++) {
-        printf "%s ", nums[i]
+        printf "%d ", nums[i]
     }
     print ""
 }

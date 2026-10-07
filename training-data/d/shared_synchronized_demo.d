@@ -1,5 +1,5 @@
 import std.stdio;
-import core.thread;
+import std.concurrency;
 
 synchronized class Counter {
     private int count;
@@ -13,21 +13,23 @@ synchronized class Counter {
     }
 }
 
+shared Counter counter;
+
+void worker(int times, Tid owner) {
+    foreach (_; 0 .. times) {
+        counter.increment();
+    }
+    send(owner, true);
+}
+
 void main() {
-    shared Counter counter = new shared Counter();
+    counter = new shared(Counter)();
 
-    void worker() {
-        foreach (i; 0 .. 1000) {
-            counter.increment();
-        }
-    }
+    spawn(&worker, 1000, thisTid);
+    spawn(&worker, 1000, thisTid);
 
-    Thread[] threads;
-    foreach (i; 0 .. 4) {
-        threads ~= new Thread(&worker);
-    }
-    foreach (t; threads) t.start();
-    foreach (t; threads) t.join();
+    receiveOnly!bool();
+    receiveOnly!bool();
 
     writeln(counter.value());
 }

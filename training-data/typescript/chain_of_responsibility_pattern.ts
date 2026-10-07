@@ -1,57 +1,48 @@
+interface Ticket {
+  level: number;
+  message: string;
+}
+
 abstract class SupportHandler {
-  private next: SupportHandler | null = null;
+  protected next: SupportHandler | null = null;
 
   setNext(handler: SupportHandler): SupportHandler {
     this.next = handler;
     return handler;
   }
 
-  handle(ticketLevel: number, message: string): string {
-    if (this.canHandle(ticketLevel)) {
-      return this.resolve(message);
-    }
+  handle(ticket: Ticket): string {
     if (this.next) {
-      return this.next.handle(ticketLevel, message);
+      return this.next.handle(ticket);
     }
-    return `Unhandled: ${message}`;
-  }
-
-  protected abstract canHandle(level: number): boolean;
-  protected abstract resolve(message: string): string;
-}
-
-class Level1Support extends SupportHandler {
-  protected canHandle(level: number): boolean {
-    return level <= 1;
-  }
-  protected resolve(message: string): string {
-    return `Level1 resolved: ${message}`;
+    return `unresolved: ${ticket.message}`;
   }
 }
 
-class Level2Support extends SupportHandler {
-  protected canHandle(level: number): boolean {
-    return level <= 2;
+class LevelHandler extends SupportHandler {
+  constructor(private name: string, private levelHandled: number) {
+    super();
   }
-  protected resolve(message: string): string {
-    return `Level2 resolved: ${message}`;
+
+  handle(ticket: Ticket): string {
+    if (ticket.level <= this.levelHandled) {
+      return `${this.name} resolved: ${ticket.message}`;
+    }
+    return super.handle(ticket);
   }
 }
 
-class Level3Support extends SupportHandler {
-  protected canHandle(level: number): boolean {
-    return level <= 3;
-  }
-  protected resolve(message: string): string {
-    return `Level3 resolved: ${message}`;
-  }
+const tier1 = new LevelHandler('Tier1', 1);
+const tier2 = new LevelHandler('Tier2', 2);
+const tier3 = new LevelHandler('Tier3', 3);
+tier1.setNext(tier2).setNext(tier3);
+
+const tickets: Ticket[] = [
+  { level: 1, message: 'password reset' },
+  { level: 3, message: 'server outage' },
+  { level: 5, message: 'unknown issue' },
+];
+
+for (const ticket of tickets) {
+  console.log(tier1.handle(ticket));
 }
-
-const level1 = new Level1Support();
-const level2 = new Level2Support();
-const level3 = new Level3Support();
-level1.setNext(level2).setNext(level3);
-
-console.log(level1.handle(1, "password reset"));
-console.log(level1.handle(2, "network outage"));
-console.log(level1.handle(5, "data breach"));

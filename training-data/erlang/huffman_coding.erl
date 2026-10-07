@@ -1,38 +1,32 @@
 -module(huffman_coding).
--export([encode/1]).
+-export([build/1, codes/1]).
 
-%% Builds a Huffman code from character frequencies and encodes Text with
-%% it. Returns {Codes, Bits} where Codes maps each character to its bit
-%% string and Bits is the concatenation of those codes for Text.
+%% Builds a Huffman tree greedily: repeatedly merge the two lowest
+%% frequency nodes into a new internal node until only the root
+%% remains, then walk the tree to assign each leaf a binary code equal
+%% to the path taken to reach it (0 for left, 1 for right).
 
-encode(Text) ->
-    Freqs = frequencies(Text),
-    Tree = build_tree(Freqs),
-    Codes = maps:from_list(codes(Tree, "")),
-    Bits = lists:flatten([maps:get(C, Codes) || C <- Text]),
-    {Codes, Bits}.
+build(Freqs) ->
+    Nodes = [{leaf, Ch, F} || {Ch, F} <- Freqs],
+    build_tree(Nodes).
 
-frequencies(Text) ->
-    lists:foldl(
-        fun(Char, Acc) -> maps:update_with(Char, fun(N) -> N + 1 end, 1, Acc) end,
-        #{},
-        Text).
+build_tree([Node]) -> Node;
+build_tree(Nodes) ->
+    [First, Second | Rest] = lists:sort(fun(A, B) -> freq(A) =< freq(B) end, Nodes),
+    Merged = {node, freq(First) + freq(Second), First, Second},
+    build_tree([Merged | Rest]).
 
-build_tree(Freqs) ->
-    Leaves = [{Freq, {leaf, Char}} || {Char, Freq} <- maps:to_list(Freqs)],
-    combine(lists:sort(Leaves)).
+freq({leaf, _Ch, F}) -> F;
+freq({node, F, _Left, _Right}) -> F.
 
-combine([{_, Tree}]) ->
-    Tree;
-combine([{F1, T1}, {F2, T2} | Rest]) ->
-    Combined = {F1 + F2, {node, T1, T2}},
-    combine(lists:sort([Combined | Rest])).
+codes(Tree) -> codes(Tree, "", []).
 
-codes({leaf, Char}, Prefix) ->
-    Code = case Prefix of
-        "" -> "0";
-        _ -> Prefix
-    end,
-    [{Char, Code}];
-codes({node, Left, Right}, Prefix) ->
-    codes(Left, Prefix ++ "0") ++ codes(Right, Prefix ++ "1").
+codes({leaf, Ch, _F}, Prefix, Acc) ->
+    [{Ch, Prefix} | Acc];
+codes({node, _F, Left, Right}, Prefix, Acc) ->
+    Acc1 = codes(Left, Prefix ++ "0", Acc),
+    codes(Right, Prefix ++ "1", Acc1).
+
+run() ->
+    Tree = build([{$a, 5}, {$b, 9}, {$c, 12}, {$d, 13}, {$e, 16}, {$f, 45}]),
+    io:format("~p~n", [lists:sort(codes(Tree))]).

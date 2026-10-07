@@ -3,7 +3,7 @@ program longest_increasing_subsequence
     integer, parameter :: n = 8
     integer :: arr(n) = [10, 9, 2, 5, 3, 7, 101, 18]
     integer :: dp(n)
-    integer :: i, j, best
+    integer :: i, j
 
     dp = 1
     do i = 2, n
@@ -14,10 +14,5 @@ program longest_increasing_subsequence
         end do
     end do
 
-    best = 0
-    do i = 1, n
-        if (dp(i) > best) best = dp(i)
-    end do
-
-    print *, best
+    print *, maxval(dp)
 end program longest_increasing_subsequence

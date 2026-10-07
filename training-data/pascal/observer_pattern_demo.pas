@@ -4,75 +4,65 @@ program ObserverPatternDemo;
 type
   TObserver = class
   public
-    procedure Notify(price: Double); virtual; abstract;
+    procedure Notify(state: Integer); virtual; abstract;
   end;
 
-  TLogger = class(TObserver)
-  public
-    procedure Notify(price: Double); override;
-  end;
-
-  TAlert = class(TObserver)
+  TConsoleObserver = class(TObserver)
   private
-    FThreshold: Double;
+    FName: string;
   public
-    constructor Create(threshold: Double);
-    procedure Notify(price: Double); override;
+    constructor Create(name: string);
+    procedure Notify(state: Integer); override;
   end;
 
-  TTicker = class
+  TSubject = class
   private
     FObservers: array[0..9] of TObserver;
-    FCount: Integer;
-    FPrice: Double;
+    FObserverCount: Integer;
+    FState: Integer;
   public
     constructor Create;
     procedure Attach(observer: TObserver);
-    procedure SetPrice(price: Double);
+    procedure SetState(state: Integer);
   end;
 
-procedure TLogger.Notify(price: Double);
+constructor TConsoleObserver.Create(name: string);
 begin
-  WriteLn('logger: price is now ', price: 0: 2);
+  FName := name;
 end;
 
-constructor TAlert.Create(threshold: Double);
+procedure TConsoleObserver.Notify(state: Integer);
 begin
-  FThreshold := threshold;
+  WriteLn(FName, ' received update: ', state);
 end;
 
-procedure TAlert.Notify(price: Double);
+constructor TSubject.Create;
 begin
-  if price > FThreshold then
-    WriteLn('alert: price crossed threshold at ', price: 0: 2);
+  FObserverCount := 0;
+  FState := 0;
 end;
 
-constructor TTicker.Create;
+procedure TSubject.Attach(observer: TObserver);
 begin
-  FCount := 0;
+  FObservers[FObserverCount] := observer;
+  FObserverCount := FObserverCount + 1;
 end;
 
-procedure TTicker.Attach(observer: TObserver);
-begin
-  FObservers[FCount] := observer;
-  FCount := FCount + 1;
-end;
-
-procedure TTicker.SetPrice(price: Double);
+procedure TSubject.SetState(state: Integer);
 var
   i: Integer;
 begin
-  FPrice := price;
-  for i := 0 to FCount - 1 do
-    FObservers[i].Notify(FPrice);
+  FState := state;
+  for i := 0 to FObserverCount - 1 do
+    FObservers[i].Notify(FState);
 end;
 
 var
-  ticker: TTicker;
+  subject: TSubject;
+
 begin
-  ticker := TTicker.Create;
-  ticker.Attach(TLogger.Create);
-  ticker.Attach(TAlert.Create(100.0));
-  ticker.SetPrice(95.0);
-  ticker.SetPrice(105.0);
+  subject := TSubject.Create;
+  subject.Attach(TConsoleObserver.Create('A'));
+  subject.Attach(TConsoleObserver.Create('B'));
+  subject.SetState(42);
 end.

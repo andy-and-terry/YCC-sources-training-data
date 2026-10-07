@@ -2,37 +2,38 @@ package main
 
 import "fmt"
 
-type service interface {
-	request(id int) string
+type imageLoader interface {
+	display() string
 }
 
-type realService struct{}
-
-func (realService) request(id int) string {
-	return fmt.Sprintf("processed request %d", id)
+type realImage struct {
+	filename string
 }
 
-type cachingProxy struct {
-	real  service
-	cache map[int]string
+func newRealImage(filename string) *realImage {
+	fmt.Println("loading image from disk:", filename)
+	return &realImage{filename: filename}
 }
 
-func newCachingProxy(real service) *cachingProxy {
-	return &cachingProxy{real: real, cache: make(map[int]string)}
+func (r *realImage) display() string {
+	return "displaying " + r.filename
 }
 
-func (p *cachingProxy) request(id int) string {
-	if v, ok := p.cache[id]; ok {
-		return "[cached] " + v
+type proxyImage struct {
+	filename string
+	real     *realImage
+}
+
+func (p *proxyImage) display() string {
+	if p.real == nil {
+		p.real = newRealImage(p.filename)
 	}
-	result := p.real.request(id)
-	p.cache[id] = result
-	return result
+	return p.real.display()
 }
 
 func main() {
-	proxy := newCachingProxy(realService{})
-	fmt.Println(proxy.request(1))
-	fmt.Println(proxy.request(1))
-	fmt.Println(proxy.request(2))
+	var img imageLoader = &proxyImage{filename: "photo.png"}
+	fmt.Println("proxy created, image not loaded yet")
+	fmt.Println(img.display())
+	fmt.Println(img.display())
 }

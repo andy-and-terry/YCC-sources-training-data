@@ -1,18 +1,11 @@
-struct FetchError: Error {}
-
-func fetchValue(id: Int) async throws -> Int {
-    if id == 3 {
-        throw FetchError()
-    }
-    return id * id
+func fetchValue(_ id: Int) async -> Int {
+    id * id
 }
 
-func sumOfSquares(ids: [Int]) async -> Int {
+func sumOfSquares(upTo n: Int) async -> Int {
     await withTaskGroup(of: Int.self) { group in
-        for id in ids where id != 3 {
-            group.addTask {
-                (try? await fetchValue(id: id)) ?? 0
-            }
+        for i in 1...n {
+            group.addTask { await fetchValue(i) }
         }
         var total = 0
         for await value in group {
@@ -22,7 +15,27 @@ func sumOfSquares(ids: [Int]) async -> Int {
     }
 }
 
+func firstDivisor(of n: Int, in candidates: [Int]) async -> Int? {
+    await withTaskGroup(of: Int?.self) { group -> Int? in
+        for c in candidates {
+            group.addTask {
+                n % c == 0 ? c : nil
+            }
+        }
+        for await found in group {
+            if let found {
+                group.cancelAll()
+                return found
+            }
+        }
+        return nil
+    }
+}
+
 Task {
-    let result = await sumOfSquares(ids: [1, 2, 4, 5])
-    print(result)
+    let total = await sumOfSquares(upTo: 5)
+    print(total)
+
+    let divisor = await firstDivisor(of: 84, in: [5, 7, 11, 13])
+    print(divisor as Any)
 }

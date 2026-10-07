@@ -8,15 +8,9 @@ Object subclass: USPlugAdapter [
     voltage [ ^socket voltage / 2 ]
 ]
 
-Object subclass: USDevice [
-    | adapter |
-    adapter: anAdapter [ adapter := anAdapter ]
-    powerOn [ ^'running at ', adapter voltage printString, 'V' ]
-]
+| socket adapter |
+socket := EuropeanSocket new.
+adapter := USPlugAdapter new socket: socket; yourself.
 
-| euroSocket adapter device |
-euroSocket := EuropeanSocket new.
-adapter := USPlugAdapter new socket: euroSocket; yourself.
-device := USDevice new adapter: adapter; yourself.
-
-Transcript showCr: device powerOn.
+Transcript showCr: 'socket: ', socket voltage printString.
+Transcript showCr: 'adapter: ', adapter voltage printString.

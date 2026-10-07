@@ -9,7 +9,7 @@ class LegacyPrinter {
 }
 
 class LegacyPrinterAdapter implements ModernPrinter {
-    private LegacyPrinter legacy
+    LegacyPrinter legacy
 
     LegacyPrinterAdapter(LegacyPrinter legacy) {
         this.legacy = legacy
@@ -20,8 +20,8 @@ class LegacyPrinterAdapter implements ModernPrinter {
     }
 }
 
-def render(ModernPrinter p, String text) {
-    return p.print(text)
+def render(ModernPrinter printer, String text) {
+    return printer.print(text)
 }
 
 def adapter = new LegacyPrinterAdapter(new LegacyPrinter())

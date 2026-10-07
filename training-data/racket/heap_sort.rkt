@@ -1,31 +1,36 @@
 #lang racket
 
-;; In-place binary max-heap sort over a 0-indexed mutable vector:
-;; left child of i is (2*i + 1).
+;; Sift the element at `root` down a 0-indexed binary max-heap stored
+;; in `vec`, considering only the first `size` slots as part of the
+;; heap.
+(define (sift-down! vec size root0)
+  (let loop ([root root0])
+    (define left (+ (* 2 root) 1))
+    (define right (+ (* 2 root) 2))
+    (define largest
+      (cond
+        [(and (< left size) (> (vector-ref vec left) (vector-ref vec root)))
+         (if (and (< right size) (> (vector-ref vec right) (vector-ref vec left)))
+             right
+             left)]
+        [(and (< right size) (> (vector-ref vec right) (vector-ref vec root)))
+         right]
+        [else root]))
+    (unless (= largest root)
+      (define tmp (vector-ref vec root))
+      (vector-set! vec root (vector-ref vec largest))
+      (vector-set! vec largest tmp)
+      (loop largest))))
 
-(define (sift-down! v root end)
-  (define child (+ (* 2 root) 1))
-  (when (<= child end)
-    (define bigger-child
-      (if (and (<= (add1 child) end) (> (vector-ref v (add1 child)) (vector-ref v child)))
-          (add1 child)
-          child))
-    (when (< (vector-ref v root) (vector-ref v bigger-child))
-      (define tmp (vector-ref v root))
-      (vector-set! v root (vector-ref v bigger-child))
-      (vector-set! v bigger-child tmp)
-      (sift-down! v bigger-child end))))
-
-(define (heap-sort items)
-  (define v (list->vector items))
-  (define n (vector-length v))
-  (for ([start (in-range (sub1 (quotient n 2)) -1 -1)])
-    (sift-down! v start (sub1 n)))
+(define (heap-sort! vec)
+  (define n (vector-length vec))
+  (for ([i (in-range (sub1 (quotient n 2)) -1 -1)])
+    (sift-down! vec n i))
   (for ([end (in-range (sub1 n) 0 -1)])
-    (define tmp (vector-ref v 0))
-    (vector-set! v 0 (vector-ref v end))
-    (vector-set! v end tmp)
-    (sift-down! v 0 (sub1 end)))
-  (vector->list v))
+    (define tmp (vector-ref vec 0))
+    (vector-set! vec 0 (vector-ref vec end))
+    (vector-set! vec end tmp)
+    (sift-down! vec end 0))
+  vec)
 
-(displayln (heap-sort '(5 2 9 1 5 6 -3 0)))
+(displayln (heap-sort! (vector 5 2 9 1 5 6 -3)))

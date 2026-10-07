@@ -1,70 +1,57 @@
-interface SortStrategy : Object {
-    public abstract void sort(int[] values);
+interface DiscountStrategy : Object {
+    public abstract double apply(double amount);
 }
 
-class AscendingSort : Object, SortStrategy {
-    public void sort(int[] values) {
-        for (int i = 1; i < values.length; i++) {
-            int key = values[i];
-            int j = i - 1;
-            while (j >= 0 && values[j] > key) {
-                values[j + 1] = values[j];
-                j--;
-            }
-            values[j + 1] = key;
-        }
+class NoDiscount : Object, DiscountStrategy {
+    public double apply(double amount) {
+        return amount;
     }
 }
 
-class DescendingSort : Object, SortStrategy {
-    public void sort(int[] values) {
-        for (int i = 1; i < values.length; i++) {
-            int key = values[i];
-            int j = i - 1;
-            while (j >= 0 && values[j] < key) {
-                values[j + 1] = values[j];
-                j--;
-            }
-            values[j + 1] = key;
-        }
+class PercentageDiscount : Object, DiscountStrategy {
+    double percent;
+
+    public PercentageDiscount(double percent) {
+        this.percent = percent;
+    }
+
+    public double apply(double amount) {
+        return amount - amount * percent / 100.0;
     }
 }
 
-class SortContext : Object {
-    SortStrategy strategy;
+class FlatDiscount : Object, DiscountStrategy {
+    double flat;
 
-    public SortContext(SortStrategy strategy) {
+    public FlatDiscount(double flat) {
+        this.flat = flat;
+    }
+
+    public double apply(double amount) {
+        double result = amount - flat;
+        return result < 0 ? 0 : result;
+    }
+}
+
+class Cart : Object {
+    public DiscountStrategy strategy;
+
+    public Cart(DiscountStrategy strategy) {
         this.strategy = strategy;
     }
 
-    public void set_strategy(SortStrategy strategy) {
-        this.strategy = strategy;
+    public double total(double amount) {
+        return strategy.apply(amount);
     }
-
-    public void execute(int[] values) {
-        strategy.sort(values);
-    }
-}
-
-void print_array(int[] values) {
-    string result = "";
-    for (int i = 0; i < values.length; i++) {
-        if (i > 0) {
-            result += ", ";
-        }
-        result += values[i].to_string();
-    }
-    stdout.printf("%s\n", result);
 }
 
 void main() {
-    int[] values = { 5, 2, 8, 1, 9, 3 };
+    var cart = new Cart(new NoDiscount());
+    stdout.printf("%.2f\n", cart.total(100.0));
 
-    var context = new SortContext(new AscendingSort());
-    context.execute(values);
-    print_array(values);
+    cart.strategy = new PercentageDiscount(20.0);
+    stdout.printf("%.2f\n", cart.total(100.0));
 
-    context.set_strategy(new DescendingSort());
-    context.execute(values);
-    print_array(values);
+    cart.strategy = new FlatDiscount(15.0);
+    stdout.printf("%.2f\n", cart.total(100.0));
 }

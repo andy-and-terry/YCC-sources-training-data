@@ -3,13 +3,12 @@
 #include <string>
 #include <vector>
 
-// The Pimpl (pointer-to-implementation) idiom hides a class's private
-// state and dependencies behind an opaque pointer, so changes to the
-// implementation don't force recompilation of client code and the
-// public header stays free of internal includes.
+// The PIMPL ("pointer to implementation") idiom hides a class's private
+// data/implementation behind an opaque pointer, so changing the private
+// details never forces callers to recompile against a new header.
 class Widget {
 public:
-    Widget();
+    Widget(std::string name, int priority);
     ~Widget();
     Widget(Widget&&) noexcept;
     Widget& operator=(Widget&&) noexcept;
@@ -21,43 +20,40 @@ public:
 
 private:
     class Impl;
-    std::unique_ptr<Impl> impl_;
+    std::unique_ptr<Impl> pImpl;
 };
 
 class Widget::Impl {
 public:
+    Impl(std::string n, int p) : name(std::move(n)), priority(p) {}
+
+    std::string name;
+    int priority;
     std::vector<std::string> tags;
-    int internalCounter = 0;
-
-    void addTag(const std::string& tag) {
-        tags.push_back(tag);
-        internalCounter++;
-    }
-
-    void describe() const {
-        std::cout << "widget with " << tags.size() << " tag(s), counter="
-                  << internalCounter << ": ";
-        for (const auto& t : tags) std::cout << t << " ";
-        std::cout << std::endl;
-    }
 };
 
-Widget::Widget() : impl_(std::make_unique<Impl>()) {}
+Widget::Widget(std::string name, int priority)
+    : pImpl(std::make_unique<Impl>(std::move(name), priority)) {}
+
 Widget::~Widget() = default;
 Widget::Widget(Widget&&) noexcept = default;
 Widget& Widget::operator=(Widget&&) noexcept = default;
 
-void Widget::addTag(const std::string& tag) { impl_->addTag(tag); }
-void Widget::describe() const { impl_->describe(); }
+void Widget::addTag(const std::string& tag) { pImpl->tags.push_back(tag); }
+
+void Widget::describe() const {
+    std::cout << pImpl->name << " (priority " << pImpl->priority << ") tags: ";
+    for (auto& tag : pImpl->tags) std::cout << tag << " ";
+    std::cout << std::endl;
+}
 
 int main() {
-    Widget w;
-    w.addTag("alpha");
-    w.addTag("beta");
+    Widget w("task-queue", 3);
+    w.addTag("backend");
+    w.addTag("async");
     w.describe();
 
     Widget w2 = std::move(w);
-    w2.addTag("gamma");
     w2.describe();
 
     return 0;

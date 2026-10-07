@@ -1,76 +1,66 @@
 #include <iostream>
+#include <map>
 #include <memory>
 #include <string>
-#include <sstream>
-#include <vector>
 
-// Grammar: Expression ::= Number | Expression '+' Expression | Expression '-' Expression
 class Expression {
 public:
+    virtual int interpret(const std::map<std::string, int>& context) const = 0;
     virtual ~Expression() = default;
-    virtual int interpret() const = 0;
 };
 
 class Number : public Expression {
 public:
-    explicit Number(int value) : value_(value) {}
-    int interpret() const override { return value_; }
+    explicit Number(int value) : value(value) {}
+    int interpret(const std::map<std::string, int>&) const override { return value; }
 
 private:
-    int value_;
+    int value;
+};
+
+class Variable : public Expression {
+public:
+    explicit Variable(std::string name) : name(std::move(name)) {}
+    int interpret(const std::map<std::string, int>& context) const override {
+        return context.at(name);
+    }
+
+private:
+    std::string name;
 };
 
 class Add : public Expression {
 public:
-    Add(std::unique_ptr<Expression> lhs, std::unique_ptr<Expression> rhs)
-        : lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
-    int interpret() const override { return lhs_->interpret() + rhs_->interpret(); }
-
-private:
-    std::unique_ptr<Expression> lhs_;
-    std::unique_ptr<Expression> rhs_;
-};
-
-class Subtract : public Expression {
-public:
-    Subtract(std::unique_ptr<Expression> lhs, std::unique_ptr<Expression> rhs)
-        : lhs_(std::move(lhs)), rhs_(std::move(rhs)) {}
-    int interpret() const override { return lhs_->interpret() - rhs_->interpret(); }
-
-private:
-    std::unique_ptr<Expression> lhs_;
-    std::unique_ptr<Expression> rhs_;
-};
-
-// Parses a simple space-separated postfix expression like "5 3 + 2 -"
-std::unique_ptr<Expression> parsePostfix(const std::string& tokens) {
-    std::vector<std::unique_ptr<Expression>> stack;
-    std::istringstream iss(tokens);
-    std::string tok;
-    while (iss >> tok) {
-        if (tok == "+" || tok == "-") {
-            auto rhs = std::move(stack.back());
-            stack.pop_back();
-            auto lhs = std::move(stack.back());
-            stack.pop_back();
-            if (tok == "+") {
-                stack.push_back(std::make_unique<Add>(std::move(lhs), std::move(rhs)));
-            } else {
-                stack.push_back(std::make_unique<Subtract>(std::move(lhs), std::move(rhs)));
-            }
-        } else {
-            stack.push_back(std::make_unique<Number>(std::stoi(tok)));
-        }
+    Add(std::unique_ptr<Expression> left, std::unique_ptr<Expression> right)
+        : left(std::move(left)), right(std::move(right)) {}
+    int interpret(const std::map<std::string, int>& context) const override {
+        return left->interpret(context) + right->interpret(context);
     }
-    return std::move(stack.back());
-}
+
+private:
+    std::unique_ptr<Expression> left, right;
+};
+
+class Multiply : public Expression {
+public:
+    Multiply(std::unique_ptr<Expression> left, std::unique_ptr<Expression> right)
+        : left(std::move(left)), right(std::move(right)) {}
+    int interpret(const std::map<std::string, int>& context) const override {
+        return left->interpret(context) * right->interpret(context);
+    }
+
+private:
+    std::unique_ptr<Expression> left, right;
+};
 
 int main() {
-    auto expr = parsePostfix("5 3 + 2 -");
-    std::cout << "5 3 + 2 - = " << expr->interpret() << std::endl;
+    // Builds (x + 3) * y
+    std::unique_ptr<Expression> expr = std::make_unique<Multiply>(
+        std::make_unique<Add>(std::make_unique<Variable>("x"), std::make_unique<Number>(3)),
+        std::make_unique<Variable>("y"));
 
-    auto expr2 = parsePostfix("10 4 - 3 +");
-    std::cout << "10 4 - 3 + = " << expr2->interpret() << std::endl;
+    std::map<std::string, int> context = {{"x", 2}, {"y", 5}};
+    std::cout << "(x + 3) * y = " << expr->interpret(context) << std::endl;
 
     return 0;
 }

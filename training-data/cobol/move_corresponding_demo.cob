@@ -1,32 +1,19 @@
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. MOVECORRESPONDINGDEMO.
+       PROGRAM-ID. MOVECORR.
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01 EMPLOYEE-IN.
-           05 EMP-ID PIC 9(4).
-           05 EMP-NAME PIC X(12).
-           05 EMP-SALARY PIC 9(5)V99.
-           05 EMP-DEPT PIC X(4).
-       01 EMPLOYEE-OUT.
-           05 EMP-ID PIC 9(4).
-           05 EMP-NAME PIC X(12).
-           05 EMP-SALARY PIC 9(5)V99.
-           05 EMP-LEVEL PIC 9(1).
+       01 INPUT-REC.
+          05 NAME PIC X(10) VALUE "ALICE".
+          05 AGE PIC 99 VALUE 30.
+          05 CITY PIC X(10) VALUE "PARIS".
+       01 OUTPUT-REC.
+          05 CITY PIC X(10).
+          05 NAME PIC X(10).
+          05 SCORE PIC 999 VALUE 100.
 
        PROCEDURE DIVISION.
-           MOVE 1001 TO EMP-ID OF EMPLOYEE-IN
-           MOVE "ADA LOVELACE" TO EMP-NAME OF EMPLOYEE-IN
-           MOVE 75000.50 TO EMP-SALARY OF EMPLOYEE-IN
-           MOVE "ENG " TO EMP-DEPT OF EMPLOYEE-IN
-           MOVE 3 TO EMP-LEVEL OF EMPLOYEE-OUT
-
-      *    Only fields with matching names (EMP-ID, EMP-NAME,
-      *    EMP-SALARY) are copied; EMP-DEPT and EMP-LEVEL have no
-      *    counterpart in the other record and are left untouched.
-           MOVE CORRESPONDING EMPLOYEE-IN TO EMPLOYEE-OUT
-
-           DISPLAY "ID: " EMP-ID OF EMPLOYEE-OUT
-           DISPLAY "NAME: " EMP-NAME OF EMPLOYEE-OUT
-           DISPLAY "SALARY: " EMP-SALARY OF EMPLOYEE-OUT
-           DISPLAY "LEVEL (UNCHANGED): " EMP-LEVEL OF EMPLOYEE-OUT
+           MOVE CORRESPONDING INPUT-REC TO OUTPUT-REC
+           DISPLAY "NAME: " NAME OF OUTPUT-REC
+           DISPLAY "CITY: " CITY OF OUTPUT-REC
+           DISPLAY "SCORE: " SCORE
            STOP RUN.

@@ -1,61 +1,26 @@
-module DecoratorPattern exposing
-    ( Coffee
-    , cost
-    , describe
-    , plainCoffee
-    , withMilk
-    , withSugar
-    , withWhippedCream
-    )
+module DecoratorPattern exposing (Greeter, exclaim, shout, withGreeting)
 
-{-| The Gang-of-Four Decorator pattern in Elm: instead of wrapping objects at
-runtime, each decorator is a plain function `Coffee -> Coffee` that returns a
-new, immutable value with the added behavior folded in. Decorators compose
-with ordinary function (or `|>` pipeline) composition, no wrapper classes
-needed.
+{-| The Gang-of-Four Decorator pattern needs no wrapper objects in Elm:
+"decorating" a function just means composing it with another function of
+the same shape, layering extra behavior around the original without
+modifying it.
 -}
 
 
-type alias Coffee =
-    { description : String
-    , price : Float
-    }
+type alias Greeter =
+    String -> String
 
 
-plainCoffee : Coffee
-plainCoffee =
-    { description = "Coffee", price = 2.0 }
+withGreeting : Greeter
+withGreeting name =
+    "Hello, " ++ name ++ "."
 
 
-withMilk : Coffee -> Coffee
-withMilk coffee =
-    { coffee
-        | description = coffee.description ++ " + milk"
-        , price = coffee.price + 0.5
-    }
+shout : Greeter -> Greeter
+shout greeter name =
+    String.toUpper (greeter name)
 
 
-withSugar : Coffee -> Coffee
-withSugar coffee =
-    { coffee
-        | description = coffee.description ++ " + sugar"
-        , price = coffee.price + 0.25
-    }
-
-
-withWhippedCream : Coffee -> Coffee
-withWhippedCream coffee =
-    { coffee
-        | description = coffee.description ++ " + whipped cream"
-        , price = coffee.price + 0.75
-    }
-
-
-describe : Coffee -> String
-describe coffee =
-    coffee.description ++ " ($" ++ String.fromFloat coffee.price ++ ")"
-
-
-cost : Coffee -> Float
-cost coffee =
-    coffee.price
+exclaim : Greeter -> Greeter
+exclaim greeter name =
+    greeter name ++ "!"

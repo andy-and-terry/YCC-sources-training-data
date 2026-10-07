@@ -1,54 +1,59 @@
 public class CompositePattern {
-    public interface FileSystemComponent {
-        Integer getSize();
+    public interface OrgUnit {
         String getName();
+        Integer getHeadcount();
     }
 
-    public class FileLeaf implements FileSystemComponent {
+    public class Employee implements OrgUnit {
         private String name;
-        private Integer size;
-        public FileLeaf(String name, Integer size) {
+
+        public Employee(String name) {
             this.name = name;
-            this.size = size;
         }
-        public Integer getSize() {
-            return size;
-        }
+
         public String getName() {
             return name;
         }
+
+        public Integer getHeadcount() {
+            return 1;
+        }
     }
 
-    public class FolderComposite implements FileSystemComponent {
+    public class Department implements OrgUnit {
         private String name;
-        private List<FileSystemComponent> children = new List<FileSystemComponent>();
-        public FolderComposite(String name) {
+        private List<OrgUnit> members = new List<OrgUnit>();
+
+        public Department(String name) {
             this.name = name;
         }
-        public void add(FileSystemComponent component) {
-            children.add(component);
+
+        public void addMember(OrgUnit unit) {
+            members.add(unit);
         }
-        public Integer getSize() {
+
+        public String getName() {
+            return name;
+        }
+
+        public Integer getHeadcount() {
             Integer total = 0;
-            for (FileSystemComponent child : children) {
-                total += child.getSize();
+            for (OrgUnit unit : members) {
+                total += unit.getHeadcount();
             }
             return total;
-        }
-        public String getName() {
-            return name;
         }
     }
 
     public static void main() {
-        FolderComposite root = new FolderComposite('root');
-        FolderComposite docs = new FolderComposite('docs');
-        docs.add(new FileLeaf('readme.txt', 10));
-        docs.add(new FileLeaf('notes.txt', 5));
-        root.add(docs);
-        root.add(new FileLeaf('image.png', 100));
+        Department engineering = new Department('Engineering');
+        engineering.addMember(new Employee('Ada'));
+        engineering.addMember(new Employee('Grace'));
 
-        System.debug(root.getName() + ': ' + root.getSize());
-        System.debug(docs.getName() + ': ' + docs.getSize());
+        Department backend = new Department('Backend');
+        backend.addMember(new Employee('Linus'));
+        engineering.addMember(backend);
+
+        System.debug(engineering.getName() + ' headcount: ' + engineering.getHeadcount());
     }
 }

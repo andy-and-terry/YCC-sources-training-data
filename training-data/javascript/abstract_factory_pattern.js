@@ -1,52 +1,47 @@
-// GoF Abstract Factory: families of related products created through a
-// single interface, without the client naming concrete classes.
-class WindowsButton {
+// Abstract Factory: produce families of related objects (a UI theme's
+// button + checkbox) without the client code knowing the concrete classes.
+class LightButton {
   render() {
-    return 'rendering a Windows-style button';
+    return 'light button';
   }
 }
 
-class WindowsCheckbox {
+class LightCheckbox {
   render() {
-    return 'rendering a Windows-style checkbox';
+    return 'light checkbox';
   }
 }
 
-class MacButton {
+class DarkButton {
   render() {
-    return 'rendering a Mac-style button';
+    return 'dark button';
   }
 }
 
-class MacCheckbox {
+class DarkCheckbox {
   render() {
-    return 'rendering a Mac-style checkbox';
+    return 'dark checkbox';
   }
 }
 
-class WindowsFactory {
+class LightThemeFactory {
   createButton() {
-    return new WindowsButton();
+    return new LightButton();
   }
+
   createCheckbox() {
-    return new WindowsCheckbox();
+    return new LightCheckbox();
   }
 }
 
-class MacFactory {
+class DarkThemeFactory {
   createButton() {
-    return new MacButton();
+    return new DarkButton();
   }
-  createCheckbox() {
-    return new MacCheckbox();
-  }
-}
 
-function getFactory(os) {
-  const factories = { windows: WindowsFactory, mac: MacFactory };
-  const Ctor = factories[os];
-  if (!Ctor) throw new Error(`unknown os: ${os}`);
-  return new Ctor();
+  createCheckbox() {
+    return new DarkCheckbox();
+  }
 }
 
 function renderUi(factory) {
@@ -55,7 +50,7 @@ function renderUi(factory) {
   return [button.render(), checkbox.render()];
 }
 
-console.log(renderUi(getFactory('windows')));
-console.log(renderUi(getFactory('mac')));
+console.log(renderUi(new LightThemeFactory()));
+console.log(renderUi(new DarkThemeFactory()));
 
-module.exports = { WindowsFactory, MacFactory, getFactory, renderUi };
+module.exports = { LightThemeFactory, DarkThemeFactory };

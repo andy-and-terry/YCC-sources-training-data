@@ -11,11 +11,13 @@ class RealImage
   private
 
   def load_from_disk
-    puts "loading #{@filename} from disk"
+    puts "loading #{@filename} from disk (expensive)"
   end
 end
 
-class LazyImageProxy
+# The proxy stands in for RealImage and defers the expensive load until
+# the image is actually displayed -- callers can't tell the difference.
+class ImageProxy
   def initialize(filename)
     @filename = filename
     @real_image = nil
@@ -27,8 +29,9 @@ class LazyImageProxy
   end
 end
 
-puts "proxy created, nothing loaded yet"
-image = LazyImageProxy.new("photo.png")
-puts "displaying twice:"
-image.display
-image.display
+images = [ImageProxy.new("photo1.png"), ImageProxy.new("photo2.png")]
+
+puts "proxies created, nothing loaded yet"
+images.first.display
+images.first.display # no reload the second time
+images.last.display

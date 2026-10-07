@@ -1,31 +1,31 @@
 type
+  ShapeKind = enum
+    skCircle, skSquare
+
   Shape = ref object of RootObj
+
+  Circle = ref object of Shape
+    radius: float
+
+  Square = ref object of Shape
+    side: float
 
 method area(s: Shape): float {.base.} =
   discard
 
-type
-  Circle = ref object of Shape
-    radius: float
-
-  Rectangle = ref object of Shape
-    width, height: float
-
 method area(s: Circle): float =
   3.14159 * s.radius * s.radius
 
-method area(s: Rectangle): float =
-  s.width * s.height
+method area(s: Square): float =
+  s.side * s.side
 
-proc createShape(kind: string, a, b: float): Shape =
+proc createShape(kind: ShapeKind): Shape =
   case kind
-  of "circle": Circle(radius: a)
-  of "rectangle": Rectangle(width: a, height: b)
-  else: raise newException(ValueError, "unknown shape kind: " & kind)
+  of skCircle:
+    Circle(radius: 2.0)
+  of skSquare:
+    Square(side: 3.0)
 
-let shapes = @[
-  createShape("circle", 2.0, 0.0),
-  createShape("rectangle", 3.0, 4.0)
-]
-for s in shapes:
-  echo area(s)
+for kind in [skCircle, skSquare]:
+  let shape = createShape(kind)
+  echo area(shape)

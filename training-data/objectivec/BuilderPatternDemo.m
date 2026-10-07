@@ -1,79 +1,65 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#import <Foundation/Foundation.h>
 
-// Deliberately Foundation-free: this sandbox only has bare clang (no
-// Foundation framework). See StrategyPatternDemo.m for the root-class
-// convention this file (and the other pattern demos) follow.
-
-@interface Car
-{
-@public
-    Class isa;
-    char engine[32];
-    int wheels;
-    int hasGPS;
-}
-+ (instancetype)new;
-- (void)describe;
+@interface Pizza : NSObject
+@property (nonatomic, copy) NSString *size;
+@property (nonatomic, strong) NSMutableArray<NSString *> *toppings;
+- (NSString *)describe;
 @end
 
-@implementation Car
-+ (instancetype)new {
-    Car *obj = (Car *)calloc(1, sizeof(Car));
-    obj->isa = self;
-    return obj;
-}
-- (void)describe {
-    printf("Car[engine=%s, wheels=%d, gps=%s]\n", engine, wheels, hasGPS ? "yes" : "no");
-}
-@end
-
-@interface CarBuilder
-{
-@public
-    Class isa;
-    Car *car;
-}
-+ (instancetype)new;
-- (instancetype)setEngine:(const char *)engine;
-- (instancetype)setWheels:(int)wheels;
-- (instancetype)addGPS;
-- (Car *)build;
-@end
-
-@implementation CarBuilder
-+ (instancetype)new {
-    CarBuilder *obj = (CarBuilder *)calloc(1, sizeof(CarBuilder));
-    obj->isa = self;
-    obj->car = [Car new];
-    return obj;
-}
-- (instancetype)setEngine:(const char *)engine {
-    strncpy(car->engine, engine, sizeof(car->engine) - 1);
+@implementation Pizza
+- (instancetype)init {
+    self = [super init];
+    if (self) _toppings = [NSMutableArray array];
     return self;
 }
-- (instancetype)setWheels:(int)wheels {
-    car->wheels = wheels;
-    return self;
-}
-- (instancetype)addGPS {
-    car->hasGPS = 1;
-    return self;
-}
-- (Car *)build {
-    return car;
+- (NSString *)describe {
+    return [NSString stringWithFormat:@"%@ pizza with %@", self.size,
+            [self.toppings componentsJoinedByString:@", "]];
 }
 @end
 
-int main(void) {
-    CarBuilder *builder = [CarBuilder new];
-    Car *sedan = [[[[builder setEngine:"V6"] setWheels:4] addGPS] build];
-    [sedan describe];
+// The builder assembles a Pizza step by step and returns itself from each
+// step, so calls can be chained before the final object is produced.
+@interface PizzaBuilder : NSObject
+- (instancetype)setSize:(NSString *)size;
+- (instancetype)addTopping:(NSString *)topping;
+- (Pizza *)build;
+@end
 
-    CarBuilder *builder2 = [CarBuilder new];
-    Car *stripped = [[[builder2 setEngine:"I4"] setWheels:4] build];
-    [stripped describe];
+@implementation PizzaBuilder {
+    Pizza *_pizza;
+}
 
+- (instancetype)init {
+    self = [super init];
+    if (self) _pizza = [[Pizza alloc] init];
+    return self;
+}
+
+- (instancetype)setSize:(NSString *)size {
+    _pizza.size = size;
+    return self;
+}
+
+- (instancetype)addTopping:(NSString *)topping {
+    [_pizza.toppings addObject:topping];
+    return self;
+}
+
+- (Pizza *)build {
+    return _pizza;
+}
+
+@end
+
+int main(int argc, const char *argv[]) {
+    @autoreleasepool {
+        Pizza *pizza = [[[[[PizzaBuilder alloc] init]
+            setSize:@"Large"]
+            addTopping:@"mushrooms"]
+            addTopping:@"olives"]
+            build];
+        NSLog(@"%@", [pizza describe]);
+    }
     return 0;
 }

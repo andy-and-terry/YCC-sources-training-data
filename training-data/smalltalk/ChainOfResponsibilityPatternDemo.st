@@ -1,25 +1,35 @@
-Object subclass: Approver [
-    | name limit successor |
-    name: n limit: aLimit successor: aSuccessor [
-        name := n. limit := aLimit. successor := aSuccessor
-    ]
-    approve: amount [
-        amount <= limit
-            ifTrue: [ ^name, ' approved ', amount printString ]
+Object subclass: SupportHandler [
+    | nextHandler |
+    next: aHandler [ nextHandler := aHandler ]
+    handle: level issue: issue [
+        (self canHandle: level)
+            ifTrue: [ Transcript showCr: self class name, ' handled: ', issue ]
             ifFalse: [
-                successor isNil
-                    ifTrue: [ ^'no approver available for ', amount printString ]
-                    ifFalse: [ ^successor approve: amount ]
+                nextHandler isNil
+                    ifTrue: [ Transcript showCr: 'No handler available for: ', issue ]
+                    ifFalse: [ nextHandler handle: level issue: issue ]
             ]
     ]
+    canHandle: level [ ^self subclassResponsibility ]
 ]
 
-| director manager supervisor |
-director := Approver new name: 'Director' limit: 100000 successor: nil; yourself.
-manager := Approver new name: 'Manager' limit: 10000 successor: director; yourself.
-supervisor := Approver new name: 'Supervisor' limit: 1000 successor: manager; yourself.
+SupportHandler subclass: TierOneSupport [
+    canHandle: level [ ^level <= 1 ]
+]
 
-Transcript showCr: (supervisor approve: 500).
-Transcript showCr: (supervisor approve: 5000).
-Transcript showCr: (supervisor approve: 50000).
-Transcript showCr: (supervisor approve: 500000).
+SupportHandler subclass: TierTwoSupport [
+    canHandle: level [ ^level <= 2 ]
+]
+
+SupportHandler subclass: TierThreeSupport [
+    canHandle: level [ ^level <= 3 ]
+]
+
+| tier1 tier2 tier3 |
+tier3 := TierThreeSupport new.
+tier2 := TierTwoSupport new next: tier3; yourself.
+tier1 := TierOneSupport new next: tier2; yourself.
+
+tier1 handle: 1 issue: 'password reset'.
+tier1 handle: 3 issue: 'database outage'.
+tier1 handle: 5 issue: 'unknown catastrophe'.

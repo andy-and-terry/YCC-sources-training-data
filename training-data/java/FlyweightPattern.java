@@ -2,47 +2,67 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FlyweightPattern {
-    interface Glyph {
-        void render(int x, int y);
-    }
+    static class TreeType {
+        final String name;
+        final String color;
+        final String texture;
 
-    static class CharacterGlyph implements Glyph {
-        private final char symbol;
-        private final String font;
-
-        CharacterGlyph(char symbol, String font) {
-            this.symbol = symbol;
-            this.font = font;
+        TreeType(String name, String color, String texture) {
+            this.name = name;
+            this.color = color;
+            this.texture = texture;
         }
 
-        @Override
-        public void render(int x, int y) {
-            System.out.println("'" + symbol + "' (" + font + ") at (" + x + "," + y + ")");
+        void render(int x, int y) {
+            System.out.println("rendering " + name + " (" + color + ", " + texture + ") at (" + x + "," + y + ")");
         }
     }
 
-    static class GlyphFactory {
-        private final Map<String, Glyph> pool = new HashMap<>();
+    static class TreeTypeFactory {
+        private final Map<String, TreeType> cache = new HashMap<>();
 
-        Glyph getGlyph(char symbol, String font) {
-            String key = symbol + "|" + font;
-            return pool.computeIfAbsent(key, k -> new CharacterGlyph(symbol, font));
+        TreeType get(String name, String color, String texture) {
+            String key = name + "|" + color + "|" + texture;
+            return cache.computeIfAbsent(key, k -> {
+                System.out.println("creating new TreeType for " + key);
+                return new TreeType(name, color, texture);
+            });
         }
 
-        int poolSize() {
-            return pool.size();
+        int typeCount() {
+            return cache.size();
+        }
+    }
+
+    static class Tree {
+        int x;
+        int y;
+        TreeType type;
+
+        Tree(int x, int y, TreeType type) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        }
+
+        void render() {
+            type.render(x, y);
         }
     }
 
     public static void main(String[] args) {
-        GlyphFactory factory = new GlyphFactory();
-        String text = "hello";
-        int x = 0;
-        for (char c : text.toCharArray()) {
-            Glyph g = factory.getGlyph(c, "monospace");
-            g.render(x, 0);
-            x += 10;
+        TreeTypeFactory factory = new TreeTypeFactory();
+        Tree[] forest = {
+            new Tree(1, 1, factory.get("Oak", "green", "rough")),
+            new Tree(2, 5, factory.get("Oak", "green", "rough")),
+            new Tree(8, 3, factory.get("Pine", "dark-green", "needled")),
+            new Tree(4, 9, factory.get("Oak", "green", "rough")),
+        };
+
+        for (Tree tree : forest) {
+            tree.render();
         }
-        System.out.println("distinct glyphs created: " + factory.poolSize());
+        System.out.println("distinct tree types created: " + factory.typeCount());
+        System.out.println("trees placed: " + forest.length);
     }
 }

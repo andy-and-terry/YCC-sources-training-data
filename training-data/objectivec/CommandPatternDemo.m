@@ -1,129 +1,86 @@
-#include <stdio.h>
-#include <stdlib.h>
+#import <Foundation/Foundation.h>
 
-// Deliberately Foundation-free: this sandbox only has bare clang (no
-// Foundation framework). See StrategyPatternDemo.m for the root-class
-// convention this file (and the other pattern demos) follow.
-
-@protocol Command
-- (void)execute;
-- (void)undo;
-@end
-
-@interface Light
-{
-@public
-    Class isa;
-    int isOn;
-}
-+ (instancetype)new;
+// The receiver that commands ultimately act on.
+@interface Light : NSObject
+@property (nonatomic) BOOL isOn;
 - (void)turnOn;
 - (void)turnOff;
 @end
 
 @implementation Light
-+ (instancetype)new {
-    Light *obj = (Light *)calloc(1, sizeof(Light));
-    obj->isa = self;
-    return obj;
-}
-- (void)turnOn {
-    isOn = 1;
-    printf("light is ON\n");
-}
-- (void)turnOff {
-    isOn = 0;
-    printf("light is OFF\n");
-}
+- (void)turnOn { self.isOn = YES; NSLog(@"Light is ON"); }
+- (void)turnOff { self.isOn = NO; NSLog(@"Light is OFF"); }
 @end
 
-@interface LightOnCommand <Command>
-{
-@public
-    Class isa;
-    Light *light;
-}
-+ (instancetype)newWithLight:(Light *)light;
+// Each concrete command encapsulates a receiver plus the action to invoke
+// on it, so the invoker never needs to know about Light directly.
+@protocol Command <NSObject>
+- (void)execute;
+- (void)undo;
+@end
+
+@interface LightOnCommand : NSObject <Command>
+@property (nonatomic, strong) Light *light;
+- (instancetype)initWithLight:(Light *)light;
 @end
 
 @implementation LightOnCommand
-+ (instancetype)newWithLight:(Light *)l {
-    LightOnCommand *obj = (LightOnCommand *)calloc(1, sizeof(LightOnCommand));
-    obj->isa = self;
-    obj->light = l;
-    return obj;
+- (instancetype)initWithLight:(Light *)light {
+    self = [super init];
+    if (self) _light = light;
+    return self;
 }
-- (void)execute {
-    [light turnOn];
-}
-- (void)undo {
-    [light turnOff];
-}
+- (void)execute { [self.light turnOn]; }
+- (void)undo { [self.light turnOff]; }
 @end
 
-@interface LightOffCommand <Command>
-{
-@public
-    Class isa;
-    Light *light;
-}
-+ (instancetype)newWithLight:(Light *)light;
+@interface LightOffCommand : NSObject <Command>
+@property (nonatomic, strong) Light *light;
+- (instancetype)initWithLight:(Light *)light;
 @end
 
 @implementation LightOffCommand
-+ (instancetype)newWithLight:(Light *)l {
-    LightOffCommand *obj = (LightOffCommand *)calloc(1, sizeof(LightOffCommand));
-    obj->isa = self;
-    obj->light = l;
-    return obj;
+- (instancetype)initWithLight:(Light *)light {
+    self = [super init];
+    if (self) _light = light;
+    return self;
 }
-- (void)execute {
-    [light turnOff];
-}
-- (void)undo {
-    [light turnOn];
-}
+- (void)execute { [self.light turnOff]; }
+- (void)undo { [self.light turnOn]; }
 @end
 
-@interface RemoteControl
-{
-@public
-    Class isa;
-    id<Command> history[8];
-    int historyCount;
-}
-+ (instancetype)new;
-- (void)pressButton:(id<Command>)command;
+@interface RemoteControl : NSObject
+@property (nonatomic, strong) NSMutableArray<id<Command>> *history;
+- (void)press:(id<Command>)command;
 - (void)pressUndo;
 @end
 
 @implementation RemoteControl
-+ (instancetype)new {
-    RemoteControl *obj = (RemoteControl *)calloc(1, sizeof(RemoteControl));
-    obj->isa = self;
-    return obj;
+- (instancetype)init {
+    self = [super init];
+    if (self) _history = [NSMutableArray array];
+    return self;
 }
-- (void)pressButton:(id<Command>)command {
+- (void)press:(id<Command>)command {
     [command execute];
-    history[historyCount++] = command;
+    [self.history addObject:command];
 }
 - (void)pressUndo {
-    if (historyCount == 0) return;
-    id<Command> last = history[--historyCount];
-    [last undo];
+    id<Command> last = self.history.lastObject;
+    if (last) {
+        [last undo];
+        [self.history removeLastObject];
+    }
 }
 @end
 
-int main(void) {
-    Light *light = [Light new];
-    id<Command> on = [LightOnCommand newWithLight:light];
-    id<Command> off = [LightOffCommand newWithLight:light];
-
-    RemoteControl *remote = [RemoteControl new];
-    [remote pressButton:on];
-    [remote pressButton:off];
-    [remote pressUndo];
-    [remote pressUndo];
-
+int main(int argc, const char *argv[]) {
+    @autoreleasepool {
+        Light *light = [[Light alloc] init];
+        RemoteControl *remote = [[RemoteControl alloc] init];
+        [remote press:[[LightOnCommand alloc] initWithLight:light]];
+        [remote press:[[LightOffCommand alloc] initWithLight:light]];
+        [remote pressUndo];
+    }
     return 0;
 }

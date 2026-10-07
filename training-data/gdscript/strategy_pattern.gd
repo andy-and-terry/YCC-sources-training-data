@@ -1,36 +1,39 @@
 extends Node
 
-class SortStrategy:
-	func sort(data: Array) -> Array:
-		return data
+class PricingStrategy:
+	func price(amount: float) -> float:
+		return amount
 
-class AscendingStrategy extends SortStrategy:
-	func sort(data: Array) -> Array:
-		var result = data.duplicate()
-		result.sort()
-		return result
+class RegularPricing extends PricingStrategy:
+	func price(amount: float) -> float:
+		return amount
 
-class DescendingStrategy extends SortStrategy:
-	func sort(data: Array) -> Array:
-		var result = data.duplicate()
-		result.sort()
-		result.reverse()
-		return result
+class StudentDiscount extends PricingStrategy:
+	func price(amount: float) -> float:
+		return amount * 0.8
 
-class Sorter:
-	var strategy: SortStrategy
+class LoyaltyDiscount extends PricingStrategy:
+	func price(amount: float) -> float:
+		return amount * 0.9 - 5.0
 
-	func _init(s: SortStrategy):
+class Checkout:
+	var strategy: PricingStrategy
+
+	func _init(s: PricingStrategy):
 		strategy = s
 
-	func set_strategy(s: SortStrategy) -> void:
+	func set_strategy(s: PricingStrategy) -> void:
 		strategy = s
 
-	func execute(data: Array) -> Array:
-		return strategy.sort(data)
+	func total(amount: float) -> float:
+		return strategy.price(amount)
 
 func _ready():
-	var sorter = Sorter.new(AscendingStrategy.new())
-	print(sorter.execute([5, 2, 8, 1, 9]))
-	sorter.set_strategy(DescendingStrategy.new())
-	print(sorter.execute([5, 2, 8, 1, 9]))
+	var checkout = Checkout.new(RegularPricing.new())
+	print(checkout.total(100.0))
+
+	checkout.set_strategy(StudentDiscount.new())
+	print(checkout.total(100.0))
+
+	checkout.set_strategy(LoyaltyDiscount.new())
+	print(checkout.total(100.0))

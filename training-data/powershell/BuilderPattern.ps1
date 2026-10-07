@@ -8,29 +8,28 @@ class Pizza {
     }
 
     [string] Describe() {
-        $toppingList = if ($this.Toppings.Count -gt 0) { $this.Toppings -join ', ' } else { 'none' }
-        return "$($this.Size) pizza with toppings: $toppingList"
+        return "$($this.Size) pizza with toppings: $($this.Toppings -join ', ')"
     }
 }
 
 class PizzaBuilder {
-    hidden [string]$size = 'medium'
-    hidden [System.Collections.Generic.List[string]]$toppings = [System.Collections.Generic.List[string]]::new()
+    [string]$Size = 'medium'
+    [System.Collections.Generic.List[string]]$Toppings = [System.Collections.Generic.List[string]]::new()
 
-    [PizzaBuilder] WithSize([string]$size) {
-        $this.size = $size
+    [PizzaBuilder] SetSize([string]$size) {
+        $this.Size = $size
         return $this
     }
 
     [PizzaBuilder] AddTopping([string]$topping) {
-        $this.toppings.Add($topping)
+        $this.Toppings.Add($topping)
         return $this
     }
 
     [Pizza] Build() {
-        return [Pizza]::new($this.size, $this.toppings.ToArray())
+        return [Pizza]::new($this.Size, $this.Toppings.ToArray())
     }
 }
 
-$pizza = [PizzaBuilder]::new().WithSize('large').AddTopping('mozzarella').AddTopping('basil').Build()
+$pizza = [PizzaBuilder]::new().SetSize('large').AddTopping('cheese').AddTopping('pepperoni').Build()
 $pizza.Describe()

@@ -1,6 +1,3 @@
-// GoF State pattern: behavior changes based on an internal state object,
-// modeled here with a sealed trait so the compiler can check exhaustiveness
-// of any `match` over the state hierarchy.
 sealed trait TrafficLightState {
   def next: TrafficLightState
   def name: String
@@ -21,19 +18,14 @@ case object Yellow extends TrafficLightState {
   def name: String = "Yellow"
 }
 
-class TrafficLight {
-  private var state: TrafficLightState = Red
-
+class TrafficLight(private var state: TrafficLightState) {
   def current: String = state.name
-
-  def advance(): Unit = {
-    state = state.next
-  }
+  def advance(): Unit = { state = state.next }
 }
 
 object StatePatternDemo {
   def main(args: Array[String]): Unit = {
-    val light = new TrafficLight()
+    val light = new TrafficLight(Red)
     for (_ <- 1 to 5) {
       println(light.current)
       light.advance()

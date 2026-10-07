@@ -1,59 +1,45 @@
 import std.stdio;
+import std.array : join;
 
 class Pizza {
-    string size;
-    bool cheese;
-    bool pepperoni;
-    bool mushrooms;
+    private string size;
+    private string[] toppings;
+
+    this(string size, string[] toppings) {
+        this.size = size;
+        this.toppings = toppings;
+    }
 
     override string toString() {
-        string toppings;
-        if (cheese) toppings ~= " cheese";
-        if (pepperoni) toppings ~= " pepperoni";
-        if (mushrooms) toppings ~= " mushrooms";
-        return size ~ " pizza with:" ~ (toppings.length ? toppings : " nothing");
+        return size ~ " pizza with " ~ toppings.join(", ");
     }
 }
 
 class PizzaBuilder {
-    private Pizza pizza;
+    private string size_ = "medium";
+    private string[] toppings_;
 
-    this() {
-        pizza = new Pizza();
-        pizza.size = "medium";
-    }
-
-    PizzaBuilder withSize(string size) {
-        pizza.size = size;
+    PizzaBuilder size(string size) {
+        size_ = size;
         return this;
     }
 
-    PizzaBuilder withCheese() {
-        pizza.cheese = true;
-        return this;
-    }
-
-    PizzaBuilder withPepperoni() {
-        pizza.pepperoni = true;
-        return this;
-    }
-
-    PizzaBuilder withMushrooms() {
-        pizza.mushrooms = true;
+    PizzaBuilder addTopping(string topping) {
+        toppings_ ~= topping;
         return this;
     }
 
     Pizza build() {
-        return pizza;
+        return new Pizza(size_, toppings_);
     }
 }
 
 void main() {
     auto pizza = new PizzaBuilder()
-        .withSize("large")
-        .withCheese()
-        .withPepperoni()
+        .size("large")
+        .addTopping("cheese")
+        .addTopping("mushroom")
         .build();
 
-    writeln(pizza.toString());
+    writeln(pizza);
 }

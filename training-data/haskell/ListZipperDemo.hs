@@ -4,30 +4,29 @@ fromList :: [a] -> Maybe (Zipper a)
 fromList [] = Nothing
 fromList (x : xs) = Just (Zipper [] x xs)
 
-left :: Zipper a -> Maybe (Zipper a)
-left (Zipper [] _ _) = Nothing
-left (Zipper (l : ls) f rs) = Just (Zipper ls l (f : rs))
+goLeft :: Zipper a -> Maybe (Zipper a)
+goLeft (Zipper [] _ _) = Nothing
+goLeft (Zipper (l : ls) f rs) = Just (Zipper ls l (f : rs))
 
-right :: Zipper a -> Maybe (Zipper a)
-right (Zipper _ _ []) = Nothing
-right (Zipper ls f (r : rs)) = Just (Zipper (f : ls) r rs)
+goRight :: Zipper a -> Maybe (Zipper a)
+goRight (Zipper _ _ []) = Nothing
+goRight (Zipper ls f (r : rs)) = Just (Zipper (f : ls) r rs)
 
 focus :: Zipper a -> a
 focus (Zipper _ f _) = f
 
-modify :: (a -> a) -> Zipper a -> Zipper a
-modify g (Zipper ls f rs) = Zipper ls (g f) rs
+setFocus :: a -> Zipper a -> Zipper a
+setFocus x (Zipper ls _ rs) = Zipper ls x rs
 
 toList :: Zipper a -> [a]
 toList (Zipper ls f rs) = reverse ls ++ [f] ++ rs
 
 main :: IO ()
 main = do
-  let Just z0 = fromList [1, 2, 3, 4, 5]
-  let Just z1 = right z0
-  let Just z2 = right z1
+  let Just z = fromList [1, 2, 3, 4, 5]
+  print (focus z)
+  let Just z1 = goRight z
+  let Just z2 = goRight z1
   print (focus z2)
-  let z3 = modify (* 100) z2
-  print (toList z3)
-  let Just z4 = left z3
-  print (focus z4)
+  print (toList (setFocus 99 z2))
+  print (goLeft z)
