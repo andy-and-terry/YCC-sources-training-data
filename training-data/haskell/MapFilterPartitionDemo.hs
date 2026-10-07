@@ -1,0 +1,20 @@
+import Data.List (partition, nub, sortOn, groupBy, tails, isPrefixOf, transpose, subsequences)
+import Data.Function (on)
+import Data.Maybe (mapMaybe, catMaybes, fromMaybe, listToMaybe)
+import Text.Read (readMaybe)
+
+main :: IO ()
+main = do
+  let nums = [1 .. 10] :: [Int]
+  print (partition even nums)
+  print (filter ((== 0) . (`mod` 3)) nums)
+  print (mapMaybe (\s -> readMaybe s :: Maybe Int) ["1", "x", "3", "4.5", "7"])
+  print (catMaybes [Just 1, Nothing, Just (3 :: Int)])
+  print (nub [3, 1, 3, 2, 1 :: Int])
+  print (sortOn negate [3, 1, 2 :: Int])
+  print (map (map snd) (groupBy ((==) `on` fst) [(1 :: Int, 'a'), (1, 'b'), (2, 'c')]))
+  print (length (filter ("an" `isPrefixOf`) (tails "banana")))
+  print (transpose ["abc", "de", "f"])
+  print (subsequences [1, 2, 3 :: Int])
+  print (fromMaybe 0 (listToMaybe ([] :: [Int])), listToMaybe [9, 8 :: Int])
+  print (take 2 (zip3 nums (tail nums) (drop 2 nums)))

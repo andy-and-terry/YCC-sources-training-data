@@ -1,0 +1,26 @@
+fprintf('%d\n', 42);
+fprintf('%5d|%-5d|%05d\n', 42, 42, 42);
+fprintf('%f\n', pi);
+fprintf('%.2f %8.3f %-8.1f|\n', pi, pi, pi);
+fprintf('%e\n', 12345.6789);
+fprintf('%g %g %g\n', 0.0001, 100000, 1e10);
+fprintf('%x %o %c\n', 255, 8, 65);
+fprintf('%s has %d items\n', 'cart', 3);
+fprintf('%d %d\n', [1 2; 3 4]);
+fprintf('Values: %s\n', num2str([1 2 3]));
+
+s = sprintf('%03d', 7);
+disp(s);
+disp(num2str(pi, 8));
+disp(num2str(1234567));
+disp(num2str([1.5 2.25; 3 4]));
+disp(mat2str([1 2; 3 4.5]));
+disp(int2str(3.7));
+disp(str2double('3.5e2'));
+disp(str2double('abc'));
+disp(str2num('[1 2 3] * 2'));
+disp(dec2bin(10));
+disp(bin2dec('1010'));
+disp(dec2hex(255));
+fprintf('%s\n', repmat('=', 1, 20));
+fprintf('%6.2f%%\n', 45.678);

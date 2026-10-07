@@ -1,0 +1,25 @@
+#lang racket
+
+(define names '("ann" "bob" "cy"))
+(define ages '(31 25 40))
+(define cities #("Rome" "Oslo" "Lima"))
+
+(for ([n (in-list names)] [a (in-list ages)] [c (in-vector cities)])
+  (printf "~a (~a) lives in ~a\n" n a c))
+
+(displayln (map list names ages))
+(displayln (for/list ([n names] [i (in-naturals 1)]) (format "~a. ~a" i n)))
+(displayln (for/hash ([n names] [a ages]) (values n a)))
+(displayln (for/list ([(n a) (in-parallel names ages)] #:when (> a 30)) n))
+(displayln (for/list ([i (in-range 10 0 -3)]) i))
+(displayln (for/sum ([a ages] [i (in-naturals)]) (* a i)))
+(displayln (for/and ([a ages]) (> a 20)))
+(displayln (for/or ([a ages]) (> a 35)))
+(displayln (for/first ([a ages] #:when (< a 30)) a))
+(displayln (for/last ([n names]) n))
+(displayln (for*/list ([x '(1 2)] [y '(a b)]) (cons x y)))
+(displayln (for/vector #:length 3 ([i (in-cycle '(0 1))]) i))
+(displayln (for/list ([x (in-list '(1 2 3 4 5 6))] #:break (> x 4)) x))
+(displayln (sequence->list (in-slice 2 (in-range 7))))
+(displayln (sequence->list (sequence-map add1 (in-range 3))))
+(displayln (sequence-length (in-range 0 100 5)))
