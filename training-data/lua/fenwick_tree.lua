@@ -1,38 +1,43 @@
+-- Binary indexed tree (Fenwick tree): point updates and prefix sums in
+-- O(log n), using each index's lowest set bit to hop between nodes.
 local FenwickTree = {}
 FenwickTree.__index = FenwickTree
 
 function FenwickTree.new(size)
-  return setmetatable({ size = size, tree = {} }, FenwickTree)
+  local self = setmetatable({}, FenwickTree)
+  self.size = size
+  self.tree = {}
+  for i = 1, size do self.tree[i] = 0 end
+  return self
 end
 
-function FenwickTree:update(i, delta)
-  i = i + 1
-  while i <= self.size do
-    self.tree[i] = (self.tree[i] or 0) + delta
-    i = i + (i & -i)
+function FenwickTree:add(index, delta)
+  while index <= self.size do
+    self.tree[index] = self.tree[index] + delta
+    index = index + (index & -index)
   end
 end
 
-function FenwickTree:prefix_sum(i)
-  i = i + 1
-  local sum = 0
-  while i > 0 do
-    sum = sum + (self.tree[i] or 0)
-    i = i - (i & -i)
+function FenwickTree:prefix_sum(index)
+  local total = 0
+  while index > 0 do
+    total = total + self.tree[index]
+    index = index - (index & -index)
   end
-  return sum
+  return total
 end
 
-function FenwickTree:range_sum(l, r)
-  if l == 0 then return self:prefix_sum(r) end
-  return self:prefix_sum(r) - self:prefix_sum(l - 1)
+function FenwickTree:range_sum(from, to)
+  return self:prefix_sum(to) - self:prefix_sum(from - 1)
 end
 
-local values = { 3, 2, -1, 6, 5, 4, -3, 3, 7, 2 }
-local ft = FenwickTree.new(#values)
+local values = { 3, 2, -1, 6, 5, 4, -3, 3 }
+local fenwick = FenwickTree.new(#values)
 for i, v in ipairs(values) do
-  ft:update(i - 1, v)
+  fenwick:add(i, v)
 end
 
-print(ft:prefix_sum(4))
-print(ft:range_sum(2, 6))
+print(fenwick:prefix_sum(4))
+print(fenwick:range_sum(3, 6))
+fenwick:add(3, 10)
+print(fenwick:range_sum(3, 6))

@@ -1,82 +1,47 @@
 public class FacadePattern {
-    // Each subsystem has its own, more complex interface than callers
-    // usually need.
-    static class Amplifier {
-        void on() {
-            System.out.println("amplifier on");
+    static class Cpu {
+        void freeze() {
+            System.out.println("cpu: freeze");
         }
 
-        void setVolume(int level) {
-            System.out.println("amplifier volume set to " + level);
+        void jump(int position) {
+            System.out.println("cpu: jump to " + position);
         }
 
-        void off() {
-            System.out.println("amplifier off");
+        void execute() {
+            System.out.println("cpu: execute");
         }
     }
 
-    static class Projector {
-        void on() {
-            System.out.println("projector on");
-        }
-
-        void setInput(String source) {
-            System.out.println("projector input set to " + source);
-        }
-
-        void off() {
-            System.out.println("projector off");
+    static class Memory {
+        void load(int position, String data) {
+            System.out.println("memory: load " + data + " at " + position);
         }
     }
 
-    static class StreamingPlayer {
-        void on() {
-            System.out.println("streaming player on");
-        }
-
-        void play(String title) {
-            System.out.println("now playing: " + title);
-        }
-
-        void stop() {
-            System.out.println("streaming player stopped");
+    static class HardDrive {
+        String read(int sector, int size) {
+            System.out.println("hard drive: reading sector " + sector);
+            return "boot-sector-data";
         }
     }
 
-    // The facade exposes one simple entry point that coordinates all three
-    // subsystems, hiding their individual setup order and details.
-    static class HomeTheaterFacade {
-        private final Amplifier amplifier;
-        private final Projector projector;
-        private final StreamingPlayer player;
+    static class ComputerFacade {
+        private final Cpu cpu = new Cpu();
+        private final Memory memory = new Memory();
+        private final HardDrive drive = new HardDrive();
 
-        HomeTheaterFacade(Amplifier amplifier, Projector projector, StreamingPlayer player) {
-            this.amplifier = amplifier;
-            this.projector = projector;
-            this.player = player;
-        }
-
-        void watchMovie(String title) {
-            projector.on();
-            projector.setInput("HDMI1");
-            amplifier.on();
-            amplifier.setVolume(7);
-            player.on();
-            player.play(title);
-        }
-
-        void endMovie() {
-            player.stop();
-            amplifier.off();
-            projector.off();
+        void start() {
+            cpu.freeze();
+            String data = drive.read(0, 512);
+            memory.load(0, data);
+            cpu.jump(0);
+            cpu.execute();
         }
     }
 
     public static void main(String[] args) {
-        HomeTheaterFacade homeTheater =
-            new HomeTheaterFacade(new Amplifier(), new Projector(), new StreamingPlayer());
-        homeTheater.watchMovie("The Matrix");
-        System.out.println("--- movie over ---");
-        homeTheater.endMovie();
+        ComputerFacade computer = new ComputerFacade();
+        computer.start();
     }
 }

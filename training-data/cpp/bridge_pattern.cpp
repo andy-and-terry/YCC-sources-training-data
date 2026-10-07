@@ -1,58 +1,60 @@
 #include <iostream>
+#include <memory>
 
 class Renderer {
 public:
-    virtual void renderCircle(float x, float y, float radius) = 0;
+    virtual void renderCircle(double radius) const = 0;
     virtual ~Renderer() = default;
 };
 
 class VectorRenderer : public Renderer {
 public:
-    void renderCircle(float x, float y, float radius) override {
-        std::cout << "vector circle at (" << x << ", " << y << ") r=" << radius << std::endl;
+    void renderCircle(double radius) const override {
+        std::cout << "drawing vector circle of radius " << radius << std::endl;
     }
 };
 
 class RasterRenderer : public Renderer {
 public:
-    void renderCircle(float x, float y, float radius) override {
-        std::cout << "raster circle at (" << x << ", " << y << ") r=" << radius << " (rasterized)" << std::endl;
+    void renderCircle(double radius) const override {
+        std::cout << "rasterizing circle of radius " << radius << " into pixels" << std::endl;
     }
 };
 
 class Shape {
 public:
-    explicit Shape(Renderer& renderer) : renderer(renderer) {}
-    virtual void draw() = 0;
+    explicit Shape(std::shared_ptr<Renderer> renderer) : renderer(std::move(renderer)) {}
+    virtual void draw() const = 0;
+    virtual void resize(double factor) = 0;
     virtual ~Shape() = default;
 
 protected:
-    Renderer& renderer;
+    std::shared_ptr<Renderer> renderer;
 };
 
 class Circle : public Shape {
 public:
-    Circle(Renderer& renderer, float x, float y, float radius)
-        : Shape(renderer), x(x), y(y), radius(radius) {}
+    Circle(std::shared_ptr<Renderer> renderer, double radius)
+        : Shape(std::move(renderer)), radius(radius) {}
 
-    void draw() override { renderer.renderCircle(x, y, radius); }
-    void resize(float factor) { radius *= factor; }
+    void draw() const override { renderer->renderCircle(radius); }
+    void resize(double factor) override { radius *= factor; }
 
 private:
-    float x, y, radius;
+    double radius;
 };
 
 int main() {
-    VectorRenderer vectorRenderer;
-    RasterRenderer rasterRenderer;
+    auto vectorRenderer = std::make_shared<VectorRenderer>();
+    auto rasterRenderer = std::make_shared<RasterRenderer>();
 
-    Circle vectorCircle(vectorRenderer, 1, 2, 5);
-    Circle rasterCircle(rasterRenderer, 3, 4, 7);
+    Circle vectorCircle(vectorRenderer, 5.0);
+    Circle rasterCircle(rasterRenderer, 5.0);
 
     vectorCircle.draw();
     rasterCircle.draw();
 
-    vectorCircle.resize(2);
+    vectorCircle.resize(2.0);
     vectorCircle.draw();
 
     return 0;

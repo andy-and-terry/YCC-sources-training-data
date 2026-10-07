@@ -1,17 +1,17 @@
 class FenwickTree {
     [int[]]$Tree
-    [int]$N
+    [int]$Size
 
-    FenwickTree([int]$n) {
-        $this.N = $n
-        $this.Tree = [int[]]::new($n + 1)
+    FenwickTree([int]$size) {
+        $this.Size = $size
+        $this.Tree = [int[]]::new($size + 1)
     }
 
-    [void] Add([int]$index, [int]$delta) {
+    [void] Update([int]$index, [int]$delta) {
         $i = $index + 1
-        while ($i -le $this.N) {
+        while ($i -le $this.Size) {
             $this.Tree[$i] += $delta
-            $i += $i -band (-$i)
+            $i += ($i -band (-$i))
         }
     }
 
@@ -20,26 +20,20 @@ class FenwickTree {
         $i = $index + 1
         while ($i -gt 0) {
             $sum += $this.Tree[$i]
-            $i -= $i -band (-$i)
+            $i -= ($i -band (-$i))
         }
         return $sum
     }
 
     [int] RangeSum([int]$left, [int]$right) {
-        if ($left -eq 0) {
-            return $this.PrefixSum($right)
-        }
-        return $this.PrefixSum($right) - $this.PrefixSum($left - 1)
+        $leftSum = 0
+        if ($left -gt 0) { $leftSum = $this.PrefixSum($left - 1) }
+        return $this.PrefixSum($right) - $leftSum
     }
 }
 
-$values = @(1, 3, 5, 7, 9, 11)
+$values = @(3, 2, -1, 6, 5, 4, -3, 3, 7, 2)
 $fenwick = [FenwickTree]::new($values.Length)
-for ($i = 0; $i -lt $values.Length; $i++) {
-    $fenwick.Add($i, $values[$i])
-}
-
-$fenwick.RangeSum(1, 3)
-$fenwick.Add(1, 10)
-$fenwick.RangeSum(1, 3)
-$fenwick.RangeSum(0, 5)
+for ($i = 0; $i -lt $values.Length; $i++) { $fenwick.Update($i, $values[$i]) }
+$fenwick.RangeSum(0, 9)
+$fenwick.RangeSum(2, 5)

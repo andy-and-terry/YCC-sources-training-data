@@ -1,44 +1,41 @@
 program BellmanFordDemo;
 
+{ Unlike Dijkstra, Bellman-Ford relaxes every edge NodeCount - 1 times,
+  which still works correctly with negative edge weights as long as
+  there is no negative-weight cycle reachable from the source. }
+
 const
-  VertexCount = 5;
-  EdgeCount = 8;
+  NodeCount = 4;
+  EdgeCount = 5;
   Infinity = 30000;
 
 type
   TEdge = record
-    u, v, w: Integer;
+    From, ToNode, Weight: Integer;
   end;
 
 var
-  edges: array[0..EdgeCount - 1] of TEdge = (
-    (u: 0; v: 1; w: -1),
-    (u: 0; v: 2; w: 4),
-    (u: 1; v: 2; w: 3),
-    (u: 1; v: 3; w: 2),
-    (u: 1; v: 4; w: 2),
-    (u: 3; v: 2; w: 5),
-    (u: 3; v: 1; w: 1),
-    (u: 4; v: 3; w: -3)
-  );
-  dist: array[0..VertexCount - 1] of Integer;
-  hasNegativeCycle: Boolean;
-  i, j: Integer;
+  edges: array[0..EdgeCount - 1] of TEdge;
+  dist: array[0..NodeCount - 1] of Integer;
+  i, pass: Integer;
+
 begin
-  for i := 0 to VertexCount - 1 do dist[i] := Infinity;
+  edges[0].From := 0; edges[0].ToNode := 1; edges[0].Weight := 4;
+  edges[1].From := 0; edges[1].ToNode := 2; edges[1].Weight := 5;
+  edges[2].From := 1; edges[2].ToNode := 2; edges[2].Weight := -3;
+  edges[3].From := 2; edges[3].ToNode := 3; edges[3].Weight := 2;
+  edges[4].From := 1; edges[4].ToNode := 3; edges[4].Weight := 6;
+
+  for i := 0 to NodeCount - 1 do
+    dist[i] := Infinity;
   dist[0] := 0;
 
-  for i := 1 to VertexCount - 1 do
-    for j := 0 to EdgeCount - 1 do
-      if (dist[edges[j].u] <> Infinity) and (dist[edges[j].u] + edges[j].w < dist[edges[j].v]) then
-        dist[edges[j].v] := dist[edges[j].u] + edges[j].w;
+  for pass := 1 to NodeCount - 1 do
+    for i := 0 to EdgeCount - 1 do
+      if (dist[edges[i].From] <> Infinity) and
+         (dist[edges[i].From] + edges[i].Weight < dist[edges[i].ToNode]) then
+        dist[edges[i].ToNode] := dist[edges[i].From] + edges[i].Weight;
 
-  hasNegativeCycle := False;
-  for j := 0 to EdgeCount - 1 do
-    if (dist[edges[j].u] <> Infinity) and (dist[edges[j].u] + edges[j].w < dist[edges[j].v]) then
-      hasNegativeCycle := True;
-
-  for i := 0 to VertexCount - 1 do
+  for i := 0 to NodeCount - 1 do
     WriteLn('dist[', i, '] = ', dist[i]);
-  WriteLn('negative cycle: ', hasNegativeCycle);
 end.

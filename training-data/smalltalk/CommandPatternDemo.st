@@ -1,61 +1,42 @@
 Object subclass: Light [
-    | isOn |
-    Light class >> new [
-        | l |
-        l := super new.
-        l setOff.
-        ^l
-    ]
-    setOff [ isOn := false ]
-    turnOn [ isOn := true. Transcript showCr: 'Light is ON' ]
-    turnOff [ isOn := false. Transcript showCr: 'Light is OFF' ]
+    | on |
+    Light class >> new [ | l | l := super new. l setOff. ^l ]
+    setOff [ on := false ]
+    turnOn [ on := true. Transcript showCr: 'light on' ]
+    turnOff [ on := false. Transcript showCr: 'light off' ]
+    isOn [ ^on ]
 ]
 
-Object subclass: Command [
-    execute [ ^self subclassResponsibility ]
-    undo [ ^self subclassResponsibility ]
-]
-
-Command subclass: LightOnCommand [
+Object subclass: LightOnCommand [
     | light |
-    light: l [ light := l ]
+    light: aLight [ light := aLight ]
     execute [ light turnOn ]
     undo [ light turnOff ]
 ]
 
-Command subclass: LightOffCommand [
+Object subclass: LightOffCommand [
     | light |
-    light: l [ light := l ]
+    light: aLight [ light := aLight ]
     execute [ light turnOff ]
     undo [ light turnOn ]
 ]
 
 Object subclass: RemoteControl [
     | history |
-    RemoteControl class >> new [
-        | r |
-        r := super new.
-        r setHistory.
-        ^r
-    ]
+    RemoteControl class >> new [ | r | r := super new. r setHistory. ^r ]
     setHistory [ history := OrderedCollection new ]
-    press: command [
-        command execute.
-        history addLast: command.
-    ]
+    submit: aCommand [ aCommand execute. history addLast: aCommand ]
     undoLast [
-        history isEmpty ifFalse: [
-            history removeLast undo.
-        ]
+        history isEmpty
+            ifTrue: [ Transcript showCr: 'nothing to undo' ]
+            ifFalse: [ history removeLast undo ]
     ]
 ]
 
-| light onCmd offCmd remote |
+| light remote |
 light := Light new.
-onCmd := LightOnCommand new light: light; yourself.
-offCmd := LightOffCommand new light: light; yourself.
 remote := RemoteControl new.
-
-remote press: onCmd.
-remote press: offCmd.
+remote submit: (LightOnCommand new light: light; yourself).
+remote submit: (LightOffCommand new light: light; yourself).
+remote undoLast.
 remote undoLast.

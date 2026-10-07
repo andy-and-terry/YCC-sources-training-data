@@ -2,12 +2,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FlyweightPattern {
-    // Intrinsic (shared) state lives on the flyweight; extrinsic state is
-    // passed in at render time instead of being duplicated per instance.
-    static final class TreeType {
-        private final String name;
-        private final String color;
-        private final String texture;
+    static class TreeType {
+        final String name;
+        final String color;
+        final String texture;
 
         TreeType(String name, String color, String texture) {
             this.name = name;
@@ -16,24 +14,37 @@ public class FlyweightPattern {
         }
 
         void render(int x, int y) {
-            System.out.printf("%s tree (%s, %s) drawn at (%d, %d)%n", name, color, texture, x, y);
+            System.out.println("rendering " + name + " (" + color + ", " + texture + ") at (" + x + "," + y + ")");
         }
     }
 
-    static final class TreeTypeFactory {
+    static class TreeTypeFactory {
         private final Map<String, TreeType> cache = new HashMap<>();
 
         TreeType get(String name, String color, String texture) {
-            String key = name + "-" + color + "-" + texture;
-            return cache.computeIfAbsent(key, k -> new TreeType(name, color, texture));
+            String key = name + "|" + color + "|" + texture;
+            return cache.computeIfAbsent(key, k -> {
+                System.out.println("creating new TreeType for " + key);
+                return new TreeType(name, color, texture);
+            });
         }
 
-        int cachedTypeCount() {
+        int typeCount() {
             return cache.size();
         }
     }
 
-    record Tree(int x, int y, TreeType type) {
+    static class Tree {
+        int x;
+        int y;
+        TreeType type;
+
+        Tree(int x, int y, TreeType type) {
+            this.x = x;
+            this.y = y;
+            this.type = type;
+        }
+
         void render() {
             type.render(x, y);
         }
@@ -42,15 +53,16 @@ public class FlyweightPattern {
     public static void main(String[] args) {
         TreeTypeFactory factory = new TreeTypeFactory();
         Tree[] forest = {
-            new Tree(1, 1, factory.get("Oak", "Green", "Rough")),
-            new Tree(2, 5, factory.get("Oak", "Green", "Rough")),
-            new Tree(8, 3, factory.get("Pine", "Dark Green", "Needled")),
-            new Tree(9, 9, factory.get("Oak", "Green", "Rough")),
+            new Tree(1, 1, factory.get("Oak", "green", "rough")),
+            new Tree(2, 5, factory.get("Oak", "green", "rough")),
+            new Tree(8, 3, factory.get("Pine", "dark-green", "needled")),
+            new Tree(4, 9, factory.get("Oak", "green", "rough")),
         };
 
         for (Tree tree : forest) {
             tree.render();
         }
-        System.out.println("distinct tree types created: " + factory.cachedTypeCount());
+        System.out.println("distinct tree types created: " + factory.typeCount());
+        System.out.println("trees placed: " + forest.length);
     }
 }

@@ -5,36 +5,42 @@ public class QuickSelect {
         arr[j] = temp;
     }
 
-    private static Integer partition(List<Integer> arr, Integer low, Integer high) {
-        Integer pivot = arr[high];
-        Integer i = low - 1;
-        for (Integer j = low; j < high; j++) {
-            if (arr[j] <= pivot) {
-                i++;
-                swap(arr, i, j);
+    private static Integer partition(List<Integer> arr, Integer left, Integer right) {
+        Integer pivot = arr[right];
+        Integer storeIndex = left;
+        for (Integer i = left; i < right; i++) {
+            if (arr[i] < pivot) {
+                swap(arr, i, storeIndex);
+                storeIndex++;
             }
         }
-        swap(arr, i + 1, high);
-        return i + 1;
+        swap(arr, storeIndex, right);
+        return storeIndex;
     }
 
-    // Returns the k-th smallest element (0-indexed) of arr.
-    public static Integer select(List<Integer> arr, Integer low, Integer high, Integer k) {
-        if (low == high) {
-            return arr[low];
-        }
-        Integer pivotIndex = partition(arr, low, high);
-        if (k == pivotIndex) {
-            return arr[k];
-        } else if (k < pivotIndex) {
-            return select(arr, low, pivotIndex - 1, k);
-        } else {
-            return select(arr, pivotIndex + 1, high, k);
+    // Returns the k-th smallest element (0-indexed) without fully sorting the list.
+    public static Integer select(List<Integer> arr, Integer k) {
+        Integer left = 0;
+        Integer right = arr.size() - 1;
+        while (true) {
+            if (left == right) {
+                return arr[left];
+            }
+            Integer pivotIndex = partition(arr, left, right);
+            if (k == pivotIndex) {
+                return arr[k];
+            } else if (k < pivotIndex) {
+                right = pivotIndex - 1;
+            } else {
+                left = pivotIndex + 1;
+            }
         }
     }
 
     public static void main() {
-        List<Integer> data = new List<Integer>{7, 10, 4, 3, 20, 15};
-        System.debug(select(data, 0, data.size() - 1, 2)); // 3rd smallest -> 7
+        List<Integer> values = new List<Integer>{ 7, 2, 9, 4, 1, 8, 3 };
+        System.debug(QuickSelect.select(new List<Integer>(values), 0));
+        System.debug(QuickSelect.select(new List<Integer>(values), 3));
+        System.debug(QuickSelect.select(new List<Integer>(values), 6));
     }
 }

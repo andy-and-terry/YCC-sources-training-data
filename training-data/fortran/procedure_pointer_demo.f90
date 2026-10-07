@@ -1,10 +1,10 @@
-module strategy_mod
+module operations_mod
     implicit none
     abstract interface
-        function op_interface(a, b) result(res)
+        function binop_interface(a, b) result(res)
             integer, intent(in) :: a, b
             integer :: res
-        end function op_interface
+        end function binop_interface
     end interface
 contains
     function add_op(a, b) result(res)
@@ -18,23 +18,16 @@ contains
         integer :: res
         res = a * b
     end function mul_op
+end module operations_mod
 
-    function apply_strategy(a, b, strategy) result(res)
-        integer, intent(in) :: a, b
-        procedure(op_interface), pointer, intent(in) :: strategy
-        integer :: res
-        res = strategy(a, b)
-    end function apply_strategy
-end module strategy_mod
-
-program main
-    use strategy_mod
+program procedure_pointer_demo
+    use operations_mod
     implicit none
-    procedure(op_interface), pointer :: op
+    procedure(binop_interface), pointer :: op => null()
 
     op => add_op
-    print *, apply_strategy(3, 4, op)
+    print *, op(3, 4)
 
     op => mul_op
-    print *, apply_strategy(3, 4, op)
-end program main
+    print *, op(3, 4)
+end program procedure_pointer_demo

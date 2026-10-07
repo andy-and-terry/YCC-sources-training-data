@@ -1,31 +1,31 @@
-val inf = 1000000
+(* Bellman-Ford shortest paths from a source, tolerant of negative edge
+   weights and able to detect a negative-weight cycle. The graph is an
+   adjacency list: (node, (neighbor, weight) list) list. *)
 
-fun bellman_ford (edges, n, source) =
+fun bellman_ford (graph, source) =
   let
-    val dist = Array.array (n, inf)
-    val () = Array.update (dist, source, 0)
-    fun relax_once () =
-      List.app
-        (fn (u, v, w) =>
-          if Array.sub (dist, u) <> inf andalso Array.sub (dist, u) + w < Array.sub (dist, v)
-          then Array.update (dist, v, Array.sub (dist, u) + w)
-          else ())
-        edges
-    fun repeat 0 = ()
-      | repeat k = (relax_once (); repeat (k - 1))
-    val () = repeat (n - 1)
-    val has_negative_cycle =
-      List.exists
-        (fn (u, v, w) =>
-          Array.sub (dist, u) <> inf andalso Array.sub (dist, u) + w < Array.sub (dist, v))
-        edges
+    val nodes = map #1 graph
+    val dist = ref (map (fn n => (n, if n = source then 0 else 999999)) nodes)
+    fun getDist n = case List.find (fn (k, _) => k = n) (!dist) of SOME (_, d) => d | NONE => 999999
+    fun setDist (n, d) = dist := (n, d) :: List.filter (fn (k, _) => k <> n) (!dist)
+    fun edges () =
+      List.concat (map (fn (u, es) => map (fn (v, w) => (u, v, w)) es) graph)
+    fun relaxOnce () =
+      foldl (fn ((u, v, w), changed) =>
+               let val du = getDist u in
+                 if du <> 999999 andalso du + w < getDist v
+                 then (setDist (v, du + w); true)
+                 else changed
+               end) false (edges ())
+    fun loop 0 = ()
+      | loop n = if relaxOnce () then loop (n - 1) else ()
+    val () = loop (List.length nodes - 1)
+    val hasNegativeCycle = relaxOnce ()
   in
-    if has_negative_cycle then NONE else SOME dist
+    (!dist, hasNegativeCycle)
   end
 
-val edges = [(0, 1, 4), (0, 2, 5), (1, 2, ~3), (2, 3, 4), (3, 1, 1)]
-
-val () =
-  case bellman_ford (edges, 4, 0) of
-    SOME dist => print (String.concatWith " " (map Int.toString (Array.foldr (op ::) [] dist)) ^ "\n")
-  | NONE => print "negative cycle detected\n"
+val graph = [("a", [("b", 4), ("c", 1)]), ("b", [("d", 1)]), ("c", [("b", ~2), ("d", 5)]), ("d", [])]
+val (dist, neg) = bellman_ford (graph, "a")
+val () = app (fn (n, d) => print (n ^ ": " ^ Int.toString d ^ "\n")) dist
+val () = print ("negative cycle: " ^ Bool.toString neg ^ "\n")

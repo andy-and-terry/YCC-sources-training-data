@@ -1,22 +1,31 @@
 object FloydWarshall {
   val INF: Int = Int.MaxValue / 2
 
-  def shortestPaths(n: Int, edges: List[(Int, Int, Int)]): Array[Array[Int]] = {
-    val dist = Array.fill(n, n)(INF)
-    for (i <- 0 until n) dist(i)(i) = 0
-    for ((u, v, w) <- edges) dist(u)(v) = w
+  def shortestPaths(graph: Array[Array[Int]]): Array[Array[Int]] = {
+    val n = graph.length
+    val dist = Array.tabulate(n, n)((i, j) => graph(i)(j))
 
-    for (k <- 0 until n; i <- 0 until n; j <- 0 until n) {
-      if (dist(i)(k) + dist(k)(j) < dist(i)(j)) {
-        dist(i)(j) = dist(i)(k) + dist(k)(j)
+    for (k <- 0 until n) {
+      for (i <- 0 until n) {
+        for (j <- 0 until n) {
+          if (dist(i)(k) + dist(k)(j) < dist(i)(j)) {
+            dist(i)(j) = dist(i)(k) + dist(k)(j)
+          }
+        }
       }
     }
     dist
   }
 
   def main(args: Array[String]): Unit = {
-    val edges = List((0, 1, 3), (1, 2, 1), (0, 2, 10), (2, 3, 2), (1, 3, 7))
-    val dist = shortestPaths(4, edges)
-    dist.foreach(row => println(row.mkString(" ")))
+    val graph = Array(
+      Array(0, 3, INF, 7),
+      Array(8, 0, 2, INF),
+      Array(5, INF, 0, 1),
+      Array(2, INF, INF, 0)
+    )
+
+    val dist = shortestPaths(graph)
+    dist.foreach(row => println(row.map(v => if (v >= INF) "INF" else v.toString).mkString(" ")))
   }
 }

@@ -1,8 +1,8 @@
-: SUM-OF-SQUARES ( a b -- a*a+b*b )
-  >R DUP * R> DUP * + ;
+\ Using the return stack for temporary storage
+: SWAP-VIA-R ( a b -- b a )  >R >R R> R> SWAP ;
+: SUM3 ( a b c -- sum )  >R + R> + ;
+: PEEK-R ( n -- n n )  >R R@ R> ;
 
-: MY-ROT ( a b c -- b c a )
-  >R SWAP R> SWAP ;
-
-3 4 SUM-OF-SQUARES . CR
-1 2 3 MY-ROT . . . CR
+1 2 SWAP-VIA-R . . CR
+1 2 3 SUM3 . CR
+7 PEEK-R . . CR

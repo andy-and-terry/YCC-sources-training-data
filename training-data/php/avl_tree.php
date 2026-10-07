@@ -2,12 +2,14 @@
 
 class AvlNode
 {
+    public int $value;
+    public int $height = 1;
     public ?AvlNode $left = null;
     public ?AvlNode $right = null;
-    public int $height = 1;
 
-    public function __construct(public int $value)
+    public function __construct(int $value)
     {
+        $this->value = $value;
     }
 }
 
@@ -20,19 +22,19 @@ class AvlTree
         $this->root = $this->insertNode($this->root, $value);
     }
 
-    private function nodeHeight(?AvlNode $node): int
+    private function height(?AvlNode $node): int
     {
-        return $node === null ? 0 : $node->height;
+        return $node?->height ?? 0;
     }
 
-    private function balanceFactor(?AvlNode $node): int
+    private function balanceFactor(AvlNode $node): int
     {
-        return $node === null ? 0 : $this->nodeHeight($node->left) - $this->nodeHeight($node->right);
+        return $this->height($node->left) - $this->height($node->right);
     }
 
     private function updateHeight(AvlNode $node): void
     {
-        $node->height = 1 + max($this->nodeHeight($node->left), $this->nodeHeight($node->right));
+        $node->height = 1 + max($this->height($node->left), $this->height($node->right));
     }
 
     private function rotateRight(AvlNode $y): AvlNode
@@ -87,30 +89,29 @@ class AvlTree
             $node->right = $this->rotateRight($node->right);
             return $this->rotateLeft($node);
         }
-
         return $node;
     }
 
     public function inOrder(): array
     {
         $result = [];
-        $this->inOrderNode($this->root, $result);
+        $this->inOrderVisit($this->root, $result);
         return $result;
     }
 
-    private function inOrderNode(?AvlNode $node, array &$result): void
+    private function inOrderVisit(?AvlNode $node, array &$result): void
     {
         if ($node === null) {
             return;
         }
-        $this->inOrderNode($node->left, $result);
+        $this->inOrderVisit($node->left, $result);
         $result[] = $node->value;
-        $this->inOrderNode($node->right, $result);
+        $this->inOrderVisit($node->right, $result);
     }
 
-    public function height(): int
+    public function rootHeight(): int
     {
-        return $this->nodeHeight($this->root);
+        return $this->height($this->root);
     }
 }
 
@@ -118,5 +119,5 @@ $tree = new AvlTree();
 foreach ([10, 20, 30, 40, 50, 25] as $v) {
     $tree->insert($v);
 }
-echo implode(',', $tree->inOrder()) . "\n";
-echo "height: " . $tree->height() . "\n";
+print_r($tree->inOrder());
+echo "root height: {$tree->rootHeight()}\n";

@@ -1,22 +1,20 @@
 import std.stdio;
 import std.typecons : Nullable, nullable;
 
-Nullable!int findFirstEven(int[] values) {
-    foreach (v; values) {
-        if (v % 2 == 0) return nullable(v);
-    }
+Nullable!int findIndex(int[] arr, int target) {
+    foreach (i, v; arr)
+        if (v == target) return nullable(cast(int) i);
     return Nullable!int.init;
 }
 
 void main() {
-    auto found = findFirstEven([1, 3, 5, 8, 9]);
-    if (!found.isNull) {
-        writeln("first even: ", found.get);
-    } else {
-        writeln("no even value found");
-    }
+    auto r = findIndex([5, 6, 7], 6);
+    if (!r.isNull) writeln("found at ", r.get);
 
-    auto notFound = findFirstEven([1, 3, 5]);
-    writeln("found: ", !notFound.isNull);
-    writeln(notFound.get(-1));
+    auto miss = findIndex([5, 6, 7], 9);
+    writeln(miss.isNull);
+    writeln(miss.get(-1));
+
+    r.nullify();
+    writeln(r.isNull);
 }

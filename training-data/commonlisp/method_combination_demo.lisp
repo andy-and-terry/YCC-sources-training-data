@@ -1,20 +1,23 @@
-(defclass logger () ())
+(defclass account ()
+  ((balance :initarg :balance :accessor balance :initform 0)))
 
-(defmethod process-value ((obj logger) value)
-  (format t "processing ~a~%" value)
-  (* value 2))
+(defgeneric withdraw (account amount))
 
-(defmethod process-value :before ((obj logger) value)
-  (format t "before: about to process ~a~%" value))
+(defmethod withdraw :before ((a account) amount)
+  (format t "checking: withdrawing ~a from balance ~a~%" amount (balance a)))
 
-(defmethod process-value :after ((obj logger) value)
-  (format t "after: finished processing ~a~%" value))
+(defmethod withdraw ((a account) amount)
+  (decf (balance a) amount))
 
-(defmethod process-value :around ((obj logger) value)
-  (format t "around: start~%")
-  (let ((result (call-next-method)))
-    (format t "around: end, result=~a~%" result)
-    result))
+(defmethod withdraw :after ((a account) amount)
+  (declare (ignore amount))
+  (format t "new balance: ~a~%" (balance a)))
 
-(let ((l (make-instance 'logger)))
-  (print (process-value l 5)))
+(defmethod withdraw :around ((a account) amount)
+  (if (> amount (balance a))
+      (format t "denied: insufficient funds~%")
+      (call-next-method)))
+
+(let ((acc (make-instance 'account :balance 100)))
+  (withdraw acc 30)
+  (withdraw acc 1000))

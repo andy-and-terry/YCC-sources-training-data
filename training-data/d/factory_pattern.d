@@ -1,35 +1,31 @@
 import std.stdio;
+import std.math : PI;
 
-interface Vehicle {
-    string drive();
+interface Shape {
+    double area();
 }
 
-class Car : Vehicle {
-    string drive() {
-        return "driving a car";
-    }
+class CircleShape : Shape {
+    private double radius;
+    this(double radius) { this.radius = radius; }
+    double area() { return PI * radius * radius; }
 }
 
-class Truck : Vehicle {
-    string drive() {
-        return "hauling with a truck";
-    }
+class SquareShape : Shape {
+    private double side;
+    this(double side) { this.side = side; }
+    double area() { return side * side; }
 }
 
-Vehicle createVehicle(string kind) {
+Shape shapeFactory(string kind, double param) {
     switch (kind) {
-        case "car":
-            return new Car();
-        case "truck":
-            return new Truck();
-        default:
-            throw new Exception("unknown vehicle kind: " ~ kind);
+        case "circle": return new CircleShape(param);
+        case "square": return new SquareShape(param);
+        default: throw new Exception("unknown shape: " ~ kind);
     }
 }
 
 void main() {
-    foreach (kind; ["car", "truck"]) {
-        auto vehicle = createVehicle(kind);
-        writeln(vehicle.drive());
-    }
+    writeln(shapeFactory("circle", 2.0).area());
+    writeln(shapeFactory("square", 3.0).area());
 }

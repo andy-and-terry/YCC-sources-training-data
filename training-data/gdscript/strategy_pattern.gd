@@ -1,57 +1,39 @@
 extends Node
 
-# GoF Strategy pattern: swap the pricing algorithm a Cart uses at runtime
-# without changing the Cart itself.
-class DiscountStrategy:
-	func apply(total: float) -> float:
-		return total
+class PricingStrategy:
+	func price(amount: float) -> float:
+		return amount
 
-class NoDiscount extends DiscountStrategy:
-	func apply(total: float) -> float:
-		return total
+class RegularPricing extends PricingStrategy:
+	func price(amount: float) -> float:
+		return amount
 
-class PercentOffDiscount extends DiscountStrategy:
-	var percent: float
+class StudentDiscount extends PricingStrategy:
+	func price(amount: float) -> float:
+		return amount * 0.8
 
-	func _init(p: float):
-		percent = p
+class LoyaltyDiscount extends PricingStrategy:
+	func price(amount: float) -> float:
+		return amount * 0.9 - 5.0
 
-	func apply(total: float) -> float:
-		return total * (1.0 - percent / 100.0)
+class Checkout:
+	var strategy: PricingStrategy
 
-class FlatOffDiscount extends DiscountStrategy:
-	var amount: float
-
-	func _init(a: float):
-		amount = a
-
-	func apply(total: float) -> float:
-		return max(0.0, total - amount)
-
-class Cart:
-	var strategy: DiscountStrategy
-	var subtotal: float = 0.0
-
-	func _init(s: DiscountStrategy):
+	func _init(s: PricingStrategy):
 		strategy = s
 
-	func add_item(price: float) -> void:
-		subtotal += price
-
-	func set_strategy(s: DiscountStrategy) -> void:
+	func set_strategy(s: PricingStrategy) -> void:
 		strategy = s
 
-	func checkout_total() -> float:
-		return strategy.apply(subtotal)
+	func total(amount: float) -> float:
+		return strategy.price(amount)
 
 func _ready():
-	var cart = Cart.new(NoDiscount.new())
-	cart.add_item(20.0)
-	cart.add_item(30.0)
-	print(cart.checkout_total())
+	var checkout = Checkout.new(RegularPricing.new())
+	print(checkout.total(100.0))
 
-	cart.set_strategy(PercentOffDiscount.new(10.0))
-	print(cart.checkout_total())
+	checkout.set_strategy(StudentDiscount.new())
+	print(checkout.total(100.0))
 
-	cart.set_strategy(FlatOffDiscount.new(15.0))
-	print(cart.checkout_total())
+	checkout.set_strategy(LoyaltyDiscount.new())
+	print(checkout.total(100.0))

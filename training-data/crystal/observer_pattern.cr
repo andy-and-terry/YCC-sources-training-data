@@ -1,15 +1,15 @@
 module Observer
-  abstract def update(value : Int32)
+  abstract def on_update(temperature : Float64)
 end
 
-class TemperatureDisplay
+class ConsoleObserver
   include Observer
 
   def initialize(@name : String)
   end
 
-  def update(value : Int32)
-    puts "#{@name}: temperature is now #{value}"
+  def on_update(temperature : Float64)
+    puts "#{@name}: temperature is now #{temperature}"
   end
 end
 
@@ -22,12 +22,12 @@ class WeatherStation
     @observers << observer
   end
 
-  def set_temperature(value : Int32)
-    @observers.each(&.update(value))
+  def set_temperature(value : Float64)
+    @observers.each(&.on_update(value))
   end
 end
 
 station = WeatherStation.new
-station.subscribe(TemperatureDisplay.new("sensor-a"))
-station.subscribe(TemperatureDisplay.new("sensor-b"))
-station.set_temperature(25)
+station.subscribe(ConsoleObserver.new("sensor-a"))
+station.subscribe(ConsoleObserver.new("sensor-b"))
+station.set_temperature(25.5)

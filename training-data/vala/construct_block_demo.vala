@@ -1,24 +1,30 @@
-class Robot : Object {
+public class Config : Object {
     public string name { get; construct; }
-    public int battery { get; private set; }
+    public int retries { get; construct set; }
 
-    public Robot(string name) {
-        Object(name: name);
-    }
+    static int instance_count = 0;
 
     construct {
-        battery = 100;
-        stdout.printf("%s booted with battery at %d\n", name, battery);
+        instance_count++;
+        if (retries <= 0) {
+            retries = 3;
+        }
     }
 
-    public void work(int cost) {
-        battery -= cost;
-        if (battery < 0) battery = 0;
+    public Config(string name, int retries) {
+        Object(name: name, retries: retries);
+    }
+
+    public static int count() {
+        return instance_count;
     }
 }
 
 void main() {
-    var robot = new Robot("R2");
-    robot.work(35);
-    stdout.printf("%s battery remaining: %d\n", robot.name, robot.battery);
+    var a = new Config("primary", 5);
+    var b = new Config("secondary", 0);
+
+    stdout.printf("%s retries=%d\n", a.name, a.retries);
+    stdout.printf("%s retries=%d\n", b.name, b.retries);
+    stdout.printf("instances: %d\n", Config.count());
 }

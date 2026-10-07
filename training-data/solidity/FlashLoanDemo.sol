@@ -1,33 +1,31 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+// Callback interface a flash-loan borrower must implement.
 interface IFlashLoanReceiver {
     function onFlashLoan(uint256 amount, uint256 fee) external;
 }
 
+// Minimal ETH flash loan pool: lends its balance for the duration of a
+// single transaction and requires it back plus a fee before the call
+// that granted the loan returns.
 contract FlashLoanDemo {
-    mapping(address => uint256) public balances;
-    uint256 public constant FEE_BPS = 9;
+    uint256 public feeBps = 9; // 0.09%, in basis points
+    uint256 public constant FEE_DENOMINATOR = 10000;
 
-    function deposit() external payable {
-        balances[msg.sender] += msg.value;
-    }
+    function deposit() external payable {}
 
-    function totalLiquidity() public view returns (uint256) {
-        return address(this).balance;
-    }
-
-    function flashLoan(uint256 amount) external {
+    function flashLoan(uint256 amount, address borrower) external {
         uint256 balanceBefore = address(this).balance;
         require(amount <= balanceBefore, "insufficient liquidity");
 
-        uint256 fee = (amount * FEE_BPS) / 10000;
+        uint256 fee = (amount * feeBps) / FEE_DENOMINATOR;
 
-        (bool sent, ) = msg.sender.call{value: amount}("");
-        require(sent, "loan transfer failed");
+        payable(borrower).transfer(amount);
+        IFlashLoanReceiver(borrower).onFlashLoan(amount, fee);
 
-        IFlashLoanReceiver(msg.sender).onFlashLoan(amount, fee);
-
-        require(address(this).balance >= balanceBefore + fee, "loan not repaid with fee");
+        require(address(this).balance >= balanceBefore + fee, "loan not repaid");
     }
+
+    receive() external payable {}
 }

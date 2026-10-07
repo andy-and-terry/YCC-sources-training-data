@@ -5,13 +5,17 @@
 - (NSString *)description;
 @end
 
-@interface Coffee : NSObject <Beverage>
-@end
-@implementation Coffee
-- (double)cost { return 2.0; }
-- (NSString *)description { return @"Coffee"; }
+@interface Espresso : NSObject <Beverage>
 @end
 
+@implementation Espresso
+- (double)cost { return 1.50; }
+- (NSString *)description { return @"Espresso"; }
+@end
+
+// The decorator conforms to the same protocol as the object it wraps,
+// so decorators can be stacked without the caller knowing how many
+// layers deep the chain goes.
 @interface BeverageDecorator : NSObject <Beverage>
 @property (nonatomic, strong) id<Beverage> wrapped;
 - (instancetype)initWithBeverage:(id<Beverage>)beverage;
@@ -27,26 +31,28 @@
 - (NSString *)description { return self.wrapped.description; }
 @end
 
-@interface MilkDecorator : BeverageDecorator
-@end
-@implementation MilkDecorator
-- (double)cost { return [super cost] + 0.5; }
-- (NSString *)description { return [[super description] stringByAppendingString:@" + Milk"]; }
+@interface WithMilk : BeverageDecorator
 @end
 
-@interface SugarDecorator : BeverageDecorator
+@implementation WithMilk
+- (double)cost { return [super cost] + 0.40; }
+- (NSString *)description { return [[super description] stringByAppendingString:@" + milk"]; }
 @end
-@implementation SugarDecorator
-- (double)cost { return [super cost] + 0.25; }
-- (NSString *)description { return [[super description] stringByAppendingString:@" + Sugar"]; }
+
+@interface WithCaramel : BeverageDecorator
+@end
+
+@implementation WithCaramel
+- (double)cost { return [super cost] + 0.60; }
+- (NSString *)description { return [[super description] stringByAppendingString:@" + caramel"]; }
 @end
 
 int main(int argc, const char *argv[]) {
     @autoreleasepool {
-        id<Beverage> drink = [[Coffee alloc] init];
-        drink = [[MilkDecorator alloc] initWithBeverage:drink];
-        drink = [[SugarDecorator alloc] initWithBeverage:drink];
-        NSLog(@"%@ = %.2f", [drink description], [drink cost]);
+        id<Beverage> drink = [[Espresso alloc] init];
+        drink = [[WithMilk alloc] initWithBeverage:drink];
+        drink = [[WithCaramel alloc] initWithBeverage:drink];
+        NSLog(@"%@ costs %.2f", [drink description], [drink cost]);
     }
     return 0;
 }

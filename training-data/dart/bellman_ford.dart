@@ -5,23 +5,22 @@ class Edge {
   Edge(this.from, this.to, this.weight);
 }
 
-List<int> bellmanFord(int vertexCount, List<Edge> edges, int source) {
-  final dist = List<int>.filled(vertexCount, 1 << 30);
+List<int> bellmanFord(List<Edge> edges, int nodeCount, int source) {
+  const inf = 1 << 30;
+  final dist = List<int>.filled(nodeCount, inf);
   dist[source] = 0;
 
-  for (var i = 0; i < vertexCount - 1; i++) {
+  for (var i = 0; i < nodeCount - 1; i++) {
     for (final edge in edges) {
-      if (dist[edge.from] != (1 << 30) &&
-          dist[edge.from] + edge.weight < dist[edge.to]) {
+      if (dist[edge.from] != inf && dist[edge.from] + edge.weight < dist[edge.to]) {
         dist[edge.to] = dist[edge.from] + edge.weight;
       }
     }
   }
 
   for (final edge in edges) {
-    if (dist[edge.from] != (1 << 30) &&
-        dist[edge.from] + edge.weight < dist[edge.to]) {
-      throw StateError('graph contains a negative-weight cycle');
+    if (dist[edge.from] != inf && dist[edge.from] + edge.weight < dist[edge.to]) {
+      print('negative-weight cycle detected');
     }
   }
 
@@ -31,11 +30,11 @@ List<int> bellmanFord(int vertexCount, List<Edge> edges, int source) {
 void main() {
   final edges = [
     Edge(0, 1, 4),
-    Edge(0, 2, 5),
-    Edge(1, 2, -3),
-    Edge(2, 3, 4),
-    Edge(3, 1, -6),
+    Edge(0, 2, 1),
+    Edge(2, 1, 2),
+    Edge(1, 3, 1),
+    Edge(2, 3, 5),
   ];
 
-  print(bellmanFord(4, edges, 0));
+  print(bellmanFord(edges, 4, 0));
 }

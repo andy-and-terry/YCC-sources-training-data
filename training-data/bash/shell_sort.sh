@@ -6,7 +6,8 @@ shell_sort() {
     local n=${#arr[@]}
     local gap i j temp
 
-    for ((gap = n / 2; gap > 0; gap /= 2)); do
+    gap=$((n / 2))
+    while ((gap > 0)); do
         for ((i = gap; i < n; i++)); do
             temp=${arr[i]}
             j=$i
@@ -16,9 +17,10 @@ shell_sort() {
             done
             arr[j]=$temp
         done
+        gap=$((gap / 2))
     done
 }
 
-numbers=(9 5 1 4 3 7 2 6)
+numbers=(9 5 1 4 3 8 2 7 6)
 shell_sort numbers
 echo "${numbers[@]}"

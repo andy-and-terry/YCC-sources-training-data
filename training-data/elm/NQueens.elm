@@ -1,4 +1,4 @@
-module NQueens exposing (countSolutions, solve)
+module NQueens exposing (isSafe, solutionCount, solve)
 
 
 solve : Int -> List (List Int)
@@ -7,26 +7,23 @@ solve n =
 
 
 place : Int -> List Int -> List (List Int)
-place n placed =
-    if List.length placed == n then
-        [ List.reverse placed ]
+place n queens =
+    if List.length queens == n then
+        [ List.reverse queens ]
 
     else
         List.range 0 (n - 1)
-            |> List.filter (\col -> isSafe col placed)
-            |> List.concatMap (\col -> place n (col :: placed))
+            |> List.filter (isSafe queens)
+            |> List.concatMap (\col -> place n (col :: queens))
 
 
-isSafe : Int -> List Int -> Bool
-isSafe col placed =
-    placed
-        |> List.indexedMap (\row placedCol -> ( row + 1, placedCol ))
-        |> List.all
-            (\( rowDistance, placedCol ) ->
-                placedCol /= col && abs (placedCol - col) /= rowDistance
-            )
+isSafe : List Int -> Int -> Bool
+isSafe queens col =
+    queens
+        |> List.indexedMap (\i q -> ( i + 1, q ))
+        |> List.all (\( dist, q ) -> q /= col && abs (q - col) /= dist)
 
 
-countSolutions : Int -> Int
-countSolutions n =
+solutionCount : Int -> Int
+solutionCount n =
     List.length (solve n)

@@ -1,68 +1,48 @@
-struct PriorityQueue<Element> {
-    private var heap: [Element] = []
-    private let areInIncreasingOrder: (Element, Element) -> Bool
-
-    init(sort: @escaping (Element, Element) -> Bool) {
-        self.areInIncreasingOrder = sort
-    }
+final class PriorityQueue {
+    private var heap: [Int] = []
 
     var isEmpty: Bool { heap.isEmpty }
-    var count: Int { heap.count }
 
-    mutating func push(_ value: Element) {
+    func push(_ value: Int) {
         heap.append(value)
-        siftUp(from: heap.count - 1)
+        var i = heap.count - 1
+        while i > 0 {
+            let parent = (i - 1) / 2
+            if heap[parent] <= heap[i] { break }
+            heap.swapAt(parent, i)
+            i = parent
+        }
     }
 
-    mutating func pop() -> Element? {
+    func pop() -> Int? {
         guard !heap.isEmpty else { return nil }
-        heap.swapAt(0, heap.count - 1)
-        let value = heap.removeLast()
+        let top = heap[0]
+        let last = heap.removeLast()
         if !heap.isEmpty {
-            siftDown(from: 0)
-        }
-        return value
-    }
-
-    func peek() -> Element? {
-        heap.first
-    }
-
-    private mutating func siftUp(from index: Int) {
-        var child = index
-        var parent = (child - 1) / 2
-        while child > 0 && areInIncreasingOrder(heap[child], heap[parent]) {
-            heap.swapAt(child, parent)
-            child = parent
-            parent = (child - 1) / 2
-        }
-    }
-
-    private mutating func siftDown(from index: Int) {
-        var parent = index
-        while true {
-            let left = 2 * parent + 1
-            let right = 2 * parent + 2
-            var candidate = parent
-            if left < heap.count && areInIncreasingOrder(heap[left], heap[candidate]) {
-                candidate = left
+            heap[0] = last
+            var i = 0
+            while true {
+                let left = 2 * i + 1
+                let right = 2 * i + 2
+                var smallest = i
+                if left < heap.count && heap[left] < heap[smallest] { smallest = left }
+                if right < heap.count && heap[right] < heap[smallest] { smallest = right }
+                if smallest == i { break }
+                heap.swapAt(smallest, i)
+                i = smallest
             }
-            if right < heap.count && areInIncreasingOrder(heap[right], heap[candidate]) {
-                candidate = right
-            }
-            if candidate == parent { return }
-            heap.swapAt(parent, candidate)
-            parent = candidate
         }
+        return top
     }
 }
 
-var minHeap = PriorityQueue<Int>(sort: <)
-for value in [5, 1, 9, 3, 7] {
-    minHeap.push(value)
+let pq = PriorityQueue()
+for v in [5, 3, 8, 1, 9, 2] {
+    pq.push(v)
 }
+
 var sorted: [Int] = []
-while let next = minHeap.pop() {
-    sorted.append(next)
+while let v = pq.pop() {
+    sorted.append(v)
 }
-print(sorted) // [1, 3, 5, 7, 9]
+print(sorted)

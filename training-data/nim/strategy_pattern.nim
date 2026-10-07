@@ -1,13 +1,39 @@
 type
-  DiscountStrategy = proc (price: float): float
+  DiscountStrategy = ref object of RootObj
 
-proc noDiscount(price: float): float = price
-proc tenPercentOff(price: float): float = price * 0.9
-proc halfOff(price: float): float = price * 0.5
+method applyDiscount(s: DiscountStrategy, price: float): float {.base.} =
+  discard
 
-proc checkout(price: float, strategy: DiscountStrategy): float =
-  strategy(price)
+type
+  NoDiscount = ref object of DiscountStrategy
+  PercentOffDiscount = ref object of DiscountStrategy
+    percent: float
+  FlatOffDiscount = ref object of DiscountStrategy
+    amount: float
 
-let strategies = @[DiscountStrategy(noDiscount), DiscountStrategy(tenPercentOff), DiscountStrategy(halfOff)]
-for strategy in strategies:
-  echo checkout(100.0, strategy)
+method applyDiscount(s: NoDiscount, price: float): float =
+  price
+
+method applyDiscount(s: PercentOffDiscount, price: float): float =
+  price - price * (s.percent / 100.0)
+
+method applyDiscount(s: FlatOffDiscount, price: float): float =
+  max(0.0, price - s.amount)
+
+type
+  Cart = ref object
+    strategy: DiscountStrategy
+
+proc newCart(strategy: DiscountStrategy): Cart =
+  Cart(strategy: strategy)
+
+proc checkout(c: Cart, price: float): float =
+  c.strategy.applyDiscount(price)
+
+let regularCart = newCart(NoDiscount())
+let saleCart = newCart(PercentOffDiscount(percent: 20.0))
+let couponCart = newCart(FlatOffDiscount(amount: 5.0))
+
+echo checkout(regularCart, 100.0)
+echo checkout(saleCart, 100.0)
+echo checkout(couponCart, 100.0)

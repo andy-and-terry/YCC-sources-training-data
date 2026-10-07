@@ -1,8 +1,6 @@
 #include <stdio.h>
 
-int max_int(int a, int b) {
-    return a > b ? a : b;
-}
+int max_int(int a, int b) { return a > b ? a : b; }
 
 int rod_cutting(int price[], int n) {
     int dp[n + 1];
@@ -22,6 +20,6 @@ int main(void) {
     int price[] = {1, 5, 8, 9, 10, 17, 17, 20};
     int n = sizeof(price) / sizeof(price[0]);
 
-    printf("%d\n", rod_cutting(price, n));
+    printf("best revenue for rod length %d: %d\n", n, rod_cutting(price, n));
     return 0;
 }

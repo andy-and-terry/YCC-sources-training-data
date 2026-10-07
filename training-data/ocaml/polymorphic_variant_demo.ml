@@ -1,17 +1,17 @@
-(* Polymorphic variants (backtick tags) don't need a single declared type:
-   the compiler infers the least general row type that covers whichever
-   tags a function actually pattern-matches on, and different functions
-   can agree on the same tags without sharing a nominal type declaration. *)
-let describe = function
-  | `Circle r -> Printf.sprintf "circle with radius %.1f" r
-  | `Rectangle (w, h) -> Printf.sprintf "rectangle %.1fx%.1f" w h
-  | `Square s -> Printf.sprintf "square with side %.1f" s
-
+(* Polymorphic variants are written with a leading backtick and do not
+   need to be declared under a named type first; a function can accept
+   any variant that has at least the tags it pattern-matches on. *)
 let area = function
   | `Circle r -> Float.pi *. r *. r
   | `Rectangle (w, h) -> w *. h
-  | `Square s -> s *. s
+
+let describe shape =
+  match shape with
+  | `Circle r -> Printf.sprintf "circle area=%.2f" (area (`Circle r))
+  | `Rectangle (w, h) -> Printf.sprintf "rectangle area=%.2f" (area (`Rectangle (w, h)))
+  | `Triangle (b, h) -> Printf.sprintf "triangle area=%.2f" (0.5 *. b *. h)
 
 let () =
-  let shapes = [ `Circle 2.0; `Rectangle (3.0, 4.0); `Square 5.0 ] in
-  List.iter (fun s -> Printf.printf "%s -> %.2f\n" (describe s) (area s)) shapes
+  List.iter
+    (fun shape -> print_endline (describe shape))
+    [ `Circle 2.0; `Rectangle (3.0, 4.0); `Triangle (6.0, 2.0) ]

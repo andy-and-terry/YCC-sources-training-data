@@ -1,52 +1,53 @@
-class OrderState {
-  next(order) {
-    throw new Error('not implemented');
+class TrafficLightState {
+  constructor(light) {
+    this.light = light;
   }
-  name() {
-    throw new Error('not implemented');
-  }
-}
-
-class PlacedState extends OrderState {
-  next(order) {
-    order.state = new ShippedState();
-  }
-  name() {
-    return 'placed';
-  }
-}
-
-class ShippedState extends OrderState {
-  next(order) {
-    order.state = new DeliveredState();
-  }
-  name() {
-    return 'shipped';
-  }
-}
-
-class DeliveredState extends OrderState {
   next() {
-    throw new Error('order already delivered');
-  }
-  name() {
-    return 'delivered';
+    throw new Error('not implemented');
   }
 }
 
-class Order {
+class RedState extends TrafficLightState {
+  next() {
+    this.light.setState(new GreenState(this.light));
+  }
+  toString() {
+    return 'red';
+  }
+}
+
+class GreenState extends TrafficLightState {
+  next() {
+    this.light.setState(new YellowState(this.light));
+  }
+  toString() {
+    return 'green';
+  }
+}
+
+class YellowState extends TrafficLightState {
+  next() {
+    this.light.setState(new RedState(this.light));
+  }
+  toString() {
+    return 'yellow';
+  }
+}
+
+class TrafficLight {
   constructor() {
-    this.state = new PlacedState();
+    this.state = new RedState(this);
   }
-
-  advance() {
-    this.state.next(this);
-    return this.state.name();
+  setState(state) {
+    this.state = state;
+  }
+  change() {
+    this.state.next();
+    return this.state.toString();
   }
 }
 
-const order = new Order();
-console.log(order.state.name());
-console.log(order.advance());
-console.log(order.advance());
-module.exports = { Order, PlacedState, ShippedState, DeliveredState };
+const light = new TrafficLight();
+const sequence = [light.change(), light.change(), light.change(), light.change()];
+console.log(sequence);
+module.exports = { TrafficLight, RedState, GreenState, YellowState };

@@ -1,45 +1,40 @@
-' Class module: IShape (interface - every method body is left empty)
+' Class module: IShape
 Public Function Area() As Double
 End Function
 
 ' Class module: Circle
 Implements IShape
-Private mRadius As Double
 
-Public Sub Init(ByVal radius As Double)
-    mRadius = radius
-End Sub
+Public Radius As Double
 
 Private Function IShape_Area() As Double
-    IShape_Area = 3.14159265 * mRadius * mRadius
+    IShape_Area = 3.14159265 * Radius * Radius
 End Function
 
 ' Class module: Square
 Implements IShape
-Private mSide As Double
 
-Public Sub InitSquare(ByVal side As Double)
-    mSide = side
-End Sub
+Public Side As Double
 
 Private Function IShape_Area() As Double
-    IShape_Area = mSide * mSide
+    IShape_Area = Side * Side
 End Function
 
-' --- Standard module (references IShape/Circle/Square above) ---
+' The following would live in a standard module
 Sub Main()
+    Dim shapes As New Collection
     Dim c As New Circle
-    c.Init 2
-
+    c.Radius = 2
     Dim s As New Square
-    s.InitSquare 3
+    s.Side = 3
 
-    Dim shapes(1) As IShape
-    Set shapes(0) = c
-    Set shapes(1) = s
+    shapes.Add c
+    shapes.Add s
 
-    Dim i As Integer
-    For i = 0 To 1
-        Debug.Print shapes(i).Area
-    Next i
+    Dim shp As IShape
+    Dim item As Variant
+    For Each item In shapes
+        Set shp = item
+        Debug.Print shp.Area
+    Next item
 End Sub

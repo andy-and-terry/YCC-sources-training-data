@@ -1,27 +1,38 @@
 extends Node
 
-# All-pairs shortest paths via Floyd-Warshall. INF (Godot's built-in infinity
-# constant) marks "no direct edge" between two distinct vertices.
-func floyd_warshall(graph: Array) -> Array:
-	var n = graph.size()
-	var dist = []
-	for i in range(n):
-		dist.append(graph[i].duplicate())
+const INF = 1000000000
 
-	for k in range(n):
-		for i in range(n):
-			for j in range(n):
+func floyd_warshall(num_nodes: int, edges: Array) -> Array:
+	var dist = []
+	dist.resize(num_nodes)
+	for i in range(num_nodes):
+		var row = []
+		row.resize(num_nodes)
+		row.fill(INF)
+		row[i] = 0
+		dist[i] = row
+
+	for edge in edges:
+		var u = edge[0]
+		var v = edge[1]
+		var w = edge[2]
+		if w < dist[u][v]:
+			dist[u][v] = w
+
+	for k in range(num_nodes):
+		for i in range(num_nodes):
+			if dist[i][k] == INF:
+				continue
+			for j in range(num_nodes):
+				if dist[k][j] == INF:
+					continue
 				if dist[i][k] + dist[k][j] < dist[i][j]:
 					dist[i][j] = dist[i][k] + dist[k][j]
+
 	return dist
 
 func _ready():
-	var graph = [
-		[0, 5, INF, 10],
-		[INF, 0, 3, INF],
-		[INF, INF, 0, 1],
-		[INF, INF, INF, 0],
-	]
-	var dist = floyd_warshall(graph)
+	var edges = [[0, 1, 3], [0, 2, 8], [1, 2, 2], [2, 3, 1], [3, 0, 4], [1, 3, 6]]
+	var dist = floyd_warshall(4, edges)
 	for row in dist:
 		print(row)

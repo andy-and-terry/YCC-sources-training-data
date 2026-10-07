@@ -1,23 +1,16 @@
-type Item = { Name: string; Price: float }
+type Strategy = float -> float
 
-let sortByPriceAscending (items: Item list) =
-    items |> List.sortBy (fun i -> i.Price)
+let percentOff (percent: float) : Strategy =
+    fun price -> price - (price * percent / 100.0)
 
-let sortByPriceDescending (items: Item list) =
-    items |> List.sortByDescending (fun i -> i.Price)
+let flatOff (amount: float) : Strategy =
+    fun price -> max 0.0 (price - amount)
 
-let sortByName (items: Item list) =
-    items |> List.sortBy (fun i -> i.Name)
+let noDiscount: Strategy = id
 
-// The GoF Strategy pattern is just a function value in F#: no interface or
-// class hierarchy of interchangeable "sorters" is needed.
-let checkout (strategy: Item list -> Item list) (items: Item list) =
-    strategy items
+let checkoutTotal (strategy: Strategy) (prices: float list) =
+    prices |> List.map strategy |> List.sum
 
-let items =
-    [ { Name = "widget"; Price = 10.0 }
-      { Name = "gadget"; Price = 25.0 }
-      { Name = "gizmo"; Price = 5.0 } ]
-
-printfn "%A" (checkout sortByPriceAscending items)
-printfn "%A" (checkout sortByName items)
+printfn "%.2f" (checkoutTotal (percentOff 10.0) [ 100.0; 50.0; 25.0 ])
+printfn "%.2f" (checkoutTotal (flatOff 5.0) [ 100.0; 50.0; 25.0 ])
+printfn "%.2f" (checkoutTotal noDiscount [ 100.0; 50.0; 25.0 ])

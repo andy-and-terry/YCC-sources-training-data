@@ -5,25 +5,32 @@ object Email {
   }
 }
 
-object PhoneNumber {
-  private val pattern = """(\d{3})-(\d{3})-(\d{4})""".r
+object Phone {
+  def unapply(str: String): Boolean = str.matches("\\d{3}-\\d{4}")
+}
 
-  def unapply(str: String): Option[(String, String, String)] = str match {
-    case pattern(area, exchange, line) => Some((area, exchange, line))
-    case _                             => None
-  }
+class Fraction(val numerator: Int, val denominator: Int)
+
+object Fraction {
+  def apply(n: Int, d: Int): Fraction = new Fraction(n, d)
+  def unapply(f: Fraction): Option[(Int, Int)] = Some((f.numerator, f.denominator))
 }
 
 object ExtractorPatternDemo {
-  def describe(input: String): String = input match {
-    case Email(user, domain)               => s"email: user=$user domain=$domain"
-    case PhoneNumber(area, exchange, line) => s"phone: ($area) $exchange-$line"
-    case _                                 => "unrecognized"
+  def classify(input: String): String = input match {
+    case Email(user, domain) => s"email: user=$user domain=$domain"
+    case Phone() => "phone number"
+    case _ => "unknown"
   }
 
   def main(args: Array[String]): Unit = {
-    List("alice@example.com", "555-123-4567", "not a match").foreach { s =>
-      println(describe(s))
+    List("alice@example.com", "555-1234", "not-a-match").foreach { s =>
+      println(s"$s -> ${classify(s)}")
+    }
+
+    val half = Fraction(1, 2)
+    half match {
+      case Fraction(n, d) => println(s"fraction: $n/$d")
     }
   }
 }

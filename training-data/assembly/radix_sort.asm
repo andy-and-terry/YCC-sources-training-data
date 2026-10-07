@@ -1,79 +1,77 @@
-; x86-64 NASM: LSD radix sort (base 10) for two-digit non-negative integers
+; x86-64 NASM: LSD radix sort (base 10) on an array of non-negative integers
 section .data
-    array dq 29, 4, 71, 58, 15, 87, 33, 2
+    array dq 170, 45, 75, 90, 802, 24, 2, 66
     len equ 8
-    exps dq 1, 10           ; ones-digit pass, then tens-digit pass
-    num_exps equ 2
+    max_val equ 802
 
 section .bss
-    counts resq 10
     output resq len
+    digit_count resq 10
 
 section .text
     global _start
 
 _start:
-    xor r12, r12               ; pass index
-pass_loop:
-    cmp r12, num_exps
-    jge sort_done
-    mov r13, [exps + r12 * 8]  ; current place value (exp)
+    mov r12, 1                   ; place value: 1, 10, 100, ...
 
-    lea rdi, [counts]
+radix_pass:
+    ; zero the digit counts
     xor rcx, rcx
-zero_counts:
+zero_loop:
     cmp rcx, 10
     jge zero_done
-    mov qword [rdi + rcx * 8], 0
+    mov qword [digit_count + rcx * 8], 0
     inc rcx
-    jmp zero_counts
+    jmp zero_loop
 zero_done:
 
-    xor r8, r8                 ; i
-count_digits_loop:
+    ; count occurrences of each digit at the current place value
+    xor r8, r8
+count_loop:
     cmp r8, len
-    jge count_digits_done
+    jge count_done
     mov rax, [array + r8 * 8]
     xor rdx, rdx
-    div r13                     ; rax = num / exp
+    div r12
     xor rdx, rdx
     mov rbx, 10
-    div rbx                      ; rdx = (num / exp) mod 10 = digit
-    inc qword [counts + rdx * 8]
+    div rbx                      ; rdx = digit at this place
+    inc qword [digit_count + rdx * 8]
     inc r8
-    jmp count_digits_loop
-count_digits_done:
+    jmp count_loop
+count_done:
 
+    ; turn counts into prefix sums (positions)
     mov rcx, 1
-cum_loop:
+prefix_loop:
     cmp rcx, 10
-    jge cum_done
-    mov rax, [counts + rcx * 8 - 8]
-    add [counts + rcx * 8], rax
+    jge prefix_done
+    mov rax, [digit_count + rcx * 8 - 8]
+    add [digit_count + rcx * 8], rax
     inc rcx
-    jmp cum_loop
-cum_done:
+    jmp prefix_loop
+prefix_done:
 
-    mov r8, len
-    dec r8                       ; i = len - 1, walk backwards for stability
+    ; place elements into output, stably, scanning from the end
+    mov r9, len
 build_loop:
-    cmp r8, 0
-    jl build_done
-    mov rax, [array + r8 * 8]
-    push rax
+    cmp r9, 0
+    je build_done
+    dec r9
+    mov rax, [array + r9 * 8]
     xor rdx, rdx
-    div r13
+    div r12
     xor rdx, rdx
     mov rbx, 10
     div rbx                       ; rdx = digit
-    dec qword [counts + rdx * 8]
-    mov rcx, [counts + rdx * 8]
-    pop rax
+    dec qword [digit_count + rdx * 8]
+    mov rcx, [digit_count + rdx * 8]
+    mov rax, [array + r9 * 8]
     mov [output + rcx * 8], rax
-    dec r8
     jmp build_loop
 build_done:
 
+    ; copy output back into array for the next pass
     xor r8, r8
 copy_loop:
     cmp r8, len
@@ -83,10 +81,12 @@ copy_loop:
     inc r8
     jmp copy_loop
 copy_done:
-    inc r12
-    jmp pass_loop
 
-sort_done:
+    imul r12, 10
+    cmp r12, max_val
+    jle radix_pass
+
+    ; array is now fully sorted; exit with the smallest element (2)
     mov rax, [array]
     mov rdi, rax
     mov rax, 60

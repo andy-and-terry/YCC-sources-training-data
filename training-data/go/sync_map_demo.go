@@ -2,42 +2,40 @@ package main
 
 import (
 	"fmt"
+	"sort"
 	"sync"
 )
 
-// sync.Map is a map safe for concurrent use without a separate mutex,
-// optimized for cases where keys are written once and read many times (or
-// disjoint keys are updated by disjoint goroutines) — distinct from the
-// RWMutex-guarded cache built elsewhere in this folder.
 func main() {
-	var counts sync.Map
-
+	var m sync.Map
 	var wg sync.WaitGroup
-	words := []string{"go", "is", "fun", "go", "is", "fast", "go"}
 
-	for _, w := range words {
+	for i := 0; i < 10; i++ {
 		wg.Add(1)
-		go func(word string) {
+		go func(n int) {
 			defer wg.Done()
-			for {
-				existing, _ := counts.LoadOrStore(word, 0)
-				current := existing.(int)
-				if counts.CompareAndSwap(word, current, current+1) {
-					return
-				}
-			}
-		}(w)
+			m.Store(n, n*n)
+		}(i)
 	}
 	wg.Wait()
 
-	total := 0
-	counts.Range(func(key, value any) bool {
-		total += value.(int)
+	var keys []int
+	m.Range(func(key, value any) bool {
+		keys = append(keys, key.(int))
 		return true
 	})
-	fmt.Println("total words counted:", total)
+	sort.Ints(keys)
 
-	if v, ok := counts.Load("go"); ok {
-		fmt.Println("go count:", v)
+	for _, k := range keys {
+		v, ok := m.Load(k)
+		fmt.Println(k, "->", v, ok)
 	}
+
+	m.Delete(5)
+	if _, ok := m.Load(5); !ok {
+		fmt.Println("key 5 deleted")
+	}
+
+	actual, loaded := m.LoadOrStore(5, 999)
+	fmt.Println("loadOrStore:", actual, loaded)
 }

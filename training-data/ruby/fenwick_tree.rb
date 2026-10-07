@@ -14,7 +14,7 @@ class FenwickTree
   def prefix_sum(index)
     sum = 0
     i = index + 1
-    while i.positive?
+    while i > 0
       sum += @tree[i]
       i -= i & -i
     end
@@ -26,8 +26,13 @@ class FenwickTree
   end
 end
 
-fenwick = FenwickTree.new(6)
-[1, 3, 5, 7, 9, 11].each_with_index { |v, i| fenwick.update(i, v) }
-puts fenwick.range_sum(1, 3)
-fenwick.update(1, 7)
-puts fenwick.range_sum(1, 3)
+fenwick = FenwickTree.new(8)
+[3, 2, -1, 6, 5, 4, -3, 3].each_with_index do |value, i|
+  fenwick.update(i, value)
+end
+
+puts fenwick.prefix_sum(5)   # sum of indices 0..5
+puts fenwick.range_sum(2, 5) # sum of indices 2..5
+
+fenwick.update(0, 10) # add 10 more to index 0
+puts fenwick.prefix_sum(5)

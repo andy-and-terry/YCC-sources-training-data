@@ -1,46 +1,28 @@
--- A leftist heap: a purely functional priority queue. Each node tracks the
--- "rank" (length of its right spine), and merge always attaches the
--- shorter spine on the right, which keeps merge/insert/deleteMin O(log n).
-data Heap a = Leaf | Node Int a (Heap a) (Heap a)
+import Data.List (insertBy)
+import Data.Ord (comparing)
 
-rank :: Heap a -> Int
-rank Leaf = 0
-rank (Node r _ _ _) = r
+newtype PQueue a = PQueue [(Int, a)]
 
-merge :: (Ord a) => Heap a -> Heap a -> Heap a
-merge h Leaf = h
-merge Leaf h = h
-merge h1@(Node _ x l1 r1) h2@(Node _ y l2 r2)
-  | x <= y = makeNode x l1 (merge r1 h2)
-  | otherwise = makeNode y l2 (merge h1 r2)
-  where
-    makeNode v a b
-      | rank a >= rank b = Node (rank b + 1) v a b
-      | otherwise = Node (rank a + 1) v b a
+empty :: PQueue a
+empty = PQueue []
 
-insert :: (Ord a) => a -> Heap a -> Heap a
-insert x = merge (Node 1 x Leaf Leaf)
+insert :: Int -> a -> PQueue a -> PQueue a
+insert priority item (PQueue xs) = PQueue (insertBy (comparing fst) (priority, item) xs)
 
-findMin :: Heap a -> Maybe a
-findMin Leaf = Nothing
-findMin (Node _ x _ _) = Just x
+extractMin :: PQueue a -> Maybe ((Int, a), PQueue a)
+extractMin (PQueue []) = Nothing
+extractMin (PQueue (x : xs)) = Just (x, PQueue xs)
 
-deleteMin :: (Ord a) => Heap a -> Heap a
-deleteMin Leaf = Leaf
-deleteMin (Node _ _ l r) = merge l r
+toList :: PQueue a -> [(Int, a)]
+toList (PQueue xs) = xs
 
-fromList :: (Ord a) => [a] -> Heap a
-fromList = foldr insert Leaf
-
-toSortedList :: (Ord a) => Heap a -> [a]
-toSortedList Leaf = []
-toSortedList h =
-  case findMin h of
-    Nothing -> []
-    Just x -> x : toSortedList (deleteMin h)
+drainAll :: PQueue a -> [(Int, a)]
+drainAll pq = case extractMin pq of
+  Nothing -> []
+  Just (item, rest) -> item : drainAll rest
 
 main :: IO ()
 main = do
-  let heap = fromList [5, 3, 8, 1, 9, 2, 3 :: Int]
-  print (findMin heap)
-  print (toSortedList heap)
+  let pq = insert 3 "task-c" (insert 1 "task-a" (insert 2 "task-b" empty))
+  print (toList pq)
+  print (drainAll pq)

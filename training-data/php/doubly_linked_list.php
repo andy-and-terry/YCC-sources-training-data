@@ -1,9 +1,9 @@
 <?php
 
-class DListNode
+class DoublyNode
 {
-    public ?DListNode $prev = null;
-    public ?DListNode $next = null;
+    public ?DoublyNode $next = null;
+    public ?DoublyNode $prev = null;
 
     public function __construct(public int $value)
     {
@@ -12,15 +12,14 @@ class DListNode
 
 class DoublyLinkedList
 {
-    private ?DListNode $head = null;
-    private ?DListNode $tail = null;
+    private ?DoublyNode $head = null;
+    private ?DoublyNode $tail = null;
 
-    public function addLast(int $value): void
+    public function pushBack(int $value): void
     {
-        $node = new DListNode($value);
-        if ($this->head === null) {
-            $this->head = $node;
-            $this->tail = $node;
+        $node = new DoublyNode($value);
+        if ($this->tail === null) {
+            $this->head = $this->tail = $node;
             return;
         }
         $node->prev = $this->tail;
@@ -28,26 +27,38 @@ class DoublyLinkedList
         $this->tail = $node;
     }
 
-    public function removeFirst(): void
+    public function pushFront(int $value): void
     {
+        $node = new DoublyNode($value);
         if ($this->head === null) {
+            $this->head = $this->tail = $node;
             return;
         }
-        $this->head = $this->head->next;
-        if ($this->head !== null) {
-            $this->head->prev = null;
-        } else {
-            $this->tail = null;
+        $node->next = $this->head;
+        $this->head->prev = $node;
+        $this->head = $node;
+    }
+
+    public function popBack(): ?int
+    {
+        if ($this->tail === null) {
+            return null;
         }
+        $value = $this->tail->value;
+        $this->tail = $this->tail->prev;
+        if ($this->tail === null) {
+            $this->head = null;
+        } else {
+            $this->tail->next = null;
+        }
+        return $value;
     }
 
     public function toArrayForward(): array
     {
         $out = [];
-        $cur = $this->head;
-        while ($cur !== null) {
+        for ($cur = $this->head; $cur !== null; $cur = $cur->next) {
             $out[] = $cur->value;
-            $cur = $cur->next;
         }
         return $out;
     }
@@ -55,19 +66,18 @@ class DoublyLinkedList
     public function toArrayBackward(): array
     {
         $out = [];
-        $cur = $this->tail;
-        while ($cur !== null) {
+        for ($cur = $this->tail; $cur !== null; $cur = $cur->prev) {
             $out[] = $cur->value;
-            $cur = $cur->prev;
         }
         return $out;
     }
 }
 
 $list = new DoublyLinkedList();
-foreach ([1, 2, 3, 4] as $v) {
-    $list->addLast($v);
-}
+$list->pushBack(2);
+$list->pushBack(3);
+$list->pushFront(1);
 echo implode(',', $list->toArrayForward()) . "\n";
-$list->removeFirst();
 echo implode(',', $list->toArrayBackward()) . "\n";
+$list->popBack();
+echo implode(',', $list->toArrayForward()) . "\n";

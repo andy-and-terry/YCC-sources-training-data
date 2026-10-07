@@ -1,47 +1,36 @@
 import std.stdio;
-import std.algorithm : sort, reverse;
 
-interface SortStrategy {
-    void apply(ref int[] data);
+interface DiscountStrategy {
+    double apply(double total);
 }
 
-class AscendingSort : SortStrategy {
-    void apply(ref int[] data) {
-        data.sort();
+class NoDiscount : DiscountStrategy {
+    double apply(double total) { return total; }
+}
+
+class PercentageDiscount : DiscountStrategy {
+    private double percent;
+    this(double percent) { this.percent = percent; }
+    double apply(double total) { return total - (total * percent / 100.0); }
+}
+
+class FlatDiscount : DiscountStrategy {
+    private double amount;
+    this(double amount) { this.amount = amount; }
+    double apply(double total) {
+        auto result = total - amount;
+        return result < 0 ? 0 : result;
     }
 }
 
-class DescendingSort : SortStrategy {
-    void apply(ref int[] data) {
-        data.sort();
-        data.reverse();
-    }
-}
-
-class Sorter {
-    private SortStrategy strategy;
-
-    this(SortStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    void setStrategy(SortStrategy strategy) {
-        this.strategy = strategy;
-    }
-
-    void execute(ref int[] data) {
-        strategy.apply(data);
-    }
+class Cart {
+    private DiscountStrategy strategy;
+    this(DiscountStrategy strategy) { this.strategy = strategy; }
+    double checkout(double total) { return strategy.apply(total); }
 }
 
 void main() {
-    int[] data = [5, 3, 8, 1, 9, 2];
-
-    auto sorter = new Sorter(new AscendingSort());
-    sorter.execute(data);
-    writeln(data);
-
-    sorter.setStrategy(new DescendingSort());
-    sorter.execute(data);
-    writeln(data);
+    writeln(new Cart(new NoDiscount()).checkout(100.0));
+    writeln(new Cart(new PercentageDiscount(20.0)).checkout(100.0));
+    writeln(new Cart(new FlatDiscount(15.0)).checkout(100.0));
 }

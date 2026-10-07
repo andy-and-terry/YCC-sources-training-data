@@ -1,40 +1,27 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Strategy_Pattern_Demo is
-   type Int_Array is array (Positive range <>) of Integer;
+   type Strategy is access function (A, B : Integer) return Integer;
 
-   -- The "strategy" is an access-to-function value that can be swapped
-   -- at runtime, giving the same effect as a Strategy interface in OOP
-   -- languages without needing a class hierarchy.
-   type Reduce_Strategy is access function (Arr : Int_Array) return Integer;
+   function Add (A, B : Integer) return Integer is (A + B);
+   function Multiply (A, B : Integer) return Integer is (A * B);
+   function Max_Of (A, B : Integer) return Integer is
+     (if A > B then A else B);
 
-   function Sum_Strategy (Arr : Int_Array) return Integer is
-      Total : Integer := 0;
+   type Context is record
+      Op : Strategy;
+   end record;
+
+   function Execute (C : Context; A, B : Integer) return Integer is
    begin
-      for Value of Arr loop
-         Total := Total + Value;
-      end loop;
-      return Total;
-   end Sum_Strategy;
+      return C.Op (A, B);
+   end Execute;
 
-   function Max_Strategy (Arr : Int_Array) return Integer is
-      Best : Integer := Arr (Arr'First);
-   begin
-      for Value of Arr loop
-         if Value > Best then
-            Best := Value;
-         end if;
-      end loop;
-      return Best;
-   end Max_Strategy;
-
-   procedure Apply (Strategy : Reduce_Strategy; Arr : Int_Array; Label : String) is
-   begin
-      Put_Line (Label & ": " & Strategy (Arr)'Image);
-   end Apply;
-
-   Data : constant Int_Array := (4, 9, 1, 6, 3);
+   Adder      : constant Context := (Op => Add'Access);
+   Multiplier : constant Context := (Op => Multiply'Access);
+   Maximizer  : constant Context := (Op => Max_Of'Access);
 begin
-   Apply (Sum_Strategy'Access, Data, "Sum");
-   Apply (Max_Strategy'Access, Data, "Max");
+   Put_Line (Execute (Adder, 3, 4)'Image);
+   Put_Line (Execute (Multiplier, 3, 4)'Image);
+   Put_Line (Execute (Maximizer, 3, 4)'Image);
 end Strategy_Pattern_Demo;

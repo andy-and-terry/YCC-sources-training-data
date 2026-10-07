@@ -23,7 +23,7 @@ class RealImage implements Image
     }
 }
 
-class ImageProxy implements Image
+class LazyImageProxy implements Image
 {
     private ?RealImage $realImage = null;
 
@@ -40,7 +40,7 @@ class ImageProxy implements Image
     }
 }
 
-$proxy = new ImageProxy('photo.png');
-echo "proxy created, image not loaded yet\n";
-echo $proxy->display() . "\n";
-echo $proxy->display() . "\n";
+$image = new LazyImageProxy('photo.png');
+echo "proxy created, nothing loaded yet\n";
+echo $image->display() . "\n";
+echo $image->display() . "\n";

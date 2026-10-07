@@ -4,7 +4,7 @@ using System.Collections.Generic;
 class RabinKarpSearch
 {
     const int Base = 256;
-    const long Modulus = 1_000_000_007;
+    const int Mod = 1_000_000_007;
 
     static List<int> Search(string text, string pattern)
     {
@@ -13,12 +13,12 @@ class RabinKarpSearch
         if (m == 0 || m > n) return matches;
 
         long patternHash = 0, windowHash = 0, highOrder = 1;
-        for (int i = 0; i < m - 1; i++) highOrder = highOrder * Base % Modulus;
+        for (int i = 0; i < m - 1; i++) highOrder = (highOrder * Base) % Mod;
 
         for (int i = 0; i < m; i++)
         {
-            patternHash = (patternHash * Base + pattern[i]) % Modulus;
-            windowHash = (windowHash * Base + text[i]) % Modulus;
+            patternHash = (patternHash * Base + pattern[i]) % Mod;
+            windowHash = (windowHash * Base + text[i]) % Mod;
         }
 
         for (int i = 0; i <= n - m; i++)
@@ -28,8 +28,8 @@ class RabinKarpSearch
 
             if (i < n - m)
             {
-                windowHash = (windowHash - text[i] * highOrder % Modulus + Modulus) % Modulus;
-                windowHash = (windowHash * Base + text[i + m]) % Modulus;
+                windowHash = (windowHash - text[i] * highOrder % Mod + Mod) % Mod;
+                windowHash = (windowHash * Base + text[i + m]) % Mod;
             }
         }
 

@@ -1,38 +1,26 @@
-fn radix_sort(items: &[u32]) -> Vec<u32> {
-    if items.is_empty() {
-        return Vec::new();
+fn radix_sort(mut nums: Vec<u32>) -> Vec<u32> {
+    if nums.is_empty() {
+        return nums;
     }
-    let mut output = items.to_vec();
-    let max_value = *output.iter().max().unwrap();
-
-    let mut exp = 1u32;
-    while max_value / exp > 0 {
-        output = counting_sort_by_digit(&output, exp);
+    let max = *nums.iter().max().unwrap();
+    let mut exp: u64 = 1;
+    while (max as u64) / exp > 0 {
+        nums = bucket_by_digit(nums, exp);
         exp *= 10;
     }
-    output
+    nums
 }
 
-fn counting_sort_by_digit(items: &[u32], exp: u32) -> Vec<u32> {
-    let mut output = vec![0u32; items.len()];
-    let mut count = [0usize; 10];
-
-    for &item in items {
-        let digit = ((item / exp) % 10) as usize;
-        count[digit] += 1;
+fn bucket_by_digit(nums: Vec<u32>, exp: u64) -> Vec<u32> {
+    let mut buckets: Vec<Vec<u32>> = vec![Vec::new(); 10];
+    for n in nums {
+        let digit = ((n as u64 / exp) % 10) as usize;
+        buckets[digit].push(n);
     }
-    for i in 1..10 {
-        count[i] += count[i - 1];
-    }
-    for &item in items.iter().rev() {
-        let digit = ((item / exp) % 10) as usize;
-        count[digit] -= 1;
-        output[count[digit]] = item;
-    }
-    output
+    buckets.into_iter().flatten().collect()
 }
 
 fn main() {
     let data = vec![170, 45, 75, 90, 802, 24, 2, 66];
-    println!("{:?}", radix_sort(&data));
+    println!("{:?}", radix_sort(data));
 }

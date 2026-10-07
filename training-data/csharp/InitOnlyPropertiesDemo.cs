@@ -1,22 +1,23 @@
 using System;
 
-class Configuration
+class Coordinates
 {
-    public string Host { get; init; } = "localhost";
-    public int Port { get; init; } = 80;
-    public bool UseTls { get; init; }
+    public double Latitude { get; init; }
+    public double Longitude { get; init; }
+
+    public override string ToString() => $"({Latitude}, {Longitude})";
 }
 
 class InitOnlyPropertiesDemo
 {
     static void Main()
     {
-        var config = new Configuration { Host = "example.com", Port = 443, UseTls = true };
-        Console.WriteLine($"{config.Host}:{config.Port} (tls={config.UseTls})");
+        var origin = new Coordinates { Latitude = 0, Longitude = 0 };
+        var sf = new Coordinates { Latitude = 37.7749, Longitude = -122.4194 };
 
-        var defaultConfig = new Configuration();
-        Console.WriteLine($"{defaultConfig.Host}:{defaultConfig.Port} (tls={defaultConfig.UseTls})");
+        Console.WriteLine(origin);
+        Console.WriteLine(sf);
 
-        // config.Port = 8080; // would fail to compile: init-only property can't be set after construction
+        // origin.Latitude = 1; // compile error: init-only property can only be set in an object initializer
     }
 }

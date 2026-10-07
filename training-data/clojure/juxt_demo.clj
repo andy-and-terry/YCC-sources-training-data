@@ -1,11 +1,12 @@
-(def stats (juxt count (partial apply min) (partial apply max) (partial apply +)))
+(def stats (juxt (partial apply min) (partial apply max) (comp #(/ % 1.0) count)))
 
-(println (stats [4 2 9 1 7]))
+(println (stats [4 8 15 16 23 42]))
 
-(def people [{:name "Ada" :age 36} {:name "Bob" :age 42} {:name "Cy" :age 29}])
+(def people [{:name "Alice" :age 30} {:name "Bob" :age 25} {:name "Carol" :age 30}])
+
+(println "grouped by age:" (group-by :age people))
+(println "partitioned by age 30:" (partition-by #(= 30 (:age %))
+                                                  (sort-by :age people)))
+
 (def name-and-age (juxt :name :age))
-
 (println (map name-and-age people))
-
-(def min-max-by-age ((juxt (partial apply min-key :age) (partial apply max-key :age)) people))
-(println min-max-by-age)

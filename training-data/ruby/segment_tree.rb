@@ -1,29 +1,30 @@
 class SegmentTree
-  def initialize(values)
-    @n = values.length
+  def initialize(array)
+    @n = array.size
     @tree = Array.new(4 * @n, 0)
-    build(values, 1, 0, @n - 1)
+    build(array, 0, 0, @n - 1)
   end
 
   def query(left, right)
-    query_range(1, 0, @n - 1, left, right)
+    query_range(0, 0, @n - 1, left, right)
   end
 
   def update(index, value)
-    update_at(1, 0, @n - 1, index, value)
+    update_index(0, 0, @n - 1, index, value)
   end
 
   private
 
-  def build(values, node, start, finish)
+  def build(array, node, start, finish)
     if start == finish
-      @tree[node] = values[start]
+      @tree[node] = array[start]
       return
     end
+
     mid = (start + finish) / 2
-    build(values, 2 * node, start, mid)
-    build(values, 2 * node + 1, mid + 1, finish)
-    @tree[node] = @tree[2 * node] + @tree[2 * node + 1]
+    build(array, 2 * node + 1, start, mid)
+    build(array, 2 * node + 2, mid + 1, finish)
+    @tree[node] = @tree[2 * node + 1] + @tree[2 * node + 2]
   end
 
   def query_range(node, start, finish, left, right)
@@ -31,22 +32,23 @@ class SegmentTree
     return @tree[node] if left <= start && finish <= right
 
     mid = (start + finish) / 2
-    query_range(2 * node, start, mid, left, right) +
-      query_range(2 * node + 1, mid + 1, finish, left, right)
+    query_range(2 * node + 1, start, mid, left, right) +
+      query_range(2 * node + 2, mid + 1, finish, left, right)
   end
 
-  def update_at(node, start, finish, index, value)
+  def update_index(node, start, finish, index, value)
     if start == finish
       @tree[node] = value
       return
     end
+
     mid = (start + finish) / 2
     if index <= mid
-      update_at(2 * node, start, mid, index, value)
+      update_index(2 * node + 1, start, mid, index, value)
     else
-      update_at(2 * node + 1, mid + 1, finish, index, value)
+      update_index(2 * node + 2, mid + 1, finish, index, value)
     end
-    @tree[node] = @tree[2 * node] + @tree[2 * node + 1]
+    @tree[node] = @tree[2 * node + 1] + @tree[2 * node + 2]
   end
 end
 

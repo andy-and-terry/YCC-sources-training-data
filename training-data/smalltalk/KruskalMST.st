@@ -3,30 +3,40 @@ Object subclass: KruskalMST [
         (parent at: x) = x ifTrue: [ ^x ].
         ^self find: parent x: (parent at: x)
     ]
-    KruskalMST class >> mst: edges nodeCount: n [
-        | parent sorted total rootA rootB chosen |
-        parent := (1 to: n) asArray copy.
-        sorted := edges asSortedCollection: [ :a :b | (a at: 3) <= (b at: 3) ].
-        chosen := OrderedCollection new.
-        total := 0.
+
+    KruskalMST class >> union: parent x: x y: y [
+        | rootX rootY |
+        rootX := self find: parent x: x.
+        rootY := self find: parent x: y.
+        rootX = rootY ifFalse: [ parent at: rootX put: rootY ]
+    ]
+
+    KruskalMST class >> mstFor: nodeCount edges: edges [
+        | parent sorted mst |
+        parent := (1 to: nodeCount) asArray copy.
+        sorted := edges asSortedCollection: [ :a :b | (a at: 1) <= (b at: 1) ].
+        mst := OrderedCollection new.
         sorted do: [ :edge |
-            rootA := self find: parent x: (edge at: 1).
-            rootB := self find: parent x: (edge at: 2).
-            rootA = rootB ifFalse: [
-                parent at: rootA put: rootB.
-                chosen add: edge.
-                total := total + (edge at: 3).
-            ]
+            | w u v |
+            w := edge at: 1.
+            u := edge at: 2.
+            v := edge at: 3.
+            (self find: parent x: u) = (self find: parent x: v) ifFalse: [
+                self union: parent x: u y: v.
+                mst add: edge.
+            ].
         ].
-        ^Array with: chosen with: total
+        ^mst
     ]
 ]
 
 | edges result |
 edges := OrderedCollection new.
-edges add: #(1 2 4); add: #(1 3 1); add: #(3 2 2);
-     add: #(2 4 5); add: #(3 4 8); add: #(4 5 3).
+edges add: #(1 1 2).
+edges add: #(3 1 3).
+edges add: #(4 2 3).
+edges add: #(2 2 4).
+edges add: #(5 3 4).
 
-result := KruskalMST mst: edges nodeCount: 5.
-(result at: 1) do: [ :e | Transcript showCr: e printString ].
-Transcript showCr: 'total weight: ', (result at: 2) printString.
+result := KruskalMST mstFor: 4 edges: edges.
+Transcript showCr: result printString.

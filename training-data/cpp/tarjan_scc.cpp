@@ -5,64 +5,67 @@
 
 class TarjanSCC {
 public:
-    explicit TarjanSCC(int n)
-        : n(n), timer(0), adj(n), disc(n, -1), low(n, -1), onStack(n, false) {}
+    explicit TarjanSCC(int n) : numNodes(n), adj(n), ids(n, -1), low(n, 0), onStack(n, false) {}
 
     void addEdge(int u, int v) { adj[u].push_back(v); }
 
     std::vector<std::vector<int>> run() {
-        for (int i = 0; i < n; i++) {
-            if (disc[i] == -1) dfs(i);
+        for (int i = 0; i < numNodes; i++) {
+            if (ids[i] == -1) dfs(i);
         }
-        return sccs;
+        return components;
     }
 
 private:
-    void dfs(int u) {
-        disc[u] = low[u] = timer++;
-        st.push(u);
-        onStack[u] = true;
+    int numNodes;
+    int counter = 0;
+    std::vector<std::vector<int>> adj;
+    std::vector<int> ids, low;
+    std::vector<bool> onStack;
+    std::stack<int> stk;
+    std::vector<std::vector<int>> components;
 
-        for (int v : adj[u]) {
-            if (disc[v] == -1) {
-                dfs(v);
-                low[u] = std::min(low[u], low[v]);
-            } else if (onStack[v]) {
-                low[u] = std::min(low[u], disc[v]);
-            }
+    void dfs(int at) {
+        stk.push(at);
+        onStack[at] = true;
+        ids[at] = low[at] = counter++;
+
+        for (int to : adj[at]) {
+            if (ids[to] == -1) dfs(to);
+            if (onStack[to]) low[at] = std::min(low[at], low[to]);
         }
 
-        if (low[u] == disc[u]) {
+        if (ids[at] == low[at]) {
             std::vector<int> component;
             while (true) {
-                int v = st.top();
-                st.pop();
-                onStack[v] = false;
-                component.push_back(v);
-                if (v == u) break;
+                int node = stk.top();
+                stk.pop();
+                onStack[node] = false;
+                component.push_back(node);
+                if (node == at) break;
             }
-            sccs.push_back(component);
+            components.push_back(component);
         }
     }
-
-    int n, timer;
-    std::vector<std::vector<int>> adj;
-    std::vector<int> disc, low;
-    std::vector<bool> onStack;
-    std::stack<int> st;
-    std::vector<std::vector<int>> sccs;
 };
 
 int main() {
-    TarjanSCC graph(5);
+    TarjanSCC graph(8);
     graph.addEdge(0, 1);
     graph.addEdge(1, 2);
     graph.addEdge(2, 0);
-    graph.addEdge(1, 3);
+    graph.addEdge(2, 3);
     graph.addEdge(3, 4);
+    graph.addEdge(4, 5);
+    graph.addEdge(5, 3);
+    graph.addEdge(6, 5);
+    graph.addEdge(6, 7);
 
-    for (const auto& component : graph.run()) {
-        for (int v : component) std::cout << v << " ";
+    auto sccs = graph.run();
+    std::cout << "strongly connected components: " << sccs.size() << std::endl;
+    for (auto& comp : sccs) {
+        std::sort(comp.begin(), comp.end());
+        for (int node : comp) std::cout << node << " ";
         std::cout << std::endl;
     }
     return 0;

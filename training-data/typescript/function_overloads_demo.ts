@@ -1,26 +1,27 @@
-function parseValue(input: string): string;
-function parseValue(input: number): number;
-function parseValue(input: string, radix: number): number;
-function parseValue(input: string | number, radix?: number): string | number {
-  if (typeof input === "number") {
-    return input;
+function parseValue(value: string): string[];
+function parseValue(value: number): number;
+function parseValue(value: boolean): boolean;
+function parseValue(value: string | number | boolean): string[] | number | boolean {
+  if (typeof value === "string") {
+    return value.split(",").map((s) => s.trim());
   }
-  if (radix !== undefined) {
-    return parseInt(input, radix);
-  }
-  return input.trim();
+  return value;
 }
 
-console.log(parseValue("  hello  "));
-console.log(parseValue(42));
-console.log(parseValue("ff", 16));
+const parts = parseValue("a, b, c");
+const doubled = parseValue(21);
+const flag = parseValue(true);
+
+console.log(parts, doubled, flag);
 
 interface Point2D {
   x: number;
   y: number;
 }
 
-interface Point3D extends Point2D {
+interface Point3D {
+  x: number;
+  y: number;
   z: number;
 }
 
@@ -32,4 +33,5 @@ function makePoint(x: number, y: number, z?: number): Point2D | Point3D {
 
 const flat = makePoint(1, 2);
 const spatial = makePoint(1, 2, 3);
+
 console.log(flat, spatial);

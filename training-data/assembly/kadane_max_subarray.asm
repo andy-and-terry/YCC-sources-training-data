@@ -1,4 +1,4 @@
-; x86-64 NASM: Kadane's algorithm for maximum subarray sum
+; x86-64 NASM: maximum subarray sum via Kadane's algorithm
 section .data
     array dq -2, 1, -3, 4, -1, 2, 1, -5, 4
     count equ 9
@@ -7,29 +7,31 @@ section .text
     global _start
 
 _start:
-    mov rax, [array]           ; max_ending_here
-    mov rbx, rax                ; max_so_far
+    mov rax, [array]         ; max_so_far = array[0]
+    mov rbx, [array]         ; max_ending_here = array[0]
     mov rcx, 1
-loop_start:
+kadane_loop:
     cmp rcx, count
-    jge loop_done
-    mov rdx, [array + rcx * 8] ; current element
-    mov rsi, rax
-    add rsi, rdx                ; candidate = max_ending_here + current
+    jge kadane_done
+    mov rdx, [array + rcx * 8]
+
+    mov rsi, rbx
+    add rsi, rdx               ; rsi = max_ending_here + array[i]
     cmp rdx, rsi
-    jge use_current
-    mov rax, rsi                 ; max_ending_here = candidate
-    jmp me_updated
-use_current:
-    mov rax, rdx                 ; max_ending_here = current
-me_updated:
-    cmp rax, rbx
-    jle skip_update
-    mov rbx, rax                 ; max_so_far = max_ending_here
-skip_update:
+    jge use_element
+    mov rbx, rsi
+    jmp update_best
+use_element:
+    mov rbx, rdx                ; start a new subarray at array[i]
+update_best:
+    cmp rbx, rax
+    jle kadane_next
+    mov rax, rbx
+kadane_next:
     inc rcx
-    jmp loop_start
-loop_done:
-    mov rdi, rbx
+    jmp kadane_loop
+kadane_done:
+    ; rax now holds the best subarray sum (4,-1,2,1 => 6)
+    mov rdi, rax
     mov rax, 60
     syscall

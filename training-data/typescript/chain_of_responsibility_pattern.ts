@@ -1,54 +1,48 @@
-interface SupportRequest {
-  level: "basic" | "technical" | "critical";
+interface Ticket {
+  level: number;
   message: string;
 }
 
 abstract class SupportHandler {
-  private next: SupportHandler | null = null;
+  protected next: SupportHandler | null = null;
 
   setNext(handler: SupportHandler): SupportHandler {
     this.next = handler;
     return handler;
   }
 
-  handle(request: SupportRequest): void {
-    if (this.canHandle(request)) {
-      console.log(`${this.constructor.name} handled: ${request.message}`);
-      return;
-    }
+  handle(ticket: Ticket): string {
     if (this.next) {
-      this.next.handle(request);
-    } else {
-      console.log(`No handler available for: ${request.message}`);
+      return this.next.handle(ticket);
     }
-  }
-
-  protected abstract canHandle(request: SupportRequest): boolean;
-}
-
-class BasicSupport extends SupportHandler {
-  protected canHandle(request: SupportRequest): boolean {
-    return request.level === "basic";
+    return `unresolved: ${ticket.message}`;
   }
 }
 
-class TechnicalSupport extends SupportHandler {
-  protected canHandle(request: SupportRequest): boolean {
-    return request.level === "technical";
+class LevelHandler extends SupportHandler {
+  constructor(private name: string, private levelHandled: number) {
+    super();
+  }
+
+  handle(ticket: Ticket): string {
+    if (ticket.level <= this.levelHandled) {
+      return `${this.name} resolved: ${ticket.message}`;
+    }
+    return super.handle(ticket);
   }
 }
 
-class CriticalSupport extends SupportHandler {
-  protected canHandle(request: SupportRequest): boolean {
-    return request.level === "critical";
-  }
+const tier1 = new LevelHandler('Tier1', 1);
+const tier2 = new LevelHandler('Tier2', 2);
+const tier3 = new LevelHandler('Tier3', 3);
+tier1.setNext(tier2).setNext(tier3);
+
+const tickets: Ticket[] = [
+  { level: 1, message: 'password reset' },
+  { level: 3, message: 'server outage' },
+  { level: 5, message: 'unknown issue' },
+];
+
+for (const ticket of tickets) {
+  console.log(tier1.handle(ticket));
 }
-
-const basic = new BasicSupport();
-const technical = new TechnicalSupport();
-const critical = new CriticalSupport();
-basic.setNext(technical).setNext(critical);
-
-basic.handle({ level: "technical", message: "VPN not connecting" });
-basic.handle({ level: "critical", message: "production database is down" });
-basic.handle({ level: "basic", message: "how do I reset my password?" });

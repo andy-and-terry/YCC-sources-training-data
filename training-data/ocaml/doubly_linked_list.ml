@@ -3,33 +3,27 @@ type 'a dlist = { mutable head : 'a node option; mutable tail : 'a node option }
 
 let create () = { head = None; tail = None }
 
-let push_back dl value =
-  let node = { value; prev = dl.tail; next = None } in
-  (match dl.tail with
-  | Some t -> t.next <- Some node
-  | None -> dl.head <- Some node);
-  dl.tail <- Some node
+let push_back list value =
+  let node = { value; prev = list.tail; next = None } in
+  (match list.tail with Some t -> t.next <- Some node | None -> list.head <- Some node);
+  list.tail <- Some node
 
-let to_list_forward dl =
-  let rec go node acc =
-    match node with
-    | None -> List.rev acc
-    | Some n -> go n.next (n.value :: acc)
-  in
-  go dl.head []
+let push_front list value =
+  let node = { value; prev = None; next = list.head } in
+  (match list.head with Some h -> h.prev <- Some node | None -> list.tail <- Some node);
+  list.head <- Some node
 
-let to_list_backward dl =
-  let rec go node acc =
-    match node with
+let to_list list =
+  let rec go acc = function
     | None -> List.rev acc
-    | Some n -> go n.prev (n.value :: acc)
+    | Some n -> go (n.value :: acc) n.next
   in
-  go dl.tail []
+  go [] list.head
 
 let () =
-  let dl = create () in
-  List.iter (push_back dl) [ 1; 2; 3; 4 ];
-  List.iter (Printf.printf "%d ") (to_list_forward dl);
-  print_newline ();
-  List.iter (Printf.printf "%d ") (to_list_backward dl);
-  print_newline ()
+  let list = create () in
+  push_back list 2;
+  push_back list 3;
+  push_front list 1;
+  push_back list 4;
+  to_list list |> List.map string_of_int |> String.concat " " |> print_endline

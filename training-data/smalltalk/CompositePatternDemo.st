@@ -1,44 +1,47 @@
 Object subclass: FileSystemNode [
-    size [ ^self subclassResponsibility ]
-    name [ ^self subclassResponsibility ]
-]
-
-FileSystemNode subclass: File [
-    | name size |
-    name: n size: s [ name := n. size := s ]
+    | name |
+    name: n [ name := n ]
     name [ ^name ]
-    size [ ^size ]
+    size [ ^self subclassResponsibility ]
+    printIndent: level [ ^(String new: level withAll: $ ) ]
 ]
 
-FileSystemNode subclass: Directory [
-    | name children |
-    Directory class >> named: n [
+FileSystemNode subclass: FileNode [
+    | fileSize |
+    name: n size: s [ name := n. fileSize := s ]
+    size [ ^fileSize ]
+    printAt: level [
+        Transcript showCr: (self printIndent: level), name, ' (', fileSize printString, ')'
+    ]
+]
+
+FileSystemNode subclass: DirectoryNode [
+    | children |
+    DirectoryNode class >> new [
         | d |
-        d := self new.
-        d setName: n.
+        d := super new.
+        d setChildren.
         ^d
     ]
-    setName: n [ name := n. children := OrderedCollection new ]
-    name [ ^name ]
-    add: node [ children addLast: node ]
-    size [
-        | total |
-        total := 0.
-        children do: [ :c | total := total + c size ].
-        ^total
+    setChildren [ children := OrderedCollection new ]
+    add: child [ children add: child ]
+    size [ ^children inject: 0 into: [ :sum :each | sum + each size ] ]
+    printAt: level [
+        Transcript showCr: (self printIndent: level), name, '/ (', self size printString, ')'.
+        children do: [ :child | child printAt: level + 2 ]
     ]
 ]
 
 | root src docs |
-root := Directory named: 'root'.
-src := Directory named: 'src'.
-docs := Directory named: 'docs'.
+root := DirectoryNode new name: 'root'; yourself.
+src := DirectoryNode new name: 'src'; yourself.
+docs := DirectoryNode new name: 'docs'; yourself.
 
-src add: (File new name: 'main.st' size: 120; yourself).
-src add: (File new name: 'utils.st' size: 80; yourself).
-docs add: (File new name: 'readme.md' size: 40; yourself).
-
+src add: (FileNode new name: 'main.st' size: 120).
+src add: (FileNode new name: 'util.st' size: 80).
+docs add: (FileNode new name: 'guide.md' size: 60).
 root add: src.
 root add: docs.
+root add: (FileNode new name: 'README.md' size: 40).
 
-Transcript showCr: root size printString.
+root printAt: 0.

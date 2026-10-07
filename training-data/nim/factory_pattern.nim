@@ -11,18 +11,21 @@ type
     side: float
 
 method area(s: Shape): float {.base.} =
-  raise newException(CatchableError, "not implemented")
+  discard
 
-method area(c: Circle): float =
-  3.14159 * c.radius * c.radius
+method area(s: Circle): float =
+  3.14159 * s.radius * s.radius
 
 method area(s: Square): float =
   s.side * s.side
 
 proc createShape(kind: ShapeKind): Shape =
   case kind
-  of skCircle: Circle(radius: 2.0)
-  of skSquare: Square(side: 3.0)
+  of skCircle:
+    Circle(radius: 2.0)
+  of skSquare:
+    Square(side: 3.0)
 
 for kind in [skCircle, skSquare]:
-  echo area(createShape(kind))
+  let shape = createShape(kind)
+  echo area(shape)

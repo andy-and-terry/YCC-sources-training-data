@@ -3,15 +3,15 @@ interface Notification {
 }
 
 class EmailNotification : Notification {
-    override fun notify(message: String) = "Email: $message"
+    override fun notify(message: String): String = "Email: $message"
 }
 
 class SmsNotification : Notification {
-    override fun notify(message: String) = "SMS: $message"
+    override fun notify(message: String): String = "SMS: $message"
 }
 
 class PushNotification : Notification {
-    override fun notify(message: String) = "Push: $message"
+    override fun notify(message: String): String = "Push: $message"
 }
 
 object NotificationFactory {
@@ -19,7 +19,7 @@ object NotificationFactory {
         "email" -> EmailNotification()
         "sms" -> SmsNotification()
         "push" -> PushNotification()
-        else -> throw IllegalArgumentException("unknown kind: $kind")
+        else -> throw IllegalArgumentException("unknown notification kind: $kind")
     }
 }
 

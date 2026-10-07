@@ -1,25 +1,27 @@
-(def size 8)
-(def tree (atom (vec (repeat (inc size) 0))))
+(defn make-fenwick [n]
+  (atom (vec (repeat (inc n) 0))))
 
-(defn fen-update! [i delta]
-  (loop [idx (inc i)]
-    (when (<= idx size)
-      (swap! tree update idx + delta)
-      (recur (+ idx (bit-and idx (- idx)))))))
+(defn fenwick-update! [tree i delta n]
+  (loop [i i]
+    (when (<= i n)
+      (swap! tree update i + delta)
+      (recur (+ i (bit-and i (- i)))))))
 
-(defn prefix-sum [i]
-  (loop [idx (inc i)
-         total 0]
-    (if (pos? idx)
-      (recur (- idx (bit-and idx (- idx))) (+ total (@tree idx)))
-      total)))
+(defn fenwick-prefix-sum [tree i]
+  (loop [i i sum 0]
+    (if (<= i 0)
+      sum
+      (recur (- i (bit-and i (- i))) (+ sum (@tree i))))))
 
-(defn range-sum [l r]
-  (- (prefix-sum r) (if (pos? l) (prefix-sum (dec l)) 0)))
+(defn fenwick-range-sum [tree lo hi]
+  (- (fenwick-prefix-sum tree hi) (fenwick-prefix-sum tree (dec lo))))
 
-(def values [1 3 5 7 9 11 13 15])
-(doseq [i (range size)] (fen-update! i (values i)))
+(def n 8)
+(def values [3 2 -1 6 5 4 -3 3])
+(def tree (make-fenwick n))
 
-(println (range-sum 1 3))
-(fen-update! 1 4)
-(println (range-sum 1 3))
+(doseq [i (range n)]
+  (fenwick-update! tree (inc i) (values i) n))
+
+(println "prefix sum through index 4 (1-based):" (fenwick-prefix-sum tree 4))
+(println "range sum [3,6] (1-based):" (fenwick-range-sum tree 3 6))

@@ -1,68 +1,28 @@
 -module(rabin_karp_search).
--export([search/2, search_all/2]).
+-export([search/2]).
 
--define(BASE, 256).
--define(MOD, 1000000007).
+%% A simplified Rabin-Karp search: instead of maintaining a rolling
+%% hash incrementally, each candidate window is hashed and compared
+%% by hash first, then confirmed with an exact match to rule out hash
+%% collisions, before sliding one position to the right.
 
 search(Text, Pattern) ->
-    case search_all(Text, Pattern) of
-        [] -> -1;
-        [First | _] -> First
-    end.
-
-search_all(Text, Pattern) ->
     N = length(Text),
     M = length(Pattern),
-    case M =:= 0 orelse M > N of
-        true -> [];
-        false ->
-            TextTuple = list_to_tuple(Text),
-            PatternTuple = list_to_tuple(Pattern),
-            PatternHash = hash_of(Pattern),
-            HighOrder = power(?BASE, M - 1),
-            InitialHash = hash_of(lists:sublist(Text, 1, M)),
-            scan(TextTuple, PatternTuple, N, M, PatternHash, HighOrder, InitialHash, 0, [])
+    search(Text, Pattern, hash(Pattern), N, M, 0).
+
+search(_Text, _Pattern, _PatternHash, N, M, Start) when Start + M > N ->
+    not_found;
+search(Text, Pattern, PatternHash, N, M, Start) ->
+    Window = lists:sublist(Text, Start + 1, M),
+    case hash(Window) =:= PatternHash andalso Window =:= Pattern of
+        true -> {found, Start};
+        false -> search(Text, Pattern, PatternHash, N, M, Start + 1)
     end.
 
-hash_of(Chars) ->
-    lists:foldl(fun(C, Acc) -> (Acc * ?BASE + C) rem ?MOD end, 0, Chars).
+hash(Str) ->
+    lists:foldl(fun(C, Acc) -> (Acc * 256 + C) rem 1000000007 end, 0, Str).
 
-power(_Base, 0) -> 1;
-power(Base, Exp) -> (Base * power(Base, Exp - 1)) rem ?MOD.
-
-roll_hash(OldHash, OldChar, NewChar, HighOrder) ->
-    Removed = (OldHash - OldChar * HighOrder) rem ?MOD,
-    Shifted = (Removed * ?BASE + NewChar) rem ?MOD,
-    (Shifted + ?MOD) rem ?MOD.
-
-matches(TextTuple, PatternTuple, Start, M) ->
-    matches(TextTuple, PatternTuple, Start, M, 0).
-
-matches(_TextTuple, _PatternTuple, _Start, M, K) when K =:= M -> true;
-matches(TextTuple, PatternTuple, Start, M, K) ->
-    case element(Start + K + 1, TextTuple) =:= element(K + 1, PatternTuple) of
-        true -> matches(TextTuple, PatternTuple, Start, M, K + 1);
-        false -> false
-    end.
-
-scan(_TextTuple, _PatternTuple, N, M, _PatternHash, _HighOrder, _CurrentHash, I, Acc)
-        when I > N - M ->
-    lists:reverse(Acc);
-scan(TextTuple, PatternTuple, N, M, PatternHash, HighOrder, CurrentHash, I, Acc) ->
-    Acc1 = case CurrentHash =:= PatternHash andalso matches(TextTuple, PatternTuple, I, M) of
-        true -> [I | Acc];
-        false -> Acc
-    end,
-    case I + M < N of
-        true ->
-            NextHash = roll_hash(CurrentHash,
-                                  element(I + 1, TextTuple),
-                                  element(I + M + 1, TextTuple),
-                                  HighOrder),
-            scan(TextTuple, PatternTuple, N, M, PatternHash, HighOrder, NextHash, I + 1, Acc1);
-        false ->
-            scan(TextTuple, PatternTuple, N, M, PatternHash, HighOrder, CurrentHash, I + 1, Acc1)
-    end.
-
-main() ->
-    io:format("~p~n", [search_all("abracadabra", "abra")]).
+run() ->
+    io:format("~p~n", [search("abxabcabcaby", "abcaby")]),
+    io:format("~p~n", [search("hello world", "xyz")]).

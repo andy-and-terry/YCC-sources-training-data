@@ -1,30 +1,35 @@
 trait Observer {
-  def update(event: String): Unit
+  def update(temperature: Double): Unit
 }
 
-class EmailSubscriber(name: String) extends Observer {
-  def update(event: String): Unit = println(s"$name received email: $event")
-}
-
-class Subject {
+class WeatherStation {
   private var observers: List[Observer] = List()
+  private var temperature: Double = 0.0
 
   def subscribe(o: Observer): Unit = observers = observers :+ o
   def unsubscribe(o: Observer): Unit = observers = observers.filterNot(_ == o)
-  def notifyObservers(event: String): Unit = observers.foreach(_.update(event))
+
+  def setTemperature(t: Double): Unit = {
+    temperature = t
+    observers.foreach(_.update(temperature))
+  }
 }
 
-object ObserverPattern {
+class Display(name: String) extends Observer {
+  def update(temperature: Double): Unit = println(s"$name display: ${temperature}C")
+}
+
+object ObserverPatternDemo {
   def main(args: Array[String]): Unit = {
-    val subject = new Subject
-    val alice = new EmailSubscriber("Alice")
-    val bob = new EmailSubscriber("Bob")
+    val station = new WeatherStation
+    val lobby = new Display("Lobby")
+    val office = new Display("Office")
 
-    subject.subscribe(alice)
-    subject.subscribe(bob)
-    subject.notifyObservers("new post published")
+    station.subscribe(lobby)
+    station.subscribe(office)
+    station.setTemperature(21.5)
 
-    subject.unsubscribe(bob)
-    subject.notifyObservers("another update")
+    station.unsubscribe(lobby)
+    station.setTemperature(24.0)
   }
 }

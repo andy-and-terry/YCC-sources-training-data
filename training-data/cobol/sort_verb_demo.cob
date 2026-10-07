@@ -1,0 +1,44 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SORTVERBDEMO.
+       ENVIRONMENT DIVISION.
+       INPUT-OUTPUT SECTION.
+       FILE-CONTROL.
+           SELECT SORT-WORK-FILE ASSIGN TO "sortwork.tmp".
+           SELECT INPUT-FILE ASSIGN TO "unsorted.dat"
+               ORGANIZATION IS LINE SEQUENTIAL.
+           SELECT OUTPUT-FILE ASSIGN TO "sorted.dat"
+               ORGANIZATION IS LINE SEQUENTIAL.
+       DATA DIVISION.
+       FILE SECTION.
+       SD SORT-WORK-FILE.
+       01 SORT-RECORD.
+           05 SORT-NAME PIC X(15).
+           05 SORT-AGE  PIC 9(3).
+       FD INPUT-FILE.
+       01 INPUT-RECORD PIC X(18).
+       FD OUTPUT-FILE.
+       01 OUTPUT-RECORD PIC X(18).
+       WORKING-STORAGE SECTION.
+       01 END-OF-FILE PIC X VALUE "N".
+
+       PROCEDURE DIVISION.
+           OPEN OUTPUT INPUT-FILE
+           WRITE INPUT-RECORD FROM "CAROL          040"
+           WRITE INPUT-RECORD FROM "ALICE          030"
+           WRITE INPUT-RECORD FROM "BOB            025"
+           CLOSE INPUT-FILE
+
+           SORT SORT-WORK-FILE
+               ON ASCENDING KEY SORT-AGE
+               USING INPUT-FILE
+               GIVING OUTPUT-FILE
+
+           OPEN INPUT OUTPUT-FILE
+           PERFORM UNTIL END-OF-FILE = "Y"
+               READ OUTPUT-FILE
+                   AT END MOVE "Y" TO END-OF-FILE
+                   NOT AT END DISPLAY "SORTED: " OUTPUT-RECORD
+               END-READ
+           END-PERFORM
+           CLOSE OUTPUT-FILE
+           STOP RUN.

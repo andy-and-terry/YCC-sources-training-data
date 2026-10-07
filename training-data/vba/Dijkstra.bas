@@ -1,60 +1,52 @@
-Sub Dijkstra()
-    Const numNodes As Integer = 5
-    Const INF As Long = 2147483647
+Sub Dijkstra(adjMatrix() As Long, n As Long, source As Long, dist() As Long)
+    Dim visited() As Boolean
+    ReDim visited(n - 1)
 
-    ' adjacency(u, v) = weight, or INF if no edge
-    Dim adjacency(0 To numNodes - 1, 0 To numNodes - 1) As Long
-    Dim i As Integer, j As Integer
-    For i = 0 To numNodes - 1
-        For j = 0 To numNodes - 1
-            adjacency(i, j) = INF
-        Next j
+    Dim i As Long
+    For i = 0 To n - 1
+        dist(i) = 999999
     Next i
+    dist(source) = 0
 
-    adjacency(0, 1) = 4
-    adjacency(0, 2) = 1
-    adjacency(2, 1) = 2
-    adjacency(1, 3) = 1
-    adjacency(2, 3) = 5
-    adjacency(3, 4) = 3
-
-    Dim dist(0 To numNodes - 1) As Long
-    Dim visited(0 To numNodes - 1) As Boolean
-    For i = 0 To numNodes - 1
-        dist(i) = INF
-        visited(i) = False
-    Next i
-    dist(0) = 0
-
-    Dim count As Integer
-    For count = 0 To numNodes - 1
-        Dim u As Integer
+    Dim count As Long
+    For count = 0 To n - 1
+        Dim u As Long, best As Long
+        best = 999999
         u = -1
-        For i = 0 To numNodes - 1
-            If Not visited(i) Then
-                If u = -1 Or dist(i) < dist(u) Then
-                    u = i
-                End If
+        For i = 0 To n - 1
+            If Not visited(i) And dist(i) < best Then
+                best = dist(i)
+                u = i
             End If
         Next i
-
-        If u = -1 Or dist(u) = INF Then Exit For
+        If u = -1 Then Exit For
         visited(u) = True
 
-        For j = 0 To numNodes - 1
-            If adjacency(u, j) < INF Then
-                If dist(u) + adjacency(u, j) < dist(j) Then
-                    dist(j) = dist(u) + adjacency(u, j)
+        Dim v As Long
+        For v = 0 To n - 1
+            If adjMatrix(u, v) > 0 And Not visited(v) Then
+                If dist(u) + adjMatrix(u, v) < dist(v) Then
+                    dist(v) = dist(u) + adjMatrix(u, v)
                 End If
             End If
-        Next j
+        Next v
     Next count
-
-    For i = 0 To numNodes - 1
-        Debug.Print i, dist(i)
-    Next i
 End Sub
 
 Sub Main()
-    Dijkstra
+    Dim adj(3, 3) As Long
+    ' Undirected graph: 0-1(4), 0-2(1), 1-2(2), 1-3(1), 2-3(5)
+    adj(0, 1) = 4: adj(1, 0) = 4
+    adj(0, 2) = 1: adj(2, 0) = 1
+    adj(2, 1) = 2: adj(1, 2) = 2
+    adj(1, 3) = 1: adj(3, 1) = 1
+    adj(2, 3) = 5: adj(3, 2) = 5
+
+    Dim dist(3) As Long
+    Dijkstra adj, 4, 0, dist
+
+    Dim i As Long
+    For i = 0 To 3
+        Debug.Print i & ": " & dist(i)
+    Next i
 End Sub

@@ -1,34 +1,57 @@
-// Adapts a legacy Celsius-only sensor to the Fahrenheit-based trait
-// newer client code expects, without modifying either side.
-struct LegacyWeatherStation;
+// The adapter pattern wraps an incompatible type behind the interface
+// callers expect, without modifying either side.
+trait PowerSource {
+    fn voltage(&self) -> u32;
+}
 
-impl LegacyWeatherStation {
-    fn temperature_celsius(&self) -> f64 {
-        21.5
+struct EuropeanSocket;
+
+impl EuropeanSocket {
+    fn output_voltage(&self) -> u32 {
+        230
     }
 }
 
-trait FahrenheitSource {
-    fn temperature_fahrenheit(&self) -> f64;
-}
+struct UsAppliance;
 
-struct FahrenheitAdapter {
-    station: LegacyWeatherStation,
-}
-
-impl FahrenheitSource for FahrenheitAdapter {
-    fn temperature_fahrenheit(&self) -> f64 {
-        self.station.temperature_celsius() * 9.0 / 5.0 + 32.0
+impl UsAppliance {
+    fn plug_in(&self, source: &dyn PowerSource) {
+        println!("appliance receives {}V", source.voltage());
+        if source.voltage() > 120 {
+            println!("warning: voltage too high, appliance may be damaged");
+        } else {
+            println!("appliance running normally");
+        }
     }
 }
 
-fn report_temperature(source: &dyn FahrenheitSource) {
-    println!("Current temperature: {:.1}F", source.temperature_fahrenheit());
+// The adapter implements the trait the client expects, translating
+// calls to the adaptee's incompatible interface underneath.
+struct EuroToUsAdapter {
+    socket: EuropeanSocket,
+}
+
+impl PowerSource for EuroToUsAdapter {
+    fn voltage(&self) -> u32 {
+        // a real step-down transformer would do this conversion
+        self.socket.output_voltage() / 2
+    }
+}
+
+struct DirectUsSocket;
+
+impl PowerSource for DirectUsSocket {
+    fn voltage(&self) -> u32 {
+        120
+    }
 }
 
 fn main() {
-    let adapter = FahrenheitAdapter {
-        station: LegacyWeatherStation,
-    };
-    report_temperature(&adapter);
+    let appliance = UsAppliance;
+
+    let us_socket = DirectUsSocket;
+    appliance.plug_in(&us_socket);
+
+    let adapter = EuroToUsAdapter { socket: EuropeanSocket };
+    appliance.plug_in(&adapter);
 }

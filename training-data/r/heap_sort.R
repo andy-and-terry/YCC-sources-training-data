@@ -1,35 +1,34 @@
-sift_down <- function(items, start, end) {
-  root <- start
-  repeat {
-    left <- 2 * root + 1
-    right <- 2 * root + 2
-    largest <- root
-    if (left <= end && items[left + 1] > items[largest + 1]) largest <- left
-    if (right <= end && items[right + 1] > items[largest + 1]) largest <- right
-    if (largest == root) break
-    tmp <- items[root + 1]
-    items[root + 1] <- items[largest + 1]
-    items[largest + 1] <- tmp
-    root <- largest
+heap_sort <- function(arr) {
+  n <- length(arr)
+
+  sift_down <- function(arr, size, root) {
+    repeat {
+      largest <- root
+      left <- 2 * root
+      right <- 2 * root + 1
+      if (left <= size && arr[left] > arr[largest]) largest <- left
+      if (right <= size && arr[right] > arr[largest]) largest <- right
+      if (largest == root) break
+      tmp <- arr[root]
+      arr[root] <- arr[largest]
+      arr[largest] <- tmp
+      root <- largest
+    }
+    arr
   }
-  items
+
+  for (i in floor(n / 2):1) {
+    arr <- sift_down(arr, n, i)
+  }
+
+  for (end in n:2) {
+    tmp <- arr[1]
+    arr[1] <- arr[end]
+    arr[end] <- tmp
+    arr <- sift_down(arr, end - 1, 1)
+  }
+
+  arr
 }
 
-heap_sort <- function(items) {
-  n <- length(items)
-  if (n <= 1) return(items)
-
-  for (start in (floor(n / 2) - 1):0) {
-    items <- sift_down(items, start, n - 1)
-  }
-
-  for (end in (n - 1):1) {
-    tmp <- items[1]
-    items[1] <- items[end + 1]
-    items[end + 1] <- tmp
-    items <- sift_down(items, 0, end - 1)
-  }
-  items
-}
-
-print(heap_sort(c(5, 3, 8, 1, 9, 2, 7)))
+print(heap_sort(c(5, 2, 9, 1, 5, 6, -3)))

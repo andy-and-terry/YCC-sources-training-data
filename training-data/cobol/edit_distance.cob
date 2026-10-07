@@ -2,19 +2,19 @@
        PROGRAM-ID. EDITDISTANCE.
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01 STR-A PIC X(6) VALUE "SUNDAY".
-       01 STR-B PIC X(8) VALUE "SATURDAY".
+       01 STR-A PIC X(6) VALUE "KITTEN".
+       01 STR-B PIC X(7) VALUE "SITTING".
        01 LEN-A PIC 9(2) VALUE 6.
-       01 LEN-B PIC 9(2) VALUE 8.
+       01 LEN-B PIC 9(2) VALUE 7.
        01 DP-TABLE.
            05 DP-ROW OCCURS 7 TIMES.
-               10 DP-CELL PIC 9(2) OCCURS 9 TIMES VALUE 0.
+               10 DP-CELL PIC 9(2) OCCURS 8 TIMES.
        01 I PIC 9(2).
        01 J PIC 9(2).
-       01 DELETE-COST PIC 9(2).
-       01 INSERT-COST PIC 9(2).
-       01 REPLACE-COST PIC 9(2).
-       01 BEST-COST PIC 9(2).
+       01 DEL-COST PIC 9(2).
+       01 INS-COST PIC 9(2).
+       01 SUB-COST PIC 9(2).
+       01 MIN-COST PIC 9(2).
 
        PROCEDURE DIVISION.
            PERFORM VARYING I FROM 0 BY 1 UNTIL I > LEN-A
@@ -29,17 +29,17 @@
                    IF STR-A(I:1) = STR-B(J:1)
                        MOVE DP-CELL(I, J) TO DP-CELL(I + 1, J + 1)
                    ELSE
-                       MOVE DP-CELL(I, J + 1) TO DELETE-COST
-                       MOVE DP-CELL(I + 1, J) TO INSERT-COST
-                       MOVE DP-CELL(I, J) TO REPLACE-COST
-                       MOVE DELETE-COST TO BEST-COST
-                       IF INSERT-COST < BEST-COST
-                           MOVE INSERT-COST TO BEST-COST
+                       COMPUTE DEL-COST = DP-CELL(I, J + 1) + 1
+                       COMPUTE INS-COST = DP-CELL(I + 1, J) + 1
+                       COMPUTE SUB-COST = DP-CELL(I, J) + 1
+                       MOVE DEL-COST TO MIN-COST
+                       IF INS-COST < MIN-COST
+                           MOVE INS-COST TO MIN-COST
                        END-IF
-                       IF REPLACE-COST < BEST-COST
-                           MOVE REPLACE-COST TO BEST-COST
+                       IF SUB-COST < MIN-COST
+                           MOVE SUB-COST TO MIN-COST
                        END-IF
-                       COMPUTE DP-CELL(I + 1, J + 1) = BEST-COST + 1
+                       MOVE MIN-COST TO DP-CELL(I + 1, J + 1)
                    END-IF
                END-PERFORM
            END-PERFORM

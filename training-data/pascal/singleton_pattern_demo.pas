@@ -6,7 +6,9 @@ type
   private
     FMessages: array[0..99] of string;
     FCount: Integer;
+    constructor Create;
   public
+    class function Instance: TLogger;
     procedure Log(msg: string);
     procedure PrintAll;
   end;
@@ -14,11 +16,16 @@ type
 var
   GlobalInstance: TLogger = nil;
 
-function GetLogger: TLogger;
+constructor TLogger.Create;
+begin
+  FCount := 0;
+end;
+
+class function TLogger.Instance: TLogger;
 begin
   if GlobalInstance = nil then
     GlobalInstance := TLogger.Create;
-  GetLogger := GlobalInstance;
+  Instance := GlobalInstance;
 end;
 
 procedure TLogger.Log(msg: string);
@@ -37,10 +44,11 @@ end;
 
 var
   logger1, logger2: TLogger;
+
 begin
-  logger1 := GetLogger;
+  logger1 := TLogger.Instance;
   logger1.Log('first message');
-  logger2 := GetLogger;
+  logger2 := TLogger.Instance;
   logger2.Log('second message');
   WriteLn(logger1 = logger2);
   logger1.PrintAll;

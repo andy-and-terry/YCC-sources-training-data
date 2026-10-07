@@ -1,32 +1,28 @@
-Object subclass: Beverage [
-    cost [ ^self subclassResponsibility ]
-    description [ ^self subclassResponsibility ]
-]
-
-Beverage subclass: Coffee [
+Object subclass: Coffee [
     cost [ ^2 ]
-    description [ ^'Coffee' ]
+    description [ ^'coffee' ]
 ]
 
-Beverage subclass: CondimentDecorator [
-    | beverage |
-    beverage: b [ beverage := b ]
+Object subclass: CoffeeDecorator [
+    | inner |
+    inner: aCoffee [ inner := aCoffee ]
+    cost [ ^inner cost ]
+    description [ ^inner description ]
 ]
 
-CondimentDecorator subclass: Milk [
-    cost [ ^beverage cost + 1 ]
-    description [ ^beverage description, ' + Milk' ]
+CoffeeDecorator subclass: WithMilk [
+    cost [ ^inner cost + 0.5 ]
+    description [ ^inner description, ' + milk' ]
 ]
 
-CondimentDecorator subclass: Sugar [
-    cost [ ^beverage cost + (1/2) ]
-    description [ ^beverage description, ' + Sugar' ]
+CoffeeDecorator subclass: WithSugar [
+    cost [ ^inner cost + 0.25 ]
+    description [ ^inner description, ' + sugar' ]
 ]
 
-| drink |
-drink := Coffee new.
-drink := Milk new beverage: drink; yourself.
-drink := Sugar new beverage: drink; yourself.
+| plain fancy |
+plain := Coffee new.
+fancy := WithSugar new inner: (WithMilk new inner: plain); yourself.
 
-Transcript showCr: drink description.
-Transcript showCr: drink cost printString.
+Transcript showCr: plain description, ': ', plain cost printString.
+Transcript showCr: fancy description, ': ', fancy cost printString.

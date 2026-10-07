@@ -5,44 +5,55 @@ interface Command {
 
 class Light {
     boolean on = false
+
+    void turnOn() {
+        on = true
+        println "light on"
+    }
+
+    void turnOff() {
+        on = false
+        println "light off"
+    }
 }
 
-class TurnOnCommand implements Command {
+class LightOnCommand implements Command {
     Light light
 
-    void execute() { light.on = true }
-    void undo() { light.on = false }
+    LightOnCommand(Light light) { this.light = light }
+
+    void execute() { light.turnOn() }
+    void undo() { light.turnOff() }
 }
 
-class TurnOffCommand implements Command {
+class LightOffCommand implements Command {
     Light light
 
-    void execute() { light.on = false }
-    void undo() { light.on = true }
+    LightOffCommand(Light light) { this.light = light }
+
+    void execute() { light.turnOff() }
+    void undo() { light.turnOn() }
 }
 
-class CommandHistory {
+class RemoteControl {
     List<Command> history = []
 
-    void run(Command command) {
+    void submit(Command command) {
         command.execute()
-        history << command
+        history.push(command)
     }
 
     void undoLast() {
-        if (!history) return
-        history.pop().undo()
+        if (history) {
+            history.pop().undo()
+        }
     }
 }
 
 def light = new Light()
-def history = new CommandHistory()
+def remote = new RemoteControl()
 
-history.run(new TurnOnCommand(light: light))
-println "light on? ${light.on}"
-
-history.run(new TurnOffCommand(light: light))
-println "light on? ${light.on}"
-
-history.undoLast()
-println "light on after undo? ${light.on}"
+remote.submit(new LightOnCommand(light))
+remote.submit(new LightOffCommand(light))
+remote.undoLast()
+println "final state: ${light.on}"

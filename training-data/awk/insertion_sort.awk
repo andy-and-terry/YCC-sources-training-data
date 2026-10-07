@@ -1,8 +1,8 @@
 #!/usr/bin/awk -f
-# Insertion-sorts a fixed list of numbers ascending.
+# Sorts a fixed list of numbers ascending using insertion sort.
 BEGIN {
-    split("12 11 13 5 6", nums, " ")
-    n = 5
+    split("5 3 8 1 9 2", nums, " ")
+    n = 6
     for (i = 2; i <= n; i++) {
         key = nums[i]
         j = i - 1

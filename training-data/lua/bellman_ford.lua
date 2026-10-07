@@ -1,9 +1,11 @@
-local function bellman_ford(num_nodes, edges, source)
+-- Bellman-Ford: single-source shortest paths that tolerates negative
+-- edge weights and can detect a negative-weight cycle, unlike dijkstra.
+local function bellman_ford(vertices, edges, source)
   local dist = {}
-  for i = 0, num_nodes - 1 do dist[i] = math.huge end
+  for _, v in ipairs(vertices) do dist[v] = math.huge end
   dist[source] = 0
 
-  for _ = 1, num_nodes - 1 do
+  for _ = 1, #vertices - 1 do
     for _, edge in ipairs(edges) do
       local u, v, w = edge[1], edge[2], edge[3]
       if dist[u] + w < dist[v] then
@@ -12,22 +14,28 @@ local function bellman_ford(num_nodes, edges, source)
     end
   end
 
+  local has_negative_cycle = false
   for _, edge in ipairs(edges) do
     local u, v, w = edge[1], edge[2], edge[3]
     if dist[u] + w < dist[v] then
-      error("graph contains a negative-weight cycle")
+      has_negative_cycle = true
     end
   end
 
-  return dist
+  return dist, has_negative_cycle
 end
 
+local vertices = { "a", "b", "c", "d" }
 local edges = {
-  { 0, 1, 4 },
-  { 0, 2, 5 },
-  { 1, 2, -3 },
-  { 2, 3, 4 },
+  { "a", "b", 4 },
+  { "a", "c", 5 },
+  { "b", "c", -3 },
+  { "c", "d", 4 },
+  { "b", "d", 6 },
 }
 
-local dist = bellman_ford(4, edges, 0)
-for i = 0, 3 do print(i, dist[i]) end
+local dist, has_negative_cycle = bellman_ford(vertices, edges, "a")
+for _, v in ipairs(vertices) do
+  print(v, dist[v])
+end
+print("negative cycle:", has_negative_cycle)

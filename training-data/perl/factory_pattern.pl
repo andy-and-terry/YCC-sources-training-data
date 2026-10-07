@@ -31,13 +31,13 @@ sub create {
     my ($class, $kind, @args) = @_;
     return Circle->new(@args) if $kind eq 'circle';
     return Square->new(@args) if $kind eq 'square';
-    die "unknown shape: $kind";
+    die "unknown shape: $kind\n";
 }
 
 package main;
 
-for my $spec (['circle', 2], ['square', 3]) {
+for my $spec (['circle', 3], ['square', 4]) {
     my ($kind, @args) = @$spec;
     my $shape = ShapeFactory->create($kind, @args);
-    printf "%s area: %.2f\n", $kind, $shape->area();
+    printf "%s area: %.2f\n", $kind, $shape->area;
 }

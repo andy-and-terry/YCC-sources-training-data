@@ -40,6 +40,6 @@ package main;
 my $v1 = Vector2D->new(1, 2);
 my $v2 = Vector2D->new(3, 4);
 
-print "v1 + v2 = ", $v1 + $v2, "\n";
-print "v2 - v1 = ", $v2 - $v1, "\n";
-print(($v1 == Vector2D->new(1, 2)) ? "v1 equals (1, 2)\n" : "v1 differs\n");
+print "v1 + v2 = ", ($v1 + $v2), "\n";
+print "v2 - v1 = ", ($v2 - $v1), "\n";
+print "v1 == v1: ", ($v1 == Vector2D->new(1, 2) ? "true" : "false"), "\n";

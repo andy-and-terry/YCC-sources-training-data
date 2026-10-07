@@ -4,53 +4,58 @@
 
 class LFUCache {
 public:
-    explicit LFUCache(int capacity) : capacity(capacity), minFreq(0) {}
+    explicit LFUCache(size_t capacity) : capacity(capacity) {}
 
     int get(int key) {
-        auto it = values.find(key);
-        if (it == values.end()) return -1;
-        touch(key);
-        return it->second;
+        auto it = entries.find(key);
+        if (it == entries.end()) return -1;
+        touch(it);
+        return it->second.value;
     }
 
     void put(int key, int value) {
         if (capacity == 0) return;
-        auto it = values.find(key);
-        if (it != values.end()) {
-            it->second = value;
-            touch(key);
+        auto it = entries.find(key);
+        if (it != entries.end()) {
+            it->second.value = value;
+            touch(it);
             return;
         }
-        if (static_cast<int>(values.size()) >= capacity) {
-            int evictKey = freqLists[minFreq].back();
-            freqLists[minFreq].pop_back();
-            keyIter.erase(evictKey);
-            values.erase(evictKey);
-            keyFreq.erase(evictKey);
+
+        if (entries.size() >= capacity) {
+            int leastFrequent = minFrequency;
+            int evictKey = frequencyList[leastFrequent].back();
+            frequencyList[leastFrequent].pop_back();
+            entries.erase(evictKey);
         }
-        values[key] = value;
-        keyFreq[key] = 1;
-        freqLists[1].push_front(key);
-        keyIter[key] = freqLists[1].begin();
-        minFreq = 1;
+
+        frequencyList[1].push_front(key);
+        entries[key] = {value, 1, frequencyList[1].begin()};
+        minFrequency = 1;
     }
 
 private:
-    void touch(int key) {
-        int freq = keyFreq[key];
-        freqLists[freq].erase(keyIter[key]);
-        if (freqLists[freq].empty() && minFreq == freq) minFreq++;
-        keyFreq[key] = freq + 1;
-        freqLists[freq + 1].push_front(key);
-        keyIter[key] = freqLists[freq + 1].begin();
-    }
+    struct Entry {
+        int value;
+        int frequency;
+        std::list<int>::iterator position;
+    };
 
-    int capacity;
-    int minFreq;
-    std::unordered_map<int, int> values;
-    std::unordered_map<int, int> keyFreq;
-    std::unordered_map<int, std::list<int>> freqLists;
-    std::unordered_map<int, std::list<int>::iterator> keyIter;
+    size_t capacity;
+    int minFrequency = 0;
+    std::unordered_map<int, Entry> entries;
+    std::unordered_map<int, std::list<int>> frequencyList;
+
+    void touch(std::unordered_map<int, Entry>::iterator it) {
+        int key = it->first;
+        int frequency = it->second.frequency;
+        frequencyList[frequency].erase(it->second.position);
+        if (frequencyList[frequency].empty() && minFrequency == frequency) minFrequency++;
+
+        it->second.frequency++;
+        frequencyList[frequency + 1].push_front(key);
+        it->second.position = frequencyList[frequency + 1].begin();
+    }
 };
 
 int main() {

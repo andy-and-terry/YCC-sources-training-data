@@ -1,27 +1,47 @@
 use strict;
 use warnings;
 
-package Checkout;
+package StrategyAscending;
+
+sub new { return bless {}, shift; }
+
+sub sort_list {
+    my ($self, @items) = @_;
+    return sort { $a <=> $b } @items;
+}
+
+package StrategyDescending;
+
+sub new { return bless {}, shift; }
+
+sub sort_list {
+    my ($self, @items) = @_;
+    return sort { $b <=> $a } @items;
+}
+
+package Sorter;
 
 sub new {
     my ($class, $strategy) = @_;
     return bless { strategy => $strategy }, $class;
 }
 
-sub total {
-    my ($self, $amount) = @_;
-    return $self->{strategy}->($amount);
+sub set_strategy {
+    my ($self, $strategy) = @_;
+    $self->{strategy} = $strategy;
+}
+
+sub sort_list {
+    my ($self, @items) = @_;
+    return $self->{strategy}->sort_list(@items);
 }
 
 package main;
 
-my %strategies = (
-    no_discount => sub { my $amount = shift; return $amount; },
-    percentage  => sub { my $amount = shift; return $amount * 0.9; },
-    flat        => sub { my $amount = shift; my $r = $amount - 5; return $r < 0 ? 0 : $r; },
-);
+my @numbers = (5, 2, 8, 1, 9);
 
-for my $name (qw(no_discount percentage flat)) {
-    my $checkout = Checkout->new($strategies{$name});
-    printf "%s: %.2f\n", $name, $checkout->total(100);
-}
+my $sorter = Sorter->new(StrategyAscending->new);
+print join(",", $sorter->sort_list(@numbers)), "\n";
+
+$sorter->set_strategy(StrategyDescending->new);
+print join(",", $sorter->sort_list(@numbers)), "\n";

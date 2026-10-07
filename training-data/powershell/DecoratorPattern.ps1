@@ -1,29 +1,24 @@
-class SimpleCoffee {
+class Coffee {
     [double] Cost() { return 2.0 }
-    [string] Description() { return "Coffee" }
+    [string] Description() { return "coffee" }
 }
 
 class MilkDecorator {
-    $Coffee
-
-    MilkDecorator($coffee) {
-        $this.Coffee = $coffee
-    }
-
-    [double] Cost() { return $this.Coffee.Cost() + 0.5 }
-    [string] Description() { return "$($this.Coffee.Description()) + Milk" }
+    [object]$Wrapped
+    MilkDecorator([object]$wrapped) { $this.Wrapped = $wrapped }
+    [double] Cost() { return $this.Wrapped.Cost() + 0.5 }
+    [string] Description() { return "$($this.Wrapped.Description()) + milk" }
 }
 
 class SugarDecorator {
-    $Coffee
-
-    SugarDecorator($coffee) {
-        $this.Coffee = $coffee
-    }
-
-    [double] Cost() { return $this.Coffee.Cost() + 0.25 }
-    [string] Description() { return "$($this.Coffee.Description()) + Sugar" }
+    [object]$Wrapped
+    SugarDecorator([object]$wrapped) { $this.Wrapped = $wrapped }
+    [double] Cost() { return $this.Wrapped.Cost() + 0.25 }
+    [string] Description() { return "$($this.Wrapped.Description()) + sugar" }
 }
 
-$order = [SugarDecorator]::new([MilkDecorator]::new([SimpleCoffee]::new()))
-"$($order.Description()): `$$($order.Cost())"
+$drink = [Coffee]::new()
+$drink = [MilkDecorator]::new($drink)
+$drink = [SugarDecorator]::new($drink)
+
+"{0}: `${1:N2}" -f $drink.Description(), $drink.Cost()

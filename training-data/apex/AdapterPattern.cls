@@ -1,33 +1,32 @@
 public class AdapterPattern {
-    // The interface our client code expects.
-    public interface JsonExporter {
-        String toJson();
+    public interface JsonSerializer {
+        String toJson(Object obj);
     }
 
-    // A third-party-style class we cannot change, exposing an
-    // incompatible XML-shaped API.
-    public class LegacyXmlReport {
-        public String toXmlString() {
-            return '<report><total>42</total></report>';
+    public class LegacyXmlFormatter {
+        public String toXml(Map<String, Object> data) {
+            String xml = '<record>';
+            for (String key : data.keySet()) {
+                xml += '<' + key + '>' + String.valueOf(data.get(key)) + '</' + key + '>';
+            }
+            xml += '</record>';
+            return xml;
         }
     }
 
-    // Adapter: makes LegacyXmlReport conform to JsonExporter by wrapping
-    // it and translating its output.
-    public class XmlToJsonAdapter implements JsonExporter {
-        private LegacyXmlReport legacy;
-        public XmlToJsonAdapter(LegacyXmlReport legacy) {
-            this.legacy = legacy;
-        }
-        public String toJson() {
-            String xml = legacy.toXmlString();
-            String total = xml.substringBetween('<total>', '</total>');
-            return '{"total":' + total + '}';
+    public class XmlToJsonAdapter implements JsonSerializer {
+        private LegacyXmlFormatter legacy = new LegacyXmlFormatter();
+
+        public String toJson(Object obj) {
+            Map<String, Object> data = (Map<String, Object>) obj;
+            String xml = legacy.toXml(data);
+            return '{"xmlPayload": "' + xml.replace('"', '\'') + '"}';
         }
     }
 
     public static void main() {
-        JsonExporter exporter = new XmlToJsonAdapter(new LegacyXmlReport());
-        System.debug(exporter.toJson());
+        Map<String, Object> data = new Map<String, Object>{ 'name' => 'Acme', 'id' => 1 };
+        JsonSerializer serializer = new XmlToJsonAdapter();
+        System.debug(serializer.toJson(data));
     }
 }

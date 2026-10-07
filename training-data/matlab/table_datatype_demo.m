@@ -1,17 +1,14 @@
 names = {'Alice'; 'Bob'; 'Carol'};
-scores = [92; 78; 85];
-grade = repmat({''}, numel(scores), 1);
-for i = 1:numel(scores)
-    if scores(i) >= 90
-        grade{i} = 'A';
-    elseif scores(i) >= 80
-        grade{i} = 'B';
-    else
-        grade{i} = 'C';
-    end
-end
+ages = [30; 25; 35];
+scores = [88; 92; 79];
 
-results = table(names, scores, grade, 'VariableNames', {'Name', 'Score', 'Grade'});
-disp(results)
-disp(results(results.Score > 80, :))
-disp(mean(results.Score))
+t = table(names, ages, scores, 'VariableNames', {'Name', 'Age', 'Score'});
+disp(t)
+
+highScorers = t(t.Score > 80, :);
+disp(highScorers)
+
+fprintf('average score: %.2f\n', mean(t.Score));
+
+sortedTable = sortrows(t, 'Score', 'descend');
+disp(sortedTable)

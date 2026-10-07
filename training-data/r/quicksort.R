@@ -1,12 +1,14 @@
-quicksort <- function(items) {
-  if (length(items) <= 1) {
-    return(items)
-  }
-  pivot <- items[[length(items) %/% 2 + 1]]
-  left <- items[items < pivot]
-  mid <- items[items == pivot]
-  right <- items[items > pivot]
-  c(quicksort(left), mid, quicksort(right))
+quicksort <- function(v) {
+  if (length(v) <= 1) return(v)
+
+  pivot <- v[1]
+  rest <- v[-1]
+  left <- rest[rest < pivot]
+  right <- rest[rest >= pivot]
+
+  c(quicksort(left), pivot, quicksort(right))
 }
 
-print(quicksort(c(5, 3, 8, 1, 9, 2)))
+print(quicksort(c(9, 3, 7, 1, 8, 2, 5)))
+print(quicksort(c()))
+print(quicksort(c(4)))

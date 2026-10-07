@@ -1,10 +1,10 @@
-module BellmanFord exposing (Edge, hasNegativeCycle, shortestPaths)
+module BellmanFord exposing (Edge, shortestPaths)
 
 import Dict exposing (Dict)
 
 
 type alias Edge =
-    { from : String, to : String, weight : Int }
+    ( String, String, Int )
 
 
 infinity : Int
@@ -20,46 +20,30 @@ shortestPaths nodes edges source =
                 |> List.map (\n -> ( n, infinity ))
                 |> Dict.fromList
                 |> Dict.insert source 0
-
-        relaxOnce dist =
-            List.foldl relaxEdge dist edges
-
-        iterate n dist =
-            if n <= 0 then
-                dist
-
-            else
-                iterate (n - 1) (relaxOnce dist)
     in
-    iterate (List.length nodes - 1) initial
+    relaxAll edges (List.length nodes - 1) initial
+
+
+relaxAll : List Edge -> Int -> Dict String Int -> Dict String Int
+relaxAll edges count dist =
+    if count <= 0 then
+        dist
+
+    else
+        relaxAll edges (count - 1) (List.foldl relaxEdge dist edges)
 
 
 relaxEdge : Edge -> Dict String Int -> Dict String Int
-relaxEdge edge dist =
+relaxEdge ( from, to, weight ) dist =
     let
-        du =
-            Dict.get edge.from dist |> Maybe.withDefault infinity
+        distFrom =
+            Dict.get from dist |> Maybe.withDefault infinity
 
-        dv =
-            Dict.get edge.to dist |> Maybe.withDefault infinity
+        distTo =
+            Dict.get to dist |> Maybe.withDefault infinity
     in
-    if du /= infinity && du + edge.weight < dv then
-        Dict.insert edge.to (du + edge.weight) dist
+    if distFrom /= infinity && distFrom + weight < distTo then
+        Dict.insert to (distFrom + weight) dist
 
     else
         dist
-
-
-{-| Run one extra relaxation pass after convergence; if any distance still
-improves, the graph contains a negative-weight cycle reachable from source.
--}
-hasNegativeCycle : List String -> List Edge -> String -> Bool
-hasNegativeCycle nodes edges source =
-    let
-        converged =
-            shortestPaths nodes edges source
-
-        relaxedOnceMore =
-            List.foldl relaxEdge converged edges
-    in
-    relaxedOnceMore /= converged

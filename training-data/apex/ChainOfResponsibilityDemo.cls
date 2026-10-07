@@ -1,62 +1,63 @@
 public class ChainOfResponsibilityDemo {
-    public abstract class ApprovalHandler {
-        protected ApprovalHandler next;
+    public abstract class Approver {
+        protected Approver next;
 
-        public ApprovalHandler setNext(ApprovalHandler next) {
+        public void setNext(Approver next) {
             this.next = next;
-            return next;
         }
 
-        public void handle(Decimal amount) {
+        public void approve(Decimal amount) {
             if (canApprove(amount)) {
-                System.debug(approverName() + ' approved $' + amount);
+                System.debug(label() + ' approved amount ' + amount);
             } else if (next != null) {
-                next.handle(amount);
+                next.approve(amount);
             } else {
-                System.debug('No approver found for $' + amount);
+                System.debug('No approver available for amount ' + amount);
             }
         }
 
         protected abstract Boolean canApprove(Decimal amount);
-        protected abstract String approverName();
+        protected abstract String label();
     }
 
-    public class Manager extends ApprovalHandler {
+    public class Manager extends Approver {
         protected override Boolean canApprove(Decimal amount) {
             return amount <= 1000;
         }
-        protected override String approverName() {
+        protected override String label() {
             return 'Manager';
         }
     }
 
-    public class Director extends ApprovalHandler {
+    public class Director extends Approver {
         protected override Boolean canApprove(Decimal amount) {
             return amount <= 10000;
         }
-        protected override String approverName() {
+        protected override String label() {
             return 'Director';
         }
     }
 
-    public class VicePresident extends ApprovalHandler {
+    public class VicePresident extends Approver {
         protected override Boolean canApprove(Decimal amount) {
             return amount <= 100000;
         }
-        protected override String approverName() {
-            return 'Vice President';
+        protected override String label() {
+            return 'VicePresident';
         }
     }
 
     public static void main() {
-        ApprovalHandler manager = new Manager();
-        ApprovalHandler director = new Director();
-        ApprovalHandler vp = new VicePresident();
-        manager.setNext(director).setNext(vp);
+        Approver manager = new Manager();
+        Approver director = new Director();
+        Approver vp = new VicePresident();
 
-        manager.handle(500);
-        manager.handle(5000);
-        manager.handle(50000);
-        manager.handle(500000);
+        manager.setNext(director);
+        director.setNext(vp);
+
+        manager.approve(500);
+        manager.approve(5000);
+        manager.approve(50000);
+        manager.approve(500000);
     }
 }

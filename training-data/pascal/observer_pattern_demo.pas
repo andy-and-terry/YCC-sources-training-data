@@ -15,20 +15,19 @@ type
     procedure Notify(state: Integer); override;
   end;
 
-  TObserverArray = array[0..9] of TObserver;
-
   TSubject = class
   private
-    FObservers: TObserverArray;
-    FCount: Integer;
+    FObservers: array[0..9] of TObserver;
+    FObserverCount: Integer;
+    FState: Integer;
   public
+    constructor Create;
     procedure Attach(observer: TObserver);
     procedure SetState(state: Integer);
   end;
 
 constructor TConsoleObserver.Create(name: string);
 begin
-  inherited Create;
   FName := name;
 end;
 
@@ -37,22 +36,30 @@ begin
   WriteLn(FName, ' received update: ', state);
 end;
 
+constructor TSubject.Create;
+begin
+  FObserverCount := 0;
+  FState := 0;
+end;
+
 procedure TSubject.Attach(observer: TObserver);
 begin
-  FObservers[FCount] := observer;
-  FCount := FCount + 1;
+  FObservers[FObserverCount] := observer;
+  FObserverCount := FObserverCount + 1;
 end;
 
 procedure TSubject.SetState(state: Integer);
 var
   i: Integer;
 begin
-  for i := 0 to FCount - 1 do
-    FObservers[i].Notify(state);
+  FState := state;
+  for i := 0 to FObserverCount - 1 do
+    FObservers[i].Notify(FState);
 end;
 
 var
   subject: TSubject;
+
 begin
   subject := TSubject.Create;
   subject.Attach(TConsoleObserver.Create('A'));

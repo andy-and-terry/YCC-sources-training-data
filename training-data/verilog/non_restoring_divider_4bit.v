@@ -9,55 +9,50 @@ module non_restoring_divider_4bit (
     output reg done
 );
 
-localparam IDLE = 0, COMPUTE = 1, FINISH = 2;
+localparam IDLE = 0, COMPUTE = 1, CORRECT = 2, FINISH = 3;
 reg [1:0] state;
-reg [2:0] count;
-reg signed [4:0] acc;
-reg [3:0] q_reg;
+reg [2:0] bit_count;
+reg [4:0] acc;
+reg [3:0] quot;
 reg [3:0] divisor_reg;
-reg [8:0] shifted;
-reg signed [4:0] a_shifted;
-reg signed [4:0] new_a;
+
+wire [4:0] shifted   = {acc[3:0], quot[3]};
+wire [4:0] div_ext   = {1'b0, divisor_reg};
+wire [4:0] next_acc  = acc[4] ? (shifted + div_ext) : (shifted - div_ext);
 
 always @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         state <= IDLE;
         done <= 1'b0;
-        count <= 0;
+        bit_count <= 0;
     end else begin
         case (state)
             IDLE: begin
                 done <= 1'b0;
                 if (start) begin
-                    acc <= 5'sd0;
-                    q_reg <= dividend;
+                    acc <= 5'd0;
+                    quot <= dividend;
                     divisor_reg <= divisor;
-                    count <= 3'd4;
+                    bit_count <= 0;
                     state <= COMPUTE;
                 end
             end
             COMPUTE: begin
-                shifted = {acc, q_reg} << 1;
-                a_shifted = shifted[8:4];
-                if (a_shifted[4] == 1'b0) begin
-                    new_a = a_shifted - {1'b0, divisor_reg};
+                acc <= next_acc;
+                quot <= {quot[2:0], ~next_acc[4]};
+                if (bit_count == 3'd3) begin
+                    state <= next_acc[4] ? CORRECT : FINISH;
                 end else begin
-                    new_a = a_shifted + {1'b0, divisor_reg};
+                    bit_count <= bit_count + 1'b1;
                 end
-                acc <= new_a;
-                q_reg <= {shifted[3:1], ~new_a[4]};
-                if (count == 3'd1) begin
-                    state <= FINISH;
-                end
-                count <= count - 3'd1;
+            end
+            CORRECT: begin
+                acc <= acc + div_ext;
+                state <= FINISH;
             end
             FINISH: begin
-                if (acc[4] == 1'b1) begin
-                    remainder <= acc + divisor_reg;
-                end else begin
-                    remainder <= acc[3:0];
-                end
-                quotient <= q_reg;
+                quotient <= quot;
+                remainder <= acc[3:0];
                 done <= 1'b1;
                 state <= IDLE;
             end

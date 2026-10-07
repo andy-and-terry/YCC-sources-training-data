@@ -1,49 +1,42 @@
 use strict;
 use warnings;
 
-package DListNode;
-
-sub new {
-    my ($class, $value) = @_;
-    return bless { value => $value, prev => undef, next => undef }, $class;
-}
-
 package DoublyLinkedList;
 
 sub new {
     my ($class) = @_;
-    return bless { head => undef, tail => undef }, $class;
+    return bless { head => undef, tail => undef, size => 0 }, $class;
 }
 
-sub add_last {
+sub push_back {
     my ($self, $value) = @_;
-    my $node = DListNode->new($value);
-    if (!defined $self->{head}) {
-        $self->{head} = $node;
-        $self->{tail} = $node;
-    } else {
-        $node->{prev} = $self->{tail};
+    my $node = { value => $value, prev => $self->{tail}, next => undef };
+    if ($self->{tail}) {
         $self->{tail}{next} = $node;
-        $self->{tail} = $node;
+    } else {
+        $self->{head} = $node;
     }
+    $self->{tail} = $node;
+    $self->{size}++;
 }
 
-sub remove_first {
-    my ($self) = @_;
-    return unless defined $self->{head};
-    $self->{head} = $self->{head}{next};
-    if (defined $self->{head}) {
-        $self->{head}{prev} = undef;
+sub push_front {
+    my ($self, $value) = @_;
+    my $node = { value => $value, prev => undef, next => $self->{head} };
+    if ($self->{head}) {
+        $self->{head}{prev} = $node;
     } else {
-        $self->{tail} = undef;
+        $self->{tail} = $node;
     }
+    $self->{head} = $node;
+    $self->{size}++;
 }
 
 sub to_array_forward {
     my ($self) = @_;
     my @out;
     my $node = $self->{head};
-    while (defined $node) {
+    while ($node) {
         push @out, $node->{value};
         $node = $node->{next};
     }
@@ -54,7 +47,7 @@ sub to_array_backward {
     my ($self) = @_;
     my @out;
     my $node = $self->{tail};
-    while (defined $node) {
+    while ($node) {
         push @out, $node->{value};
         $node = $node->{prev};
     }
@@ -63,8 +56,10 @@ sub to_array_backward {
 
 package main;
 
-my $list = DoublyLinkedList->new();
-$list->add_last($_) for (1, 2, 3, 4);
-print join(",", $list->to_array_forward()), "\n";
-$list->remove_first();
-print join(",", $list->to_array_backward()), "\n";
+my $list = DoublyLinkedList->new;
+$list->push_back($_) for (1, 2, 3);
+$list->push_front(0);
+
+print join(" ", $list->to_array_forward), "\n";
+print join(" ", $list->to_array_backward), "\n";
+print "size: $list->{size}\n";
