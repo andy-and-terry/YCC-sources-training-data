@@ -1,39 +1,21 @@
 <?php
 
-class Vault
+class Counter
 {
-    private string $secret = 'hidden-value';
-    private static int $opened = 0;
+    private int $count = 5;
 }
 
+// Bind a closure to an object so it can read private state.
 $peek = function () {
-    return $this->secret;
+    return $this->count;
 };
-
-$bound = Closure::bind($peek, new Vault(), Vault::class);
+$bound = Closure::bind($peek, new Counter(), Counter::class);
 echo $bound(), "\n";
 
-$staticPeek = static fn() => ++self::$opened;
-$binder = Closure::bind($staticPeek, null, Vault::class);
-$binder();
-echo "opened: ", $binder(), "\n";
+$c = new Counter();
+$inc = Closure::bind(function () { return ++$this->count; }, $c, Counter::class);
+$inc();
+echo $inc(), "\n";
 
-$greet = function (string $greeting) {
-    return "$greeting, {$this->name}";
-};
-$user = new class { public string $name = 'Ada'; };
-echo $greet->call($user, 'Hello'), "\n";
-
-$adder = fn(int $n) => fn(int $x) => $x + $n;
-echo $adder(5)(10), "\n";
-
-function counter(): Closure
-{
-    $n = 0;
-    return function () use (&$n) {
-        return ++$n;
-    };
-}
-$c = counter();
-$c();
-echo "counter: ", $c(), "\n";
+$static = static fn(int $x): int => $x * 2;
+echo $static(21), "\n";

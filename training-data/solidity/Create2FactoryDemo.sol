@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
-contract Vault {
+contract Child {
     address public immutable owner;
     uint256 public immutable id;
 
@@ -12,23 +12,17 @@ contract Vault {
 }
 
 contract Create2FactoryDemo {
-    event VaultCreated(address indexed vault, address indexed owner, bytes32 salt);
+    event Deployed(address addr, bytes32 salt);
 
-    address[] public vaults;
-
-    function deploy(bytes32 salt, uint256 id) external returns (address vault) {
-        vault = address(new Vault{salt: salt}(msg.sender, id));
-        vaults.push(vault);
-        emit VaultCreated(vault, msg.sender, salt);
+    function deploy(bytes32 salt, uint256 id) external returns (address) {
+        Child c = new Child{salt: salt}(msg.sender, id);
+        emit Deployed(address(c), salt);
+        return address(c);
     }
 
-    function predict(bytes32 salt, address owner, uint256 id) external view returns (address) {
-        bytes memory initCode = abi.encodePacked(type(Vault).creationCode, abi.encode(owner, id));
-        bytes32 hash = keccak256(abi.encodePacked(bytes1(0xff), address(this), salt, keccak256(initCode)));
-        return address(uint160(uint256(hash)));
-    }
-
-    function vaultCount() external view returns (uint256) {
-        return vaults.length;
+    function predict(bytes32 salt, uint256 id) external view returns (address) {
+        bytes32 initHash = keccak256(abi.encodePacked(type(Child).creationCode, abi.encode(msg.sender, id)));
+        bytes32 h = keccak256(abi.encodePacked(bytes1(0xff), address(this), salt, initHash));
+        return address(uint160(uint256(h)));
     }
 }

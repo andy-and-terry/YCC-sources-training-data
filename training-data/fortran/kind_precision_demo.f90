@@ -1,19 +1,20 @@
 program kind_precision_demo
-    use, intrinsic :: iso_fortran_env, only: int8, int32, int64, real32, real64
+    use, intrinsic :: iso_fortran_env, only: int32, int64, real32, real64
     implicit none
-    integer, parameter :: dp = selected_real_kind(15, 307)
-    integer, parameter :: i9 = selected_int_kind(9)
-    real(real32) :: s = 1.0_real32 / 3.0_real32
-    real(dp) :: d = 1.0_dp / 3.0_dp
-    integer(int8) :: small = 127_int8
-    integer(int64) :: big = huge(1_int64)
+    real(real32) :: single
+    real(real64) :: double
+    integer(int32) :: small
+    integer(int64) :: big
 
-    print *, 'single:', s
-    print *, 'double:', d
-    print *, 'epsilon single/double:', epsilon(s), epsilon(d)
-    print *, 'huge int8 / int32    :', huge(small), huge(1_int32)
-    print *, 'big int64            :', big
-    print *, 'digits               :', digits(s), digits(d)
-    print *, 'range                :', range(s), range(d)
-    print *, 'kind of dp, i9       :', kind(d), kind(1_i9)
+    single = 1.0_real32 / 3.0_real32
+    double = 1.0_real64 / 3.0_real64
+    small = huge(small)
+    big = huge(big)
+
+    print '(A, F20.15)', "single: ", single
+    print '(A, F20.15)', "double: ", double
+    print '(A, I0)', "int32 max: ", small
+    print '(A, I0)', "int64 max: ", big
+    print '(A, I0, A, I0)', "digits: ", precision(single), " vs ", precision(double)
+    print '(A, ES10.3)', "epsilon(double): ", epsilon(double)
 end program kind_precision_demo

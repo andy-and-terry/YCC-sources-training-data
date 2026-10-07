@@ -1,25 +1,13 @@
 void main() {
-  final buffer = StringBuffer();
-  buffer.write('Hello');
-  buffer.write(', ');
-  buffer.writeln('World');
-  buffer.writeAll(['a', 'b', 'c'], '-');
-  buffer.writeCharCode(33);
-
-  print(buffer.toString());
-  print(buffer.length);
-  print(buffer.isEmpty);
-
-  buffer.clear();
+  final sb = StringBuffer();
   for (var i = 1; i <= 5; i++) {
-    buffer.write(i);
-    if (i < 5) buffer.write(' < ');
+    if (i > 1) sb.write(', ');
+    sb.write(i);
   }
-  print(buffer);
-
-  const text = 'The quick brown fox';
-  print(text.split(' ').map((w) => w[0].toUpperCase() + w.substring(1)).join(''));
-  print(text.padLeft(22, '.'));
-  print(text.replaceAll('o', '0'));
-  print(text.contains('quick'));
+  sb.writeln('!');
+  sb.writeAll(['a', 'b', 'c'], '-');
+  print(sb.toString());
+  print(sb.length);
+  sb.clear();
+  print(sb.isEmpty);
 }

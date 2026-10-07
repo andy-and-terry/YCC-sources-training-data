@@ -1,40 +1,28 @@
-a = uint8(12);   % 00001100
-b = uint8(10);   % 00001010
+a = uint8(12);
+b = uint8(10);
 
-disp(bitand(a, b));
-disp(bitor(a, b));
-disp(bitxor(a, b));
-disp(bitshift(a, 2));
-disp(bitshift(a, -2));
-disp(bitcmp(uint8(0)));
+disp(bitand(a, b))
+disp(bitor(a, b))
+disp(bitxor(a, b))
+disp(bitshift(a, 2))
+disp(bitshift(a, -2))
+disp(dec2bin(bitcmp(uint8(5))))
 
-disp(dec2bin(a, 8));
-disp(dec2bin(bitxor(a, b), 8));
-disp(bin2dec('101101'));
-disp(dec2hex(255));
-disp(hex2dec('FF'));
+disp(bitget(uint8(5), 1:4))
+disp(bitset(uint8(0), 3))
+disp(bitset(uint8(15), 1, 0))
 
-% Test, set, and clear individual bits
-flags = uint8(0);
-flags = bitset(flags, 1);
-flags = bitset(flags, 4);
-disp(dec2bin(flags, 8));
-disp(bitget(flags, 4));
-flags = bitset(flags, 1, 0);
-disp(dec2bin(flags, 8));
+is_pow2 = @(n) n > 0 && bitand(n, n - 1) == 0;
+disp(arrayfun(is_pow2, [1 2 3 4 6 8 10]))
 
-% Power of two check
-isPow2 = @(n) n > 0 && bitand(n, n - 1) == 0;
-disp(arrayfun(isPow2, [1 6 8 100 1024]));
+n = 181;
+bits = bitget(n, 8:-1:1);
+disp(bits)
+fprintf('popcount of %d = %d\n', n, sum(bitget(n, 1:8)));
 
-% Population count via a loop
-n = uint16(43690);
-count = 0;
-while n > 0
-    count = count + double(bitand(n, 1));
-    n = bitshift(n, -1);
-end
-disp(count);
-
-disp(intmax('uint8') + 1);
-disp(swapbytes(uint16(1)));
+x = 5; y = 9;
+x = bitxor(x, y); y = bitxor(x, y); x = bitxor(x, y);
+fprintf('swapped: %d %d\n', x, y);
+disp(intmax('uint8') + 1)
+disp(class(bitshift(uint16(1), 15)))
+disp(flintmax)

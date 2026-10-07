@@ -1,16 +1,16 @@
-export function debounce<A extends unknown[]>(fn: (...args: A) => void, waitMs: number) {
+function debounce<A extends unknown[]>(fn: (...args: A) => void, wait: number) {
   let timer: ReturnType<typeof setTimeout> | undefined;
   return (...args: A): void => {
     if (timer !== undefined) clearTimeout(timer);
-    timer = setTimeout(() => fn(...args), waitMs);
+    timer = setTimeout(() => fn(...args), wait);
   };
 }
 
-export function throttle<A extends unknown[]>(fn: (...args: A) => void, intervalMs: number) {
+function throttle<A extends unknown[]>(fn: (...args: A) => void, interval: number) {
   let last = -Infinity;
   return (...args: A): void => {
     const now = Date.now();
-    if (now - last >= intervalMs) {
+    if (now - last >= interval) {
       last = now;
       fn(...args);
     }
@@ -22,5 +22,5 @@ log("a");
 log("b");
 log("c");
 
-const tick = throttle((n: number) => console.log("throttled:", n), 50);
-for (let i = 0; i < 5; i++) tick(i);
+const t = throttle((n: number) => console.log("throttled:", n), 1000);
+for (let i = 0; i < 5; i++) t(i);

@@ -1,19 +1,18 @@
-def describe(value : Int32 | String | Array(Int32) | Nil) : String
+# Union types are resolved with is_a?, case/in and responds_to?.
+def describe(value : Int32 | String | Nil | Array(Int32))
   case value
-  when Int32        then "int #{value}"
-  when String       then "string of #{value.size} chars"
-  when Array(Int32) then "array summing to #{value.sum}"
-  else                   "nil"
+  when Int32       then "int #{value}"
+  when String      then "string #{value.size} chars"
+  when Nil         then "nothing"
+  when Array(Int32) then "array of #{value.size}"
   end
 end
 
-values = [1, "abc", [1, 2, 3], nil] of Int32 | String | Array(Int32) | Nil
-values.each { |v| puts describe(v) }
+[1, "hello", nil, [1, 2, 3]].each { |v| puts describe(v) }
 
-x = rand < 2.0 ? 5 : "five"
-typeof(x).to_s.tap { |t| puts t }
-
+x = rand < 2 ? 5 : "five"
 if x.is_a?(Int32)
   puts x + 1
+else
+  puts x.upcase
 end
-puts x.class

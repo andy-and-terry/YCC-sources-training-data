@@ -1,44 +1,27 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.20;
 
 contract SoulboundTokenDemo {
-    string public name = "Soulbound Badge";
-    address public issuer;
-    uint256 public nextId = 1;
-
+    string public name = "Soulbound";
+    address public immutable issuer;
+    uint256 public nextId;
     mapping(uint256 => address) public ownerOf;
     mapping(address => uint256) public balanceOf;
 
-    event Issued(address indexed to, uint256 indexed tokenId);
-    event Revoked(address indexed from, uint256 indexed tokenId);
-
-    error NotIssuer();
-    error AlreadyHolder();
+    event Minted(address indexed to, uint256 indexed id);
     error Soulbound();
-
-    modifier onlyIssuer() {
-        if (msg.sender != issuer) revert NotIssuer();
-        _;
-    }
+    error NotIssuer();
 
     constructor() {
         issuer = msg.sender;
     }
 
-    function issue(address to) external onlyIssuer returns (uint256 id) {
-        if (balanceOf[to] != 0) revert AlreadyHolder();
+    function mint(address to) external returns (uint256 id) {
+        if (msg.sender != issuer) revert NotIssuer();
         id = nextId++;
         ownerOf[id] = to;
-        balanceOf[to] = 1;
-        emit Issued(to, id);
-    }
-
-    function revoke(uint256 id) external onlyIssuer {
-        address holder = ownerOf[id];
-        require(holder != address(0), "no such token");
-        delete ownerOf[id];
-        balanceOf[holder] = 0;
-        emit Revoked(holder, id);
+        balanceOf[to]++;
+        emit Minted(to, id);
     }
 
     function transferFrom(address, address, uint256) external pure {

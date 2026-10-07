@@ -1,20 +1,17 @@
-void main () {
-    var sb = new StringBuilder ();
-
+void main() {
+    var sb = new StringBuilder();
     for (int i = 1; i <= 5; i++) {
-        sb.append_printf ("%d^2=%d", i, i * i);
-        if (i < 5) {
-            sb.append (", ");
+        if (sb.len > 0) {
+            sb.append(", ");
         }
+        sb.append_printf("item%d", i);
     }
-    print ("%s\n", sb.str);
-    print ("length: %ld\n", sb.len);
+    sb.prepend("[");
+    sb.append("]");
+    stdout.printf("%s (length %d)\n", sb.str, (int) sb.len);
 
-    sb.prepend (">> ");
-    sb.append_c ('!');
-    sb.insert (3, "[squares] ");
-    print ("%s\n", sb.str);
-
-    sb.truncate (10);
-    print ("%s\n", sb.str);
+    sb.truncate(5);
+    stdout.printf("%s\n", sb.str);
+    sb.insert(1, "XX");
+    stdout.printf("%s\n", sb.str);
 }

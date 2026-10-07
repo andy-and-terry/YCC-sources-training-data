@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 
@@ -8,17 +7,16 @@ class ConcurrentDictionaryDemo
     static void Main()
     {
         var counts = new ConcurrentDictionary<string, int>();
-        string[] words = { "red", "green", "red", "blue", "green", "red" };
+        string[] words = { "a", "b", "a", "c", "b", "a" };
 
         Parallel.ForEach(words, w =>
             counts.AddOrUpdate(w, 1, (_, old) => old + 1));
 
-        foreach (var kv in counts.OrderBy(k => k.Key))
-            Console.WriteLine($"{kv.Key}: {kv.Value}");
+        foreach (var key in new[] { "a", "b", "c" })
+            Console.WriteLine($"{key}={counts[key]}");
 
-        int v = counts.GetOrAdd("yellow", 0);
+        int v = counts.GetOrAdd("d", 42);
         Console.WriteLine(v);
-        Console.WriteLine(counts.TryRemove("blue", out var removed) ? $"removed {removed}" : "missing");
-        Console.WriteLine(counts.TryGetValue("blue", out _));
+        Console.WriteLine(counts.TryRemove("d", out var removed) ? removed : -1);
     }
 }

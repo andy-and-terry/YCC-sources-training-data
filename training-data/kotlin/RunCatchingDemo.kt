@@ -1,34 +1,31 @@
-fun parsePort(s: String): Int {
+fun parsePositive(s: String): Int {
     val n = s.toInt()
-    require(n in 1..65535) { "port out of range: $n" }
+    require(n > 0) { "must be positive: $n" }
     return n
 }
 
 fun main() {
-    val ok = runCatching { parsePort("8080") }
-    println(ok.isSuccess)
-    println(ok.getOrNull())
+    val ok = runCatching { parsePositive("42") }
+    println("${ok.isSuccess} ${ok.getOrNull()}")
 
-    val bad = runCatching { parsePort("99999") }
-    println(bad.exceptionOrNull()?.message)
-    println(bad.getOrDefault(80))
+    val bad = runCatching { parsePositive("-5") }
+    println("${bad.isFailure} ${bad.exceptionOrNull()?.message}")
 
-    val notNumber = runCatching { parsePort("abc") }
-        .recover { 3000 }
-    println(notNumber.getOrThrow())
+    println(runCatching { parsePositive("abc") }.getOrDefault(0))
+    println(runCatching { parsePositive("x") }.getOrElse { -1 })
 
-    val mapped = runCatching { "21".toInt() }
-        .map { it * 2 }
-        .onSuccess { println("success: $it") }
-        .onFailure { println("failed: $it") }
-    println(mapped)
+    val chained = runCatching { "10" }
+        .map { it.toInt() * 2 }
+        .mapCatching { check(it < 15) { "too big" }; it }
+        .recover { 0 }
+    println(chained.getOrNull())
 
-    val inputs = listOf("1", "x", "3", "", "5")
-    val (good, failed) = inputs.map { runCatching { it.toInt() } }.partition { it.isSuccess }
-    println(good.map { it.getOrThrow() })
-    println(failed.map { it.exceptionOrNull()!!::class.simpleName })
+    runCatching { parsePositive("7") }
+        .onSuccess { println("success $it") }
+        .onFailure { println("failure $it") }
 
-    val result = runCatching { error("boom") }
-        .fold(onSuccess = { "fine" }, onFailure = { "handled ${it.message}" })
-    println(result)
+    val results = listOf("1", "x", "3").map { runCatching { it.toInt() } }
+    println(results.count { it.isSuccess })
+    val (good, failed) = results.partition { it.isSuccess }
+    println("${good.size} ${failed.size}")
 }

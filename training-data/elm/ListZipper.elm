@@ -1,4 +1,4 @@
-module ListZipper exposing (Zipper, current, fromList, left, replace, right, toList)
+module ListZipper exposing (Zipper, fromList, left, right, toList)
 
 
 type alias Zipper a =
@@ -18,36 +18,26 @@ fromList items =
             Just { before = [], focus = x, after = rest }
 
 
-current : Zipper a -> a
-current zipper =
-    zipper.focus
-
-
 right : Zipper a -> Maybe (Zipper a)
-right zipper =
-    case zipper.after of
+right z =
+    case z.after of
         [] ->
             Nothing
 
-        next :: rest ->
-            Just { before = zipper.focus :: zipper.before, focus = next, after = rest }
+        x :: rest ->
+            Just { before = z.focus :: z.before, focus = x, after = rest }
 
 
 left : Zipper a -> Maybe (Zipper a)
-left zipper =
-    case zipper.before of
+left z =
+    case z.before of
         [] ->
             Nothing
 
-        prev :: rest ->
-            Just { before = rest, focus = prev, after = zipper.focus :: zipper.after }
-
-
-replace : a -> Zipper a -> Zipper a
-replace value zipper =
-    { zipper | focus = value }
+        x :: rest ->
+            Just { before = rest, focus = x, after = z.focus :: z.after }
 
 
 toList : Zipper a -> List a
-toList zipper =
-    List.reverse zipper.before ++ zipper.focus :: zipper.after
+toList z =
+    List.reverse z.before ++ (z.focus :: z.after)

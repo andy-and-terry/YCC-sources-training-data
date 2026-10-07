@@ -4,25 +4,11 @@ let expensive =
         42
     )
 
-printfn "created"
-printfn "first: %d" (expensive.Force())
-printfn "second: %d" expensive.Value
-printfn "evaluated: %b" expensive.IsValueCreated
+printfn "before force"
+printfn "value = %d" expensive.Value
+printfn "again  = %d" expensive.Value
+printfn "created: %b" expensive.IsValueCreated
 
-let lazyList =
-    seq {
-        for i in 1 .. 5 do
-            printfn "yielding %d" i
-            yield i * i
-    }
-
-printfn "taking two"
-lazyList |> Seq.take 2 |> Seq.iter (printfn "got %d")
-
-let cached = lazyList |> Seq.cache
-printfn "%d" (Seq.sum cached)
-printfn "%d" (Seq.length cached)
-
-let fallback = lazy (failwith "never forced")
-let choose useIt = if useIt then 1 else 0
-printfn "%d" (choose false)
+let naturals = Seq.initInfinite id
+let evenSquares = naturals |> Seq.filter (fun n -> n % 2 = 0) |> Seq.map (fun n -> n * n)
+evenSquares |> Seq.take 5 |> Seq.toList |> printfn "%A"

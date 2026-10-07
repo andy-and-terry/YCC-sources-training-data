@@ -1,29 +1,25 @@
-const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
 
-export async function retry<T>(
-  task: (attempt: number) => Promise<T>,
-  maxAttempts = 4,
-  baseDelayMs = 10,
+async function retry<T>(
+  fn: (attempt: number) => Promise<T>,
+  retries = 4,
+  baseMs = 5
 ): Promise<T> {
   let lastError: unknown;
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      return await task(attempt);
+      return await fn(attempt);
     } catch (err) {
       lastError = err;
-      if (attempt < maxAttempts) {
-        const delay = baseDelayMs * 2 ** (attempt - 1);
-        console.log(`attempt ${attempt} failed, retrying in ${delay}ms`);
-        await sleep(delay);
-      }
+      const wait = baseMs * 2 ** (attempt - 1);
+      console.log(`attempt ${attempt} failed, waiting ${wait}ms`);
+      await sleep(wait);
     }
   }
-  throw new Error(`gave up after ${maxAttempts} attempts`, { cause: lastError });
+  throw lastError;
 }
 
-async function flaky(attempt: number): Promise<string> {
-  if (attempt < 3) throw new Error("transient failure");
-  return `ok on attempt ${attempt}`;
-}
-
-retry(flaky).then(console.log);
+retry(async (n) => {
+  if (n < 3) throw new Error("flaky");
+  return `succeeded on attempt ${n}`;
+}).then(console.log);

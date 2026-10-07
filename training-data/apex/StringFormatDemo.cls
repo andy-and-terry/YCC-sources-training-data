@@ -1,24 +1,18 @@
 public class StringFormatDemo {
-    public static void main() {
-        String msg = String.format('Hello {0}, you have {1} new messages', new List<Object>{'Ann', 5});
-        System.debug(msg);
-
-        System.debug(String.valueOf(3.14159));
+    public static void run() {
+        System.debug(String.format('Hello {0}, you have {1} messages', new List<Object>{'Ann', 5}));
+        System.debug(String.join(new List<String>{'a', 'b', 'c'}, '-'));
         System.debug('abc'.leftPad(6, '*'));
-        System.debug('abc'.rightPad(6, '-') + '|');
-        System.debug('Salesforce'.abbreviate(8));
-        System.debug('  trim me  '.trim() + '|');
-        System.debug('a,b,,c'.split(','));
-        System.debug('apex'.capitalize());
-        System.debug('Hello'.contains('ell') + ' ' + 'Hello'.startsWith('He') + ' ' + 'Hello'.endsWith('lo'));
-        System.debug('banana'.indexOf('an') + ' ' + 'banana'.lastIndexOf('an'));
-        System.debug('banana'.replace('an', 'AN'));
-        System.debug('x'.repeat(5));
+        System.debug('  trim me '.trim());
         System.debug('Hello'.reverse());
-        System.debug('a-b-c'.substringAfterLast('-') + ' ' + 'a-b-c'.substringBefore('-'));
+        System.debug('a,b,,c'.split(','));
+        System.debug('Salesforce'.substringBefore('f'));
+        System.debug('Salesforce'.substringAfter('f'));
+        System.debug('banana'.countMatches('an'));
+        System.debug('x'.repeat(3));
+        System.debug(String.valueOf(3.14));
+        System.debug('Apex'.equalsIgnoreCase('APEX'));
+        System.debug('hello world'.capitalize());
         System.debug('abc'.compareTo('abd'));
-        System.debug('Hello'.equalsIgnoreCase('HELLO'));
-        System.debug('hello world'.countMatches('o'));
-        System.debug(String.isNotBlank('  '));
     }
 }

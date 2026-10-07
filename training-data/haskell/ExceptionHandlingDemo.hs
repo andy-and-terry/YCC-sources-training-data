@@ -1,36 +1,32 @@
+{-# LANGUAGE ScopedTypeVariables #-}
 import Control.Exception
-import System.IO
 
-data BankError
-  = InsufficientFunds Int
-  | AccountClosed
+data BankError = Insufficient Int | NoAccount String
   deriving Show
 
 instance Exception BankError
 
 withdraw :: Int -> Int -> IO Int
-withdraw balance amount
-  | amount > balance = throwIO (InsufficientFunds (amount - balance))
-  | otherwise = return (balance - amount)
+withdraw bal amt
+  | amt > bal = throwIO (Insufficient (amt - bal))
+  | otherwise = return (bal - amt)
 
 main :: IO ()
 main = do
-  r1 <- try (withdraw 100 30) :: IO (Either BankError Int)
-  print r1
-
-  r2 <- try (withdraw 100 130) :: IO (Either BankError Int)
-  print r2
-
-  r3 <- try (evaluate (1 `div` (0 :: Int)))
-  case r3 of
-    Left DivideByZero -> putStrLn "caught divide by zero"
-    Left e -> putStrLn ("arith error: " ++ show e)
+  r <- try (evaluate (1 `div` (0 :: Int)))
+  case r of
+    Left DivideByZero -> putStrLn "divide by zero"
+    Left e -> putStrLn ("arith: " ++ show e)
     Right v -> print v
 
-  handle (\(ErrorCall msg) -> putStrLn ("error call: " ++ msg)) $
-    evaluate (error "custom failure" :: ())
+  r2 <- try (withdraw 10 50)
+  case r2 of
+    Left (e :: BankError) -> putStrLn ("bank error: " ++ show e)
+    Right v -> print v
 
-  (putStrLn "working" >> throwIO AccountClosed)
-    `catch` (\e -> putStrLn ("handler: " ++ show (e :: BankError)))
-    `finally` putStrLn "cleanup done"
-  hFlush stdout
+  handle (\(e :: SomeException) -> putStrLn "caught head of empty list") $ do
+    _ <- evaluate (head ([] :: [Int]))
+    return ()
+
+  (putStrLn "working" >> throwIO (NoAccount "x")) `catch` (\(e :: BankError) -> putStrLn ("handled " ++ show e))
+    `finally` putStrLn "cleanup"

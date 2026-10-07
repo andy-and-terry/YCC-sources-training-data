@@ -1,33 +1,20 @@
-const data = {
-  name: 'Report',
-  created: new Date('2024-05-01T10:00:00Z'),
-  secret: 'hunter2',
-  tags: new Set(['a', 'b']),
-  scores: [1, 2, 3],
-};
+// JSON.stringify replacer/toJSON and JSON.parse reviver for custom types.
+class Money {
+  constructor(cents) { this.cents = cents; }
+  toJSON() { return { $money: this.cents }; }
+}
 
-const json = JSON.stringify(
-  data,
-  (key, value) => {
-    if (key === 'secret') return undefined;
-    if (value instanceof Set) return { __type: 'Set', values: [...value] };
-    return value;
-  },
-  2
-);
+const data = { id: 1, price: new Money(1999), when: new Date(Date.UTC(2024, 0, 1)), secret: 'x', skip: undefined };
+const json = JSON.stringify(data, (k, v) => (k === 'secret' ? undefined : v));
 console.log(json);
 
-const revived = JSON.parse(json, (key, value) => {
-  if (key === 'created') return new Date(value);
-  if (value && value.__type === 'Set') return new Set(value.values);
-  return value;
+const revived = JSON.parse(json, (k, v) => {
+  if (v && typeof v === 'object' && '$money' in v) return new Money(v.$money);
+  if (k === 'when') return new Date(v);
+  return v;
 });
-console.log(revived.created instanceof Date, revived.tags.has('a'));
+console.log(revived.price instanceof Money, revived.when.getUTCFullYear());
 
+console.log(JSON.stringify({ a: 1, b: [1, 2], c: { d: 1 } }, null, 2));
 console.log(JSON.stringify({ a: 1, b: 2, c: 3 }, ['a', 'c']));
-
-class Temp {
-  constructor(c) { this.c = c; }
-  toJSON() { return { celsius: this.c, fahrenheit: this.c * 9 / 5 + 32 }; }
-}
-console.log(JSON.stringify([new Temp(100)]));
+console.log(JSON.stringify([NaN, Infinity, () => 1, undefined]));

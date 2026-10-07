@@ -1,19 +1,12 @@
 extends Node
 
 func _ready():
-	var name = "Ada"
-	var score = 42.5
-	print("Hello, %s! Score: %.1f" % [name, score])
-	print("%05d | %-6s | %6s" % [42, "left", "right"])
-	print("%x %X %o %c" % [255, 255, 8, 65])
-	print("Hex %08X, percent %d%%" % [48879, 50])
-
-	var template = "{who} has {count} items"
-	print(template.format({"who": "Bob", "count": 3}))
-
-	print("abc".to_upper(), " ", "ABC".to_lower(), " ", "hello world".capitalize())
-	print("a,b,,c".split(",", false))
-	print(", ".join(PackedStringArray(["x", "y", "z"])))
-	print("  padded  ".strip_edges() + "|")
-	print("7".pad_zeros(3), " ", "godot".substr(1, 3), " ", "godot".find("d"))
-	print("hello".begins_with("he"), " ", "hello".ends_with("lo"), " ", "ab".repeat(3))
+	print("%d items" % 3)
+	print("%s is %d years" % ["Ann", 30])
+	print("%.2f|%5d|%-5d|%05d" % [3.14159, 42, 42, 42])
+	print("%x %o %c" % [255, 8, 65])
+	print("{name} has {n}".format({"name": "Bob", "n": 4}))
+	print("abc".to_upper(), " ", "a,b,c".split(","), " ", "  pad ".strip_edges())
+	print("hello".substr(1, 3), " ", "hello".find("ll"), " ", "x".repeat(3))
+	print("42".is_valid_int(), " ", "3.5".to_float(), " ", String.num(2.0 / 3.0, 3))
+	print("hello world".capitalize(), " ", "Hello".begins_with("He"))

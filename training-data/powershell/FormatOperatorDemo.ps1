@@ -1,20 +1,10 @@
-$name = "Ada"
-$score = 93.4567
-$count = 7
-
-"Name: {0}, Score: {1:N2}" -f $name, $score
-"Padded: [{0,8}] [{0,-8}]" -f $name, $name
-"Zero padded: {0:D4}" -f $count
-"Hex: {0:X} Percent: {1:P1}" -f 255, 0.256
-"Currency: {0:C2}" -f 1234.5
-"Thousands: {0:N0}" -f 1234567
-"Date: {0:yyyy-MM-dd}" -f [datetime]"2024-03-15"
-"Repeated: {0} {0} {1}" -f "echo", "done"
-
-$rows = @(
-    @{ Item = "Pen"; Qty = 12; Price = 1.5 }
-    @{ Item = "Notebook"; Qty = 3; Price = 4.25 }
-)
-foreach ($r in $rows) {
-    "{0,-10}{1,5}{2,10:N2}" -f $r.Item, $r.Qty, ($r.Qty * $r.Price)
-}
+"{0} has {1} items" -f 'Cart', 3
+"{0:N2}" -f 1234567.891
+"{0:C}" -f 19.5
+"{0:P1}" -f 0.256
+"{0:D5}" -f 42
+"{0:X4}" -f 255
+"{0:yyyy-MM-dd}" -f [datetime]'2024-07-04'
+"[{0,8}] [{0,-8}]" -f 'right', 'left'
+"{1} {0}" -f 'world', 'hello'
+'{0:e3}' -f 12345.6789

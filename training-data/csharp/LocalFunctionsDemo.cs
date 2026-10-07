@@ -3,35 +3,28 @@ using System.Collections.Generic;
 
 class LocalFunctionsDemo
 {
-    static IEnumerable<int> Fibonacci(int count)
+    static IEnumerable<int> Take(int count)
     {
         if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
-        return Generate();
+        return Iterate();
 
-        IEnumerable<int> Generate()
+        IEnumerable<int> Iterate()
         {
-            int a = 0, b = 1;
-            for (int i = 0; i < count; i++)
-            {
-                yield return a;
-                (a, b) = (b, a + b);
-            }
+            for (int i = 0; i < count; i++) yield return i;
         }
     }
 
-    static int Factorial(int n)
+    static int Fib(int n)
     {
-        return Fact(n, 1);
-
-        static int Fact(int k, int acc) => k <= 1 ? acc : Fact(k - 1, acc * k);
+        return Go(n);
+        static int Go(int k) => k < 2 ? k : Go(k - 1) + Go(k - 2);
     }
 
     static void Main()
     {
-        Console.WriteLine(string.Join(" ", Fibonacci(10)));
-        Console.WriteLine(Factorial(6));
-
-        try { Fibonacci(-1); }
-        catch (ArgumentOutOfRangeException e) { Console.WriteLine("eager validation: " + e.ParamName); }
+        Console.WriteLine(string.Join(",", Take(5)));
+        Console.WriteLine(Fib(10));
+        try { Take(-1); }
+        catch (ArgumentOutOfRangeException) { Console.WriteLine("validated eagerly"); }
     }
 }

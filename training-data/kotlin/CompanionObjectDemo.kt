@@ -1,47 +1,32 @@
 class User private constructor(val id: Int, val name: String) {
     companion object Factory {
         private var nextId = 1
-        const val MAX_NAME_LENGTH = 20
+        const val DEFAULT_NAME = "guest"
 
-        fun create(name: String): User {
-            require(name.length <= MAX_NAME_LENGTH) { "name too long" }
-            return User(nextId++, name)
-        }
+        fun create(name: String = DEFAULT_NAME): User = User(nextId++, name)
 
         @JvmStatic
-        fun guest(): User = create("guest")
+        fun parse(text: String): User = create(text.trim().replaceFirstChar { it.uppercase() })
     }
 
     override fun toString() = "User(id=$id, name=$name)"
 }
 
-interface Parser<T> {
-    fun parse(s: String): T
-}
+interface Shape { fun area(): Double }
 
-class Version(val major: Int, val minor: Int) {
-    companion object : Parser<Version> {
-        override fun parse(s: String): Version {
-            val (a, b) = s.split(".").map { it.toInt() }
-            return Version(a, b)
-        }
+class Circle(private val r: Double) : Shape {
+    override fun area() = Math.PI * r * r
+
+    companion object : () -> Circle {
+        override fun invoke() = Circle(1.0)
     }
-
-    override fun toString() = "v$major.$minor"
 }
-
-fun <T> parseAll(parser: Parser<T>, inputs: List<String>) = inputs.map(parser::parse)
 
 fun main() {
     println(User.create("ann"))
-    println(User.Factory.create("bob"))
-    println(User.guest())
-    println(User.MAX_NAME_LENGTH)
-    println(Version.parse("2.7"))
-    println(parseAll(Version, listOf("1.0", "3.14")))
-    try {
-        User.create("x".repeat(30))
-    } catch (e: IllegalArgumentException) {
-        println("error: ${e.message}")
-    }
+    println(User.create())
+    println(User.parse("  bob "))
+    println(User.DEFAULT_NAME)
+    println(User.Factory.create("cy"))
+    println("%.3f".format(Circle().area()))
 }

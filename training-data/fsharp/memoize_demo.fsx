@@ -1,7 +1,7 @@
 open System.Collections.Generic
 
-let memoize (f: 'a -> 'b) : 'a -> 'b =
-    let cache = Dictionary<'a, 'b>()
+let memoize f =
+    let cache = Dictionary<_, _>()
     fun x ->
         match cache.TryGetValue x with
         | true, v -> v
@@ -10,16 +10,10 @@ let memoize (f: 'a -> 'b) : 'a -> 'b =
             cache.[x] <- v
             v
 
-let slowSquare x =
-    printfn "computing %d" x
-    x * x
-
-let fastSquare = memoize slowSquare
-printfn "%d" (fastSquare 9)
-printfn "%d" (fastSquare 9)
-printfn "%d" (fastSquare 4)
-
 let rec fib =
-    memoize (fun n -> if n < 2 then bigint n else fib (n - 1) + fib (n - 2))
+    memoize (fun n ->
+        if n < 2 then bigint n
+        else fib (n - 1) + fib (n - 2))
 
-printfn "%A" (fib 90)
+printfn "fib 30 = %A" (fib 30)
+printfn "fib 90 = %A" (fib 90)

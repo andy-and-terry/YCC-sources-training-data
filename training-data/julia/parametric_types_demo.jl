@@ -1,37 +1,29 @@
-struct Box{T}
-    value::T
-end
-
-struct Pair2{A, B}
+struct Pair{A,B}
     first::A
     second::B
 end
 
-struct NumericBox{T<:Number}
+swap(p::Pair{A,B}) where {A,B} = Pair{B,A}(p.second, p.first)
+
+struct Box{T<:Number}
     value::T
 end
 
-unbox(b::Box) = b.value
-Base.:+(a::NumericBox{T}, b::NumericBox{T}) where {T} = NumericBox(a.value + b.value)
+Base.:+(a::Box{T}, b::Box{T}) where {T} = Box{T}(a.value + b.value)
 
-function swap(p::Pair2{A, B}) where {A, B}
-    return Pair2{B, A}(p.second, p.first)
+function largest(xs::Vector{T}) where {T<:Real}
+    best = xs[1]
+    for x in xs
+        x > best && (best = x)
+    end
+    return best
 end
 
-function describe(v::Vector{T}) where {T}
-    return "Vector of $(T) with $(length(v)) elements"
-end
-
-println(typeof(Box(1)), " ", typeof(Box("s")), " ", typeof(Box([1.0])))
-println(unbox(Box(:sym)))
-println(swap(Pair2(1, "one")))
-println((NumericBox(2) + NumericBox(40)).value)
-println(describe([1, 2, 3]))
-println(describe(["a"]))
-println(Box{Int} <: Box, Box{Int} <: Box{Number}, Box{Int} <: Box{<:Number})
-
-try
-    NumericBox("not a number")
-catch e
-    println(typeof(e))
-end
+p = Pair(1, "one")
+println(typeof(p))
+println(swap(p))
+println(Box(2) + Box(3))
+println(typeof(Box(2.5)))
+println(largest([3, 9, 4]))
+println(largest([1.5, 0.5]))
+println(Vector{Int} <: AbstractVector{Int})

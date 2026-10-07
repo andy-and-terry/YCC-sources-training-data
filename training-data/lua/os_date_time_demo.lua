@@ -1,24 +1,25 @@
-local fixed = 86400 * 365 -- 1971-01-01 00:00:00 UTC
+-- os.time / os.date / os.difftime with a fixed UTC-independent table.
+local t = os.time({ year = 2024, month = 3, day = 15, hour = 12, min = 30, sec = 0 })
+print(type(t), math.type(t))
 
-print(os.date("!%Y-%m-%d %H:%M:%S", fixed))
-print(os.date("!%A, %B %d", fixed))
-print(os.date("!%j %U %p", fixed))
+local d = os.date("*t", t)
+print(d.year, d.month, d.day, d.hour, d.min)
+print(d.yday, d.wday, d.isdst)
 
-local t = os.date("!*t", fixed + 3661)
-print(t.year, t.month, t.day, t.hour, t.min, t.sec, t.wday, t.yday)
+print(os.date("%Y-%m-%d %H:%M", t))
+print(os.date("%A %B", t))
 
-local stamp = os.time({ year = 2024, month = 2, day = 28, hour = 12 })
-local later = os.time({ year = 2024, month = 2, day = 28 + 2, hour = 12 })
-print(os.difftime(later, stamp) / 86400, "days")
+local later = os.time({ year = 2024, month = 3, day = 20, hour = 12, min = 30, sec = 0 })
+print(os.difftime(later, t) / 86400)
 
-local normalized = os.date("*t", os.time({ year = 2024, month = 14, day = 35, hour = 12 }))
-print(normalized.year, normalized.month, normalized.day)
+-- normalisation: day 35 rolls into the next month
+local norm = os.date("*t", os.time({ year = 2024, month = 1, day = 35, hour = 12 }))
+print(norm.year, norm.month, norm.day)
 
 local start = os.clock()
 local sum = 0
-for i = 1, 1e6 do sum = sum + i end
-local elapsed = os.clock() - start
-print(sum, elapsed >= 0, type(os.time()))
+for i = 1, 1e5 do sum = sum + i end
+print(sum, os.clock() - start >= 0)
 
-print(type(os.getenv("HOME")), os.getenv("SURELY_NOT_SET_VAR"))
-print(os.tmpname() ~= nil)
+print(os.getenv("HOME") ~= nil, os.getenv("NOPE_NOT_SET"))
+print(type(os.tmpname()))

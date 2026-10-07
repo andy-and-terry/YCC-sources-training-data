@@ -1,24 +1,23 @@
+-- Generic memoization using a cache table; multi-argument keys are joined.
 local function memoize(fn)
   local cache = {}
-  return function(n)
-    local hit = cache[n]
+  return function(...)
+    local key = table.concat({ ... }, "\0")
+    local hit = cache[key]
     if hit == nil then
-      hit = fn(n)
-      cache[n] = hit
+      hit = fn(...)
+      cache[key] = hit
     end
     return hit
   end
 end
 
 local calls = 0
-local function slowSquare(n)
+local slow_square = memoize(function(x)
   calls = calls + 1
-  return n * n
-end
-
-local fast = memoize(slowSquare)
-print(fast(9), fast(9), fast(9))
-print("calls:", calls)
+  return x * x
+end)
+print(slow_square(4), slow_square(4), slow_square(5), calls)
 
 local fib
 fib = memoize(function(n)
@@ -27,19 +26,11 @@ fib = memoize(function(n)
 end)
 print(fib(80))
 
-local function memoizeMulti(fn)
-  local cache = {}
-  return function(...)
-    local key = table.concat({ ... }, "\0")
-    if cache[key] == nil then cache[key] = fn(...) end
-    return cache[key]
-  end
-end
-
-local add = memoizeMulti(function(a, b)
-  print("computing", a, b)
-  return a + b
+local grid_calls = 0
+local paths
+paths = memoize(function(r, c)
+  grid_calls = grid_calls + 1
+  if r == 1 or c == 1 then return 1 end
+  return paths(r - 1, c) + paths(r, c - 1)
 end)
-print(add(1, 2))
-print(add(1, 2))
-print(add(2, 1))
+print(paths(10, 10), grid_calls)

@@ -1,33 +1,22 @@
 module geometry
     implicit none
 contains
-    pure function hypotenuse(a, b) result(c)
-        real, intent(in) :: a, b
-        real :: c
-        c = sqrt(a * a + b * b)
-    end function hypotenuse
+    pure function triangle_area(base, height) result(area)
+        real, intent(in) :: base, height
+        real :: area
+        area = 0.5 * base * height
+    end function triangle_area
 
-    pure function dot(u, v) result(d)
-        real, intent(in) :: u(:), v(:)
-        real :: d
-        d = sum(u * v)
-    end function dot
-
-    pure subroutine polar(x, y, r, theta)
-        real, intent(in) :: x, y
-        real, intent(out) :: r, theta
-        r = hypotenuse(x, y)
-        theta = atan2(y, x)
-    end subroutine polar
+    pure integer function clamp(x, lo, hi)
+        integer, intent(in) :: x, lo, hi
+        clamp = max(lo, min(hi, x))
+    end function clamp
 end module geometry
 
 program pure_function_demo
     use geometry
     implicit none
-    real :: r, theta
-
-    print '(A, F6.2)', 'hypotenuse(3,4) = ', hypotenuse(3.0, 4.0)
-    print '(A, F6.2)', 'dot = ', dot([1.0, 2.0, 3.0], [4.0, 5.0, 6.0])
-    call polar(1.0, 1.0, r, theta)
-    print '(A, F6.3, A, F6.3)', 'r = ', r, ' theta = ', theta
+    print '(F6.2)', triangle_area(3.0, 4.0)
+    print '(I0)', clamp(15, 0, 10)
+    print '(I0)', clamp(-3, 0, 10)
 end program pure_function_demo

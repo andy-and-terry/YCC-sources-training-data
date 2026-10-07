@@ -1,19 +1,9 @@
-\ Formatting numbers with pictured numeric output (<# # #S HOLD #>).
+\ Pictured numeric output: format a number with a decimal point
 : .MONEY ( cents -- )
-  0 <# # # [CHAR] . HOLD #S [CHAR] $ HOLD #> TYPE ;
+  DUP ABS 0 <# # # [CHAR] . HOLD #S ROT SIGN #> TYPE ;
 
-: .HH:MM ( minutes -- )
-  60 /MOD SWAP
-  0 <# # # 2DROP [CHAR] : HOLD
-  0 # # #> TYPE ;
+: .HEX ( n -- )  BASE @ SWAP 16 BASE ! 0 <# #S #> TYPE BASE ! ;
 
-: .PADDED ( n width -- )
-  >R 0 <# #S #>
-  R> OVER - 0 MAX SPACES TYPE ;
-
-123456 .MONEY CR
-5 .MONEY CR
-75 .HH:MM CR
-605 .HH:MM CR
-42 6 .PADDED CR
-7 3 .PADDED CR
+12345 .MONEY CR
+-250 .MONEY CR
+255 .HEX CR

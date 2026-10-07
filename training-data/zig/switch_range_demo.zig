@@ -1,19 +1,18 @@
 const std = @import("std");
 
-fn classify(n: u32) []const u8 {
-    return switch (n) {
-        0 => "zero",
-        1...9 => "single digit",
-        10, 20, 30 => "round number",
-        11...99 => "double digit",
-        else => "large",
+fn classify(score: u8) []const u8 {
+    return switch (score) {
+        0...59 => "fail",
+        60...69 => "pass",
+        70...89 => "good",
+        90...100 => "excellent",
+        else => "invalid",
     };
 }
 
 fn charKind(c: u8) []const u8 {
     return switch (c) {
-        'a'...'z' => "lower",
-        'A'...'Z' => "upper",
+        'a'...'z', 'A'...'Z' => "letter",
         '0'...'9' => "digit",
         ' ', '\t', '\n' => "space",
         else => "other",
@@ -21,19 +20,11 @@ fn charKind(c: u8) []const u8 {
 }
 
 pub fn main() void {
-    const inputs = [_]u32{ 0, 7, 20, 42, 1000 };
-    for (inputs) |n| {
-        std.debug.print("{d}: {s}\n", .{ n, classify(n) });
+    const scores = [_]u8{ 42, 65, 80, 95, 120 };
+    for (scores) |s| {
+        std.debug.print("{d}: {s}\n", .{ s, classify(s) });
     }
-    for ("aZ5 !") |c| {
+    for ("a1 !") |c| {
         std.debug.print("'{c}': {s}\n", .{ c, charKind(c) });
     }
-
-    const x: i32 = -3;
-    const sign: i8 = switch (x) {
-        std.math.minInt(i32)...-1 => -1,
-        0 => 0,
-        else => 1,
-    };
-    std.debug.print("sign={d}\n", .{sign});
 }

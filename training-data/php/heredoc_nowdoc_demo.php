@@ -1,32 +1,23 @@
 <?php
 
-$name = 'Ada';
-$items = ['apples' => 3, 'pears' => 5];
+$name = 'World';
+$items = ['a' => 1];
 
-$report = <<<TEXT
-Report for {$name}
-Apples: {$items['apples']}
-Pears:  {$items['pears']}
-Total:  {$items['apples']}
-TEXT;
-echo $report, "\n\n";
-
-$raw = <<<'RAW'
-No $interpolation here, \n stays literal.
-RAW;
-echo $raw, "\n\n";
-
-// closing marker indentation is stripped from every line
-$html = <<<HTML
-    <ul>
-      <li>$name</li>
-    </ul>
-    HTML;
-echo $html, "\n\n";
-
-$fn = fn(int $n) => $n * 2;
-echo <<<EOT
-Double of 21 is {$fn(21)}
-Name length: {$fn(strlen($name))}
-EOT;
+echo <<<TXT
+Hello, {$name}!
+Item a = {$items['a']}
+    Indentation is kept relative to the closing marker.
+TXT;
 echo "\n";
+
+echo <<<'RAW'
+No $interpolation here, and \n stays literal.
+RAW;
+echo "\n";
+
+$sql = <<<SQL
+    SELECT *
+      FROM users
+     WHERE name = '$name'
+    SQL;
+echo $sql, "\n";

@@ -1,32 +1,28 @@
 const std = @import("std");
 
 pub fn main() void {
+    // The continue expression runs after every iteration, even on `continue`
     var i: u32 = 0;
+    var sum_odd: u32 = 0;
     while (i < 10) : (i += 1) {
-        if (i % 3 == 0) continue;
-        std.debug.print("{d} ", .{i});
+        if (i % 2 == 0) continue;
+        sum_odd += i;
     }
-    std.debug.print("\n", .{});
+    std.debug.print("sum of odds below 10: {d}\n", .{sum_odd});
 
-    var a: u32 = 0;
-    var b: u32 = 1;
-    var steps: u32 = 0;
-    while (b < 100) : ({
-        const t = a + b;
-        a = b;
-        b = t;
-        steps += 1;
-    }) {}
-    std.debug.print("first fib >= 100 is {d} after {d} steps\n", .{ b, steps });
+    // Two-variable continue expression
+    var lo: usize = 0;
+    var hi: usize = 9;
+    while (lo < hi) : ({
+        lo += 1;
+        hi -= 1;
+    }) {
+        std.debug.print("pair ({d}, {d})\n", .{ lo, hi });
+    }
 
-    var items = [_]?u32{ 3, 1, null, 4 };
-    var idx: usize = 0;
-    while (idx < items.len) : (idx += 1) {
-        while (items[idx]) |*v| {
-            std.debug.print("item {d} = {d}\n", .{ idx, v.* });
-            break;
-        } else {
-            std.debug.print("item {d} is null\n", .{idx});
-        }
+    // while with optional capture
+    var maybe: ?u32 = 3;
+    while (maybe) |n| : (maybe = if (n > 0) n - 1 else null) {
+        std.debug.print("countdown {d}\n", .{n});
     }
 }

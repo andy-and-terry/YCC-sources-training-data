@@ -1,6 +1,6 @@
-export function memoize<A extends unknown[], R>(
+function memoize<A extends unknown[], R>(
   fn: (...args: A) => R,
-  keyFn: (...args: A) => string = (...args) => JSON.stringify(args),
+  keyFn: (...args: A) => string = (...args) => JSON.stringify(args)
 ): (...args: A) => R {
   const cache = new Map<string, R>();
   return (...args: A): R => {
@@ -13,16 +13,11 @@ export function memoize<A extends unknown[], R>(
 }
 
 let calls = 0;
-const slowSquare = (n: number): number => {
+const slowAdd = (a: number, b: number): number => {
   calls++;
-  return n * n;
+  return a + b;
 };
+const fastAdd = memoize(slowAdd);
 
-const fastSquare = memoize(slowSquare);
-console.log(fastSquare(9), fastSquare(9), fastSquare(4));
+console.log(fastAdd(1, 2), fastAdd(1, 2), fastAdd(2, 3));
 console.log("underlying calls:", calls);
-
-const fib: (n: number) => bigint = memoize((n: number): bigint =>
-  n < 2 ? BigInt(n) : fib(n - 1) + fib(n - 2),
-);
-console.log(fib(90).toString());

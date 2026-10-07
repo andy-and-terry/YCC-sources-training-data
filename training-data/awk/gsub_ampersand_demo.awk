@@ -1,11 +1,15 @@
 #!/usr/bin/awk -f
-# Usage: awk -f gsub_ampersand_demo.awk file
-# Wrap every number in brackets using & (the matched text) and count replacements.
-{
-    n = gsub(/[0-9]+/, "[&]")
-    total += n
-    print
-}
-END {
-    print "replacements:", total + 0
+# In the replacement text, & stands for the matched text.
+BEGIN {
+    s = "cat bat rat"
+    n = gsub(/[a-z]at/, "<&>", s)
+    print s, "(" n " replacements)"
+
+    t = "price: 5 and 10"
+    gsub(/[0-9]+/, "$&.00", t)
+    print t
+
+    u = "a.b.c"
+    gsub(/\./, "\\&", u)   # literal ampersand
+    print u
 }

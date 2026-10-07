@@ -1,36 +1,28 @@
-module PhantomTypeDemo exposing (Raw, Validated, Form, fromInput, submit, validate)
+module PhantomTypeDemo exposing (Meters, Feet, addMeters, meters, toFloat_)
 
 
-type Raw
-    = Raw
+type Meters
+    = Meters
 
 
-type Validated
-    = Validated
+type Feet
+    = Feet
 
 
-type Form state
-    = Form String
+type Length unit
+    = Length Float
 
 
-fromInput : String -> Form Raw
-fromInput text =
-    Form text
+meters : Float -> Length Meters
+meters =
+    Length
 
 
-validate : Form Raw -> Result String (Form Validated)
-validate (Form text) =
-    if String.length (String.trim text) >= 3 then
-        Ok (Form (String.trim text))
-
-    else
-        Err "input too short"
+addMeters : Length Meters -> Length Meters -> Length Meters
+addMeters (Length a) (Length b) =
+    Length (a + b)
 
 
-submit : Form Validated -> String
-submit (Form text) =
-    "submitted: " ++ text
-
-
--- submit (fromInput "hi") is a compile error:
--- only a Form Validated can be passed to submit.
+toFloat_ : Length unit -> Float
+toFloat_ (Length x) =
+    x

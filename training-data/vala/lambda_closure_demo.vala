@@ -1,10 +1,10 @@
-delegate int IntOp (int x);
+delegate int IntOp(int x);
 
-IntOp make_adder (int n) {
+IntOp make_adder(int n) {
     return (x) => x + n;
 }
 
-IntOp make_counter () {
+IntOp make_counter() {
     int count = 0;
     return (step) => {
         count += step;
@@ -12,20 +12,23 @@ IntOp make_counter () {
     };
 }
 
-int apply_twice (IntOp op, int value) {
-    return op (op (value));
-}
+void main() {
+    var add5 = make_adder(5);
+    stdout.printf("%d\n", add5(10));
 
-void main () {
-    var add5 = make_adder (5);
-    print ("%d\n", add5 (10));
-    print ("%d\n", apply_twice (add5, 1));
+    var counter = make_counter();
+    counter(1);
+    counter(2);
+    stdout.printf("counter: %d\n", counter(3));
 
-    var counter = make_counter ();
-    counter (1);
-    counter (2);
-    print ("counter: %d\n", counter (3));
-
-    int factor = 3;
-    print ("%d\n", apply_twice ((x) => x * factor, 2));
+    int[] data = {1, 2, 3, 4};
+    int sum = 0;
+    IntOp accumulate = (x) => {
+        sum += x;
+        return sum;
+    };
+    foreach (int d in data) {
+        accumulate(d);
+    }
+    stdout.printf("sum: %d\n", sum);
 }

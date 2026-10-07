@@ -1,27 +1,17 @@
-def file = File.createTempFile('demo', '.txt')
-file.deleteOnExit()
+def f = File.createTempFile('demo', '.txt')
+f.deleteOnExit()
 
-file.text = "alpha\nbeta\ngamma\n"
-file << "delta\n"
-file.withWriterAppend { w -> w.println 'epsilon' }
+f.text = "alpha\nbeta\ngamma\n"
+f << "delta\n"
 
-println "Size: ${file.length()} bytes"
-println "Lines: ${file.readLines().size()}"
+println f.readLines().size()
+f.eachLine { line, n -> println "$n: $line" }
+println f.readLines().collect { it.toUpperCase() }
+println f.withReader { it.readLine() }
 
-file.eachLine { line, no -> println "$no: ${line.toUpperCase()}" }
-
-def longWords = file.readLines().findAll { it.length() > 4 }
-println longWords
-
-file.withReader { r ->
-    println "First line: ${r.readLine()}"
+f.withWriter { w ->
+    (1..3).each { w.println "line $it" }
 }
-
-def copy = new File(file.parentFile, file.name + '.copy')
-copy.bytes = file.bytes
-println copy.exists() && copy.text == file.text
-copy.delete()
-
-new File(System.getProperty('java.io.tmpdir')).eachFileMatch(~/demo.*\.txt/) {
-    println "found temp file: ${it.name.startsWith('demo')}"
-}
+println f.text.trim().split('\n').toList()
+f.delete()
+println f.exists()

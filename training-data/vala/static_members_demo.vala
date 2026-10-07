@@ -1,33 +1,27 @@
 class IdGenerator {
     private static int next_id = 1;
-    public const string PREFIX = "ID";
+    public static const int MAX_IDS = 1000;
 
     public int id;
 
-    public IdGenerator () {
-        this.id = next_id++;
+    public IdGenerator() {
+        id = next_id++;
     }
 
-    public static int issued () {
+    public static int issued() {
         return next_id - 1;
     }
 
-    public string label () {
-        return "%s-%03d".printf (PREFIX, id);
+    public static string describe(int n) {
+        return "id-%04d".printf(n);
     }
 }
 
-class MathUtil {
-    public static int clamp_int (int v, int lo, int hi) {
-        return v < lo ? lo : (v > hi ? hi : v);
-    }
-}
-
-void main () {
-    var a = new IdGenerator ();
-    var b = new IdGenerator ();
-    var c = new IdGenerator ();
-    print ("%s %s %s\n", a.label (), b.label (), c.label ());
-    print ("issued: %d\n", IdGenerator.issued ());
-    print ("%d %d %d\n", MathUtil.clamp_int (-5, 0, 10), MathUtil.clamp_int (5, 0, 10), MathUtil.clamp_int (50, 0, 10));
+void main() {
+    var a = new IdGenerator();
+    var b = new IdGenerator();
+    var c = new IdGenerator();
+    stdout.printf("%d %d %d\n", a.id, b.id, c.id);
+    stdout.printf("issued: %d of %d\n", IdGenerator.issued(), IdGenerator.MAX_IDS);
+    stdout.printf("%s\n", IdGenerator.describe(c.id));
 }

@@ -1,23 +1,23 @@
-CREATE TABLE unique_codes (code VARCHAR2(5) PRIMARY KEY);
+CREATE TABLE sx_items (
+    id   NUMBER PRIMARY KEY,
+    qty  NUMBER CHECK (qty >= 0)
+);
 
-DECLARE
-    TYPE code_list IS TABLE OF VARCHAR2(10);
-    codes code_list := code_list('A1', 'B2', 'A1', 'TOOLONGCODE', 'C3');
+CREATE OR REPLACE PROCEDURE forall_save_exceptions_demo IS
+    TYPE num_list IS TABLE OF NUMBER;
+    v_ids  num_list := num_list(1, 2, 3, 4);
+    v_qtys num_list := num_list(10, -5, 20, -1);
     bulk_errors EXCEPTION;
     PRAGMA EXCEPTION_INIT(bulk_errors, -24381);
-    total NUMBER;
 BEGIN
-    BEGIN
-        FORALL i IN 1 .. codes.COUNT SAVE EXCEPTIONS
-            INSERT INTO unique_codes VALUES (codes(i));
-    EXCEPTION
-        WHEN bulk_errors THEN
-            FOR j IN 1 .. SQL%BULK_EXCEPTIONS.COUNT LOOP
-                DBMS_OUTPUT.PUT_LINE('row ' || SQL%BULK_EXCEPTIONS(j).ERROR_INDEX ||
-                                     ' failed: ' || SQLERRM(-SQL%BULK_EXCEPTIONS(j).ERROR_CODE));
-            END LOOP;
-    END;
-    SELECT COUNT(*) INTO total FROM unique_codes;
-    DBMS_OUTPUT.PUT_LINE('rows inserted: ' || total);
-END;
+    FORALL i IN 1 .. v_ids.COUNT SAVE EXCEPTIONS
+        INSERT INTO sx_items (id, qty) VALUES (v_ids(i), v_qtys(i));
+EXCEPTION
+    WHEN bulk_errors THEN
+        DBMS_OUTPUT.PUT_LINE('Failed rows: ' || SQL%BULK_EXCEPTIONS.COUNT);
+        FOR j IN 1 .. SQL%BULK_EXCEPTIONS.COUNT LOOP
+            DBMS_OUTPUT.PUT_LINE('Index ' || SQL%BULK_EXCEPTIONS(j).ERROR_INDEX ||
+                ' error ' || SQL%BULK_EXCEPTIONS(j).ERROR_CODE);
+        END LOOP;
+END forall_save_exceptions_demo;
 /

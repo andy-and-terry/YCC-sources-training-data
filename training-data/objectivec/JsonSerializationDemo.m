@@ -1,30 +1,15 @@
 #import <Foundation/Foundation.h>
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        NSDictionary *doc = @{
-            @"name": @"widget",
-            @"tags": @[ @"a", @"b" ],
-            @"price": @9.5,
-            @"stock": @{ @"warehouse": @12, @"store": @3 },
-        };
-
-        NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:doc
+        NSDictionary *obj = @{ @"name": @"Ada", @"langs": @[ @"ObjC", @"C" ], @"age": @36 };
+        NSError *err = nil;
+        NSData *json = [NSJSONSerialization dataWithJSONObject:obj
                                                        options:NSJSONWritingSortedKeys
-                                                         error:&error];
-        if (!data) { NSLog(@"encode failed: %@", error); return 1; }
-        NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", json);
-
-        id parsed = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-        NSLog(@"tags count: %lu", (unsigned long)[parsed[@"tags"] count]);
-        NSLog(@"warehouse: %@", parsed[@"stock"][@"warehouse"]);
-
-        NSData *bad = [@"{not json" dataUsingEncoding:NSUTF8StringEncoding];
-        if (![NSJSONSerialization JSONObjectWithData:bad options:0 error:&error]) {
-            NSLog(@"parse error code: %ld", (long)error.code);
-        }
+                                                         error:&err];
+        NSLog(@"%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        NSDictionary *parsed = [NSJSONSerialization JSONObjectWithData:json options:0 error:&err];
+        NSLog(@"%@", parsed[@"langs"][0]);
     }
     return 0;
 }

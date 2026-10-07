@@ -4,25 +4,20 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 
 public class LocalDateTimeDemo {
     public static void main(String[] args) {
-        LocalDate date = LocalDate.of(2024, 2, 28);
-        System.out.println(date.plusDays(2));
-        System.out.println(date.isLeapYear());
-        System.out.println(date.with(TemporalAdjusters.lastDayOfMonth()));
-        System.out.println(date.with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
+        LocalDate d = LocalDate.of(2024, 1, 31);
+        System.out.println(d.plusMonths(1) + " " + d.isLeapYear() + " " + d.getDayOfWeek());
+        System.out.println(d.with(TemporalAdjusters.next(DayOfWeek.MONDAY)));
 
-        Period p = Period.between(LocalDate.of(2000, 1, 15), date);
-        System.out.println(p.getYears() + " years, " + p.getMonths() + " months");
-
-        LocalDateTime start = LocalDateTime.of(2024, 3, 1, 9, 30);
-        LocalDateTime end = start.plusHours(5).plusMinutes(45);
-        System.out.println(Duration.between(start, end).toMinutes() + " minutes");
-
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm");
-        System.out.println(end.format(fmt));
-        System.out.println(LocalDate.parse("2024-12-25").getDayOfWeek());
+        LocalDateTime dt = LocalDateTime.of(2024, 3, 15, 9, 30);
+        System.out.println(dt.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
+        System.out.println(Duration.between(dt, dt.plusHours(5).plusMinutes(10)));
+        System.out.println(Period.between(d, LocalDate.of(2025, 3, 1)));
+        System.out.println(ChronoUnit.DAYS.between(d, LocalDate.of(2024, 12, 25)));
+        System.out.println(LocalDate.parse("2023-07-04").getMonth());
     }
 }

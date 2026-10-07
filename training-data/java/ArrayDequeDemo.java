@@ -1,37 +1,22 @@
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.Iterator;
 
 public class ArrayDequeDemo {
-    static boolean isPalindrome(String s) {
-        Deque<Character> dq = new ArrayDeque<>();
-        for (char c : s.toLowerCase().toCharArray()) {
-            if (Character.isLetterOrDigit(c)) dq.addLast(c);
-        }
-        while (dq.size() > 1) {
-            if (dq.pollFirst() != dq.pollLast()) return false;
-        }
-        return true;
-    }
-
     public static void main(String[] args) {
-        Deque<Integer> dq = new ArrayDeque<>();
-        dq.offerFirst(2);
-        dq.offerFirst(1);
-        dq.offerLast(3);
-        dq.offerLast(4);
-        System.out.println(dq + " first=" + dq.peekFirst() + " last=" + dq.peekLast());
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+        System.out.println(stack.pop() + " " + stack.peek());
 
-        Iterator<Integer> desc = dq.descendingIterator();
-        while (desc.hasNext()) System.out.print(desc.next() + " ");
+        Deque<String> queue = new ArrayDeque<>();
+        queue.offer("a");
+        queue.offer("b");
+        queue.offerFirst("front");
+        System.out.println(queue.poll() + " " + queue.pollLast() + " " + queue);
+
+        var it = new ArrayDeque<>(java.util.List.of(1, 2, 3)).descendingIterator();
+        while (it.hasNext()) System.out.print(it.next() + " ");
         System.out.println();
-
-        // As a stack
-        Deque<String> stack = new ArrayDeque<>();
-        stack.push("a");
-        stack.push("b");
-        System.out.println(stack.pop() + stack.pop());
-
-        System.out.println(isPalindrome("A man, a plan, a canal: Panama"));
     }
 }

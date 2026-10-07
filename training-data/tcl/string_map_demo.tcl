@@ -1,16 +1,10 @@
-set s "the cat sat on the mat"
+set text "the cat sat on the mat"
+puts [string map {cat dog mat rug} $text]
 
-puts [string map {cat dog mat rug} $s]
-puts [string map -nocase {THE a} $s]
+# string map applies all pairs in a single pass, so swaps work
+puts [string map {a b b a} "abba cab"]
 
-proc escape_html {text} {
-    string map {& &amp; < &lt; > &gt; \" &quot;} $text
-}
-puts [escape_html "<a href=\"x\">fish & chips</a>"]
+puts [string map -nocase {HELLO bye} "Hello world"]
 
-puts [string toupper $s 0 2]
-puts [string totitle "hello world"]
-puts [string repeat "ab" 3]
-puts [string reverse "stressed"]
-puts [string first "at" $s]
-puts [string last "at" $s]
+set template "Dear @name@, your balance is @amount@."
+puts [string map [list @name@ Alice @amount@ \$42.50] $template]

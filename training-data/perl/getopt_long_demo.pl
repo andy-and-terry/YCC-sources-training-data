@@ -1,22 +1,16 @@
 use strict;
 use warnings;
-use Getopt::Long qw(GetOptionsFromArray);
+use Getopt::Long;
 
-my @args = ('--name', 'Ada', '-v', '-v', '--size=10', '--tag', 'x', '--tag', 'y',
-            '--no-color', 'file1', 'file2');
+# Simulate command-line arguments.
+@ARGV = ('--name=Ada', '-v', '-v', '--tag', 'x', '--tag', 'y', '--size', '3', 'rest');
 
-my %opt = (name => 'anon', size => 1, color => 1, verbose => 0);
-my @tags;
-
-GetOptionsFromArray(
-    \@args,
-    'name=s'    => \$opt{name},
-    'size=i'    => \$opt{size},
-    'verbose|v+' => \$opt{verbose},
+my ($name, $verbose, $size, @tags) = ('anon', 0, 1);
+GetOptions(
+    'name=s'    => \$name,
+    'verbose|v+' => \$verbose,
+    'size=i'    => \$size,
     'tag=s'     => \@tags,
-    'color!'    => \$opt{color},
 ) or die "bad options\n";
 
-print "name=$opt{name} size=$opt{size} verbose=$opt{verbose} color=$opt{color}\n";
-print "tags=@tags\n";
-print "remaining=@args\n";
+print "name=$name verbose=$verbose size=$size tags=@tags remaining=@ARGV\n";

@@ -1,29 +1,18 @@
-;; unwind-protect guarantees the cleanup forms run however control leaves.
-(defvar *log* '())
-
-(defun note (msg)
-  (push msg *log*))
-
-(defun risky (n)
+(defun risky (fail)
   (unwind-protect
-       (progn
-         (note (format nil "start ~a" n))
-         (when (zerop n)
-           (error "zero is not allowed"))
-         (/ 100 n))
-    (note (format nil "cleanup ~a" n))))
+      (progn
+        (format t "acquiring resource~%")
+        (when fail (error "something broke"))
+        (format t "work done~%")
+        :ok)
+    (format t "cleanup always runs~%")))
 
-(print (risky 5))
-(print (handler-case (risky 0)
+(print (risky nil))
+(print (handler-case (risky t)
          (error (e) (format nil "caught: ~a" e))))
 
-;; non-local exit via return-from also triggers cleanup
-(defun find-first-even (list)
-  (dolist (x list)
-    (unwind-protect
-         (when (evenp x)
-           (return-from find-first-even x))
-      (note (format nil "checked ~a" x)))))
-
-(print (find-first-even '(1 3 4 5)))
-(print (reverse *log*))
+;; cleanup also runs on non-local exit
+(print (block done
+         (unwind-protect (return-from done :early)
+           (format t "cleanup after return-from~%"))))
+(terpri)

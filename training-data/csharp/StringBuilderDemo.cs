@@ -6,21 +6,23 @@ class StringBuilderDemo
     static void Main()
     {
         var sb = new StringBuilder();
-        sb.Append("Report").AppendLine();
-        for (int i = 1; i <= 3; i++)
-            sb.AppendFormat("{0,2}. item-{0}", i).AppendLine();
-
-        sb.Insert(0, ">> ");
-        sb.Replace("item", "entry");
-        Console.Write(sb.ToString());
-        Console.WriteLine($"length={sb.Length}");
-
-        sb.Clear();
-        sb.Append('x', 5).Append(3.5).Append(true);
+        for (int i = 1; i <= 5; i++)
+        {
+            sb.Append(i);
+            if (i < 5) sb.Append(", ");
+        }
+        sb.Insert(0, "[").Append(']');
         Console.WriteLine(sb);
 
-        sb.Length = 3;
+        sb.Replace(", ", "-");
         Console.WriteLine(sb);
-        Console.WriteLine(sb[1]);
+        sb.Length -= 1;
+        Console.WriteLine(sb);
+
+        var lines = new StringBuilder()
+            .AppendLine("first")
+            .AppendFormat("{0}:{1:D3}", "id", 7)
+            .ToString();
+        Console.WriteLine(lines);
     }
 }

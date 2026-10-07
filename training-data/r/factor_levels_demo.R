@@ -1,18 +1,13 @@
-# Factors store categories as integer codes with a levels attribute.
-sizes <- factor(c("small", "large", "medium", "small"),
-                levels = c("small", "medium", "large"),
-                ordered = TRUE)
+sizes <- factor(c("M", "S", "L", "M"), levels = c("S", "M", "L"), ordered = TRUE)
 print(sizes)
 print(as.integer(sizes))
-print(sizes < "large")
+print(sizes < "L")
 print(levels(sizes))
 print(table(sizes))
 
-f <- factor(c("a", "b", "a"))
-levels(f) <- c("alpha", "beta")
+f <- factor(c("x", "y", "x"))
+levels(f) <- c("ex", "why")
 print(f)
-
-g <- factor(c("x", "y", "z"))[1:2]
-print(levels(g))
-print(levels(droplevels(g)))
+print(droplevels(f[f == "ex"]))
 print(nlevels(f))
+print(as.character(f))

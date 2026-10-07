@@ -1,30 +1,23 @@
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class AtomicReferenceDemo {
-    record Stats(int count, int sum) {
-        Stats add(int v) { return new Stats(count + 1, sum + v); }
-    }
+    record Config(String name, int version) {}
 
     public static void main(String[] args) throws InterruptedException {
-        AtomicReference<Stats> stats = new AtomicReference<>(new Stats(0, 0));
+        AtomicReference<Config> ref = new AtomicReference<>(new Config("app", 1));
 
-        Runnable task = () -> {
-            for (int i = 1; i <= 1000; i++) {
-                final int v = i;
-                // Lock-free update: retries on contention via compare-and-set
-                stats.updateAndGet(s -> s.add(v));
+        Runnable bump = () -> {
+            for (int i = 0; i < 1000; i++) {
+                ref.updateAndGet(c -> new Config(c.name(), c.version() + 1));
             }
         };
+        Thread a = new Thread(bump), b = new Thread(bump);
+        a.start(); b.start();
+        a.join(); b.join();
+        System.out.println(ref.get());
 
-        List<Thread> threads = List.of(new Thread(task), new Thread(task), new Thread(task));
-        threads.forEach(Thread::start);
-        for (Thread t : threads) t.join();
-
-        System.out.println(stats.get());
-
-        Stats old = stats.get();
-        boolean swapped = stats.compareAndSet(old, new Stats(0, 0));
-        System.out.println(swapped + " " + stats.get());
+        Config cur = ref.get();
+        System.out.println(ref.compareAndSet(cur, new Config("new", 0)));
+        System.out.println(ref.get());
     }
 }

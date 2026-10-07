@@ -1,20 +1,18 @@
-proc greet {greeting name} {
-    return "$greeting, $name!"
-}
+proc add {a b} { expr {$a + $b} }
 
-interp alias {} hello {} greet Hello
-interp alias {} goodbye {} greet Goodbye
+interp alias {} plus {} add
+puts [plus 2 3]
 
-puts [hello World]
-puts [goodbye Tcl]
+# Alias with prefilled argument (partial application)
+interp alias {} add10 {} add 10
+puts [add10 5]
 
-set safe [interp create -safe]
-$safe alias double apply {{x} {expr {$x * 2}}}
-puts [$safe eval {double 21}]
+# Slave interpreter with an alias back into the master
+set slave [interp create]
+$slave alias hostAdd add
+puts [$slave eval {hostAdd 4 5}]
 
-if {[catch {$safe eval {exec ls}} err]} {
-    puts "blocked: $err"
-}
-interp delete $safe
-
-puts [interp aliases]
+$slave eval {set x 100}
+puts [$slave eval {expr {$x + 1}}]
+puts [info exists x]
+interp delete $slave

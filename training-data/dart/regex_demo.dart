@@ -1,23 +1,18 @@
 void main() {
-  final datePattern = RegExp(r'(\d{4})-(\d{2})-(\d{2})');
-  const text = 'From 2024-01-15 until 2024-03-20.';
-
-  final first = datePattern.firstMatch(text);
-  if (first != null) {
-    print(first.group(0));
-    print('year=${first.group(1)} month=${first.group(2)}');
+  final date = RegExp(r'(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2})');
+  final m = date.firstMatch('Released 2024-03-15.');
+  if (m != null) {
+    print('${m.namedGroup('day')}/${m.namedGroup('month')}/${m.namedGroup('year')}');
+    print(m.group(0));
   }
 
-  for (final m in datePattern.allMatches(text)) {
-    print('${m.start}-${m.end}: ${m[0]}');
+  for (final hit in RegExp(r'\d+').allMatches('a1b22c333')) {
+    print(hit.group(0));
   }
 
-  print(text.replaceAllMapped(datePattern, (m) => '${m[3]}/${m[2]}/${m[1]}'));
-
-  final named = RegExp(r'(?<user>\w+)@(?<host>[\w.]+)');
-  final m = named.firstMatch('mail bob@example.com now')!;
-  print('${m.namedGroup('user')} at ${m.namedGroup('host')}');
-
-  print(RegExp(r'^\d+$').hasMatch('12345'));
-  print('a1b22c333'.split(RegExp(r'\d+')));
+  print('a  b   c'.replaceAll(RegExp(r'\s+'), ' '));
+  print('hello world'.replaceAllMapped(
+      RegExp(r'\b\w'), (m) => m.group(0)!.toUpperCase()));
+  print(RegExp(r'^\w+@\w+\.\w+$').hasMatch('me@site.com'));
+  print('one1two22three'.split(RegExp(r'\d+')));
 }

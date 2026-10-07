@@ -1,0 +1,18 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PYRAMID.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 ROW-NUM PIC 99.
+       01 LINE-OUT PIC X(20).
+       01 PAD PIC 99.
+       01 STARS PIC 99.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING ROW-NUM FROM 1 BY 1 UNTIL ROW-NUM > 5
+               MOVE SPACES TO LINE-OUT
+               COMPUTE PAD = 5 - ROW-NUM + 1
+               COMPUTE STARS = 2 * ROW-NUM - 1
+               MOVE ALL "*" TO LINE-OUT(PAD:STARS)
+               DISPLAY LINE-OUT
+           END-PERFORM
+           STOP RUN.

@@ -3,29 +3,25 @@ public class InterfaceDefaultStaticDemo {
         String name();
 
         default String greet() {
-            return prefix() + ", " + name() + "!";
+            return prefix() + name();
         }
 
         private String prefix() {
-            return "Hello";
+            return "Hello, ";
         }
 
-        static Greeter of(String name) {
-            return () -> name;
-        }
-    }
-
-    interface Polite extends Greeter {
-        @Override
-        default String greet() {
-            return Greeter.super.greet() + " Pleased to meet you.";
+        static Greeter of(String n) {
+            return () -> n;
         }
     }
 
     public static void main(String[] args) {
-        System.out.println(Greeter.of("Ada").greet());
-
-        Polite p = () -> "Grace";
-        System.out.println(p.greet());
+        Greeter g = Greeter.of("World");
+        System.out.println(g.greet());
+        Greeter loud = new Greeter() {
+            public String name() { return "JAVA"; }
+            public String greet() { return Greeter.super.greet().toUpperCase() + "!"; }
+        };
+        System.out.println(loud.greet());
     }
 }

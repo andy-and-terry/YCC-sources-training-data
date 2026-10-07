@@ -1,17 +1,21 @@
 Sub Main()
     Dim s As String
-    s = "  Hello, VBA World  "
+    s = "Hello, VBA World"
 
-    Debug.Print "[" & Trim(s) & "]"
-    Debug.Print "[" & LTrim(s) & "]"
     Debug.Print Len(s)
-    Debug.Print UCase(Trim(s)); " / "; LCase(Trim(s))
-    Debug.Print Left(Trim(s), 5); "|"; Right(Trim(s), 5); "|"; Mid(Trim(s), 8, 3)
-    Debug.Print InStr(s, "VBA"); InStr(1, s, "vba", vbTextCompare); InStrRev(s, "o")
-    Debug.Print Replace(s, "l", "L", , 2)
-    Debug.Print StrReverse("stressed")
-    Debug.Print String(5, "*"); Space(3); "end"
-    Debug.Print Asc("A"); Chr(66); Chr(Asc("a") + 2)
-    Debug.Print StrComp("apple", "Apple", vbTextCompare)
-    Debug.Print Format(1234.5, "#,##0.00"); " "; Format(0.256, "0.0%")
+    Debug.Print Left$(s, 5)
+    Debug.Print Right$(s, 5)
+    Debug.Print Mid$(s, 8, 3)
+    Debug.Print InStr(s, "VBA")
+    Debug.Print InStrRev(s, "o")
+    Debug.Print UCase$(s); " / "; LCase$(s)
+    Debug.Print Replace(s, "World", "There")
+    Debug.Print StrReverse(s)
+    Debug.Print Trim$("  padded  ") & "|"
+    Debug.Print String(3, "*") & Space(2) & "end"
+    Debug.Print Asc("A"); Chr$(66)
+    Debug.Print StrComp("a", "A", vbTextCompare)
+
+    Mid$(s, 1, 5) = "HELLO"
+    Debug.Print s
 End Sub

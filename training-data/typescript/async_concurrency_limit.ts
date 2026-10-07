@@ -1,31 +1,30 @@
-const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-
-export async function mapLimit<T, R>(
+async function mapLimit<T, R>(
   items: T[],
   limit: number,
-  worker: (item: T, index: number) => Promise<R>,
+  fn: (item: T, index: number) => Promise<R>
 ): Promise<R[]> {
-  const results = new Array<R>(items.length);
+  const results: R[] = new Array(items.length);
   let next = 0;
 
-  async function runner(): Promise<void> {
+  async function worker(): Promise<void> {
     while (next < items.length) {
       const i = next++;
-      results[i] = await worker(items[i], i);
+      results[i] = await fn(items[i], i);
     }
   }
 
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, runner));
+  const workers = Array.from({ length: Math.min(limit, items.length) }, worker);
+  await Promise.all(workers);
   return results;
 }
 
 let active = 0;
-let peak = 0;
+let maxActive = 0;
 
-mapLimit([5, 1, 4, 2, 3, 6], 2, async (n) => {
+mapLimit([1, 2, 3, 4, 5, 6], 2, async (n) => {
   active++;
-  peak = Math.max(peak, active);
-  await sleep(n * 5);
+  maxActive = Math.max(maxActive, active);
+  await new Promise((r) => setTimeout(r, 5));
   active--;
-  return n * 10;
-}).then((r) => console.log(r, "peak concurrency:", peak));
+  return n * n;
+}).then((out) => console.log(out, "max concurrent:", maxActive));

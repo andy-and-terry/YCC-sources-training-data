@@ -1,28 +1,17 @@
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 public class ThreadLocalDemo {
-    // SimpleDateFormat is not thread-safe, so give each thread its own copy
-    private static final ThreadLocal<SimpleDateFormat> FORMAT =
-        ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
-
-    private static final ThreadLocal<Integer> COUNTER = ThreadLocal.withInitial(() -> 0);
+    static final ThreadLocal<StringBuilder> BUF = ThreadLocal.withInitial(StringBuilder::new);
 
     public static void main(String[] args) throws InterruptedException {
         Runnable r = () -> {
-            for (int i = 0; i < 3; i++) {
-                COUNTER.set(COUNTER.get() + 1);
-            }
-            String day = FORMAT.get().format(new Date(0L));
-            System.out.println(Thread.currentThread().getName()
-                + " counter=" + COUNTER.get() + " date=" + day.length());
-            COUNTER.remove();
+            StringBuilder sb = BUF.get();
+            for (int i = 0; i < 3; i++) sb.append(Thread.currentThread().getName()).append(i);
+            System.out.println(sb);
+            BUF.remove();
         };
-        Thread a = new Thread(r, "worker-A");
-        Thread b = new Thread(r, "worker-B");
-        a.start();
-        b.start();
-        a.join();
-        b.join();
+        Thread t1 = new Thread(r, "A");
+        Thread t2 = new Thread(r, "B");
+        t1.start(); t2.start();
+        t1.join(); t2.join();
+        System.out.println("main buffer empty: " + BUF.get().isEmpty());
     }
 }

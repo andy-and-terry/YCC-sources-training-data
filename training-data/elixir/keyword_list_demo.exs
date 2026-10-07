@@ -1,21 +1,21 @@
-defmodule Options do
-  def connect(host, opts \\ []) do
-    port = Keyword.get(opts, :port, 80)
-    timeout = Keyword.get(opts, :timeout, 5_000)
-    ssl? = Keyword.get(opts, :ssl, false)
-    "#{if ssl?, do: "https", else: "http"}://#{host}:#{port} (timeout #{timeout}ms)"
+opts = [color: "red", size: 3, color: "blue"]
+
+IO.inspect(Keyword.get(opts, :color))
+IO.inspect(Keyword.get_values(opts, :color))
+IO.inspect(Keyword.put(opts, :size, 10))
+IO.inspect(Keyword.delete(opts, :color))
+IO.inspect(Keyword.keys(opts))
+IO.inspect(Keyword.merge([a: 1, b: 2], b: 3, c: 4))
+IO.inspect(Keyword.fetch!(opts, :size))
+IO.inspect(opts[:missing])
+
+defmodule Greeter do
+  def hello(name, opts \\ []) do
+    greeting = Keyword.get(opts, :greeting, "Hello")
+    punct = Keyword.get(opts, :punct, "!")
+    "#{greeting}, #{name}#{punct}"
   end
 end
 
-IO.puts(Options.connect("example.com"))
-IO.puts(Options.connect("example.com", port: 8443, ssl: true))
-
-opts = [a: 1, b: 2, a: 3]
-IO.inspect(Keyword.get(opts, :a))
-IO.inspect(Keyword.get_values(opts, :a))
-IO.inspect(Keyword.keys(opts))
-IO.inspect(Keyword.merge([a: 1, b: 2], b: 20, c: 30))
-IO.inspect(Keyword.delete(opts, :a))
-IO.inspect(Keyword.fetch!([x: 1], :x))
-IO.inspect(Keyword.has_key?(opts, :z))
-IO.inspect(opts[:b])
+IO.puts(Greeter.hello("Ann"))
+IO.puts(Greeter.hello("Bob", greeting: "Hi", punct: "?"))

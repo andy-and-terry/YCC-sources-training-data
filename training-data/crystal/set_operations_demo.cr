@@ -1,17 +1,16 @@
 require "set"
 
+# Set algebra: union, intersection, difference, subset checks.
 a = Set{1, 2, 3, 4}
-b = Set{3, 4, 5, 6}
+b = Set{3, 4, 5}
 
-puts (a | b).to_a.sort.inspect
-puts (a & b).to_a.sort.inspect
-puts (a - b).to_a.sort.inspect
-puts (a ^ b).to_a.sort.inspect
+p a | b
+p a & b
+p a - b
+p a ^ b
+puts (Set{3, 4}).subset_of?(a)
+puts a.includes?(2)
 
-puts a.subset_of?(Set{1, 2, 3, 4, 5})
-puts a.includes?(3)
-puts a.add?(2).inspect
-puts a.add?(9).inspect
-
-unique = [3, 1, 3, 2, 1].to_set
-puts unique.size
+seen = Set(Int32).new
+dups = [1, 2, 2, 3, 3, 3].select { |n| !seen.add?(n) }
+p dups

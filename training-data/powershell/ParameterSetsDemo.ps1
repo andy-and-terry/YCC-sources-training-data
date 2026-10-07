@@ -1,31 +1,21 @@
-function Get-Greeting {
-    [CmdletBinding(DefaultParameterSetName = 'ByName')]
+function Get-Area {
+    [CmdletBinding(DefaultParameterSetName = 'Rectangle')]
     param(
-        [Parameter(ParameterSetName = 'ByName', Mandatory, Position = 0)]
-        [string]$Name,
+        [Parameter(ParameterSetName = 'Rectangle', Mandatory)]
+        [double]$Width,
 
-        [Parameter(ParameterSetName = 'ById', Mandatory)]
-        [int]$Id,
+        [Parameter(ParameterSetName = 'Rectangle', Mandatory)]
+        [double]$Height,
 
-        [Parameter(ParameterSetName = 'ByName')]
-        [Parameter(ParameterSetName = 'ById')]
-        [switch]$Shout
+        [Parameter(ParameterSetName = 'Circle', Mandatory)]
+        [double]$Radius
     )
 
-    $text = switch ($PSCmdlet.ParameterSetName) {
-        'ByName' { "Hello, $Name" }
-        'ById' { "Hello, user #$Id" }
+    switch ($PSCmdlet.ParameterSetName) {
+        'Rectangle' { $Width * $Height }
+        'Circle'    { [math]::Round([math]::PI * $Radius * $Radius, 2) }
     }
-    if ($Shout) { $text.ToUpper() } else { $text }
 }
 
-Get-Greeting "Ada"
-Get-Greeting -Id 42
-Get-Greeting -Name "Bob" -Shout
-Get-Greeting -Id 7 -Shout
-
-try {
-    Get-Greeting -Name "Ada" -Id 5
-} catch {
-    "conflict: parameters from different sets cannot be combined"
-}
+Get-Area -Width 3 -Height 4
+Get-Area -Radius 2

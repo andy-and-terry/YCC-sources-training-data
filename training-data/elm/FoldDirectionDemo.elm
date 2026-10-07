@@ -1,27 +1,16 @@
-module FoldDirectionDemo exposing (digitsToInt, reverseWithFoldl, subtractLeft, subtractRight)
+module FoldDirectionDemo exposing (leftOrder, reverseList, rightOrder)
 
 
-subtractLeft : List Int -> Int
-subtractLeft =
-    List.foldl (\x acc -> acc - x) 0
+leftOrder : List String -> String
+leftOrder =
+    List.foldl (\x acc -> acc ++ x) ""
 
 
-subtractRight : List Int -> Int
-subtractRight =
-    List.foldr (\x acc -> x - acc) 0
+rightOrder : List String -> String
+rightOrder =
+    List.foldr (\x acc -> acc ++ x) ""
 
 
-reverseWithFoldl : List a -> List a
-reverseWithFoldl =
+reverseList : List a -> List a
+reverseList =
     List.foldl (::) []
-
-
-digitsToInt : List Int -> Int
-digitsToInt =
-    List.foldl (\d acc -> acc * 10 + d) 0
-
-
--- subtractLeft [ 1, 2, 3 ] == -6
--- subtractRight [ 1, 2, 3 ] == 2
--- reverseWithFoldl [ 1, 2, 3 ] == [ 3, 2, 1 ]
--- digitsToInt [ 4, 2, 0 ] == 420

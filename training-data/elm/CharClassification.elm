@@ -1,4 +1,4 @@
-module CharClassification exposing (caesarShift, classify, vowelCount)
+module CharClassification exposing (classify)
 
 
 classify : Char -> String
@@ -12,38 +12,8 @@ classify c =
     else if Char.isLower c then
         "lower"
 
+    else if c == ' ' then
+        "space"
+
     else
         "other"
-
-
-vowelCount : String -> Int
-vowelCount text =
-    text
-        |> String.toLower
-        |> String.toList
-        |> List.filter (\c -> List.member c [ 'a', 'e', 'i', 'o', 'u' ])
-        |> List.length
-
-
-caesarShift : Int -> String -> String
-caesarShift amount =
-    String.map
-        (\c ->
-            if Char.isLower c then
-                shift 'a' c
-
-            else if Char.isUpper c then
-                shift 'A' c
-
-            else
-                c
-        )
-
-
-shift : Char -> Char -> Char
-shift base c =
-    let
-        offset =
-            Char.toCode c - Char.toCode base
-    in
-    Char.fromCode (Char.toCode base + modBy 26 (offset + 3))

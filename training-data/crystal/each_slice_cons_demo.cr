@@ -1,12 +1,9 @@
-data = (1..10).to_a
+# Chunking and sliding windows over collections.
+nums = (1..7).to_a
 
-data.each_slice(3) { |chunk| puts chunk.inspect }
+nums.each_slice(3) { |chunk| p chunk }
 
-moving_sums = data.each_cons(3).map(&.sum).to_a
-puts moving_sums.inspect
+nums.each_cons(3) { |win| puts "#{win} sum=#{win.sum}" }
 
-puts data.each_with_object([] of Int32) { |n, acc| acc << n * n if n.even? }.inspect
-puts data.zip(data.rotate).first(3).inspect
-puts data.in_groups_of(4, 0).inspect
-puts data.reduce { |acc, n| acc * n }
-puts data.sum { |n| n * 0.5 }
+p nums.in_groups_of(3, 0)
+p nums.partition(&.even?)

@@ -1,31 +1,20 @@
-; x86-64 NASM: binary to Gray code and back
-;   gray = n ^ (n >> 1)
-;   inverse: fold successive right shifts with xor
+; x86-64 NASM: binary to Gray code (n ^ (n >> 1)) and back
 section .text
     global _start
 
 _start:
-    mov rax, 13                ; binary 1101
-    mov rbx, rax
-    shr rbx, 1
-    xor rbx, rax               ; rbx = Gray code = 1011 = 11
-
-    ; decode back to binary
-    mov rax, rbx               ; rax = gray
-    mov rcx, rax
-decode_loop:
-    shr rcx, 1
-    jz decode_done
-    xor rax, rcx
-    jmp decode_loop
-decode_done:
-    ; rax should be 13 again; exit with gray code (11) if round trip is ok
-    cmp rax, 13
-    jne failed
-    mov rdi, rbx
-    jmp finish
-failed:
-    mov rdi, 255
-finish:
-    mov rax, 60
+    mov eax, 13          ; 0b1101
+    mov ebx, eax
+    shr ebx, 1
+    xor ebx, eax         ; gray = 0b1011 = 11
+    mov eax, ebx         ; decode: b = g ^ g>>1 ^ g>>2 ...
+    mov ecx, ebx
+decode:
+    shr ecx, 1
+    jz decoded
+    xor eax, ecx
+    jmp decode
+decoded:
+    mov edi, eax         ; 13 again
+    mov eax, 60
     syscall

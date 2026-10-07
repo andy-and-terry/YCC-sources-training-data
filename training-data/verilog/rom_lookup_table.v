@@ -1,28 +1,20 @@
 module rom_lookup_table (
-    input wire clk,
-    input wire [3:0] addr,
+    input wire [2:0] addr,
     output reg [7:0] data
 );
 
-// 16-entry sine-like table, one registered read per cycle
-always @(posedge clk) begin
+// Quarter-resolution sine table (unsigned, offset 128)
+always @(*) begin
     case (addr)
-        4'd0:  data <= 8'd128;
-        4'd1:  data <= 8'd176;
-        4'd2:  data <= 8'd218;
-        4'd3:  data <= 8'd245;
-        4'd4:  data <= 8'd255;
-        4'd5:  data <= 8'd245;
-        4'd6:  data <= 8'd218;
-        4'd7:  data <= 8'd176;
-        4'd8:  data <= 8'd128;
-        4'd9:  data <= 8'd79;
-        4'd10: data <= 8'd37;
-        4'd11: data <= 8'd10;
-        4'd12: data <= 8'd0;
-        4'd13: data <= 8'd10;
-        4'd14: data <= 8'd37;
-        4'd15: data <= 8'd79;
+        3'd0: data = 8'd128;
+        3'd1: data = 8'd218;
+        3'd2: data = 8'd255;
+        3'd3: data = 8'd218;
+        3'd4: data = 8'd128;
+        3'd5: data = 8'd37;
+        3'd6: data = 8'd0;
+        3'd7: data = 8'd37;
+        default: data = 8'd128;
     endcase
 end
 

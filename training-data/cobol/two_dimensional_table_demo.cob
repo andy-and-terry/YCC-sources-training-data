@@ -1,31 +1,25 @@
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. TWODTABLEDEMO.
+       PROGRAM-ID. TABLE2D.
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01 SALES-TABLE.
-           05 REGION OCCURS 3 TIMES.
-               10 QUARTER-SALES PIC 9(5) OCCURS 4 TIMES.
-       01 R           PIC 9.
-       01 Q           PIC 9.
-       01 REGION-TOTAL PIC 9(6).
-       01 GRAND-TOTAL PIC 9(7) VALUE 0.
-       01 AMOUNT      PIC 9(5).
+       01 GRID.
+          05 GRID-ROW OCCURS 3 TIMES.
+             10 CELL PIC 99 OCCURS 4 TIMES.
+       01 R PIC 9.
+       01 C PIC 9.
+       01 ROW-TOTAL PIC 999.
 
        PROCEDURE DIVISION.
-           MOVE 1000 TO AMOUNT
            PERFORM VARYING R FROM 1 BY 1 UNTIL R > 3
-               PERFORM VARYING Q FROM 1 BY 1 UNTIL Q > 4
-                   MOVE AMOUNT TO QUARTER-SALES(R, Q)
-                   ADD 250 TO AMOUNT
+               PERFORM VARYING C FROM 1 BY 1 UNTIL C > 4
+                   COMPUTE CELL(R, C) = R * C
                END-PERFORM
            END-PERFORM
            PERFORM VARYING R FROM 1 BY 1 UNTIL R > 3
-               MOVE 0 TO REGION-TOTAL
-               PERFORM VARYING Q FROM 1 BY 1 UNTIL Q > 4
-                   ADD QUARTER-SALES(R, Q) TO REGION-TOTAL
+               MOVE 0 TO ROW-TOTAL
+               PERFORM VARYING C FROM 1 BY 1 UNTIL C > 4
+                   ADD CELL(R, C) TO ROW-TOTAL
                END-PERFORM
-               DISPLAY "REGION " R " TOTAL: " REGION-TOTAL
-               ADD REGION-TOTAL TO GRAND-TOTAL
+               DISPLAY "ROW " R " TOTAL: " ROW-TOTAL
            END-PERFORM
-           DISPLAY "GRAND TOTAL: " GRAND-TOTAL
            STOP RUN.

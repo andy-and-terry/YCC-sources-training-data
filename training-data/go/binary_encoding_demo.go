@@ -7,28 +7,25 @@ import (
 )
 
 type Header struct {
-	Magic   uint32
-	Version uint16
-	Flags   uint16
-	Length  int64
+	Magic   uint16
+	Version uint8
+	Flags   uint8
+	Length  uint32
 }
 
 func main() {
-	h := Header{Magic: 0xCAFEBABE, Version: 2, Flags: 0x0101, Length: 4096}
-
 	var buf bytes.Buffer
+	h := Header{0xCAFE, 1, 3, 1024}
 	if err := binary.Write(&buf, binary.BigEndian, h); err != nil {
 		panic(err)
 	}
 	fmt.Printf("% x\n", buf.Bytes())
 
 	var out Header
-	if err := binary.Read(&buf, binary.BigEndian, &out); err != nil {
-		panic(err)
-	}
+	binary.Read(&buf, binary.BigEndian, &out)
 	fmt.Printf("%+v\n", out)
 
-	b := make([]byte, 8)
-	binary.LittleEndian.PutUint32(b, 1)
-	fmt.Println(b, binary.LittleEndian.Uint32(b))
+	b := make([]byte, 4)
+	binary.LittleEndian.PutUint32(b, 0xDEADBEEF)
+	fmt.Printf("% x\n", b)
 }
