@@ -1,28 +1,18 @@
-interface StringMap {
-  [key: string]: number;
+interface Scores {
+  [student: string]: number;
 }
 
-const wordLengths: StringMap = {};
-for (const word of ["alpha", "be", "gamma"]) {
-  wordLengths[word] = word.length;
-}
 
-type Registry = {
-  version: string;
-  [plugin: `plugin_${string}`]: () => string;
-};
+const scores: Scores = { alice: 90, bob: 72 };
+scores["carol"] = 85;
 
-const registry: Registry = {
-  version: "1.0",
-  plugin_logger: () => "logging",
-  plugin_cache: () => "caching",
-};
+let total = 0;
+for (const name in scores) total += scores[name];
+console.log("average:", total / Object.keys(scores).length);
 
-console.log(wordLengths);
-for (const key of Object.keys(registry)) {
-  if (key.startsWith("plugin_")) {
-    console.log(key, (registry as any)[key]());
-  }
-}
-const lookup = wordLengths["missing"]; // typed number, actually undefined
-console.log(lookup === undefined ? "no entry" : lookup);
+type Handlers = { [K in `on${Capitalize<"click" | "hover">}`]?: () => void };
+const h: Handlers = { onClick: () => console.log("clicked") };
+h.onClick?.();
+
+const lookup: Record<number, string> = { 1: "one", 2: "two" };
+console.log(lookup[2], lookup[3] ?? "missing");

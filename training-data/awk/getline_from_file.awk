@@ -1,12 +1,12 @@
 #!/usr/bin/awk -f
-# Reads a file line by line with getline in BEGIN; creates a temp file for demo.
+# Read a second file line by line inside BEGIN using getline < file.
 BEGIN {
-    file = "/tmp/awk_getline_demo.txt"
+    file = "/tmp/_awk_getline_demo.txt"
     print "alpha\nbeta\ngamma" > file
     close(file)
     while ((getline line < file) > 0) {
         n++
-        printf "%d: %s\n", n, line
+        print n ": " line
     }
     close(file)
     system("rm -f " file)

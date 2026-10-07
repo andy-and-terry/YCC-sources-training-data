@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-# Print Pascal's triangle using a 1D array updated in place.
+set -euo pipefail
+
 rows=6
 row=(1)
-for ((i = 0; i < rows; i++)); do
+for ((r = 0; r < rows; r++)); do
     echo "${row[*]}"
     next=(1)
-    for ((j = 1; j < ${#row[@]}; j++)); do
-        next+=($((row[j - 1] + row[j])))
+    for ((i = 1; i < ${#row[@]}; i++)); do
+        next+=($((row[i - 1] + row[i])))
     done
     next+=(1)
     row=("${next[@]}")

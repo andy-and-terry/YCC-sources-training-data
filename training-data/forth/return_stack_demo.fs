@@ -1,16 +1,8 @@
-\ Temporarily stash values on the return stack with >R R@ R>
+\ Using the return stack for temporary storage
+: SWAP-VIA-R ( a b -- b a )  >R >R R> R> SWAP ;
+: SUM3 ( a b c -- sum )  >R + R> + ;
+: PEEK-R ( n -- n n )  >R R@ R> ;
 
-: SUM-OF-THREE ( a b c -- sum )
-  >R + R> + ;
-
-: SQUARE-PLUS-ONE ( n -- n*n+1 )
-  DUP >R * R> DROP 1+ ;
-
-: PEEK-COUNTER ( -- )
-  3 >R
-  R@ . CR
-  R> DROP ;
-
-1 2 3 SUM-OF-THREE . CR
-5 SQUARE-PLUS-ONE . CR
-PEEK-COUNTER
+1 2 SWAP-VIA-R . . CR
+1 2 3 SUM3 . CR
+7 PEEK-R . . CR

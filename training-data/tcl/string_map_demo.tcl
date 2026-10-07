@@ -1,17 +1,10 @@
-set text "Hello <b>World</b> & friends"
-puts [string map {< &lt; > &gt; & &amp;} $text]
-puts [string map -nocase {hello HI world EARTH} $text]
+set text "the cat sat on the mat"
+puts [string map {cat dog mat rug} $text]
 
-proc slugify {s} {
-    set s [string tolower [string trim $s]]
-    set s [regsub -all {[^a-z0-9]+} $s -]
-    return [string trim $s -]
-}
-puts [slugify "  Hello, Tcl World! 2024  "]
+# string map applies all pairs in a single pass, so swaps work
+puts [string map {a b b a} "abba cab"]
 
-puts [string totitle "mixed CASE words"]
-puts [string repeat "ab" 3]
-puts [string reverse "stressed"]
-puts [string first "lo" "hello world"]
-puts [string last "o" "hello world"]
-puts [string range "abcdef" 1 3]
+puts [string map -nocase {HELLO bye} "Hello world"]
+
+set template "Dear @name@, your balance is @amount@."
+puts [string map [list @name@ Alice @amount@ \$42.50] $template]

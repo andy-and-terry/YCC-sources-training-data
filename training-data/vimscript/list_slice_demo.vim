@@ -1,17 +1,15 @@
-let nums = range(1, 10)
-echo nums[2:4]
-echo nums[-3:]
-echo nums[:2]
-echo reverse(copy(nums))[0:2]
+let items = ['a', 'b', 'c', 'd', 'e', 'f']
 
-let nums[0:1] = [100, 200]
-echo nums
+echo items[0]
+echo items[-1]
+echo items[1:3]
+echo items[:2]
+echo items[-2:]
+echo items[2:]
 
-call remove(nums, 0, 1)
-echo nums
-call insert(nums, 0)
-echo nums
-echo get(nums, 50, 'none')
-echo len(nums) . ' items'
-echo index(nums, 5)
-echo count(nums, 5)
+" Slicing past the end is safe
+echo items[4:100]
+
+" Reverse and rotate
+echo reverse(copy(items))
+echo items[2:] + items[:1]

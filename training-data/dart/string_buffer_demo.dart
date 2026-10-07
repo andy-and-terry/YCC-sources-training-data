@@ -1,13 +1,13 @@
 void main() {
   final sb = StringBuffer();
   for (var i = 1; i <= 5; i++) {
+    if (i > 1) sb.write(', ');
     sb.write(i);
-    if (i < 5) sb.write(', ');
   }
-  sb.writeln();
+  sb.writeln('!');
   sb.writeAll(['a', 'b', 'c'], '-');
-  print(sb);
-  print('length: ${sb.length}');
+  print(sb.toString());
+  print(sb.length);
   sb.clear();
-  print('empty: ${sb.isEmpty}');
+  print(sb.isEmpty);
 }

@@ -22,6 +22,7 @@ class FlagsEnumDemo
         p ^= Permissions.Execute;
         Console.WriteLine(p);
         Console.WriteLine(Permissions.All);
-        Console.WriteLine(Enum.Parse<Permissions>("Read, Execute") == (Permissions.Read | Permissions.Execute));
+        Console.WriteLine((int)Permissions.All);
+        Console.WriteLine(Enum.Parse<Permissions>("Read, Execute"));
     }
 }

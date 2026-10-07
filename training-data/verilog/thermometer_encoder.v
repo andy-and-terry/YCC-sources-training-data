@@ -1,12 +1,15 @@
-module thermometer_encoder (
-    input  wire [2:0] binary,
-    output wire [6:0] thermometer
+module thermometer_encoder #(
+    parameter N = 8
+) (
+    input wire [$clog2(N+1)-1:0] value,
+    output wire [N-1:0] thermo
 );
 
+// thermo[i] is high when value > i
 genvar i;
 generate
-    for (i = 0; i < 7; i = i + 1) begin : bits
-        assign thermometer[i] = (binary > i);
+    for (i = 0; i < N; i = i + 1) begin : bit_gen
+        assign thermo[i] = (value > i);
     end
 endgenerate
 

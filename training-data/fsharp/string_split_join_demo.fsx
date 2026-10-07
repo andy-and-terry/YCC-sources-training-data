@@ -1,16 +1,19 @@
-let csv = "name, age ,city,,"
+let csv = "alice,30,paris;bob,25,rome;carol,41,oslo"
 
-let fields =
-    csv.Split(',')
-    |> Array.map (fun s -> s.Trim())
-    |> Array.filter (fun s -> s <> "")
+let records =
+    csv.Split(';')
+    |> Array.map (fun row ->
+        match row.Split(',') with
+        | [| name; age; city |] -> Some(name, int age, city)
+        | _ -> None)
+    |> Array.choose id
 
-printfn "%A" fields
-printfn "%s" (String.concat " | " fields)
-printfn "%A" (csv.Split([| ',' |], System.StringSplitOptions.RemoveEmptyEntries))
-printfn "%A" ("a1b22c333".ToCharArray() |> Array.filter System.Char.IsDigit |> System.String)
-printfn "%s" ("hello world".Replace("o", "0").ToUpper())
-printfn "%b" ("Hello".StartsWith "He" && "Hello".EndsWith "lo")
-printfn "%s" (String.replicate 3 "ab")
-printfn "%A" ("one two  three".Split([| ' ' |], System.StringSplitOptions.RemoveEmptyEntries))
-printfn "%s" ("x".PadLeft(4, '.') + "|" + "x".PadRight(4, '.'))
+for (name, age, city) in records do
+    printfn "%-6s %3d %s" name age city
+
+records
+|> Array.map (fun (n, _, _) -> n.ToUpper())
+|> String.concat " | "
+|> printfn "%s"
+
+printfn "%s" (System.String.Join("-", [ 1; 2; 3 ]))

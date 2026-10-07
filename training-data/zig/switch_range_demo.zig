@@ -1,28 +1,30 @@
 const std = @import("std");
 
-fn classify(n: u32) []const u8 {
-    return switch (n) {
-        0 => "zero",
-        1...9 => "digit",
-        10, 20, 30 => "round",
-        11...99 => "two digits",
-        else => "big",
+fn classify(score: u8) []const u8 {
+    return switch (score) {
+        0...59 => "fail",
+        60...69 => "pass",
+        70...89 => "good",
+        90...100 => "excellent",
+        else => "invalid",
     };
 }
 
-fn grade(score: u8) u8 {
-    return switch (score) {
-        90...100 => 'A',
-        80...89 => 'B',
-        70...79 => 'C',
-        else => 'F',
+fn charKind(c: u8) []const u8 {
+    return switch (c) {
+        'a'...'z', 'A'...'Z' => "letter",
+        '0'...'9' => "digit",
+        ' ', '\t', '\n' => "space",
+        else => "other",
     };
 }
 
 pub fn main() void {
-    const values = [_]u32{ 0, 5, 20, 42, 1000 };
-    for (values) |v| {
-        std.debug.print("{d}: {s}\n", .{ v, classify(v) });
+    const scores = [_]u8{ 42, 65, 80, 95, 120 };
+    for (scores) |s| {
+        std.debug.print("{d}: {s}\n", .{ s, classify(s) });
     }
-    std.debug.print("{c} {c} {c}\n", .{ grade(95), grade(85), grade(10) });
+    for ("a1 !") |c| {
+        std.debug.print("'{c}': {s}\n", .{ c, charKind(c) });
+    }
 }

@@ -1,28 +1,32 @@
 #import <Foundation/Foundation.h>
 
 @interface Counter : NSObject
-@property (nonatomic) NSInteger value;
 - (void)increment;
+@property (nonatomic, readonly) NSInteger value;
 @end
 
-@implementation Counter
+@implementation Counter {
+    NSInteger _value;
+}
 - (void)increment {
-    @synchronized (self) {
-        self.value += 1;
+    @synchronized(self) {
+        _value++;
+    }
+}
+- (NSInteger)value {
+    @synchronized(self) {
+        return _value;
     }
 }
 @end
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        Counter *c = [[Counter alloc] init];
-        dispatch_group_t group = dispatch_group_create();
-        dispatch_queue_t q = dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0);
-        for (int i = 0; i < 100; i++) {
-            dispatch_group_async(group, q, ^{ [c increment]; });
-        }
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER);
-        NSLog(@"value=%ld", (long)c.value);
+        Counter *c = [Counter new];
+        dispatch_apply(100, dispatch_get_global_queue(QOS_CLASS_DEFAULT, 0), ^(size_t i) {
+            [c increment];
+        });
+        NSLog(@"%ld", (long)c.value);
     }
     return 0;
 }

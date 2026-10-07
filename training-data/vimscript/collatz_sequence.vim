@@ -1,15 +1,16 @@
-function! Collatz(n) abort
+function! Collatz(n)
   let seq = [a:n]
   let n = a:n
   while n != 1
-    let n = n % 2 == 0 ? n / 2 : 3 * n + 1
+    if n % 2 == 0
+      let n = n / 2
+    else
+      let n = 3 * n + 1
+    endif
     call add(seq, n)
   endwhile
   return seq
 endfunction
 
-for start in [6, 7, 27]
-  let seq = Collatz(start)
-  echo 'start=' . start . ' steps=' . (len(seq) - 1) . ' max=' . max(seq)
-endfor
 echo Collatz(6)
+echo len(Collatz(27)) - 1

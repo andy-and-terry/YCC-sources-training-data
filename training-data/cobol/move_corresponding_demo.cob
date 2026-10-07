@@ -2,18 +2,18 @@
        PROGRAM-ID. MOVECORR.
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01 SRC-REC.
-          05 NAME-F   PIC X(8)  VALUE "GRACE".
-          05 AGE-F    PIC 99    VALUE 45.
-          05 CITY-F   PIC X(8)  VALUE "NYC".
-       01 DST-REC.
-          05 AGE-F    PIC 999   VALUE 0.
-          05 NAME-F   PIC X(10) VALUE SPACES.
-          05 ZIP-F    PIC 9(5)  VALUE 10001.
+       01 INPUT-REC.
+          05 NAME PIC X(10) VALUE "ALICE".
+          05 AGE PIC 99 VALUE 30.
+          05 CITY PIC X(10) VALUE "PARIS".
+       01 OUTPUT-REC.
+          05 CITY PIC X(10).
+          05 NAME PIC X(10).
+          05 SCORE PIC 999 VALUE 100.
 
        PROCEDURE DIVISION.
-           MOVE CORRESPONDING SRC-REC TO DST-REC
-           DISPLAY "NAME: " NAME-F OF DST-REC
-           DISPLAY "AGE:  " AGE-F OF DST-REC
-           DISPLAY "ZIP:  " ZIP-F OF DST-REC
+           MOVE CORRESPONDING INPUT-REC TO OUTPUT-REC
+           DISPLAY "NAME: " NAME OF OUTPUT-REC
+           DISPLAY "CITY: " CITY OF OUTPUT-REC
+           DISPLAY "SCORE: " SCORE
            STOP RUN.

@@ -1,20 +1,18 @@
 #lang racket
 
-(define (take-seq n seq)
-  (for/list ([x seq] [_ (in-range n)]) x))
+(displayln (for/list ([i (in-naturals 10)] [c (in-string "abc")])
+             (cons i c)))
 
-(displayln (take-seq 5 (in-naturals 10)))
-(displayln (for/list ([x (in-range 0 20 5)]) x))
-(displayln (for/list ([c (in-string "abc")] [i (in-naturals)]) (cons i c)))
-(displayln (for/list ([(a b) (in-parallel '(1 2 3) '(x y z))]) (list a b)))
-(displayln (for*/list ([x '(1 2)] [y '(a b)]) (list x y)))
-(displayln (for/sum ([x (in-range 1 11)]) x))
-(displayln (for/and ([x '(2 4 6)]) (even? x)))
-(displayln (for/first ([x (in-naturals 1)] #:when (> (* x x) 50)) x))
-(displayln (for/vector ([i 4]) (* i i)))
+(displayln (for/list ([x (in-cycle '(1 2 3))] [_ (in-range 7)]) x))
 
-(define (evens)
-  (make-do-sequence
-   (lambda () (values (lambda (n) n) (lambda (n) (+ n 2)) 0 (lambda (n) #t) #f #f))))
-(displayln (take-seq 4 (evens)))
-(displayln (sequence->list (in-slice 2 '(1 2 3 4 5))))
+(displayln (sequence->list (sequence-map add1 (in-range 4))))
+(displayln (sequence->list (sequence-filter even? (in-range 10))))
+(displayln (sequence->list (in-slice 2 (in-range 7))))
+
+(define-values (more? next) (sequence-generate (in-list '(a b c))))
+(let loop ()
+  (when (more?)
+    (displayln (next))
+    (loop)))
+
+(displayln (for/first ([n (in-naturals 1)] #:when (> (* n n) 50)) n))

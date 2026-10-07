@@ -1,4 +1,10 @@
-(println (for [x (range 1 4) y (range 1 4) :when (< x y)] [x y]))
-(println (for [x (range 10) :let [sq (* x x)] :when (even? sq)] sq))
-(println (for [x [1 2 3] :while (< x 3)] (* 10 x)))
-(println (for [suit [:h :s] rank [1 2]] (str (name suit) rank)))
+;; `for` is a lazy list comprehension, not a loop
+(println (for [x (range 1 4) y (range 1 4)] [x y]))
+
+;; :when filters, :let binds, :while stops early
+(println (for [x (range 20) :when (odd? x) :let [sq (* x x)] :while (< sq 100)] sq))
+
+;; Pythagorean triples
+(println (for [a (range 1 21) b (range a 21) c (range b 21)
+               :when (= (* c c) (+ (* a a) (* b b)))]
+           [a b c]))

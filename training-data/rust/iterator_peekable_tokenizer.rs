@@ -1,9 +1,9 @@
 use std::iter::Peekable;
 use std::str::Chars;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 enum Token {
-    Num(i64),
+    Num(u32),
     Op(char),
 }
 
@@ -12,14 +12,9 @@ fn tokenize(src: &str) -> Vec<Token> {
     let mut out = Vec::new();
     while let Some(&c) = it.peek() {
         if c.is_ascii_digit() {
-            let mut n = 0i64;
-            while let Some(&d) = it.peek() {
-                if let Some(v) = d.to_digit(10) {
-                    n = n * 10 + v as i64;
-                    it.next();
-                } else {
-                    break;
-                }
+            let mut n = 0;
+            while let Some(d) = it.next_if(|ch| ch.is_ascii_digit()) {
+                n = n * 10 + d.to_digit(10).unwrap();
             }
             out.push(Token::Num(n));
         } else if c.is_whitespace() {

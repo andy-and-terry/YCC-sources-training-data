@@ -9,16 +9,14 @@ class ConcurrentDictionaryDemo
         var counts = new ConcurrentDictionary<string, int>();
         string[] words = { "a", "b", "a", "c", "b", "a" };
 
-        Parallel.For(0, 1000, i =>
-        {
-            var w = words[i % words.Length];
-            counts.AddOrUpdate(w, 1, (_, old) => old + 1);
-        });
+        Parallel.ForEach(words, w =>
+            counts.AddOrUpdate(w, 1, (_, old) => old + 1));
 
-        foreach (var kv in counts)
-            Console.WriteLine($"{kv.Key}: {kv.Value}");
+        foreach (var key in new[] { "a", "b", "c" })
+            Console.WriteLine($"{key}={counts[key]}");
 
-        var v = counts.GetOrAdd("z", 0);
-        Console.WriteLine($"z: {v}, TryRemove: {counts.TryRemove("z", out _)}");
+        int v = counts.GetOrAdd("d", 42);
+        Console.WriteLine(v);
+        Console.WriteLine(counts.TryRemove("d", out var removed) ? removed : -1);
     }
 }

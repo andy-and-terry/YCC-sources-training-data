@@ -12,12 +12,8 @@ class Temperature {
   get fahrenheit(): number {
     return this._celsius * 9 / 5 + 32;
   }
-  set fahrenheit(f: number) {
-    this.celsius = (f - 32) * 5 / 9;
-  }
-
-  static get ABSOLUTE_ZERO(): number {
-    return -273.15;
+  set fahrenheit(value: number) {
+    this.celsius = (value - 32) * 5 / 9;
   }
 }
 
@@ -26,9 +22,9 @@ t.celsius = 100;
 console.log(t.fahrenheit);
 t.fahrenheit = 32;
 console.log(t.celsius);
+
 try {
-  t.celsius = -500;
+  t.celsius = -300;
 } catch (e) {
   console.log((e as Error).message);
 }
-console.log(Temperature.ABSOLUTE_ZERO);

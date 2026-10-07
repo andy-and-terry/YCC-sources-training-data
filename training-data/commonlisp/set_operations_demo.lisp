@@ -1,0 +1,18 @@
+(defparameter *a* '(1 2 3 4))
+(defparameter *b* '(3 4 5 6))
+
+(print (union *a* *b*))
+(print (intersection *a* *b*))
+(print (set-difference *a* *b*))
+(print (set-exclusive-or *a* *b*))
+(print (subsetp '(1 2) *a*))
+(print (adjoin 2 *a*))
+(print (adjoin 9 *a*))
+
+(defparameter *seen* '())
+(pushnew 1 *seen*)
+(pushnew 1 *seen*)
+(pushnew 2 *seen*)
+(print *seen*)
+(print (member 3 *a*))
+(terpri)

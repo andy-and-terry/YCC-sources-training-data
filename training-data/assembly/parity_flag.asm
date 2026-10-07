@@ -1,15 +1,15 @@
-; x86-64 NASM: compute even/odd parity of a byte using the parity flag
+; x86-64 NASM: even parity of the low byte using the parity flag (PF)
 section .text
     global _start
 
 _start:
-    mov al, 0b01101001   ; four set bits -> even parity
-    test al, al          ; PF reflects low byte parity
-    jp .even
-    mov rdi, 1           ; odd parity
-    jmp .exit
-.even:
-    mov rdi, 0
-.exit:
-    mov rax, 60
+    mov al, 0b10110000   ; three set bits -> odd parity
+    test al, al          ; updates PF from the low byte
+    jp  even_parity
+    mov edi, 0           ; odd parity -> exit status 0
+    jmp done
+even_parity:
+    mov edi, 1
+done:
+    mov eax, 60
     syscall

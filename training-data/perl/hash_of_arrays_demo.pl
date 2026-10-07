@@ -1,12 +1,14 @@
-use strict; use warnings;
+use strict;
+use warnings;
 
-my %groups;
-for my $w (qw(apple avocado banana blueberry cherry apricot)) {
-    push @{ $groups{ substr($w, 0, 1) } }, $w;
+my %by_length;
+push @{ $by_length{length $_} }, $_ for qw(a to be sea tree fox bird);
+
+for my $len (sort { $a <=> $b } keys %by_length) {
+    printf "%d: %s\n", $len, join(", ", @{ $by_length{$len} });
 }
-for my $k (sort keys %groups) {
-    printf "%s: %s (%d)\n", $k, join(",", @{ $groups{$k} }), scalar @{ $groups{$k} };
-}
-print "exists b\n" if exists $groups{b};
-delete $groups{c};
-print join(" ", sort keys %groups), "\n";
+
+# Nested autovivification
+my %tree;
+$tree{fruit}{apple}{color} = 'red';
+print join(",", sort keys %{ $tree{fruit} }), "\n";

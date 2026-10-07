@@ -1,16 +1,15 @@
 program character_functions_demo
     implicit none
-    character(len=20) :: s = "  Fortran Rocks"
-    character(len=:), allocatable :: t
+    character(len=20) :: s
+    s = "  Hello, Fortran  "
 
-    t = trim(adjustl(s))
-    print *, "[", t, "]"
-    print *, "len:", len(t), " len_trim(s):", len_trim(s)
-    print *, "index of 'Rocks':", index(t, "Rocks")
-    print *, "scan vowels:", scan(t, "aeiou")
-    print *, "verify digits:", verify(t, "0123456789")
-    print *, "repeat:", repeat("ab", 3)
-    print *, "iachar('A'):", iachar("A"), " achar(98):", achar(98)
-    print *, "compare:", lgt("b", "a"), llt("b", "a")
-    print *, t(1:7)
+    print '(A, I0)', "len: ", len(s)
+    print '(A, I0)', "len_trim: ", len_trim(s)
+    print '(A, A, A)', "[", trim(adjustl(s)), "]"
+    print '(A, I0)', "index of Fortran: ", index(s, "Fortran")
+    print '(A, I0)', "scan for vowels: ", scan(s, "aeiou")
+    print '(A, I0)', "verify (first non-blank): ", verify(s, " ")
+    print '(A, I0)', "iachar('A'): ", iachar("A")
+    print '(A, A)', "achar(97): ", achar(97)
+    print '(A, L1)', "lexical compare: ", llt("apple", "banana")
 end program character_functions_demo

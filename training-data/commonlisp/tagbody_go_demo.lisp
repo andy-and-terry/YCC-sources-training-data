@@ -1,10 +1,21 @@
-;; tagbody/go is the primitive behind do and loop.
+;; TAGBODY/GO is the low-level construct underneath loops
 (let ((i 0))
   (tagbody
-   start
+   top
      (when (>= i 5) (go end))
-     (format t "i = ~a~%" i)
+     (format t "i = ~d~%" i)
      (incf i)
-     (go start)
-   end)
-  (format t "finished with i = ~a~%" i))
+     (go top)
+   end
+     (format t "done~%")))
+
+(defun count-down (n)
+  (prog ((k n))
+   again
+     (when (zerop k) (return :liftoff))
+     (format t "~d " k)
+     (decf k)
+     (go again)))
+
+(print (count-down 3))
+(terpri)

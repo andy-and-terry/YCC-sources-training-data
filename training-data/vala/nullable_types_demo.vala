@@ -1,27 +1,24 @@
-string? find_name (string[] names, string prefix) {
-    foreach (var n in names) {
-        if (n.has_prefix (prefix)) {
-            return n;
-        }
+string? find_name(int id) {
+    if (id == 1) {
+        return "Ada";
     }
     return null;
 }
 
-void main () {
-    string[] names = { "alice", "bob", "carol" };
-
-    string? hit = find_name (names, "b");
-    stdout.printf ("hit: %s\n", hit ?? "none");
-
-    string? miss = find_name (names, "z");
-    stdout.printf ("miss: %s\n", miss ?? "none");
-
-    if (miss == null) {
-        stdout.printf ("nothing found\n");
+void main() {
+    for (int id = 1; id <= 2; id++) {
+        string? name = find_name(id);
+        if (name != null) {
+            stdout.printf("found: %s\n", name);
+        } else {
+            stdout.printf("id %d not found\n", id);
+        }
     }
 
-    int? maybe = null;
-    stdout.printf ("is null: %s\n", (maybe == null).to_string ());
-    string upper = (hit != null) ? hit.up () : "";
-    stdout.printf ("%s\n", upper);
+    string fallback = find_name(2) ?? "unknown";
+    stdout.printf("%s\n", fallback);
+
+    string? maybe = find_name(1);
+    stdout.printf("length: %d\n", maybe.length);
+    stdout.printf("forced: %s\n", maybe);
 }

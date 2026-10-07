@@ -1,10 +1,11 @@
-let nextRow row = List.map2 (+) (0 :: row) (row @ [ 0 ])
+let nextRow row =
+    List.zip (0 :: row) (row @ [ 0 ])
+    |> List.map (fun (a, b) -> a + b)
 
 let pascal n =
-    [ 1 ]
-    |> Seq.unfold (fun row -> Some(row, nextRow row))
-    |> Seq.take n
+    Seq.unfold (fun row -> Some(row, nextRow row)) [ 1 ]
+    |> Seq.truncate n
     |> Seq.toList
 
-for row in pascal 6 do
-    printfn "%s" (row |> List.map string |> String.concat " ")
+for row in pascal 7 do
+    row |> List.map string |> String.concat " " |> printfn "%s"

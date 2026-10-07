@@ -15,7 +15,7 @@ End Function
 
 Sub Main()
     Dim v As Variant
-    For Each v In Array(-4, 0, 7, 20, 99)
-        Debug.Print v & " -> " & Classify(CLng(v))
+    For Each v In Array(-5, 0, 7, 20, 99)
+        Debug.Print v; ": "; Classify(CLng(v))
     Next v
 End Sub

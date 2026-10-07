@@ -1,0 +1,10 @@
+(def xs [1 2 3 10 4 5])
+
+(println (take-while #(< % 5) xs))
+(println (drop-while #(< % 5) xs))
+(println (take-last 2 xs))
+(println (drop-last 2 xs))
+(println (take-nth 2 (range 10)))
+(println (take 5 (cycle [:a :b])))
+(println (take 3 (repeat "x")))
+(println (last (take-while #(< (* % %) 200) (iterate inc 1))))

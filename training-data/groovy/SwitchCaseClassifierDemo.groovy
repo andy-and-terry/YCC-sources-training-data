@@ -1,17 +1,16 @@
 def classify(x) {
     switch (x) {
-        case 0: return "zero"
-        case 1..9: return "digit"
-        case [10, 20, 30]: return "round"
-        case Integer: return "big int"
-        case ~/^h.*/: return "starts with h"
-        case String: return "string"
-        case { it instanceof List && it.size() > 2 }: return "long list"
-        case null: return "null"
-        default: return "unknown"
+        case null:               return 'null'
+        case Integer:            return x > 100 ? 'big int' : 'int'
+        case ~/^\d+$/:           return 'numeric string'
+        case String:             return 'string'
+        case 1..5:               return 'in range'
+        case [10, 20, 30]:       return 'in list'
+        case { it instanceof List && it.size() > 2 }: return 'long list'
+        default:                 return 'other'
     }
 }
 
-[0, 5, 20, 99, "hello", "world", [1, 2, 3], null, 2.5].each {
+[null, 7, 500, '42', 'hi', 3.0, [1, 2, 3], 4.5d].each {
     println "${it} -> ${classify(it)}"
 }

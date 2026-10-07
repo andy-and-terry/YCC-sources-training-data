@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"strings"
 	"text/template"
 )
 
@@ -12,14 +11,13 @@ type Item struct {
 }
 
 func main() {
-	funcs := template.FuncMap{"upper": strings.ToUpper}
-	t := template.Must(template.New("inv").Funcs(funcs).Parse(
-		`Customer: {{.Customer | upper}}
-{{range $i, $it := .Items}}{{$i}}. {{$it.Name}} ${{printf "%.2f" $it.Price}}
-{{else}}no items
-{{end}}`))
+	const tpl = `Order for {{.Customer}}:
+{{range $i, $it := .Items}}{{$i}}. {{$it.Name}} - ${{printf "%.2f" $it.Price}}
+{{end}}{{if gt (len .Items) 1}}Multiple items{{else}}Single item{{end}}
+`
+	t := template.Must(template.New("order").Parse(tpl))
 	data := map[string]any{
-		"Customer": "ann",
+		"Customer": "Alice",
 		"Items":    []Item{{"Pen", 1.5}, {"Book", 12}},
 	}
 	if err := t.Execute(os.Stdout, data); err != nil {

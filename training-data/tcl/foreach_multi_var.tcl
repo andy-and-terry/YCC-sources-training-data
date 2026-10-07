@@ -1,29 +1,19 @@
-foreach {name age} {Ann 31 Bob 17 Cy 45} {
-    puts "$name is $age"
-}
-
-foreach a {1 2 3} b {x y z} {
-    puts "$a$b"
+foreach {k v} {a 1 b 2 c 3} {
+    puts "$k => $v"
 }
 
 foreach x {1 2 3} y {a b} {
-    puts "x=$x y=[expr {$y eq "" ? "(none)" : $y}]"
+    puts "x=$x y=[expr {$y eq {} ? {<none>} : $y}]"
+}
+
+foreach {name age} {Ann 30 Bob 25} idx {0 1} {
+    puts "$idx: $name is $age"
 }
 
 set total 0
-foreach n {5 10 15 20} {
-    if {$n == 10} continue
-    if {$n > 15} break
+foreach n {1 2 3 4 5 6} {
+    if {$n % 2} continue
+    if {$n > 4} break
     incr total $n
 }
-puts "total=$total"
-
-for {set i 0} {$i < 3} {incr i} {
-    puts "i=$i"
-}
-set i 3
-while {$i > 0} {
-    puts -nonewline "$i "
-    incr i -1
-}
-puts ""
+puts "total: $total"

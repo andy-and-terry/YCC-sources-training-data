@@ -1,13 +1,10 @@
-# Hash with a default block: missing keys are computed (and stored) on demand.
-counts = Hash(String, Int32).new(0)
-%w[a b a c a b].each { |w| counts[w] += 1 }
-puts counts
+# Hash with a default block: group and count without key checks.
+words = %w[apple avocado banana blueberry cherry apricot]
 
-groups = Hash(Int32, Array(String)).new { |h, k| h[k] = [] of String }
-%w[apple fig kiwi plum banana].each { |w| groups[w.size] << w }
-puts groups
+groups = Hash(Char, Array(String)).new { |h, k| h[k] = [] of String }
+words.each { |w| groups[w[0]] << w }
+groups.each { |letter, list| puts "#{letter}: #{list.join(", ")}" }
 
-fib = Hash(Int32, Int64).new do |h, n|
-  h[n] = n < 2 ? n.to_i64 : h[n - 1] + h[n - 2]
-end
-puts fib[50]
+counts = Hash(Char, Int32).new(0)
+words.each { |w| counts[w[0]] += 1 }
+p counts

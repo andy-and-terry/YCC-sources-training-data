@@ -1,10 +1,8 @@
 struct Counter {
-    private(set) var count = 0
-    private(set) var history: [Int] = []
+    private(set) var value = 0
 
     mutating func increment(by amount: Int = 1) {
-        history.append(count)
-        count += amount
+        value += amount
     }
 
     mutating func reset() {
@@ -21,10 +19,10 @@ struct Counter {
 var c = Counter()
 c.increment()
 c.increment(by: 5)
-print(c.count, c.history)
+print(c.value)
 
 let d = c.incremented()
-print(d.count, c.count)
+print(c.value, d.value)
 
 c.reset()
-print(c.count, c.history.isEmpty)
+print(c.value)

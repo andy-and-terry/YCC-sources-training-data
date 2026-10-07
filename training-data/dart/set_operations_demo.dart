@@ -6,16 +6,11 @@ void main() {
   print(a.intersection(b));
   print(a.difference(b));
   print(a.containsAll({1, 2}));
-  print(a.add(2));
-  print(a.add(9));
 
-  final unique = [3, 1, 3, 2, 1].toSet().toList()..sort();
-  print(unique);
+  final seen = <int>{};
+  final dups = [1, 2, 2, 3, 3, 3].where((n) => !seen.add(n)).toList();
+  print(dups);
 
-  final frozen = Set<int>.unmodifiable(a);
-  try {
-    frozen.add(100);
-  } on UnsupportedError catch (e) {
-    print('cannot modify: ${e.runtimeType}');
-  }
+  final sorted = {...a, ...b}.toList()..sort((x, y) => y.compareTo(x));
+  print(sorted);
 }

@@ -3,21 +3,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.NUMERIC_STD.ALL;
 
 entity rom_lookup_table is
-    port ( clk  : in  std_logic;
-           addr : in  std_logic_vector(2 downto 0);
-           data : out std_logic_vector(7 downto 0) );
+    Port ( addr : in  STD_LOGIC_VECTOR(2 downto 0);
+           data : out STD_LOGIC_VECTOR(7 downto 0));
 end rom_lookup_table;
 
 architecture Behavioral of rom_lookup_table is
-    type rom_t is array (0 to 7) of std_logic_vector(7 downto 0);
-    constant ROM : rom_t := (
-        x"00", x"01", x"04", x"09", x"10", x"19", x"24", x"31"
-    );
+    type rom_t is array (0 to 7) of integer range 0 to 255;
+    -- Sine table (unsigned, offset 128)
+    constant ROM : rom_t := (128, 218, 255, 218, 128, 37, 0, 37);
 begin
-    process(clk)
-    begin
-        if rising_edge(clk) then
-            data <= ROM(to_integer(unsigned(addr)));
-        end if;
-    end process;
+    data <= std_logic_vector(to_unsigned(ROM(to_integer(unsigned(addr))), 8));
 end Behavioral;

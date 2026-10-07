@@ -1,39 +1,30 @@
-"""Generators as coroutines using send() and close()."""
-
-
 def running_average():
     total = 0.0
     count = 0
-    avg = None
-    try:
-        while True:
-            value = yield avg
-            total += value
-            count += 1
-            avg = total / count
-    finally:
-        print("averager closed")
+    average = None
+    while True:
+        value = yield average
+        total += value
+        count += 1
+        average = total / count
+
+
+avg = running_average()
+next(avg)  # prime the generator
+for v in (10, 20, 30, 40):
+    print(avg.send(v))
+avg.close()
 
 
 def delegating():
-    result = yield from sub_gen()
-    yield f"sub returned {result}"
+    result = yield from sub()
+    print("sub returned", result)
 
 
-def sub_gen():
+def sub():
     yield 1
     yield 2
-    return "ok"
+    return "finished"
 
 
-def main():
-    g = running_average()
-    next(g)
-    for v in (10, 20, 60):
-        print(g.send(v))
-    g.close()
-    print(list(delegating()))
-
-
-if __name__ == "__main__":
-    main()
+print(list(delegating()))

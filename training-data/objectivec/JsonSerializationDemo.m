@@ -1,17 +1,15 @@
 #import <Foundation/Foundation.h>
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        NSDictionary *obj = @{ @"name": @"Widget", @"tags": @[ @"a", @"b" ], @"price": @9.5 };
+        NSDictionary *obj = @{ @"name": @"Ada", @"langs": @[ @"ObjC", @"C" ], @"age": @36 };
         NSError *err = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:obj
+        NSData *json = [NSJSONSerialization dataWithJSONObject:obj
                                                        options:NSJSONWritingSortedKeys
                                                          error:&err];
-        NSString *json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", json);
-
-        id back = [NSJSONSerialization JSONObjectWithData:data options:0 error:&err];
-        NSLog(@"name=%@ tags=%lu", back[@"name"], (unsigned long)[back[@"tags"] count]);
+        NSLog(@"%@", [[NSString alloc] initWithData:json encoding:NSUTF8StringEncoding]);
+        NSDictionary *parsed = [NSJSONSerialization JSONObjectWithData:json options:0 error:&err];
+        NSLog(@"%@", parsed[@"langs"][0]);
     }
     return 0;
 }

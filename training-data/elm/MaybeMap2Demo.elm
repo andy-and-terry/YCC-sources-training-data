@@ -1,20 +1,11 @@
-module MaybeMap2Demo exposing (fullName, safeDivide, sumInputs)
+module MaybeMap2Demo exposing (fullName, parseSum)
 
 
 fullName : Maybe String -> Maybe String -> Maybe String
-fullName first last =
-    Maybe.map2 (\f l -> f ++ " " ++ l) first last
+fullName first lastName =
+    Maybe.map2 (\f l -> f ++ " " ++ l) first lastName
 
 
-safeDivide : Int -> Int -> Maybe Int
-safeDivide a b =
-    if b == 0 then
-        Nothing
-
-    else
-        Just (a // b)
-
-
-sumInputs : String -> String -> Maybe Int
-sumInputs a b =
+parseSum : String -> String -> Maybe Int
+parseSum a b =
     Maybe.map2 (+) (String.toInt a) (String.toInt b)

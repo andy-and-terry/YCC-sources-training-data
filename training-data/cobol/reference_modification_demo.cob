@@ -2,16 +2,19 @@
        PROGRAM-ID. REFMOD.
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01 TEXT-LINE  PIC X(20) VALUE "HELLO COBOL WORLD".
-       01 I          PIC 99.
+       01 DATE-STR PIC X(10) VALUE "2024-03-15".
+       01 YEAR-PART PIC X(4).
+       01 I PIC 99.
 
        PROCEDURE DIVISION.
-           DISPLAY TEXT-LINE(1:5)
-           DISPLAY TEXT-LINE(7:5)
-           MOVE "JAVA " TO TEXT-LINE(7:5)
-           DISPLAY TEXT-LINE
-           PERFORM VARYING I FROM 5 BY -1 UNTIL I < 1
-               DISPLAY TEXT-LINE(I:1) WITH NO ADVANCING
+           MOVE DATE-STR(1:4) TO YEAR-PART
+           DISPLAY "YEAR:  " YEAR-PART
+           DISPLAY "MONTH: " DATE-STR(6:2)
+           DISPLAY "DAY:   " DATE-STR(9:)
+           MOVE "XX" TO DATE-STR(6:2)
+           DISPLAY "PATCHED: " DATE-STR
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
+               DISPLAY YEAR-PART(I:1) "-" WITH NO ADVANCING
            END-PERFORM
            DISPLAY SPACE
            STOP RUN.

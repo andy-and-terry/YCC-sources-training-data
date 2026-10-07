@@ -2,14 +2,13 @@
 
 int main(void) {
     char small[8];
-    int needed = snprintf(small, sizeof small, "%s-%d", "value", 12345);
-    printf("buffer: '%s' (needed %d chars)\n", small, needed);
+    /* snprintf never overflows; it returns the length it WANTED to write. */
+    int needed = snprintf(small, sizeof small, "value=%d", 123456);
+    printf("buffer: \"%s\" needed: %d\n", small, needed);
+    if (needed >= (int)sizeof small) printf("output was truncated\n");
 
-    char line[64];
-    size_t off = 0;
-    for (int i = 1; i <= 5; i++) {
-        off += snprintf(line + off, sizeof line - off, "%d%s", i * i, i < 5 ? "," : "");
-    }
-    printf("%s (len %zu)\n", line, off);
+    char big[32];
+    snprintf(big, sizeof big, "%05.1f|%-6s|%x", 3.14159, "ab", 255);
+    printf("%s\n", big);
     return 0;
 }

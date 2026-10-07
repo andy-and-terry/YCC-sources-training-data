@@ -1,10 +1,14 @@
 #!/usr/bin/awk -f
-# Deleting elements, testing membership with `in`, and clearing arrays.
+function count(a,    k, n) {
+    n = 0
+    for (k in a) n++
+    return n
+}
 BEGIN {
     for (i = 1; i <= 5; i++) a[i] = i * i
+    print "size:", count(a)
     delete a[3]
-    print (3 in a) ? "3 present" : "3 deleted"
-    print length(a), "elements left"
-    delete a
-    print length(a), "elements after clear"
+    print "after delete a[3]:", count(a), (3 in a) ? "present" : "absent"
+    delete a            # clear the whole array
+    print "after clear:", count(a)
 }

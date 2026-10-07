@@ -1,27 +1,26 @@
-interface Address {
-  city?: string;
-  zip?: string;
-}
-interface Profile {
-  name: string;
-  address?: Address;
-  nickname?: string | null;
-  scores?: number[];
+interface Config {
+  server?: {
+    port?: number;
+    host?: string;
+    tls?: { enabled: boolean };
+  };
+  retries?: number;
 }
 
-function summarize(p: Profile): string {
-  const city = p.address?.city ?? "unknown city";
-  const nick = p.nickname ?? p.name;
-  const first = p.scores?.[0] ?? 0;
-  return `${nick} from ${city}, first score ${first}`;
+const a: Config = {};
+const b: Config = { server: { port: 0, tls: { enabled: false } }, retries: 0 };
+
+for (const cfg of [a, b]) {
+  const port = cfg.server?.port ?? 8080;       // 0 is kept, undefined falls back
+  const portOr = cfg.server?.port || 8080;     // || also replaces 0
+  const tls = cfg.server?.tls?.enabled ?? true;
+  console.log({ port, portOr, tls, retries: cfg.retries ?? 3 });
 }
 
 let counter: number | undefined;
 counter ??= 10;
-counter ||= 5;
-
-console.log(summarize({ name: "Ada", address: { city: "London" }, scores: [9] }));
-console.log(summarize({ name: "Bob", nickname: null }));
+counter ||= 20;
 console.log(counter);
-const zero: number = Number("0");
-console.log(zero ?? 42, zero || 42);
+
+const fn = (Math.random() > 2 ? () => "called" : undefined) as (() => string) | undefined;
+console.log(fn?.() ?? "no function");
