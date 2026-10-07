@@ -1,34 +1,29 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// "Pull over push": instead of sending funds out inside a state-changing
-// call (which can revert the whole transaction if the recipient rejects
-// the transfer, or open a reentrancy hole), credit an internal ledger
-// and let each recipient withdraw for themselves.
+// Pull-over-push payments: instead of sending ether directly to a
+// recipient (which can fail or be reentered), a payer credits the
+// recipient's balance and the recipient withdraws it themselves.
 contract PullPaymentDemo {
-    mapping(address => uint256) private payments;
+    mapping(address => uint256) public payments;
 
-    event PaymentCredited(address indexed payee, uint256 amount);
-    event Withdrawn(address indexed payee, uint256 amount);
+    event PaymentCredited(address indexed from, address indexed to, uint256 amount);
+    event Withdrawn(address indexed to, uint256 amount);
 
-    function creditPayment(address payee) external payable {
-        require(msg.value > 0, "nothing to credit");
-        payments[payee] += msg.value;
-        emit PaymentCredited(payee, msg.value);
-    }
-
-    function paymentsOwed(address payee) external view returns (uint256) {
-        return payments[payee];
+    function pay(address recipient) external payable {
+        require(msg.value > 0, "nothing to pay");
+        payments[recipient] += msg.value;
+        emit PaymentCredited(msg.sender, recipient, msg.value);
     }
 
     function withdrawPayments() external {
         uint256 amount = payments[msg.sender];
-        require(amount > 0, "no payments due");
+        require(amount > 0, "no balance due");
 
-        payments[msg.sender] = 0; // effects before interaction
-        (bool sent, ) = msg.sender.call{value: amount}("");
-        require(sent, "withdrawal failed");
-
+        payments[msg.sender] = 0;
         emit Withdrawn(msg.sender, amount);
+
+        (bool success, ) = msg.sender.call{ value: amount }("");
+        require(success, "withdrawal failed");
     }
 }

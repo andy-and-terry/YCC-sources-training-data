@@ -1,13 +1,12 @@
-defmodule RangeStepDemo do
-  def even_range(from, to) do
-    Enum.to_list(from..to//2)
-  end
-
-  def countdown(from, to) do
-    Enum.to_list(from..to//-1)
-  end
-end
-
-IO.inspect(RangeStepDemo.even_range(2, 10)) # [2, 4, 6, 8, 10]
-IO.inspect(RangeStepDemo.countdown(5, 1))   # [5, 4, 3, 2, 1]
-IO.inspect(Enum.sum(1..20//3))              # 1 + 4 + 7 + 10 + 13 + 16 + 19 = 70
+IO.inspect(Enum.to_list(1..5))
+IO.inspect(Enum.to_list(10..1//-3))
+IO.inspect(Enum.to_list(0..20//5))
+IO.inspect(Enum.to_list(5..1//1))
+IO.inspect(Enum.sum(1..100))
+IO.inspect(Enum.count(1..100//7))
+IO.inspect(3 in 1..5)
+IO.inspect(Range.size(1..10//2))
+IO.inspect(Enum.slice(0..9, 2..5))
+IO.inspect(for x <- 1..10//3, do: x * x)
+IO.inspect(Enum.reverse(1..4))
+IO.inspect(Enum.zip(1..3, ?a..?c))

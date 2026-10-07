@@ -1,37 +1,53 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// "Diamond storage" (EIP-2535) stores a whole struct at a
-// deterministic, collision-resistant slot computed from a namespace
-// string, rather than relying on the compiler's sequential storage
-// layout. This is what lets independently-compiled facets of a
-// diamond proxy share state safely.
-contract DiamondStorageDemo {
-    bytes32 private constant APP_STORAGE_POSITION = keccak256("diamond.storage.app");
+// Sketch of the EIP-2535 "diamond storage" pattern: state lives in a
+// struct pinned to a fixed, namespaced storage slot instead of the
+// contract's normal sequential layout. This lets multiple facets of a
+// diamond proxy share state without colliding on storage slots.
+library LibDiamondStorage {
+    bytes32 private constant STORAGE_SLOT = keccak256("demo.diamond.storage.v1");
 
-    struct AppStorage {
-        uint256 totalDeposits;
-        mapping(address => uint256) balances;
+    struct DiamondStorage {
+        address owner;
+        uint256 counter;
+        mapping(bytes4 => address) selectorToFacet;
     }
 
-    function _appStorage() internal pure returns (AppStorage storage s) {
-        bytes32 position = APP_STORAGE_POSITION;
+    function diamondStorage() internal pure returns (DiamondStorage storage ds) {
+        bytes32 slot = STORAGE_SLOT;
         assembly {
-            s.slot := position
+            ds.slot := slot
         }
     }
+}
 
-    function deposit() external payable {
-        AppStorage storage s = _appStorage();
-        s.balances[msg.sender] += msg.value;
-        s.totalDeposits += msg.value;
+contract DiamondStorageDemo {
+    constructor() {
+        LibDiamondStorage.diamondStorage().owner = msg.sender;
     }
 
-    function balanceOf(address account) external view returns (uint256) {
-        return _appStorage().balances[account];
+    function owner() external view returns (address) {
+        return LibDiamondStorage.diamondStorage().owner;
     }
 
-    function totalDeposits() external view returns (uint256) {
-        return _appStorage().totalDeposits;
+    function increment() external returns (uint256) {
+        LibDiamondStorage.DiamondStorage storage ds = LibDiamondStorage.diamondStorage();
+        ds.counter += 1;
+        return ds.counter;
+    }
+
+    function counter() external view returns (uint256) {
+        return LibDiamondStorage.diamondStorage().counter;
+    }
+
+    function registerFacet(bytes4 selector, address facet) external {
+        LibDiamondStorage.DiamondStorage storage ds = LibDiamondStorage.diamondStorage();
+        require(msg.sender == ds.owner, "not owner");
+        ds.selectorToFacet[selector] = facet;
+    }
+
+    function facetOf(bytes4 selector) external view returns (address) {
+        return LibDiamondStorage.diamondStorage().selectorToFacet[selector];
     }
 }

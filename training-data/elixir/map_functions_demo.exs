@@ -1,0 +1,15 @@
+m = %{a: 1, b: 2}
+
+IO.inspect(Map.put(m, :c, 3))
+IO.inspect(Map.update(m, :a, 0, &(&1 + 10)))
+IO.inspect(Map.update(m, :z, 99, &(&1 + 10)))
+IO.inspect(Map.merge(m, %{b: 20, d: 4}))
+IO.inspect(Map.merge(m, %{b: 20}, fn _k, v1, v2 -> v1 + v2 end))
+IO.inspect(Map.get(m, :x, :none))
+IO.inspect(Map.fetch(m, :a))
+IO.inspect(Map.take(m, [:a]))
+IO.inspect(Map.drop(m, [:a]))
+IO.inspect(Map.new([{"x", 1}, {"y", 2}]))
+IO.inspect(Map.new(m, fn {k, v} -> {v, k} end))
+IO.inspect(%{m | a: 100})
+IO.inspect(Map.keys(m) ++ Map.values(m))

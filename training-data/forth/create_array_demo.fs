@@ -1,0 +1,12 @@
+\ CREATE / ALLOT / , for tables
+CREATE PRIMES 2 , 3 , 5 , 7 , 11 ,
+CREATE BUF 10 CELLS ALLOT
+
+: PRIME@ ( i -- n )  CELLS PRIMES + @ ;
+
+: FILL-SQUARES ( -- )  10 0 DO I I * BUF I CELLS + ! LOOP ;
+
+: SHOW ( -- )  10 0 DO BUF I CELLS + @ . LOOP CR ;
+
+4 PRIME@ . CR
+FILL-SQUARES SHOW

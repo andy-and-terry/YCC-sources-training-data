@@ -1,16 +1,12 @@
-(* The Substring structure operates on a (string, start, length) view
-   instead of copying, which makes trimming and splitting cheap. *)
+(* Substring slices avoid copying *)
+val s = "  hello, world  "
+val ss = Substring.full s
+val trimmed = Substring.dropr Char.isSpace (Substring.dropl Char.isSpace ss)
 
-val raw = "  Hello, World!  "
-
-val trimmed =
-  Substring.string
-    (Substring.dropr Char.isSpace
-      (Substring.dropl Char.isSpace (Substring.full raw)))
-
-val () = print ("[" ^ trimmed ^ "]\n")
-
-val (before, after) =
-  Substring.splitl (fn c => c <> #",") (Substring.full trimmed)
-
-val () = print (Substring.string before ^ " | " ^ Substring.string after ^ "\n")
+val () = print ("[" ^ Substring.string trimmed ^ "]\n")
+val (l, r) = Substring.splitl (fn c => c <> #",") trimmed
+val () = print (Substring.string l ^ "\n")
+val () = print (Substring.string (Substring.triml 1 r) ^ "\n")
+val () = print (Int.toString (Substring.size trimmed) ^ "\n")
+val () = print (String.substring ("abcdef", 2, 3) ^ "\n")
+val () = print (String.extract ("abcdef", 4, NONE) ^ "\n")

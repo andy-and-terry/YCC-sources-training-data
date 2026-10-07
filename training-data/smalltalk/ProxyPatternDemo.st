@@ -1,23 +1,19 @@
 Object subclass: RealImage [
-    | fileName |
-    fileName: f [
-        fileName := f.
-        Transcript showCr: 'loading image from disk: ', fileName
-    ]
-    display [ Transcript showCr: 'displaying ', fileName ]
+    | name |
+    name: aString [ name := aString. Transcript showCr: 'Loading ', name ]
+    display [ Transcript showCr: 'Displaying ', name ]
 ]
 
-Object subclass: ProxyImage [
-    | fileName realImage |
-    fileName: f [ fileName := f ]
+Object subclass: ImageProxy [
+    | name image |
+    name: aString [ name := aString ]
     display [
-        realImage isNil ifTrue: [ realImage := RealImage new fileName: fileName; yourself ].
-        realImage display
+        image isNil ifTrue: [ image := RealImage new name: name; yourself ].
+        image display
     ]
 ]
 
-| image |
-image := ProxyImage new fileName: 'photo.png'; yourself.
-Transcript showCr: 'proxy created, nothing loaded yet'.
-image display.
-image display.
+| p |
+p := ImageProxy new name: 'photo.png'; yourself.
+p display.
+p display.
