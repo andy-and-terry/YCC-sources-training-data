@@ -1,30 +1,25 @@
 program random_number_demo
     implicit none
     integer, allocatable :: seed(:)
-    integer :: n, i, hits
-    real :: x, y, estimate
+    integer :: n, i, k
+    real :: r(5), inside, x, y
 
     call random_seed(size=n)
     allocate(seed(n))
     seed = 12345
     call random_seed(put=seed)
 
-    call random_number(x)
-    print *, 'in range [0,1):', x >= 0.0 .and. x < 1.0
+    call random_number(r)
+    print '(A, *(F6.3, 1X))', "uniform: ", r
+    print '(A, *(I0, 1X))', "dice:    ", (1 + int(r(i) * 6), i = 1, 5)
 
-    hits = 0
+    ! Monte Carlo estimate of pi
+    k = 0
     do i = 1, 100000
         call random_number(x)
         call random_number(y)
-        if (x*x + y*y <= 1.0) hits = hits + 1
+        if (x * x + y * y <= 1.0) k = k + 1
     end do
-    estimate = 4.0 * real(hits) / 100000.0
-    print *, 'pi estimate close:', abs(estimate - 3.14159) < 0.05
-
-    block
-        real :: r(5)
-        call random_number(r)
-        print *, 'all in range:', all(r >= 0.0 .and. r < 1.0)
-        print *, 'dice:', 1 + int(r * 6.0)
-    end block
+    inside = real(k) / 100000.0
+    print '(A, F6.2)', "pi estimate (approx): ", 4.0 * inside
 end program random_number_demo

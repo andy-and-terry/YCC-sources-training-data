@@ -2,27 +2,24 @@ class Multiplier {
   final int factor;
   const Multiplier(this.factor);
 
-  int call(int value) => value * factor;
+  int call(int x) => x * factor;
 }
 
-class Greeter {
-  final String greeting;
-  Greeter(this.greeting);
-
-  String call(String name, {String punctuation = '!'}) =>
-      '$greeting, $name$punctuation';
+class Counter {
+  int _n = 0;
+  int call() => ++_n;
 }
 
 void main() {
   const triple = Multiplier(3);
-  print(triple(14));
+  print(triple(5));
   print([1, 2, 3].map(triple).toList());
 
-  final greet = Greeter('Hello');
-  print(greet('Dart'));
-  print(greet('World', punctuation: '?'));
+  final next = Counter();
+  next();
+  next();
+  print(next());
 
   Function f = triple;
-  print(f(5));
-  print(triple is Function);
+  print(f(10));
 }

@@ -1,21 +1,13 @@
 #include <stdio.h>
 
-#define ROWS 7
+#define ROWS 8
 
 int main(void) {
-    int tri[ROWS][ROWS] = {{0}};
-
-    for (int i = 0; i < ROWS; i++) {
-        tri[i][0] = 1;
-        for (int j = 1; j <= i; j++) {
-            tri[i][j] = tri[i - 1][j - 1] + tri[i - 1][j];
-        }
-    }
-
-    for (int i = 0; i < ROWS; i++) {
-        for (int k = 0; k < (ROWS - i - 1) * 2; k++) putchar(' ');
-        for (int j = 0; j <= i; j++) printf("%4d", tri[i][j]);
-        putchar('\n');
+    int row[ROWS] = {1};
+    for (int r = 0; r < ROWS; r++) {
+        for (int c = r; c > 0; c--) row[c] += row[c - 1];  /* update right-to-left */
+        for (int c = 0; c <= r; c++) printf("%d ", row[c]);
+        printf("\n");
     }
     return 0;
 }

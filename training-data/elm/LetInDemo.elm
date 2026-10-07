@@ -1,33 +1,26 @@
-module LetInDemo exposing (circleStats, quadraticRoots)
+module LetInDemo exposing (hypotenuse, quadraticRoots)
 
 
-circleStats : Float -> { area : Float, circumference : Float }
-circleStats radius =
+hypotenuse : Float -> Float -> Float
+hypotenuse a b =
     let
-        pi_ =
-            3.14159
-
-        area =
-            pi_ * radius * radius
-
-        circumference =
-            2 * pi_ * radius
+        squares =
+            a * a + b * b
     in
-    { area = area, circumference = circumference }
+    sqrt squares
 
 
 quadraticRoots : Float -> Float -> Float -> Maybe ( Float, Float )
 quadraticRoots a b c =
     let
-        discriminant =
+        disc =
             b * b - 4 * a * c
+
+        root sign =
+            (-b + sign * sqrt disc) / (2 * a)
     in
-    if discriminant < 0 then
+    if a == 0 || disc < 0 then
         Nothing
 
     else
-        let
-            root =
-                sqrt discriminant
-        in
-        Just ( (-b + root) / (2 * a), (-b - root) / (2 * a) )
+        Just ( root 1, root -1 )

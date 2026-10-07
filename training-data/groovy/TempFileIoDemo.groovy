@@ -1,35 +1,17 @@
-def file = File.createTempFile('groovy-demo', '.txt')
-file.deleteOnExit()
+def f = File.createTempFile('demo', '.txt')
+f.deleteOnExit()
 
-file.text = 'alpha\nbeta\ngamma\n'
-println file.text.readLines()
+f.text = "alpha\nbeta\ngamma\n"
+f << "delta\n"
 
-file << 'delta\n'
-file.withWriterAppend { writer ->
-    writer.writeLine('epsilon')
+println f.readLines().size()
+f.eachLine { line, n -> println "$n: $line" }
+println f.readLines().collect { it.toUpperCase() }
+println f.withReader { it.readLine() }
+
+f.withWriter { w ->
+    (1..3).each { w.println "line $it" }
 }
-
-println file.readLines().size()
-
-file.eachLine { line, number ->
-    if (number <= 2) {
-        println "$number: $line"
-    }
-}
-
-def upper = file.readLines().collect { it.toUpperCase() }
-println upper.join(',')
-
-file.withReader { reader ->
-    println reader.readLine()
-}
-
-println file.length()
-println file.exists()
-println file.name.endsWith('.txt')
-
-def copy = new File(file.parentFile, file.name + '.bak')
-copy.bytes = file.bytes
-println copy.text == file.text
-copy.delete()
-println copy.exists()
+println f.text.trim().split('\n').toList()
+f.delete()
+println f.exists()

@@ -2,38 +2,29 @@
 pragma solidity ^0.8.20;
 
 contract BitmapFlagsDemo {
-    uint8 public constant READ = 1 << 0;
-    uint8 public constant WRITE = 1 << 1;
-    uint8 public constant EXECUTE = 1 << 2;
-    uint8 public constant ADMIN = 1 << 3;
+    uint256 private constant FLAG_READ = 1 << 0;
+    uint256 private constant FLAG_WRITE = 1 << 1;
+    uint256 private constant FLAG_ADMIN = 1 << 2;
 
-    mapping(address => uint8) public permissions;
+    mapping(address => uint256) public permissions;
 
-    function grant(address user, uint8 flags) external {
+    function grant(address user, uint256 flags) external {
         permissions[user] |= flags;
     }
 
-    function revoke(address user, uint8 flags) external {
+    function revoke(address user, uint256 flags) external {
         permissions[user] &= ~flags;
     }
 
-    function toggle(address user, uint8 flags) external {
-        permissions[user] ^= flags;
-    }
-
-    function has(address user, uint8 flag) public view returns (bool) {
+    function has(address user, uint256 flag) public view returns (bool) {
         return permissions[user] & flag != 0;
     }
 
-    function hasAll(address user, uint8 flags) external view returns (bool) {
-        return permissions[user] & flags == flags;
+    function canWrite(address user) external view returns (bool) {
+        return has(user, FLAG_WRITE);
     }
 
-    function countFlags(address user) external view returns (uint256 count) {
-        uint8 p = permissions[user];
-        while (p != 0) {
-            count += p & 1;
-            p >>= 1;
-        }
+    function flags() external pure returns (uint256, uint256, uint256) {
+        return (FLAG_READ, FLAG_WRITE, FLAG_ADMIN);
     }
 }

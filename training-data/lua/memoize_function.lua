@@ -1,46 +1,36 @@
+-- Generic memoization using a cache table; multi-argument keys are joined.
 local function memoize(fn)
   local cache = {}
-  return function(n)
-    local hit = cache[n]
+  return function(...)
+    local key = table.concat({ ... }, "\0")
+    local hit = cache[key]
     if hit == nil then
-      hit = fn(n)
-      cache[n] = hit
+      hit = fn(...)
+      cache[key] = hit
     end
     return hit
   end
 end
 
 local calls = 0
-local slow_square = memoize(function(n)
+local slow_square = memoize(function(x)
   calls = calls + 1
-  return n * n
+  return x * x
 end)
-
-print(slow_square(9), slow_square(9), slow_square(4))
-print("underlying calls:", calls)
+print(slow_square(4), slow_square(4), slow_square(5), calls)
 
 local fib
 fib = memoize(function(n)
-  if n < 2 then
-    return n
-  end
+  if n < 2 then return n end
   return fib(n - 1) + fib(n - 2)
 end)
 print(fib(80))
 
--- auto-filling table via __index
-local collatz_len = setmetatable({ [1] = 1 }, {
-  __index = function(t, n)
-    local nxt = (n % 2 == 0) and n // 2 or 3 * n + 1
-    local v = t[nxt] + 1
-    rawset(t, n, v)
-    return v
-  end,
-})
-print(collatz_len[27], collatz_len[97])
-
--- weak cache so entries can be collected
-local weak = setmetatable({}, { __mode = "k" })
-local key = {}
-weak[key] = "value"
-print(weak[key])
+local grid_calls = 0
+local paths
+paths = memoize(function(r, c)
+  grid_calls = grid_calls + 1
+  if r == 1 or c == 1 then return 1 end
+  return paths(r - 1, c) + paths(r, c - 1)
+end)
+print(paths(10, 10), grid_calls)

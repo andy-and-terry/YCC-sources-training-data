@@ -7,20 +7,14 @@ import (
 
 func main() {
 	d := 90*time.Minute + 30*time.Second
-	fmt.Println("duration:", d)
-	fmt.Printf("hours=%.2f minutes=%.1f seconds=%d\n", d.Hours(), d.Minutes(), int(d.Seconds()))
+	fmt.Println(d, d.Hours(), d.Round(time.Hour))
 
-	parsed, err := time.ParseDuration("1h15m30.5s")
-	if err != nil {
-		fmt.Println("parse error:", err)
-		return
-	}
-	fmt.Println("parsed:", parsed, "rounded:", parsed.Round(time.Minute), "truncated:", parsed.Truncate(time.Hour))
+	parsed, _ := time.ParseDuration("1h15m30.5s")
+	fmt.Println(parsed.Seconds())
 
-	start := time.Date(2024, time.February, 28, 22, 0, 0, 0, time.UTC)
-	end := start.Add(5 * time.Hour)
-	fmt.Println("start:", start.Format(time.RFC3339))
-	fmt.Println("end:  ", end.Format("2006-01-02 15:04"))
-	fmt.Println("elapsed:", end.Sub(start))
-	fmt.Println("weekday, day of year:", end.Weekday(), end.YearDay())
+	t := time.Date(2024, time.February, 28, 23, 0, 0, 0, time.UTC)
+	next := t.Add(2 * time.Hour)
+	fmt.Println(next.Format("2006-01-02 15:04:05"), next.Weekday())
+	fmt.Println(next.Sub(t), next.After(t))
+	fmt.Println(t.AddDate(0, 1, 1).Format(time.RFC3339))
 }

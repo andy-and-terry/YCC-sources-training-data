@@ -1,11 +1,9 @@
-numbers = (1..10).to_a
+# Chunking and sliding windows over collections.
+nums = (1..7).to_a
 
-numbers.each_slice(3) { |slice| puts slice.inspect }
+nums.each_slice(3) { |chunk| p chunk }
 
-puts "--- windows ---"
-numbers.each_cons(4) { |window| puts "#{window.inspect} sum=#{window.sum}" }
+nums.each_cons(3) { |win| puts "#{win} sum=#{win.sum}" }
 
-pairs = numbers.each_cons(2).map { |(a, b)| b - a }.to_a
-puts pairs.inspect
-
-puts numbers.in_groups_of(4, 0).inspect
+p nums.in_groups_of(3, 0)
+p nums.partition(&.even?)

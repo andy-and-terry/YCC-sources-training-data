@@ -1,27 +1,22 @@
 extends Node
 
-func classify(value) -> String:
+func describe(value) -> String:
 	match value:
 		0:
 			return "zero"
 		1, 2, 3:
 			return "small"
-		[]:
-			return "empty array"
-		[var first, ..]:
-			return "array starting with %s" % first
-		{"type": "circle", "radius": var r}:
+		[var a, var b]:
+			return "pair %s,%s" % [a, b]
+		{"type": "circle", "r": var r}:
 			return "circle r=%s" % r
-		{"type": var t}:
-			return "shape of type %s" % t
-		"hello":
-			return "greeting"
-		var n when n is int and n < 0:
-			return "negative"
-		var other:
-			return "other: %s" % str(other)
+		var s when s is String:
+			return "string " + s
+		var n when n is int and n > 100:
+			return "big"
+		_:
+			return "other"
 
 func _ready():
-	var samples = [0, 2, [], [7, 8], {"type": "circle", "radius": 5}, {"type": "square"}, "hello", -4, 99, 2.5]
-	for s in samples:
-		print(classify(s))
+	for v in [0, 2, [4, 5], {"type": "circle", "r": 3}, "hi", 500, 50.5]:
+		print(describe(v))

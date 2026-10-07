@@ -1,21 +1,18 @@
-date = ~D[2024-02-27]
-IO.inspect(date)
-IO.inspect(Date.add(date, 3))
-IO.inspect(Date.day_of_week(date))
-IO.inspect(Date.leap_year?(date))
-IO.inspect(Date.days_in_month(date))
-IO.inspect(Date.diff(~D[2024-12-25], date))
-IO.inspect(Date.compare(date, ~D[2025-01-01]))
+d = ~D[2024-02-28]
+IO.inspect(Date.add(d, 2))
+IO.inspect(Date.day_of_week(d))
+IO.inspect(Date.leap_year?(d))
+IO.inspect(Date.days_in_month(d))
+IO.inspect(Date.diff(~D[2024-12-25], d))
+IO.inspect(Date.compare(d, ~D[2025-01-01]))
+IO.inspect(Date.range(d, ~D[2024-03-02]) |> Enum.map(&to_string/1))
 
-time = ~T[13:45:30]
-IO.inspect(Time.add(time, 90, :minute))
+t = ~T[13:45:10]
+IO.inspect(Time.add(t, 3600))
+IO.inspect(Time.to_string(t))
 
-dt = ~U[2024-03-10 08:00:00Z]
-IO.inspect(DateTime.add(dt, 86_400, :second))
+{:ok, dt, _} = DateTime.from_iso8601("2024-03-15T10:20:30Z")
 IO.inspect(DateTime.to_unix(dt))
-IO.inspect(DateTime.to_date(dt))
+IO.inspect(DateTime.add(dt, 86_400, :second) |> DateTime.to_iso8601())
 
-{:ok, parsed} = Date.from_iso8601("2030-07-04")
-IO.inspect(parsed.year)
-IO.inspect(Date.range(~D[2024-01-01], ~D[2024-01-05]) |> Enum.map(& &1.day))
-IO.puts(Calendar.strftime(dt, "%Y/%m/%d %H:%M"))
+IO.inspect(NaiveDateTime.diff(~N[2024-01-02 00:00:00], ~N[2024-01-01 00:00:00]))

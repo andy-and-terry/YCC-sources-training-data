@@ -1,24 +1,17 @@
-; x86-64 NASM: reverse the low 8 bits of a value
+; x86-64 NASM: reverse the bits of an 8-bit value (0b00010110 -> 0b01101000)
 section .text
     global _start
 
-reverse_byte:
-    ; rdi = byte value -> rax = bit-reversed byte
-    xor rax, rax
-    mov rcx, 8
-.loop:
-    shl rax, 1
-    mov rdx, rdi
-    and rdx, 1
-    or rax, rdx
-    shr rdi, 1
-    dec rcx
-    jnz .loop
-    ret
-
 _start:
-    mov rdi, 0b00010110    ; 22 -> 0b01101000 = 104
-    call reverse_byte
-    mov rdi, rax
-    mov rax, 60
+    mov al, 0b00010110
+    mov ecx, 8
+    xor edx, edx
+rev_loop:
+    shl dl, 1
+    shr al, 1
+    adc dl, 0            ; carry holds the bit shifted out of al
+    dec ecx
+    jnz rev_loop
+    movzx edi, dl        ; exit status = 0b01101000 = 104
+    mov eax, 60
     syscall

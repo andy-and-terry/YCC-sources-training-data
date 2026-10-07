@@ -1,12 +1,10 @@
-counts = Hash(String, Int32).new(0)
-%w[apple banana apple cherry banana apple].each { |w| counts[w] += 1 }
-puts counts
+# Hash with a default block: group and count without key checks.
+words = %w[apple avocado banana blueberry cherry apricot]
 
-groups = Hash(Int32, Array(String)).new { |hash, key| hash[key] = [] of String }
-%w[one two three four five six].each { |w| groups[w.size] << w }
-groups.each do |size, words|
-  puts "#{size}: #{words.join(", ")}"
-end
+groups = Hash(Char, Array(String)).new { |h, k| h[k] = [] of String }
+words.each { |w| groups[w[0]] << w }
+groups.each { |letter, list| puts "#{letter}: #{list.join(", ")}" }
 
-puts counts.fetch("durian", -1)
-puts counts.has_key?("apple")
+counts = Hash(Char, Int32).new(0)
+words.each { |w| counts[w[0]] += 1 }
+p counts

@@ -1,33 +1,26 @@
 #import <Foundation/Foundation.h>
 
 @interface Person : NSObject
-@property(nonatomic, copy) NSString *name;
-@property(nonatomic, assign) NSInteger age;
-+ (instancetype)personWithName:(NSString *)name age:(NSInteger)age;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic) NSInteger age;
+@end
+@implementation Person
 @end
 
-@implementation Person
-+ (instancetype)personWithName:(NSString *)name age:(NSInteger)age {
-    Person *p = [[Person alloc] init];
-    p.name = name;
-    p.age = age;
+static Person *make(NSString *n, NSInteger a) {
+    Person *p = [Person new];
+    p.name = n;
+    p.age = a;
     return p;
 }
-@end
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        NSArray<Person *> *people = @[
-            [Person personWithName:@"Zoe" age:30],
-            [Person personWithName:@"Adam" age:25],
-            [Person personWithName:@"Bea" age:30],
-        ];
-        NSArray *descriptors = @[
-            [NSSortDescriptor sortDescriptorWithKey:@"age" ascending:NO],
-            [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES],
-        ];
-        for (Person *p in [people sortedArrayUsingDescriptors:descriptors]) {
-            NSLog(@"%@ (%ld)", p.name, (long)p.age);
+        NSArray *people = @[ make(@"Bob", 30), make(@"Amy", 25), make(@"Cat", 30) ];
+        NSSortDescriptor *byAge = [NSSortDescriptor sortDescriptorWithKey:@"age" ascending:NO];
+        NSSortDescriptor *byName = [NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES];
+        for (Person *p in [people sortedArrayUsingDescriptors:@[ byAge, byName ]]) {
+            NSLog(@"%@ %ld", p.name, (long)p.age);
         }
     }
     return 0;

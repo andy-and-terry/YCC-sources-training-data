@@ -1,4 +1,4 @@
-% Tabling memoizes answers, turning exponential recursion into linear time.
+% Tabling memoises results, turning exponential recursion into linear time.
 :- table fib/2.
 
 fib(0, 0).
@@ -11,15 +11,16 @@ fib(N, F) :-
     fib(N2, F2),
     F is F1 + F2.
 
-:- fib(30, F), write(F), nl.
-:- fib(100, F), write(F), nl.
-
-% tabling also makes left-recursive definitions terminate
+% Tabling also makes left-recursive definitions terminate.
 :- table path/2.
+
 edge(a, b).
 edge(b, c).
 edge(c, a).
+edge(c, d).
+
 path(X, Y) :- path(X, Z), edge(Z, Y).
 path(X, Y) :- edge(X, Y).
 
-:- findall(Y, path(a, Y), Ys), sort(Ys, S), write(S), nl.
+:- fib(100, F), writeln(F).
+:- findall(Y, path(a, Y), Ys), sort(Ys, S), writeln(S).

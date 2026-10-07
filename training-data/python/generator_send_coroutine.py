@@ -1,5 +1,4 @@
 def running_average():
-    """Coroutine that receives numbers via send() and yields the running mean."""
     total = 0.0
     count = 0
     average = None
@@ -10,27 +9,22 @@ def running_average():
         average = total / count
 
 
-def accumulator(start=0):
-    total = start
-    while True:
-        amount = yield total
-        if amount is None:
-            break
-        total += amount
-    return total
+avg = running_average()
+next(avg)  # prime the generator
+for v in (10, 20, 30, 40):
+    print(avg.send(v))
+avg.close()
 
 
-if __name__ == "__main__":
-    avg = running_average()
-    next(avg)  # prime the coroutine
-    for n in (10, 20, 30, 40):
-        print(avg.send(n))
-    avg.close()
+def delegating():
+    result = yield from sub()
+    print("sub returned", result)
 
-    acc = accumulator(100)
-    next(acc)
-    print(acc.send(5), acc.send(7))
-    try:
-        acc.send(None)
-    except StopIteration as stop:
-        print("final:", stop.value)
+
+def sub():
+    yield 1
+    yield 2
+    return "finished"
+
+
+print(list(delegating()))

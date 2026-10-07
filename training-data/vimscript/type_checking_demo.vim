@@ -1,37 +1,21 @@
-function! s:TypeName(value) abort
-  let l:names = {
-        \ v:t_number: 'number',
-        \ v:t_string: 'string',
-        \ v:t_func: 'funcref',
-        \ v:t_list: 'list',
-        \ v:t_dict: 'dict',
-        \ v:t_float: 'float',
-        \ v:t_bool: 'bool',
-        \ v:t_none: 'none',
-        \ }
-  return get(l:names, type(a:value), 'unknown')
+function! TypeName(val)
+  let t = type(a:val)
+  if t == type(0)
+    return 'number'
+  elseif t == type('')
+    return 'string'
+  elseif t == type([])
+    return 'list'
+  elseif t == type({})
+    return 'dict'
+  elseif t == type(1.0)
+    return 'float'
+  elseif t == type(function('type'))
+    return 'funcref'
+  endif
+  return 'other'
 endfunction
 
-for s:v in [42, 'text', function('len'), [1], {'a': 1}, 3.5, v:true, v:null]
-  echo s:TypeName(s:v)
+for V in [1, 'a', [1], {'k': 1}, 2.5, function('len')]
+  echo TypeName(V)
 endfor
-
-echo type(0) == v:t_number
-echo type('') == v:t_string
-echo type([]) == type([1, 2])
-echo empty([]) . ' ' . empty('') . ' ' . empty(0) . ' ' . empty({}) . ' ' . empty('x')
-echo exists('g:no_such_variable')
-let g:defined_var = 1
-echo exists('g:defined_var')
-echo exists('*len')
-echo exists(':echo')
-echo '10' + 5
-echo '10' . 5
-echo '3abc' + 1
-echo 'abc' + 1
-echo 5 == '5'
-echo 'a' ==# 'A'
-echo 'a' ==? 'A'
-echo string(1.0) . ' ' . string(1) . ' ' . string('1') . ' ' . string([1, 'a'])
-echo str2nr('0x1F', 16) . ' ' . str2nr('12abc') . ' ' . str2float('2.5e2')
-echo float2nr(3.9) . ' ' . float2nr(-3.9) . ' ' . string(round(2.5))

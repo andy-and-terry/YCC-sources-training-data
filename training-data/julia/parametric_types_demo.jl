@@ -3,14 +3,13 @@ struct Pair{A,B}
     second::B
 end
 
+swap(p::Pair{A,B}) where {A,B} = Pair{B,A}(p.second, p.first)
+
 struct Box{T<:Number}
     value::T
 end
 
-Base.:+(a::Box{T}, b::Box{T}) where {T} = Box(a.value + b.value)
-Base.show(io::IO, b::Box) = print(io, "Box(", b.value, ")")
-
-swap(p::Pair{A,B}) where {A,B} = Pair{B,A}(p.second, p.first)
+Base.:+(a::Box{T}, b::Box{T}) where {T} = Box{T}(a.value + b.value)
 
 function largest(xs::Vector{T}) where {T<:Real}
     best = xs[1]
@@ -24,9 +23,7 @@ p = Pair(1, "one")
 println(typeof(p))
 println(swap(p))
 println(Box(2) + Box(3))
-println(Box(1.5) + Box(2.5))
+println(typeof(Box(2.5)))
 println(largest([3, 9, 4]))
-println(largest([2.5, -1.0]))
-println(typeof(Box{Int}(4)))
-println(Box{Float64} <: Box)
-println(isconcretetype(Box{Int}), isconcretetype(Box))
+println(largest([1.5, 0.5]))
+println(Vector{Int} <: AbstractVector{Int})

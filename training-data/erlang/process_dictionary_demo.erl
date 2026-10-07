@@ -3,21 +3,9 @@
 
 run() ->
     undefined = put(counter, 0),
-    increment(),
-    increment(),
-    increment(),
-    io:format("counter: ~p~n", [get(counter)]),
-    put(name, <<"worker">>),
-    io:format("keys: ~p~n", [lists:sort(get_keys())]),
-    io:format("missing: ~p~n", [get(nothing)]),
-    io:format("erased: ~p~n", [erase(name)]),
-    io:format("all: ~p~n", [get()]),
-    Parent = self(),
-    spawn(fun() -> Parent ! {child_sees, get(counter)} end),
-    receive
-        {child_sees, V} -> io:format("child sees: ~p~n", [V])
-    after 1000 -> timeout
-    end.
-
-increment() ->
-    put(counter, get(counter) + 1).
+    lists:foreach(fun(_) -> put(counter, get(counter) + 1) end, lists:seq(1, 5)),
+    io:format("~p~n", [get(counter)]),
+    put(name, "worker"),
+    io:format("~p~n", [lists:sort(get())]),
+    io:format("~p~n", [erase(name)]),
+    io:format("~p~n", [get(name)]).

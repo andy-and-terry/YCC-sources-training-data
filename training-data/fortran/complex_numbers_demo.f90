@@ -1,19 +1,16 @@
 program complex_numbers_demo
     implicit none
-    complex :: z1, z2, z3
-    real, parameter :: pi = 3.14159265
+    complex :: a, b, c
 
-    z1 = (3.0, 4.0)
-    z2 = cmplx(1.0, -2.0)
-    z3 = z1 * z2
+    a = (3.0, 4.0)
+    b = cmplx(1.0, -2.0)
+    c = a * b
 
-    print *, 'sum:', z1 + z2
-    print *, 'product:', z3
-    print *, 'quotient:', z1 / z2
-    print *, 'abs(z1):', abs(z1)
-    print *, 'conjg(z1):', conjg(z1)
-    print *, 'real, imag:', real(z3), aimag(z3)
-    print *, 'arg(z1) in degrees:', atan2(aimag(z1), real(z1)) * 180.0 / pi
-    print *, 'sqrt(-1):', sqrt(cmplx(-1.0, 0.0))
-    print *, 'exp(i*pi):', exp(cmplx(0.0, pi))
+    print '(A, F6.2, F6.2)', "a*b      =", c
+    print '(A, F6.2)', "abs(a)   =", abs(a)
+    print '(A, F6.2, F6.2)', "conjg(a) =", conjg(a)
+    print '(A, F6.2)', "real(c)  =", real(c)
+    print '(A, F6.2)', "imag(c)  =", aimag(c)
+    print '(A, F6.2)', "arg(a)   =", atan2(aimag(a), real(a))
+    print '(A, F6.2, F6.2)', "sqrt(-4) =", sqrt(cmplx(-4.0, 0.0))
 end program complex_numbers_demo

@@ -12,8 +12,8 @@ class Playlist implements IteratorAggregate, Countable
 
     public function getIterator(): Generator
     {
-        foreach ($this->tracks as $i => $title) {
-            yield $i + 1 => $title;
+        foreach ($this->tracks as $i => $t) {
+            yield $i + 1 => $t;
         }
     }
 
@@ -23,9 +23,9 @@ class Playlist implements IteratorAggregate, Countable
     }
 }
 
-$list = (new Playlist())->add('Intro')->add('Verse')->add('Outro');
-foreach ($list as $pos => $title) {
-    echo "$pos. $title\n";
+$p = (new Playlist())->add('Intro')->add('Verse')->add('Outro');
+foreach ($p as $n => $title) {
+    echo "$n. $title\n";
 }
-echo count($list) . " tracks\n";
-echo implode(' | ', iterator_to_array($list)) . "\n";
+echo count($p), " tracks\n";
+echo implode(' | ', iterator_to_array($p)), "\n";

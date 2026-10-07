@@ -1,26 +1,30 @@
 program allocatable_array_demo
     implicit none
-    integer, allocatable :: values(:)
-    integer :: n, i
+    integer, allocatable :: a(:)
+    integer :: i, n
 
     n = 5
-    allocate(values(n))
-    values = [(i * i, i = 1, n)]
-    print *, 'allocated:', allocated(values), 'size:', size(values)
-    print *, values
+    allocate(a(n))
+    a = [(i * i, i = 1, n)]
+    print '(A, *(I0, 1X))', "squares:", a
+    print '(A, L1)', "allocated: ", allocated(a)
 
-    call move_alloc_demo(values)
-    print *, 'after move_alloc, original allocated:', allocated(values)
-
-    deallocate(values, stat=i)
-    print *, 'dealloc stat when unallocated is nonzero:', i /= 0
+    call move_alloc_demo()
+    deallocate(a)
+    print '(A, L1)', "allocated after deallocate: ", allocated(a)
 
 contains
 
-    subroutine move_alloc_demo(src)
-        integer, allocatable, intent(inout) :: src(:)
-        integer, allocatable :: dest(:)
-        call move_alloc(src, dest)
-        print *, 'moved:', dest
+    subroutine move_alloc_demo()
+        integer, allocatable :: old(:), new(:)
+        allocate(old(3))
+        old = [10, 20, 30]
+        allocate(new(5))
+        new = 0
+        new(1:3) = old
+        call move_alloc(new, old)
+        print '(A, *(I0, 1X))', "grown:", old
+        print '(A, L1)', "source still allocated: ", allocated(new)
     end subroutine move_alloc_demo
+
 end program allocatable_array_demo

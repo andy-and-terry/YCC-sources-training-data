@@ -1,29 +1,23 @@
-; x86-64 NASM: digital root (repeated digit sum) of a number
+; x86-64 NASM: digital root by repeated digit sums (9875 -> 2)
 section .text
     global _start
 
-digital_root:
-    ; rdi = n -> rax = digital root
-    mov rax, rdi
-.outer:
-    cmp rax, 10
-    jb .done
-    xor rsi, rsi
-    mov rcx, 10
-.digits:
-    xor rdx, rdx
-    div rcx
-    add rsi, rdx
-    test rax, rax
-    jnz .digits
-    mov rax, rsi
-    jmp .outer
-.done:
-    ret
-
 _start:
-    mov rdi, 9875          ; 9+8+7+5=29 -> 2+9=11 -> 1+1=2
-    call digital_root
-    mov rdi, rax
-    mov rax, 60
+    mov eax, 9875
+    mov ebx, 10
+root_loop:
+    cmp eax, 10
+    jb  finished
+    xor ecx, ecx
+sum_digits:
+    xor edx, edx
+    div ebx
+    add ecx, edx
+    test eax, eax
+    jnz sum_digits
+    mov eax, ecx
+    jmp root_loop
+finished:
+    mov edi, eax
+    mov eax, 60
     syscall

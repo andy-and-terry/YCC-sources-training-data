@@ -1,19 +1,13 @@
--- Nested blocks: inner declarations shadow outer ones, and a label lets
--- the inner block still reach the outer variable by qualified name.
 CREATE OR REPLACE PROCEDURE nested_block_scope_demo IS
+    v_name VARCHAR2(20) := 'outer';
 BEGIN
-    <<outer_blk>>
+    DBMS_OUTPUT.PUT_LINE('1: ' || v_name);
     DECLARE
-        v_level VARCHAR2(10) := 'outer';
+        v_name VARCHAR2(20) := 'inner';
     BEGIN
-        DBMS_OUTPUT.PUT_LINE('start: ' || v_level);
-        DECLARE
-            v_level VARCHAR2(10) := 'inner';
-        BEGIN
-            DBMS_OUTPUT.PUT_LINE('inner sees: ' || v_level);
-            DBMS_OUTPUT.PUT_LINE('outer via label: ' || outer_blk.v_level);
-        END;
-        DBMS_OUTPUT.PUT_LINE('back in outer: ' || v_level);
-    END outer_blk;
+        DBMS_OUTPUT.PUT_LINE('2: ' || v_name);
+        DBMS_OUTPUT.PUT_LINE('3: ' || nested_block_scope_demo.v_name);
+    END;
+    DBMS_OUTPUT.PUT_LINE('4: ' || v_name);
 END nested_block_scope_demo;
 /

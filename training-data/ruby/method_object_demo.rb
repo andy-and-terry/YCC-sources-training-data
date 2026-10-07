@@ -1,30 +1,17 @@
 class Greeter
-  def initialize(greeting)
-    @greeting = greeting
-  end
-
-  def greet(name, punctuation = "!")
-    "#{@greeting}, #{name}#{punctuation}"
-  end
+  def greet(name) = "Hello, #{name}!"
 end
 
-g = Greeter.new("Hello")
-m = g.method(:greet)
+m = Greeter.new.method(:greet)
 puts m.call("Ann")
-puts m.arity
-puts m.owner, m.name.inspect, m.receiver.class
-puts m.parameters.inspect
+puts m.arity, m.name.inspect, m.owner
+p %w[x y].map(&m)
 
 um = m.unbind
-other = Greeter.new("Howdy")
-puts um.bind(other).call("Bob", "?")
+puts um.bind(Greeter.new).call("Bob")
 
-puts %w[x y].map(&g.method(:greet)).inspect
-
-compose = g.method(:greet) >> :upcase.to_proc
-puts compose.call("cy")
-
-puts Greeter.instance_method(:greet).source_location.class
-puts g.public_methods(false).inspect
-puts g.respond_to?(:greet), g.public_send(:greet, "Di")
-puts 5.method(:+).to_proc.call(6)
+double = ->(x) { x * 2 }
+inc = :succ.to_proc
+puts (double >> inc).call(5)  # 11
+puts (double << inc).call(5)  # 12
+p [1, 2, 3].map(&10.method(:+))

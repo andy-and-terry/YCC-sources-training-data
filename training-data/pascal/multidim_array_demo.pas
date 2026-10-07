@@ -1,28 +1,19 @@
 program MultidimArrayDemo;
 
 const
-  Rows = 3;
-  Cols = 4;
+  N = 3;
 
 var
-  grid: array[1..Rows, 1..Cols] of Integer;
-  r, c, rowSum, grand: Integer;
+  m: array[1..N, 1..N] of Integer;
+  i, j: Integer;
 begin
-  for r := 1 to Rows do
-    for c := 1 to Cols do
-      grid[r, c] := r * c;
-
-  grand := 0;
-  for r := 1 to Rows do
+  for i := 1 to N do
+    for j := 1 to N do
+      m[i, j] := i * j;
+  for i := 1 to N do
   begin
-    rowSum := 0;
-    for c := 1 to Cols do
-    begin
-      Write(grid[r, c]:3);
-      rowSum := rowSum + grid[r, c];
-    end;
-    WriteLn('  | ', rowSum);
-    grand := grand + rowSum;
+    for j := 1 to N do
+      Write(m[i, j]:4);
+    WriteLn;
   end;
-  WriteLn('total: ', grand);
 end.

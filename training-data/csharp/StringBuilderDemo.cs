@@ -8,19 +8,21 @@ class StringBuilderDemo
         var sb = new StringBuilder();
         for (int i = 1; i <= 5; i++)
         {
-            sb.Append(i).Append(i < 5 ? ", " : "");
+            sb.Append(i);
+            if (i < 5) sb.Append(", ");
         }
+        sb.Insert(0, "[").Append(']');
         Console.WriteLine(sb);
 
-        sb.Clear();
-        sb.AppendLine("header");
-        sb.AppendFormat("{0,-6}|{1,6:F2}", "pi", Math.PI).AppendLine();
-        sb.Insert(0, ">> ");
-        sb.Replace("header", "HEADER");
-        Console.Write(sb.ToString());
-
-        Console.WriteLine($"length={sb.Length}");
-        sb.Length = 5;
+        sb.Replace(", ", "-");
         Console.WriteLine(sb);
+        sb.Length -= 1;
+        Console.WriteLine(sb);
+
+        var lines = new StringBuilder()
+            .AppendLine("first")
+            .AppendFormat("{0}:{1:D3}", "id", 7)
+            .ToString();
+        Console.WriteLine(lines);
     }
 }

@@ -3,29 +3,28 @@ using System.Collections.Generic;
 
 class LocalFunctionsDemo
 {
-    static IEnumerable<int> Range(int start, int count)
+    static IEnumerable<int> Take(int count)
     {
         if (count < 0) throw new ArgumentOutOfRangeException(nameof(count));
         return Iterate();
 
         IEnumerable<int> Iterate()
         {
-            for (int i = 0; i < count; i++) yield return start + i;
+            for (int i = 0; i < count; i++) yield return i;
         }
     }
 
-    static int Fibonacci(int n)
+    static int Fib(int n)
     {
-        return Fib(n);
-
-        static int Fib(int k) => k < 2 ? k : Fib(k - 1) + Fib(k - 2);
+        return Go(n);
+        static int Go(int k) => k < 2 ? k : Go(k - 1) + Go(k - 2);
     }
 
     static void Main()
     {
-        Console.WriteLine(string.Join(",", Range(5, 4)));
-        Console.WriteLine(Fibonacci(10));
-        try { Range(0, -1); }
-        catch (ArgumentOutOfRangeException e) { Console.WriteLine("caught eagerly: " + e.ParamName); }
+        Console.WriteLine(string.Join(",", Take(5)));
+        Console.WriteLine(Fib(10));
+        try { Take(-1); }
+        catch (ArgumentOutOfRangeException) { Console.WriteLine("validated eagerly"); }
     }
 }

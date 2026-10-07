@@ -1,49 +1,32 @@
-class User private constructor(val name: String, val id: Int) {
+class User private constructor(val id: Int, val name: String) {
     companion object Factory {
         private var nextId = 1
-        const val MAX_NAME = 10
+        const val DEFAULT_NAME = "guest"
 
-        fun create(name: String): User {
-            require(name.length <= MAX_NAME) { "name too long" }
-            return User(name, nextId++)
-        }
+        fun create(name: String = DEFAULT_NAME): User = User(nextId++, name)
 
         @JvmStatic
-        fun guest(): User = create("guest")
+        fun parse(text: String): User = create(text.trim().replaceFirstChar { it.uppercase() })
     }
 
-    override fun toString() = "User($name, #$id)"
+    override fun toString() = "User(id=$id, name=$name)"
 }
 
-interface Parser<T> {
-    fun parse(s: String): T
-}
+interface Shape { fun area(): Double }
 
-class Point(val x: Int, val y: Int) {
-    companion object : Parser<Point> {
-        override fun parse(s: String): Point {
-            val (a, b) = s.split(",").map { it.trim().toInt() }
-            return Point(a, b)
-        }
+class Circle(private val r: Double) : Shape {
+    override fun area() = Math.PI * r * r
+
+    companion object : () -> Circle {
+        override fun invoke() = Circle(1.0)
     }
-
-    override fun toString() = "($x, $y)"
 }
-
-fun <T> readAll(parser: Parser<T>, vararg inputs: String): List<T> = inputs.map(parser::parse)
 
 fun main() {
     println(User.create("ann"))
-    println(User.guest())
-    println(User.Factory.create("bob"))
-    println(User.MAX_NAME)
-
-    println(Point.parse("3, 4"))
-    println(readAll(Point, "1,2", "5,6"))
-
-    try {
-        User.create("a-very-long-name")
-    } catch (e: IllegalArgumentException) {
-        println(e.message)
-    }
+    println(User.create())
+    println(User.parse("  bob "))
+    println(User.DEFAULT_NAME)
+    println(User.Factory.create("cy"))
+    println("%.3f".format(Circle().area()))
 }

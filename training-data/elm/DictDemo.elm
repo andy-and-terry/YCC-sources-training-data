@@ -5,22 +5,22 @@ import Dict exposing (Dict)
 
 inventory : Dict String Int
 inventory =
-    Dict.fromList [ ( "apple", 5 ), ( "pear", 2 ), ( "plum", 0 ) ]
+    Dict.fromList [ ( "apple", 3 ), ( "pear", 0 ), ( "plum", 7 ) ]
 
 
 restock : String -> Int -> Dict String Int -> Dict String Int
-restock name amount =
+restock name qty =
     Dict.update name
         (\current ->
             case current of
                 Just n ->
-                    Just (n + amount)
+                    Just (n + qty)
 
                 Nothing ->
-                    Just amount
+                    Just qty
         )
 
 
 totalItems : Dict String Int -> Int
-totalItems dict =
-    Dict.foldl (\_ qty acc -> qty + acc) 0 dict
+totalItems =
+    Dict.foldl (\_ n acc -> n + acc) 0

@@ -1,22 +1,20 @@
        IDENTIFICATION DIVISION.
-       PROGRAM-ID. REFMODDEMO.
+       PROGRAM-ID. REFMOD.
        DATA DIVISION.
        WORKING-STORAGE SECTION.
-       01 DATE-TEXT   PIC X(8) VALUE "20241225".
-       01 YEAR-PART   PIC X(4).
-       01 MONTH-PART  PIC X(2).
-       01 DAY-PART    PIC X(2).
-       01 WORD        PIC X(10) VALUE "COBOL".
-       01 I           PIC 9(2).
+       01 DATE-STR PIC X(10) VALUE "2024-03-15".
+       01 YEAR-PART PIC X(4).
+       01 I PIC 99.
 
        PROCEDURE DIVISION.
-           MOVE DATE-TEXT(1:4) TO YEAR-PART
-           MOVE DATE-TEXT(5:2) TO MONTH-PART
-           MOVE DATE-TEXT(7:2) TO DAY-PART
-           DISPLAY DAY-PART "/" MONTH-PART "/" YEAR-PART
-           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 5
-               DISPLAY "CHAR " I ": " WORD(I:1)
+           MOVE DATE-STR(1:4) TO YEAR-PART
+           DISPLAY "YEAR:  " YEAR-PART
+           DISPLAY "MONTH: " DATE-STR(6:2)
+           DISPLAY "DAY:   " DATE-STR(9:)
+           MOVE "XX" TO DATE-STR(6:2)
+           DISPLAY "PATCHED: " DATE-STR
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
+               DISPLAY YEAR-PART(I:1) "-" WITH NO ADVANCING
            END-PERFORM
-           MOVE "X" TO WORD(1:1)
-           DISPLAY "MODIFIED: " WORD
+           DISPLAY SPACE
            STOP RUN.

@@ -1,5 +1,6 @@
 #lang racket
 
+;; Named let: a local recursive function invoked immediately.
 (define (sum-to n)
   (let loop ([i 1] [acc 0])
     (if (> i n)
@@ -20,14 +21,3 @@
           [(even? n) (loop (/ n 2) (add1 steps))]
           [else (loop (+ (* 3 n) 1) (add1 steps))])))
 (displayln (collatz-steps 27))
-
-(define (split-evens-odds lst)
-  (let loop ([rest lst] [evens '()] [odds '()])
-    (cond [(null? rest) (values (reverse evens) (reverse odds))]
-          [(even? (car rest)) (loop (cdr rest) (cons (car rest) evens) odds)]
-          [else (loop (cdr rest) evens (cons (car rest) odds))])))
-(define-values (e o) (split-evens-odds '(1 2 3 4 5 6 7)))
-(displayln (list e o))
-
-(displayln (let loop ([i 0] [out '()])
-             (if (= i 5) (reverse out) (loop (add1 i) (cons (* i i) out)))))

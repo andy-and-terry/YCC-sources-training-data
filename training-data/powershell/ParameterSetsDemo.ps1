@@ -13,9 +13,9 @@ function Get-Area {
 
     switch ($PSCmdlet.ParameterSetName) {
         'Rectangle' { $Width * $Height }
-        'Circle' { [math]::Round([math]::PI * $Radius * $Radius, 2) }
+        'Circle'    { [math]::Round([math]::PI * $Radius * $Radius, 2) }
     }
 }
 
-"rectangle: $(Get-Area -Width 3 -Height 4)"
-"circle: $(Get-Area -Radius 2)"
+Get-Area -Width 3 -Height 4
+Get-Area -Radius 2

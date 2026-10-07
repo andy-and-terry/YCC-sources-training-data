@@ -2,19 +2,17 @@ import std.stdio;
 import std.regex;
 
 void main() {
-    auto date = regex(r"(\d{4})-(\d{2})-(\d{2})");
-    auto m = matchFirst("released on 2023-07-14 today", date);
+    auto re = regex(r"(\d{4})-(\d{2})-(\d{2})");
+    auto m = matchFirst("Date: 2024-03-15!", re);
     if (m) {
-        writeln("year=", m[1], " month=", m[2], " day=", m[3]);
-        writeln("pre: ", m.pre);
+        writeln(m[0]);
+        writeln(m[1], "/", m[2], "/", m[3]);
     }
 
-    foreach (hit; matchAll("a1 b22 c333", regex(r"[a-z]\d+"))) {
+    foreach (hit; matchAll("a1b22c333", regex(r"\d+")))
         writeln(hit.hit);
-    }
 
-    writeln(replaceAll("hello  big   world", regex(r"\s+"), " "));
-    writeln(replaceFirst("aaa", regex("a"), "b"));
-    writeln(matchFirst("no digits", regex(r"\d")).empty);
-    writeln(split("one, two;three", regex(r"[,;]\s*")));
+    writeln(replaceAll("a  b   c", regex(r"\s+"), " "));
+    writeln(replaceFirst("foo foo", regex("foo"), "bar"));
+    writeln(!matchFirst("abc", r"^\d+$").empty);
 }

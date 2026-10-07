@@ -1,25 +1,15 @@
 #include <stdio.h>
 #include <string.h>
 
+/* memmove handles overlapping regions correctly; memcpy does not. */
 int main(void) {
-    char a[] = "0123456789";
-    char b[] = "0123456789";
+    char buf[] = "abcdefghij";
+    memmove(buf + 2, buf, 5);   /* shift "abcde" right by two */
+    printf("after memmove: %s\n", buf);
 
-    /* Shift the first 5 characters right by 2; the regions overlap. */
-    memmove(a + 2, a, 5);
-    printf("memmove: %s\n", a);
-
-    /* memcpy on overlapping regions is undefined behavior, so copy
-       from a separate source buffer instead. */
-    char src[] = "abcde";
-    memcpy(b + 2, src, 5);
-    printf("memcpy:  %s\n", b);
-
-    char buf[8];
-    memset(buf, '-', sizeof(buf) - 1);
-    buf[sizeof(buf) - 1] = '\0';
-    printf("memset:  %s\n", buf);
-
-    printf("memcmp:  %d\n", memcmp("abc", "abd", 3) < 0);
+    int nums[6] = {1, 2, 3, 4, 5, 6};
+    memmove(nums, nums + 2, 4 * sizeof nums[0]);  /* shift left */
+    for (int i = 0; i < 6; i++) printf("%d ", nums[i]);
+    printf("\n");
     return 0;
 }

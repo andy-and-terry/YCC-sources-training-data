@@ -1,27 +1,20 @@
 import std.stdio;
 import std.typecons : Nullable, nullable;
 
-Nullable!int findIndex(int[] values, int target) {
-    foreach (i, v; values) {
+Nullable!int findIndex(int[] arr, int target) {
+    foreach (i, v; arr)
         if (v == target) return nullable(cast(int) i);
-    }
     return Nullable!int.init;
 }
 
 void main() {
-    auto data = [4, 8, 15, 16, 23, 42];
+    auto r = findIndex([5, 6, 7], 6);
+    if (!r.isNull) writeln("found at ", r.get);
 
-    auto hit = findIndex(data, 15);
-    if (!hit.isNull) {
-        writeln("found at ", hit.get);
-    }
-
-    auto miss = findIndex(data, 7);
+    auto miss = findIndex([5, 6, 7], 9);
     writeln(miss.isNull);
     writeln(miss.get(-1));
 
-    miss = 3;
-    writeln(miss);
-    miss.nullify();
-    writeln(miss.isNull);
+    r.nullify();
+    writeln(r.isNull);
 }

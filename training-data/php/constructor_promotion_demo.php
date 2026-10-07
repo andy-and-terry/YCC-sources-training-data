@@ -1,34 +1,28 @@
 <?php
 
-declare(strict_types=1);
-
-class Product
+final class Point
 {
     public function __construct(
-        public readonly string $name,
-        private float $price,
-        protected int $stock = 0,
-    ) {
+        public readonly float $x = 0.0,
+        public readonly float $y = 0.0,
+    ) {}
+
+    public function withX(float $x): static
+    {
+        return new static($x, $this->y);
     }
 
-    public function withDiscount(float $percent): static
+    public function distanceTo(Point $o): float
     {
-        return new static($this->name, round($this->price * (1 - $percent / 100), 2), $this->stock);
-    }
-
-    public function describe(): string
-    {
-        return sprintf('%s: $%.2f (%d in stock)', $this->name, $this->price, $this->stock);
+        return hypot($o->x - $this->x, $o->y - $this->y);
     }
 }
 
-$p = new Product('Lamp', 40.0, 5);
-echo $p->describe() . "\n";
-echo $p->withDiscount(25)->describe() . "\n";
-echo $p->name . "\n";
-
+$p = new Point(3, 4);
+echo $p->distanceTo(new Point()), "\n";
+echo $p->withX(0)->x, "\n";
 try {
-    $p->name = 'Other';
+    $p->x = 9;
 } catch (Error $e) {
-    echo get_class($e) . ': ' . $e->getMessage() . "\n";
+    echo get_class($e), ': ', $e->getMessage(), "\n";
 }

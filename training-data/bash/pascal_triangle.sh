@@ -2,14 +2,13 @@
 set -euo pipefail
 
 rows=6
-declare -a prev=(1)
-
-for ((i = 0; i < rows; i++)); do
-    echo "${prev[*]}"
-    declare -a curr=(1)
-    for ((j = 1; j <= i + 1; j++)); do
-        curr[j]=$(( prev[j - 1] + ${prev[j]:-0} ))
+row=(1)
+for ((r = 0; r < rows; r++)); do
+    echo "${row[*]}"
+    next=(1)
+    for ((i = 1; i < ${#row[@]}; i++)); do
+        next+=($((row[i - 1] + row[i])))
     done
-    prev=("${curr[@]}")
-    unset curr
+    next+=(1)
+    row=("${next[@]}")
 done

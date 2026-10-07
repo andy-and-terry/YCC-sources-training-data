@@ -1,23 +1,22 @@
-; x86-64 NASM: in-place prefix sums of an array
+; x86-64 NASM: in-place prefix sums of an array; exit with the last element
 section .data
-    array dq 3, 1, 4, 1, 5
-    count equ 5
+    arr dd 1, 2, 3, 4, 5
+    len equ 5
 
 section .text
     global _start
 
 _start:
-    lea rsi, [array]
-    mov rcx, 1
-.loop:
-    cmp rcx, count
-    jge .done
-    mov rax, [rsi + rcx*8 - 8]
-    add [rsi + rcx*8], rax
-    inc rcx
-    jmp .loop
-.done:
-    ; array is now 3, 4, 8, 9, 14
-    mov rdi, [array + (count-1)*8]
-    mov rax, 60
+    lea rsi, [rel arr]
+    mov ecx, 1
+loop_top:
+    cmp ecx, len
+    jge done
+    mov eax, [rsi + rcx*4 - 4]
+    add [rsi + rcx*4], eax
+    inc ecx
+    jmp loop_top
+done:
+    mov edi, [rsi + (len-1)*4]   ; 15
+    mov eax, 60
     syscall

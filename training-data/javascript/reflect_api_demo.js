@@ -1,32 +1,23 @@
-class Point {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-  }
-  norm() {
-    return Math.hypot(this.x, this.y);
-  }
-}
+// Reflect mirrors the object-operation traps and returns booleans instead of
+// throwing, which makes it handy for metaprogramming.
+const o = { a: 1 };
+console.log(Reflect.has(o, 'a'), Reflect.ownKeys(o));
+console.log(Reflect.set(o, 'b', 2), o);
+console.log(Reflect.deleteProperty(o, 'a'), o);
+console.log(Reflect.getPrototypeOf(o) === Object.prototype);
 
-const p = Reflect.construct(Point, [3, 4]);
-console.log(p instanceof Point, Reflect.apply(p.norm, p, []));
+const frozen = Object.freeze({ k: 1 });
+console.log(Reflect.set(frozen, 'k', 2));
+console.log(Reflect.defineProperty(frozen, 'z', { value: 1 }));
 
-console.log(Reflect.has(p, "x"), Reflect.has(p, "norm"), Reflect.ownKeys(p));
-console.log(Reflect.getPrototypeOf(p) === Point.prototype);
+function Person(name) { this.name = name; }
+console.log(Reflect.construct(Person, ['Ann']).name);
+console.log(Reflect.apply(Math.max, null, [3, 9, 4]));
 
-Reflect.defineProperty(p, "id", { value: 99, writable: false, enumerable: false });
-console.log(p.id, Object.keys(p), Reflect.set(p, "id", 1), p.id);
-
-console.log(Reflect.deleteProperty(p, "x"), p.x);
-
-const frozen = Object.freeze({ a: 1 });
-console.log(Reflect.set(frozen, "a", 2), Reflect.isExtensible(frozen));
-
-const target = { name: "t" };
-const logged = new Proxy(target, {
-  get(t, key, receiver) {
-    console.log("get", String(key));
-    return Reflect.get(t, key, receiver);
+const logged = new Proxy({ x: 1 }, {
+  get(target, key, receiver) {
+    console.log('get', String(key));
+    return Reflect.get(target, key, receiver);
   },
 });
-console.log(logged.name);
+console.log(logged.x);

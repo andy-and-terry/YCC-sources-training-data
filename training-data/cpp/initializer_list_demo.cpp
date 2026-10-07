@@ -1,33 +1,23 @@
-#include <algorithm>
 #include <initializer_list>
 #include <iostream>
 #include <vector>
 
-int maxOf(std::initializer_list<int> values) {
-    return *std::max_element(values.begin(), values.end());
-}
-
-class Polynomial {
-    std::vector<int> coeffs;
-
+class Bag {
+    std::vector<int> items_;
 public:
-    Polynomial(std::initializer_list<int> c) : coeffs(c) {}
-
-    int evaluate(int x) const {
-        int result = 0;
-        for (auto it = coeffs.rbegin(); it != coeffs.rend(); ++it) {
-            result = result * x + *it;
-        }
-        return result;
-    }
+    Bag(std::initializer_list<int> init) : items_(init) {}
+    int sum() const { int s = 0; for (int v : items_) s += v; return s; }
+    std::size_t size() const { return items_.size(); }
 };
 
+int maxOf(std::initializer_list<int> xs) {
+    int m = *xs.begin();
+    for (int x : xs) if (x > m) m = x;
+    return m;
+}
+
 int main() {
-    std::cout << maxOf({3, 9, 4, 1}) << "\n";
-    Polynomial p{1, 2, 3};  // 1 + 2x + 3x^2
-    std::cout << p.evaluate(2) << "\n";
-    std::vector<int> v{5, 6, 7};
-    std::vector<int> sized(5, 1);  // five ones, not {5, 1}
-    std::cout << v.size() << " " << sized.size() << "\n";
-    return 0;
+    Bag b{1, 2, 3, 4, 5};
+    std::cout << b.size() << " items, sum " << b.sum() << "\n";
+    std::cout << maxOf({3, 9, 2, 7}) << "\n";
 }

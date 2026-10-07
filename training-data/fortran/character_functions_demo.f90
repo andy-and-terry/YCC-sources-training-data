@@ -1,24 +1,15 @@
 program character_functions_demo
     implicit none
-    character(len=20) :: text
-    character(len=:), allocatable :: copy
-    integer :: i
+    character(len=20) :: s
+    s = "  Hello, Fortran  "
 
-    text = '  Fortran Strings'
-    print *, '[', trim(text), ']'
-    print *, '[', trim(adjustl(text)), ']'
-    print *, len(text), len_trim(text)
-    print *, index(text, 'Str'), index(text, 'z')
-    print *, scan(text, 'aeiou'), verify(text, ' ')
-    print *, repeat('ab', 3)
-
-    copy = adjustl(text)
-    do i = 1, len_trim(copy)
-        if (copy(i:i) >= 'a' .and. copy(i:i) <= 'z') then
-            copy(i:i) = achar(iachar(copy(i:i)) - 32)
-        end if
-    end do
-    print *, copy
-    print *, lge('b', 'a'), llt('apple', 'banana')
-    print *, ichar('A'), char(98)
+    print '(A, I0)', "len: ", len(s)
+    print '(A, I0)', "len_trim: ", len_trim(s)
+    print '(A, A, A)', "[", trim(adjustl(s)), "]"
+    print '(A, I0)', "index of Fortran: ", index(s, "Fortran")
+    print '(A, I0)', "scan for vowels: ", scan(s, "aeiou")
+    print '(A, I0)', "verify (first non-blank): ", verify(s, " ")
+    print '(A, I0)', "iachar('A'): ", iachar("A")
+    print '(A, A)', "achar(97): ", achar(97)
+    print '(A, L1)', "lexical compare: ", llt("apple", "banana")
 end program character_functions_demo

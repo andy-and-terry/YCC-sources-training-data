@@ -1,11 +1,11 @@
-(require '[clojure.string :as str])
+(def words ["apple" "pear" "apple" "fig" "pear" "apple"])
 
-(def text "the quick brown fox jumps over the lazy dog the end")
+(def freq (frequencies words))
+(println freq)
 
-(def freqs (frequencies (str/split text #"\s+")))
+;; most common first
+(println (sort-by (comp - val) freq))
+(println (key (apply max-key val freq)))
 
-(println freqs)
-(println (get freqs "the"))
-(println (take 3 (sort-by val > freqs)))
+;; frequencies work on any seqable, e.g. characters
 (println (frequencies "mississippi"))
-(println (apply max-key val (frequencies [1 2 2 3 3 3])))

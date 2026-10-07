@@ -1,8 +1,8 @@
-(format t "sum: ~a~%" (reduce #'+ '(1 2 3 4 5)))
-(format t "product: ~a~%" (reduce #'* '(1 2 3 4 5)))
-(format t "with initial value: ~a~%" (reduce #'+ '(1 2 3) :initial-value 100))
-(format t "max: ~a~%" (reduce #'max '(3 9 2 7)))
-(format t "left fold: ~a~%" (reduce #'list '(1 2 3 4)))
-(format t "right fold: ~a~%" (reduce #'list '(1 2 3 4) :from-end t))
-(format t "flatten once: ~a~%" (reduce #'append '((1 2) (3) (4 5))))
-(format t "by key: ~a~%" (reduce #'+ '((1 a) (2 b) (3 c)) :key #'first))
+(print (reduce #'+ '(1 2 3 4 5)))
+(print (reduce #'max '(3 9 2 7)))
+(print (reduce #'+ '() :initial-value 0))
+(print (reduce #'list '(1 2 3 4)))                    ; left fold
+(print (reduce #'list '(1 2 3 4) :from-end t))        ; right fold
+(print (reduce (lambda (acc x) (+ (* acc 10) x)) '(1 2 3) :initial-value 0))
+(print (reduce #'+ '((1 2) (3 4)) :key #'car))
+(terpri)

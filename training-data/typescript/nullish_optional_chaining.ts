@@ -1,36 +1,26 @@
-interface Settings {
-  theme?: { color?: string; fontSize?: number };
+interface Config {
+  server?: {
+    port?: number;
+    host?: string;
+    tls?: { enabled: boolean };
+  };
   retries?: number;
-  onSave?: (name: string) => string;
-  tags?: string[];
 }
 
-function describe(s: Settings): string {
-  const color = s.theme?.color ?? "blue";
-  const size = s.theme?.fontSize ?? 12;
-  const retries = s.retries ?? 3;
-  const saved = s.onSave?.("doc") ?? "no handler";
-  const firstTag = s.tags?.[0] ?? "untagged";
-  return `${color}/${size}/${retries}/${saved}/${firstTag}`;
+const a: Config = {};
+const b: Config = { server: { port: 0, tls: { enabled: false } }, retries: 0 };
+
+for (const cfg of [a, b]) {
+  const port = cfg.server?.port ?? 8080;       // 0 is kept, undefined falls back
+  const portOr = cfg.server?.port || 8080;     // || also replaces 0
+  const tls = cfg.server?.tls?.enabled ?? true;
+  console.log({ port, portOr, tls, retries: cfg.retries ?? 3 });
 }
 
-console.log(describe({}));
-console.log(describe({ theme: { color: "red", fontSize: 0 }, retries: 0 }));
-console.log(describe({ onSave: (n) => `saved ${n}`, tags: ["x"] }));
+let counter: number | undefined;
+counter ??= 10;
+counter ||= 20;
+console.log(counter);
 
-// || treats 0 and "" as missing, ?? only treats null/undefined as missing
-const zero = 0;
-console.log(zero || 10, zero ?? 10);
-const empty = "";
-console.log(empty || "fallback", empty ?? "fallback");
-
-let cache: Record<string, number> | undefined;
-cache ??= {};
-cache.hits ??= 0;
-cache.hits += 1;
-console.log(cache);
-
-let flag: boolean | null = null;
-flag ||= true;
-flag &&= false;
-console.log(flag);
+const fn = (Math.random() > 2 ? () => "called" : undefined) as (() => string) | undefined;
+console.log(fn?.() ?? "no function");

@@ -1,4 +1,4 @@
-module CharClassification exposing (classify, countDigits, isVowel)
+module CharClassification exposing (classify)
 
 
 classify : Char -> String
@@ -17,16 +17,3 @@ classify c =
 
     else
         "other"
-
-
-isVowel : Char -> Bool
-isVowel c =
-    List.member (Char.toLower c) [ 'a', 'e', 'i', 'o', 'u' ]
-
-
-countDigits : String -> Int
-countDigits text =
-    text
-        |> String.toList
-        |> List.filter Char.isDigit
-        |> List.length

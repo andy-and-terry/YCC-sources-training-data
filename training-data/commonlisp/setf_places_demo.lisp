@@ -1,0 +1,21 @@
+(defparameter *lst* (list 1 2 3))
+(defparameter *tbl* (make-hash-table))
+(defparameter *n* 10)
+
+(setf (first *lst*) 100)
+(setf (nth 2 *lst*) 300)
+(incf *n* 5)
+(decf *n*)
+(push 0 *lst*)
+(setf (gethash :a *tbl*) 1)
+(incf (gethash :a *tbl*) 10)
+(incf (gethash :b *tbl* 0))
+
+(print *lst*)
+(print *n*)
+(print (list (gethash :a *tbl*) (gethash :b *tbl*)))
+
+(let ((a 1) (b 2))
+  (rotatef a b)
+  (print (list a b)))
+(terpri)

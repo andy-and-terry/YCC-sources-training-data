@@ -1,20 +1,14 @@
 #import <Foundation/Foundation.h>
 
-int main(int argc, const char *argv[]) {
+int main(void) {
     @autoreleasepool {
-        NSArray<NSString *> *words = @[ @"apple", @"banana", @"avocado", @"cherry", @"apricot" ];
-
-        NSPredicate *startsWithA = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"a"];
-        NSLog(@"%@", [words filteredArrayUsingPredicate:startsWithA]);
-
-        NSPredicate *longWords = [NSPredicate predicateWithBlock:^BOOL(NSString *w, NSDictionary *bindings) {
-            return w.length > 6;
+        NSArray<NSString *> *words = @[ @"apple", @"banana", @"avocado", @"cherry" ];
+        NSPredicate *p = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", @"a"];
+        NSLog(@"%@", [words filteredArrayUsingPredicate:p]);
+        NSPredicate *len = [NSPredicate predicateWithBlock:^BOOL(NSString *s, NSDictionary *b) {
+            return s.length > 5;
         }];
-        NSLog(@"%@", [words filteredArrayUsingPredicate:longWords]);
-
-        NSArray *numbers = @[ @3, @8, @12, @5 ];
-        NSPredicate *big = [NSPredicate predicateWithFormat:@"SELF > %d", 4];
-        NSLog(@"%@", [numbers filteredArrayUsingPredicate:big]);
+        NSLog(@"%@", [words filteredArrayUsingPredicate:len]);
     }
     return 0;
 }

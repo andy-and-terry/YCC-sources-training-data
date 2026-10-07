@@ -1,21 +1,14 @@
-#!/usr/bin/perl
 use strict;
 use warnings;
 
-my %by_letter;
-for my $word (qw(apple avocado banana blueberry cherry apricot)) {
-    push @{ $by_letter{ substr($word, 0, 1) } }, $word;
+my %by_length;
+push @{ $by_length{length $_} }, $_ for qw(a to be sea tree fox bird);
+
+for my $len (sort { $a <=> $b } keys %by_length) {
+    printf "%d: %s\n", $len, join(", ", @{ $by_length{$len} });
 }
 
-for my $letter (sort keys %by_letter) {
-    my @words = @{ $by_letter{$letter} };
-    printf "%s (%d): %s\n", $letter, scalar @words, join(", ", @words);
-}
-
-push @{ $by_letter{d} }, 'date';
-print "exists d: ", (exists $by_letter{d} ? "yes" : "no"), "\n";
-print "first a-word: $by_letter{a}[0]\n";
-print "last b-word: $by_letter{b}->[-1]\n";
-
-delete $by_letter{c};
-print "keys: ", join(",", sort keys %by_letter), "\n";
+# Nested autovivification
+my %tree;
+$tree{fruit}{apple}{color} = 'red';
+print join(",", sort keys %{ $tree{fruit} }), "\n";
