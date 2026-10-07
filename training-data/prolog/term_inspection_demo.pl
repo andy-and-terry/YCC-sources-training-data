@@ -10,5 +10,4 @@
    ( compound(f(x)) -> writeln(compound) ; true ),
    ( var(_) -> writeln(var) ; true ),
    ( is_list([a]) -> writeln(list) ; true ).
-:- setarg(1, f(a, b), z) -> true ; true.
 :- T = f(a, b), setarg(1, T, z), writeln(T).

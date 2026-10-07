@@ -2,8 +2,8 @@ int sum_all(int first, ...) {
     var args = va_list();
     int total = first;
     while (true) {
-        int? next = args.arg();
-        if (next == null || next == 0) {
+        int next = args.arg();
+        if (next == 0) {
             break;
         }
         total += next;

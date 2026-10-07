@@ -12,6 +12,5 @@ set front [lindex $queue 0]
 set queue [lrange $queue 1 end]
 puts "dequeue: $front, rest: $queue"
 
-puts "$first $rest"
 puts [llength {a {b c} d}]
 puts [lsearch -all {a b a c a} a]
