@@ -1,0 +1,31 @@
+;; Closures with private mutable state and message passing.
+
+(define (make-account balance)
+  (define (withdraw amount)
+    (if (>= balance amount)
+        (begin (set! balance (- balance amount)) balance)
+        "Insufficient funds"))
+  (define (deposit amount)
+    (set! balance (+ balance amount))
+    balance)
+  (define (dispatch msg)
+    (cond ((eq? msg 'withdraw) withdraw)
+          ((eq? msg 'deposit) deposit)
+          ((eq? msg 'balance) balance)
+          (else (error "Unknown request" msg))))
+  dispatch)
+
+(define acc (make-account 100))
+(display ((acc 'withdraw) 30)) (newline)
+(display ((acc 'deposit) 50)) (newline)
+(display ((acc 'withdraw) 500)) (newline)
+(display (acc 'balance)) (newline)
+
+(define (make-counter)
+  (let ((n 0))
+    (lambda () (set! n (+ n 1)) n)))
+
+(define c1 (make-counter))
+(define c2 (make-counter))
+(c1) (c1)
+(display (list (c1) (c2))) (newline)

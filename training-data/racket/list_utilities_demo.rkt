@@ -1,0 +1,22 @@
+#lang racket
+
+(define xs '(5 3 8 3 1 8 9))
+
+(displayln (take xs 3))
+(displayln (drop xs 5))
+(displayln (call-with-values (lambda () (split-at xs 2)) list))
+(displayln (remove-duplicates xs))
+(displayln (remove 3 xs))
+(displayln (index-of xs 8))
+(displayln (take-right xs 2))
+(displayln (list-tail xs 4))
+(displayln (add-between '(a b c) '-))
+(displayln (append-map (lambda (x) (list x x)) '(1 2)))
+(displayln (check-duplicates xs))
+(displayln (flatten '(1 (2 (3 4)) 5)))
+(displayln (range 0 10 3))
+(displayln (last xs))
+(displayln (count even? xs))
+(displayln (argmax identity xs))
+(displayln (list-set xs 0 'first))
+(displayln (remove-duplicates (sort xs <)))

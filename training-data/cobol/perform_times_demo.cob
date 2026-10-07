@@ -1,0 +1,21 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFORM-TIMES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 COUNTER     PIC 9(3) VALUE 0.
+       01 REPEATS     PIC 9(2) VALUE 4.
+
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM 3 TIMES
+               DISPLAY "HELLO"
+           END-PERFORM
+           PERFORM REPEATS TIMES
+               ADD 10 TO COUNTER
+           END-PERFORM
+           PERFORM SHOW-COUNTER 2 TIMES
+           STOP RUN.
+
+       SHOW-COUNTER.
+           DISPLAY "COUNTER: " COUNTER
+           ADD 1 TO COUNTER.

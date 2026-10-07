@@ -1,0 +1,21 @@
+extends Node
+
+func _ready():
+	print("Hello, %s!" % "world")
+	print("%d + %d = %d" % [2, 3, 5])
+	print("%.2f" % 3.14159)
+	print("%05d|%-5d|%5d" % [42, 42, 42])
+	print("%x %X %o" % [255, 255, 8])
+	print("{name} is {age}".format({"name": "Ada", "age": 36}))
+	print("a,b,c".split(","))
+	print(",".join(PackedStringArray(["x", "y"])))
+	print("Hello".to_upper(), " ", "Hello".to_lower())
+	print("  trim  ".strip_edges() + "|")
+	print("7".pad_zeros(3))
+	print("hello world".capitalize())
+	print("snake_case_name".to_pascal_case())
+	print("hello".substr(1, 3), " ", "hello".find("l"), " ", "hello".rfind("l"))
+	print("a-b-c".replace("-", "+"))
+	print("racecar".length())
+	print("abc".begins_with("ab"), " ", "abc".ends_with("bc"), " ", "abc".contains("b"))
+	print(str(1) + str(2.5) + str(true))

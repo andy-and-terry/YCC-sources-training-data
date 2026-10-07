@@ -1,0 +1,13 @@
+cat(sprintf("%5.2f|%-8s|%05d\n", 3.14159, "left", 42L))
+cat(sprintf("%e %g %x %o %%\n", 12345.678, 0.0001234, 255L, 8L))
+cat(sprintf("%s has %d items\n", c("cart", "bag"), c(3L, 5L)), sep = "")
+cat(sprintf("%*d\n", 6, 42L))
+cat(sprintf("%2$s %1$s\n", "world", "hello"))
+
+cat(format(1234567.891, big.mark = ",", nsmall = 2), "\n")
+cat(format(0.000123, scientific = TRUE), "\n")
+cat(format(c("a", "bbb"), width = 5), "|\n")
+cat(formatC(3.14159, digits = 3, format = "f", width = 10), "\n")
+cat(formatC(c(1, 10, 100), width = 6, flag = "0"), "\n")
+cat(format(Sys.Date(), "%Y") >= "2024", "\n")
+cat(toupper(letters[1:3]), nchar("hello"), substr("abcdef", 2, 4), "\n")

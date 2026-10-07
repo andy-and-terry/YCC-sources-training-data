@@ -1,0 +1,17 @@
+text = "héllo wörld"
+
+IO.inspect(String.length(text))
+IO.inspect(byte_size(text))
+IO.inspect(String.graphemes("noël"))
+IO.inspect(String.codepoints("noël"))
+IO.inspect(String.upcase(text))
+IO.inspect(String.slice(text, 1..4))
+IO.inspect(String.at(text, -1))
+IO.inspect(String.reverse(text))
+IO.inspect(String.split(text, " ", trim: true))
+IO.inspect(String.replace(text, ~r/[aeiouéö]/u, "*"))
+IO.inspect(String.pad_leading("7", 3, "0"))
+IO.inspect(String.starts_with?(text, ["he", "hé"]))
+IO.inspect(String.capitalize("elixir lang"))
+IO.inspect(String.trim("  padded \n"))
+IO.inspect(String.to_integer("42") + 1)

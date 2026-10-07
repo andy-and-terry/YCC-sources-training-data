@@ -1,0 +1,17 @@
+nums = Enum.to_list(1..10)
+
+IO.inspect(Enum.chunk_every(nums, 3))
+IO.inspect(Enum.chunk_every(nums, 3, 3, :discard))
+IO.inspect(Enum.chunk_every(nums, 4, 2, :discard))
+
+IO.inspect(Enum.zip([1, 2, 3], [:a, :b, :c]))
+{letters, numbers} = Enum.unzip([a: 1, b: 2, c: 3])
+IO.inspect({letters, numbers})
+
+IO.inspect(Enum.with_index(["x", "y", "z"], 1))
+IO.inspect(Enum.scan(nums, &+/2))
+IO.inspect(Enum.split_while(nums, &(&1 < 4)))
+IO.inspect(Enum.group_by(nums, &rem(&1, 3)))
+IO.inspect(Enum.frequencies_by(~w(apple avocado banana blueberry cherry), &String.first/1))
+IO.inspect(Enum.min_max(nums))
+IO.inspect(Enum.dedup([1, 1, 2, 2, 2, 3, 1]))
