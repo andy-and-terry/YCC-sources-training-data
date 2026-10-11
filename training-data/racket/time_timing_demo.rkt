@@ -1,4 +1,5 @@
 #lang racket
+(require racket/date)
 
 (define (slow-sum n) (for/sum ([i (in-range n)]) i))
 

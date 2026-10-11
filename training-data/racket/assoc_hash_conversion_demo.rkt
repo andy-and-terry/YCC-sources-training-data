@@ -1,4 +1,5 @@
 #lang racket
+(require racket/hash)
 
 (define al '((a . 1) (b . 2) (c . 3)))
 (define h (make-immutable-hash al))
@@ -9,7 +10,6 @@
 (define h2 (hash-union h (hash 'd 4 'a 100) #:combine +))
 (displayln (hash-ref h2 'a))
 (displayln (hash-count h2))
-(displayln (hash-keys (hash-filter h (lambda (k v) (> v 1)))))
 (displayln (sort (hash-keys (hash-map/copy h (lambda (k v) (values k (* v v))))) symbol<?))
 (displayln (hash-ref (hash-remove h 'a) 'a #f))
 (displayln (hash-ref (hash-update h 'a add1) 'a))

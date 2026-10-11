@@ -8,7 +8,7 @@ pig_word(Word, Pig) :-
     atom_chars(Word, Chars),
     append(Consonants, [V|Rest], Chars),
     Consonants \== [],
-    maplist(\=(V), []), vowel(V),
+    vowel(V),
     \+ ( member(C, Consonants), vowel(C) ), !,
     append([V|Rest], Consonants, Moved),
     append(Moved, [a, y], PigChars),

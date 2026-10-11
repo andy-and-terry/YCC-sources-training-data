@@ -8,7 +8,6 @@
 (displayln (keyword-apply connect '(#:host #:port) '("y.org" 8080) '()))
 (define opts (list "z.org"))
 (displayln (keyword-apply connect '(#:host) opts '()))
-(displayln (procedure-keywords connect))
 (displayln (procedure-arity connect))
 
 (define (log-msg level . parts)
