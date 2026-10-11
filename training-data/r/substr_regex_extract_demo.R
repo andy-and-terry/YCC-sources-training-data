@@ -1,0 +1,16 @@
+s <- "R is fun, R is fast"
+print(substr(s, 1, 4))
+substr(s, 1, 1) <- "Z"
+print(s)
+print(substring("abcdef", 1:3, 3:5))
+print(regexpr("is", s))
+print(gregexpr("is", s)[[1]][1:2])
+print(sub("(\\w+) (\\w+)", "\\2 \\1", "hello world"))
+print(gsub("[aeiou]", "", "education"))
+print(regmatches("a1b22c333", gregexpr("[0-9]+", "a1b22c333"))[[1]])
+print(grepl("^R", c("Rx", "xR")))
+print(grep("a", c("cat", "dog", "bat"), value = TRUE))
+print(sprintf("%5.1f%%", 45.678))
+print(startsWith("foobar", "foo"))
+print(endsWith("foobar", "bar"))
+print(casefold("ABC", upper = FALSE))

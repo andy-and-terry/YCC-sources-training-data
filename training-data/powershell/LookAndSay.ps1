@@ -1,7 +1,7 @@
 function Get-NextTerm {
     param([string]$Term)
-    $matches = [regex]::Matches($Term, '(\d)\1*')
-    ($matches | ForEach-Object { "$($_.Length)$($_.Value[0])" }) -join ''
+    $runs = [regex]::Matches($Term, '(\d)\1*')
+    ($runs | ForEach-Object { "$($_.Length)$($_.Value[0])" }) -join ''
 }
 
 $term = '1'
