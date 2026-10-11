@@ -1,0 +1,18 @@
+#lang racket
+
+(displayln (string-trim "   padded  "))
+(displayln (string-trim "xxhixx" "x"))
+(displayln (string-trim "  both  " #:left? #f))
+(displayln (string-normalize-spaces "  too    many   spaces "))
+(displayln (string-replace "a-b-c" "-" "+"))
+(displayln (string-replace "a-b-c" "-" "+" #:all? #f))
+(displayln (string-prefix? "racket" "rac"))
+(displayln (string-suffix? "racket" "ket"))
+(displayln (string-contains? "racket" "ck"))
+(displayln (string-split "a,b,,c" ","))
+(displayln (string-split "  a  b  "))
+(displayln (string-split "a,b,,c" "," #:trim? #f))
+(displayln (substring "abcdef" 2 4))
+(displayln (string-titlecase "hello big world"))
+(displayln (list->string (reverse (string->list "abc"))))
+(displayln (non-empty-string? ""))

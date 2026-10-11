@@ -1,0 +1,13 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SUMONETON.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 I      PIC 9(4).
+       01 TOTAL  PIC 9(8) VALUE 0.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 100
+               ADD I TO TOTAL
+           END-PERFORM
+           DISPLAY "Sum 1..100 = " TOTAL
+           STOP RUN.

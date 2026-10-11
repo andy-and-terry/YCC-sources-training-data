@@ -1,5 +1,8 @@
-% Gnome sort over a list: walk a zipper, stepping back after each swap.
-gnome_sort(List, Sorted) :- gnome([], List, Sorted).
+% Gnome sort with a zipper: Done holds the sorted prefix in reverse order.
+% When the next element is smaller than the head of Done, step back.
+gnome_sort(List, Sorted) :-
+    gnome([], List, Rev),
+    reverse(Rev, Sorted).
 
 gnome(Done, [], Done).
 gnome([], [X|Xs], Sorted) :- gnome([X], Xs, Sorted).
@@ -9,15 +12,5 @@ gnome([P|Ps], [X|Xs], Sorted) :-
     ;   gnome(Ps, [X,P|Xs], Sorted)
     ).
 
-% Done is kept in reverse order, so reverse it at the end.
-sort_list(L, S) :- gnome_rev([], L, R), reverse(R, S).
-gnome_rev(Done, [], Done).
-gnome_rev([], [X|Xs], S) :- gnome_rev([X], Xs, S).
-gnome_rev([P|Ps], [X|Xs], S) :-
-    (   P =< X
-    ->  gnome_rev([X,P|Ps], Xs, S)
-    ;   gnome_rev(Ps, [X,P|Xs], S)
-    ).
-
-:- sort_list([5, 2, 9, 1, 5, 6], S), writeln(S).
-:- sort_list([], S), writeln(S).
+:- gnome_sort([5, 2, 9, 1, 5, 6], S), writeln(S).
+:- gnome_sort([], S), writeln(S).

@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. STRTRIM.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 RAW      PIC X(20) VALUE "   padded text   ".
+       01 CLEAN    PIC X(20).
+       01 TRIMMED-LEN PIC 99.
+
+       PROCEDURE DIVISION.
+           DISPLAY "[" RAW "]"
+           MOVE FUNCTION TRIM(RAW) TO CLEAN
+           DISPLAY "[" CLEAN "]"
+           DISPLAY "[" FUNCTION TRIM(RAW, LEADING) "]"
+           DISPLAY "[" FUNCTION TRIM(RAW, TRAILING) "]"
+           COMPUTE TRIMMED-LEN = FUNCTION LENGTH(FUNCTION TRIM(RAW))
+           DISPLAY "length trimmed: " TRIMMED-LEN
+           STOP RUN.

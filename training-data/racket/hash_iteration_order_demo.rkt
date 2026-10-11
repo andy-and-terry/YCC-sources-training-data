@@ -1,0 +1,22 @@
+#lang racket
+
+(define h (make-hash '((b . 2) (a . 1) (c . 3))))
+;; iteration order of mutable hashes is unspecified; sort keys
+(define keys (sort (hash-keys h) symbol<?))
+(displayln keys)
+(for ([k (in-list keys)])
+  (printf "~a -> ~a\n" k (hash-ref h k)))
+(displayln (sort (hash->list h) < #:key cdr))
+(displayln (hash-count h))
+(hash-remove! h 'a)
+(displayln (hash-has-key? h 'a))
+(displayln (hash-ref h 'zzz (lambda () 'default)))
+(displayln (hash-ref h 'zzz 0))
+(define im (hash 'x 1 'y 2))
+(define im2 (hash-set im 'z 3))
+(displayln (hash-count im))
+(displayln (hash-count im2))
+(displayln (for/hash ([(k v) (in-hash im2)]) (values v k)))
+(displayln (hash-map im2 (lambda (k v) v) #t))
+(displayln (hash-values (hash 'only 1)))
+(displayln (equal? (hash 'a 1) (hash 'a 1)))

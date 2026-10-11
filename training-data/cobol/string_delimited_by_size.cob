@@ -1,0 +1,16 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. STRDELIM.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 FIRST-NAME  PIC X(10) VALUE "Grace".
+       01 LAST-NAME   PIC X(10) VALUE "Hopper".
+       01 FULL-NAME   PIC X(25) VALUE SPACES.
+
+       PROCEDURE DIVISION.
+           STRING FIRST-NAME DELIMITED BY SPACE
+                  " " DELIMITED BY SIZE
+                  LAST-NAME DELIMITED BY SPACE
+                  INTO FULL-NAME
+           END-STRING
+           DISPLAY "[" FULL-NAME "]"
+           STOP RUN.
