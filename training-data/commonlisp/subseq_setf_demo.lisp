@@ -1,0 +1,11 @@
+(let ((s (copy-seq "hello world")))
+  (setf (subseq s 0 5) "HELLO")
+  (format t "~a~%" s)
+  (replace s "WORLD" :start1 6)
+  (format t "~a~%" s)
+  (format t "~a~%" (subseq s 3))
+  (format t "~a~%" (subseq s 3 8)))
+
+(let ((v (vector 1 2 3 4 5)))
+  (setf (subseq v 1 3) #(20 30))
+  (format t "~a~%" v))

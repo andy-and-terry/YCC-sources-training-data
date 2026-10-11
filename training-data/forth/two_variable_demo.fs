@@ -1,0 +1,13 @@
+2VARIABLE POINT
+
+: SET-POINT ( x y -- ) POINT 2! ;
+: GET-POINT ( -- x y ) POINT 2@ ;
+
+3 4 SET-POINT
+GET-POINT . . CR
+
+: DIST-SQ ( -- n ) GET-POINT DUP * SWAP DUP * + ;
+DIST-SQ . CR
+
+10 20 SET-POINT
+GET-POINT SWAP . . CR

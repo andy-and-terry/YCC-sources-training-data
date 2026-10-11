@@ -1,0 +1,6 @@
+IO.inspect(for {k, v} <- %{a: 1, b: 2}, into: %{}, do: {v, k})
+IO.inspect(for <<c <- "hello">>, c in ?a..?l, do: <<c>>)
+IO.inspect(for x <- 1..5, rem(x, 2) == 1, reduce: 0, do: (acc -> acc + x))
+IO.inspect(for x <- [1, 2], y <- [:a, :b], do: {x, y})
+IO.inspect(for x <- 1..3, into: "", do: Integer.to_string(x))
+IO.inspect(for {:ok, v} <- [{:ok, 1}, :error, {:ok, 3}], do: v)

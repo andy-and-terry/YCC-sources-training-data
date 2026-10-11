@@ -1,0 +1,10 @@
+HEX
+CREATE DATA 48 C, 65 C, 6C C, 6C C, 6F C, 0A C, FF C, 00 C,
+DECIMAL
+
+: HEX2 ( c -- ) BASE @ >R HEX 0 <# # # #> TYPE R> BASE ! ;
+
+: DUMP-ROW ( addr n -- )
+  0 DO DUP I + C@ HEX2 SPACE LOOP DROP CR ;
+
+DATA 8 DUMP-ROW

@@ -1,0 +1,18 @@
+| d words inverted |
+d := Dictionary new.
+words := #('red' 'blue' 'red' 'green' 'blue' 'red').
+words do: [ :w | d at: w put: (d at: w ifAbsent: [ 0 ]) + 1 ].
+(d keys asSortedCollection) do: [ :k |
+    Transcript showCr: k, ' -> ', (d at: k) printString ].
+
+Transcript showCr: (d at: 'pink' ifAbsentPut: [ 0 ]) printString.
+Transcript showCr: d size printString.
+Transcript showCr: (d removeKey: 'pink') printString.
+Transcript showCr: (d includesKey: 'pink') printString.
+Transcript showCr: (d keyAtValue: 3) printString.
+Transcript showCr: (d select: [ :v | v > 1 ]) size printString.
+Transcript showCr: (d inject: 0 into: [ :a :v | a + v ]) printString.
+
+inverted := Dictionary new.
+d keysAndValuesDo: [ :k :v | inverted at: v put: k ].
+Transcript showCr: (inverted at: 2) printString.

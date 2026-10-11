@@ -1,0 +1,7 @@
+(println (* 99999999999N 99999999999N))
+(println (+ 0.1M 0.2M))
+(println (+ 0.1 0.2))
+(println (/ 1 3))
+(println (double (/ 1 3)))
+(println (bigint 12345678901234567890))
+(println (with-precision 10 (/ 1M 3)))

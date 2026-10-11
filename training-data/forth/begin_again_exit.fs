@@ -1,0 +1,9 @@
+\ BEGIN ... AGAIN loops forever, so leave with EXIT
+: FIRST-SQUARE-OVER ( n -- sq )
+  0 BEGIN
+    1+
+    2DUP DUP * < IF NIP DUP * EXIT THEN
+  AGAIN ;
+
+100 FIRST-SQUARE-OVER . CR
+1000 FIRST-SQUARE-OVER . CR

@@ -1,0 +1,5 @@
+(println (int \a) (char 100))
+(println (map int "ABC"))
+(println (apply str (map #(char (+ (int %) 1)) "HAL")))
+(println (Character/isDigit \7) (Character/isLetter \7))
+(println (- (int \z) (int \a)))

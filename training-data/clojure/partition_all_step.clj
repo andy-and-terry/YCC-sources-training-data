@@ -1,0 +1,5 @@
+(println (partition 3 (range 10)))
+(println (partition-all 3 (range 10)))
+(println (partition 3 1 (range 6)))
+(println (partition 3 3 [:pad] (range 10)))
+(println (map #(apply + %) (partition 2 1 [1 2 4 7 11])))

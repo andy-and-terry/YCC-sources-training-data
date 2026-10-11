@@ -1,0 +1,20 @@
+#lang racket
+
+(require racket/mpair)
+
+(define p (mcons 1 2))
+(displayln (mcar p))
+(set-mcar! p 10)
+(set-mcdr! p 20)
+(displayln p)
+(define ml (mlist 1 2 3))
+(displayln ml)
+(displayln (mlist->list ml))
+(set-mcar! (mcdr ml) 'two)
+(displayln (mlist->list ml))
+(displayln (mpair? p))
+(displayln (pair? p))
+(displayln (list->mlist '(a b)))
+(define imm (cons 1 2))
+(displayln (immutable? (vector-immutable 1 2)))
+(displayln (pair? imm))

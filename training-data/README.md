@@ -1846,3 +1846,10 @@ Each subdirectory groups files by language category (`cat`) for easy filtering d
 > Racket, Scala, Scheme, Smalltalk, SML, Solidity, Swift, Tcl, Vala, VBA,
 > Verilog, VHDL, WebAssembly, Zig) was proofread by hand only and may
 > contain compile errors.
+
+> **Scheduled batch (custom_coding run):** roughly 40 new single-concept
+> files were added to each of the 60 language folders (about 2,450 total).
+> Only languages with a toolchain in the sandbox were checked (e.g. bash,
+> c, clojure, cobol, cpp, go, java, javascript, nix, perl, php, prolog,
+> python, ruby, rust, typescript, vimscript, assembly, awk); the rest are
+> unverified hand-written code. The 500-per-folder target was not reached.
