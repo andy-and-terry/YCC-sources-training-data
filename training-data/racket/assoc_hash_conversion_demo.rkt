@@ -1,0 +1,18 @@
+#lang racket
+
+(define al '((a . 1) (b . 2) (c . 3)))
+(define h (make-immutable-hash al))
+(displayln (hash-ref h 'b))
+(displayln (sort (hash->list h) symbol<? #:key car))
+(displayln (for/hash ([p (in-list al)]) (values (cdr p) (car p))))
+(displayln (for/list ([(k v) (in-hash h)] #:when (odd? v)) k))
+(define h2 (hash-union h (hash 'd 4 'a 100) #:combine +))
+(displayln (hash-ref h2 'a))
+(displayln (hash-count h2))
+(displayln (hash-keys (hash-filter h (lambda (k v) (> v 1)))))
+(displayln (sort (hash-keys (hash-map/copy h (lambda (k v) (values k (* v v))))) symbol<?))
+(displayln (hash-ref (hash-remove h 'a) 'a #f))
+(displayln (hash-ref (hash-update h 'a add1) 'a))
+(displayln (hash-ref (hash-update h 'z add1 0) 'z))
+(displayln (hash-empty? (hash)))
+(displayln (hash-eq? (hasheq)))

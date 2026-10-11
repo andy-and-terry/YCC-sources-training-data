@@ -1,0 +1,22 @@
+#lang racket
+
+(define dir (make-temporary-file "demo~a" 'directory))
+(define f (build-path dir "notes.txt"))
+(displayln (path? f))
+(displayln (file-exists? f))
+
+(with-output-to-file f (lambda () (displayln "line one") (displayln "line two")))
+(displayln (file-exists? f))
+(displayln (file->lines f))
+(displayln (file-size f))
+(call-with-output-file f #:exists 'append (lambda (o) (fprintf o "line ~a\n" 3)))
+(displayln (length (file->lines f)))
+(displayln (path->string (file-name-from-path f)))
+(displayln (map path->string (directory-list dir)))
+(displayln (path-has-extension? f ".txt"))
+(displayln (path->string (path-replace-extension f #".md")))
+(display-to-file "replaced" f #:exists 'truncate)
+(displayln (file->string f))
+(delete-file f)
+(delete-directory dir)
+(displayln (directory-exists? dir))
