@@ -1,0 +1,5 @@
+(println (map #(* % %) [1 2 3]))
+(println (map #(+ %1 %2) [1 2 3] [10 20 30]))
+(println ((fn [& args] (count args)) 1 2 3))
+(println (#(apply + %&) 1 2 3 4))
+(println (map #(vector % (inc %)) [1 2]))

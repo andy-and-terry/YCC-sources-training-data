@@ -1,0 +1,6 @@
+(println (range 5))
+(println (range 2 10 3))
+(println (range 10 0 -3))
+(println (range 0 1 0.25))
+(println (count (range 1000000)))
+(println (reduce + (range 101)))

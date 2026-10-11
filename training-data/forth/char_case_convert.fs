@@ -1,0 +1,7 @@
+: UPPER-CHAR ( c -- C ) DUP [CHAR] a [CHAR] z 1+ WITHIN IF 32 - THEN ;
+: LOWER-CHAR ( C -- c ) DUP [CHAR] A [CHAR] Z 1+ WITHIN IF 32 + THEN ;
+
+: MAP-STR ( addr u xt -- ) >R 0 ?DO DUP I + C@ R@ EXECUTE EMIT LOOP R> 2DROP ;
+
+S" Hello, World 123" ' UPPER-CHAR MAP-STR CR
+S" Hello, World 123" ' LOWER-CHAR MAP-STR CR

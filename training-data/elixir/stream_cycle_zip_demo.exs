@@ -1,0 +1,7 @@
+IO.inspect(Stream.cycle([:a, :b, :c]) |> Enum.take(7))
+IO.inspect(Stream.zip(1..3, Stream.cycle([:x, :y])) |> Enum.to_list())
+IO.inspect(Stream.repeatedly(fn -> 1 end) |> Enum.take(3))
+IO.inspect(Stream.concat([1, 2], [3]) |> Enum.to_list())
+IO.inspect(Stream.take_while(1..100, &(&1 < 5)) |> Enum.to_list())
+IO.inspect(Stream.flat_map([1, 2], &[&1, &1 * 10]) |> Enum.to_list())
+IO.inspect(Stream.with_index(["a", "b"]) |> Enum.to_list())

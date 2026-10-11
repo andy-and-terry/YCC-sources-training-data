@@ -1,0 +1,5 @@
+(println (take 7 (cycle [:a :b :c])))
+(println (take 3 (repeat "x")))
+(println (repeat 3 [0 0]))
+(println (take 5 (iterate #(* 2 %) 1)))
+(println (apply str (take 10 (cycle "ab"))))

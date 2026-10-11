@@ -1,0 +1,5 @@
+: REPEAT-STR ( addr u n -- ) 0 ?DO 2DUP TYPE LOOP 2DROP ;
+
+S" ab" 4 REPEAT-STR CR
+S" -" 20 REPEAT-STR CR
+S" =+" 5 REPEAT-STR CR
