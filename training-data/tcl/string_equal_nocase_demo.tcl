@@ -1,0 +1,7 @@
+puts [string equal "Tcl" "tcl"]
+puts [string equal -nocase "Tcl" "tcl"]
+puts [string compare "apple" "banana"]
+puts [string compare -nocase "ABC" "abc"]
+puts [string equal -length 3 "foobar" "foobaz"]
+puts [string match -nocase "H*O" "hello"]
+puts [string match {[a-c]?z} "bxz"]
