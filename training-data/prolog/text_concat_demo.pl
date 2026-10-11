@@ -5,6 +5,5 @@
 :- atomic_list_concat([a, 1, "b", 2.5], R), writeln(R).
 :- atomic_list_concat([x, y, z], '-', R), writeln(R).
 :- atomic_list_concat(Parts, ',', 'one,two,three'), writeln(Parts).
-:- atomic_concat_demo = atomic_concat_demo, atom_string(A, "from string"), writeln(A).
-:- text_concat(abc, "def", R), ( atom(R) -> writeln(atom(R)) ; writeln(string(R)) ).
+:- atom_string(A, "from string"), writeln(A).
 :- sub_string("hello world", 6, 5, _, Sub), writeln(Sub).

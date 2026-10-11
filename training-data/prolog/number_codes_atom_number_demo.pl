@@ -6,5 +6,5 @@
 :- number_codes(456, Codes), atom_codes(A, Codes), atom_length(A, Len), writeln(A-Len).
 :- atom_to_term('foo(X, Y, X)', T, Bindings), writeln(T-Bindings).
 :- catch(atom_length(123456, L), _, L = error), writeln(L).
-:- number_string(N, "  77 "), writeln(N).
+:- number_string(N, "77"), writeln(N).
 :- term_string(T, "point(1, 2)"), arg(1, T, X), writeln(X).

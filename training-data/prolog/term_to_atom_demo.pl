@@ -4,6 +4,6 @@
 :- with_output_to(string(S), print(point{x: 1})), writeln(S).
 :- format(atom(A), "~q", ['Hello World']), writeln(A).
 :- format(atom(A), "~w", ['Hello World']), writeln(A).
-:- sformat_demo = sformat_demo, format(string(S), "~a-~d", [id, 7]), writeln(S).
+:- format(string(S), "~a-~d", [id, 7]), writeln(S).
 :- with_output_to(atom(A), (write(a), write(' '), write(b))), writeln(A).
 :- writeq('it''s'), nl, print([1, 'A b', "str"]), nl.
