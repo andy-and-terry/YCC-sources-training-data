@@ -1,0 +1,17 @@
+df <- data.frame(score = c(90, 85, 70), row.names = c("ann", "bob", "cy"))
+print(df)
+print(df["bob", "score"])
+df$name <- rownames(df)
+rownames(df) <- NULL
+print(df)
+print(df[, c("name", "score")])
+print(t(df))
+print(as.list(df[1, ]))
+print(lapply(split(df, df$score > 80), function(d) d$name))
+print(colnames(df)); colnames(df)[2] <- "pts"
+print(df)
+df[["grade"]] <- cut(df$pts, c(0, 80, 100), labels = c("B", "A"))
+print(df)
+print(str(df))
+print(transform(df, pts2 = pts * 2))
+print(within(df, { bonus <- pts / 10 }))

@@ -1,0 +1,13 @@
+(defun safe-int (string &optional (default 0))
+  (multiple-value-bind (n pos)
+      (parse-integer string :junk-allowed t)
+    (declare (ignore pos))
+    (or n default)))
+
+(format t "~a~%" (parse-integer "  42  "))
+(format t "~a~%" (parse-integer "ff" :radix 16))
+(format t "~a~%" (parse-integer "101" :radix 2))
+(format t "~a~%" (safe-int "12abc"))
+(format t "~a~%" (safe-int "abc" -1))
+(format t "~a~%" (handler-case (parse-integer "x1")
+                   (parse-error () "parse error")))

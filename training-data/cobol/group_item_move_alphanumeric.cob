@@ -1,0 +1,19 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GROUPMOVE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 EMPLOYEE.
+          05 EMP-ID     PIC 9(4) VALUE 1001.
+          05 EMP-NAME   PIC X(10) VALUE "SMITH".
+          05 EMP-SALARY PIC 9(6) VALUE 45000.
+       01 BACKUP-REC    PIC X(20).
+
+       PROCEDURE DIVISION.
+           MOVE EMPLOYEE TO BACKUP-REC
+           MOVE 2002 TO EMP-ID
+           MOVE "JONES" TO EMP-NAME
+           DISPLAY "current: " EMPLOYEE
+           DISPLAY "backup:  " BACKUP-REC
+           MOVE BACKUP-REC TO EMPLOYEE
+           DISPLAY "restored: " EMPLOYEE
+           STOP RUN.

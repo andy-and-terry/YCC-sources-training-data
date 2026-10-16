@@ -1,0 +1,10 @@
+(let ((v #(3 8 1 9 4 8)))
+  (format t "~a~%" (position 8 v))
+  (format t "~a~%" (position 8 v :from-end t))
+  (format t "~a~%" (position-if #'oddp v))
+  (format t "~a~%" (find-if (lambda (x) (> x 5)) v))
+  (format t "~a~%" (count 8 v))
+  (format t "~a~%" (find 4 v :key #'1+)))
+
+(let ((people '((:name "Ann" :age 31) (:name "Bob" :age 25))))
+  (format t "~a~%" (find 25 people :key (lambda (p) (getf p :age)))))

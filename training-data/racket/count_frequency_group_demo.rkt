@@ -1,0 +1,20 @@
+#lang racket
+
+(define words '("a" "b" "a" "c" "b" "a"))
+(displayln (count (lambda (w) (equal? w "a")) words))
+(displayln (remove-duplicates words))
+(displayln (check-duplicates words))
+(displayln (group-by values words))
+(displayln (map (lambda (g) (cons (car g) (length g))) (group-by values words)))
+(define freq (for/fold ([h (hash)]) ([w (in-list words)]) (hash-update h w add1 0)))
+(displayln (sort (hash->list freq) > #:key cdr))
+(displayln (argmax cdr (hash->list freq)))
+
+(displayln (call-with-values (lambda () (partition even? '(1 2 3 4 5))) list))
+(displayln (list-prefix? '(a b) '(a b c)))
+(displayln (shuffle '(1)))
+(displayln (empty? '()))
+(displayln (cons? '(1)))
+(displayln (index-where '(1 2 3 4) even?))
+(displayln (indexes-of '(a b a c a) 'a))
+(displayln (take-common-prefix '(1 2 3 4) '(1 2 9)))

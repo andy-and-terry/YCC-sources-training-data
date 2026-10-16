@@ -1,0 +1,7 @@
+(let ((table (pairlis '(one two three) '(1 2 3))))
+  (format t "~s~%" table)
+  (format t "~s~%" (assoc 'two table))
+  (format t "~s~%" (rassoc 3 table))
+  (format t "~s~%" (acons 'four 4 table))
+  (format t "~s~%" (copy-alist table))
+  (format t "~s~%" (rassoc-if #'evenp table)))

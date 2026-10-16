@@ -1,0 +1,6 @@
+(println (format "%05d" 42))
+(println (format "%.3f" Math/PI))
+(println (format "%,d" 1234567))
+(println (format "%x %o %b" 255 8 true))
+(println (format "%10s|%-10s|" "right" "left"))
+(println (format "%e" 12345.678))

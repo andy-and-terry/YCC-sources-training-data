@@ -1,0 +1,5 @@
+(println (Integer/toHexString 255))
+(println (Long/parseLong "ff" 16))
+(println (Integer/toString 255 2))
+(println (format "%02X%02X%02X" 255 128 0))
+(println (map #(Integer/parseInt % 16) ["a" "1f" "ff"]))

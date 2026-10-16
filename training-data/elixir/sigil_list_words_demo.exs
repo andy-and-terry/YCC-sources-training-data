@@ -1,0 +1,8 @@
+IO.inspect(~w(red green blue))
+IO.inspect(~w(red green blue)a)
+IO.inspect(~c"charlist")
+IO.inspect(~D[2024-02-29])
+IO.inspect(~T[13:45:00])
+IO.inspect(~r/a+b/i)
+IO.inspect(Date.add(~D[2024-02-28], 2))
+IO.inspect(Date.day_of_week(~D[2024-07-04]))

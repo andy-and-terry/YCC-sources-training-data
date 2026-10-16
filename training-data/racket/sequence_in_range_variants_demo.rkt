@@ -1,0 +1,17 @@
+#lang racket
+
+(displayln (for/list ([i (in-range 5)]) i))
+(displayln (for/list ([i (in-range 2 10 3)]) i))
+(displayln (for/list ([i (in-range 5 0 -2)]) i))
+(displayln (for/list ([i (in-naturals 10)] [c (in-string "abc")]) (cons i c)))
+(displayln (for/list ([x (in-list '(1 2 3))] [y (in-vector #(a b c))]) (list x y)))
+(displayln (for/list ([i (in-range 3)] #:when (odd? i)) i))
+(displayln (for/list ([i (in-range 10)] #:break (> i 3)) i))
+(displayln (for*/list ([i 2] [j 2]) (list i j)))
+(displayln (for/list ([(k v) (in-hash (hash 'a 1))]) (list k v)))
+(displayln (for/first ([i (in-range 10)] #:when (> (* i i) 20)) i))
+(displayln (for/last ([i (in-range 5)]) i))
+(displayln (for/and ([i '(1 2 3)]) (positive? i)))
+(displayln (for/or ([i '(1 2 3)]) (and (> i 1) i)))
+(displayln (for/product ([i (in-range 1 6)]) i))
+(displayln (for/list ([x (in-cycle '(a b))] [i 5]) x))

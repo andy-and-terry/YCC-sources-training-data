@@ -1,0 +1,6 @@
+(format t "~a~%" (remove-duplicates '(1 2 1 3 2 4)))
+(format t "~a~%" (remove-duplicates '(1 2 1 3 2 4) :from-end t))
+(format t "~a~%" (remove-duplicates '("a" "A" "b") :test #'string-equal))
+(format t "~a~%" (remove-duplicates '((1 . a) (2 . b) (1 . c)) :key #'car))
+(format t "~a~%" (delete-if #'evenp (list 1 2 3 4 5)))
+(format t "~a~%" (remove 3 '(1 3 2 3) :count 1))

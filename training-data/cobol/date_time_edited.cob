@@ -1,0 +1,18 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DATEEDIT.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 RAW-DATE   PIC 9(8) VALUE 20240229.
+       01 DATE-PARTS REDEFINES RAW-DATE.
+          05 YYYY    PIC 9(4).
+          05 MM      PIC 99.
+          05 DD      PIC 99.
+       01 ED-DATE    PIC 9999/99/99.
+       01 US-DATE    PIC X(10).
+
+       PROCEDURE DIVISION.
+           MOVE RAW-DATE TO ED-DATE
+           DISPLAY "edited: " ED-DATE
+           STRING MM "/" DD "/" YYYY DELIMITED BY SIZE INTO US-DATE
+           DISPLAY "US format: " US-DATE
+           STOP RUN.

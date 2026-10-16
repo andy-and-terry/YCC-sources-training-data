@@ -1,0 +1,6 @@
+(def not-even? (complement even?))
+(println (filter not-even? (range 10)))
+(println (map (constantly :x) [1 2 3]))
+(println ((comp str inc) 41))
+(println (map identity [1 2 3]))
+(println ((every-pred pos? even?) 4) ((some-fn neg? zero?) 5))

@@ -1,0 +1,16 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. MINOFTHREE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 A    PIC 9(3) VALUE 45.
+       01 B    PIC 9(3) VALUE 12.
+       01 C    PIC 9(3) VALUE 78.
+       01 SMALLEST PIC 9(3).
+
+       PROCEDURE DIVISION.
+           MOVE A TO SMALLEST
+           IF B < SMALLEST MOVE B TO SMALLEST END-IF
+           IF C < SMALLEST MOVE C TO SMALLEST END-IF
+           DISPLAY "Smallest = " SMALLEST
+           DISPLAY "Via function = " FUNCTION MIN(A B C)
+           STOP RUN.

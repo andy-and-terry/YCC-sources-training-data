@@ -1,0 +1,8 @@
+: HEADER ( n -- ) 1+ 1 DO I 4 .R LOOP CR ;
+: ROW ( n i -- ) DUP 3 .R ." |" SWAP 1+ 1 DO DUP I * 3 .R LOOP DROP CR ;
+
+: TIMES-TABLE ( n -- )
+  DUP 4 SPACES HEADER
+  DUP 1+ 1 DO DUP I ROW LOOP DROP ;
+
+6 TIMES-TABLE

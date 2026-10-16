@@ -1,0 +1,10 @@
+: CLASSIFY ( n -- )
+  DUP 0= IF DROP ." zero" CR EXIT THEN
+  DUP 0< IF DROP ." negative" CR EXIT THEN
+  DUP 100 > IF DROP ." big" CR EXIT THEN
+  DROP ." small positive" CR ;
+
+0 CLASSIFY
+-5 CLASSIFY
+500 CLASSIFY
+42 CLASSIFY

@@ -1,0 +1,15 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. INSPREPFIRST.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 TXT   PIC X(20) VALUE "banana bandana".
+
+       PROCEDURE DIVISION.
+           DISPLAY TXT
+           INSPECT TXT REPLACING FIRST "an" BY "AN"
+           DISPLAY TXT
+           INSPECT TXT REPLACING ALL "a" BY "4"
+           DISPLAY TXT
+           INSPECT TXT REPLACING LEADING "b" BY "B"
+           DISPLAY TXT
+           STOP RUN.

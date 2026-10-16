@@ -1,0 +1,7 @@
+IO.inspect(Enum.scan([1, 2, 3, 4], &+/2))
+IO.inspect(Enum.scan([1, 2, 3], 10, fn x, acc -> x * acc end))
+IO.inspect(Enum.dedup([1, 1, 2, 2, 2, 3, 1, 1]))
+IO.inspect(Enum.chunk_every([1, 2, 3, 4, 5], 2))
+IO.inspect(Enum.chunk_every([1, 2, 3, 4, 5], 3, 1, :discard))
+IO.inspect(Enum.split_while([1, 2, 5, 1], &(&1 < 3)))
+IO.inspect(Enum.reduce_while(1..100, 0, fn x, acc -> if acc + x > 20, do: {:halt, acc}, else: {:cont, acc + x} end))

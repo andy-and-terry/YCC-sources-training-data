@@ -1,0 +1,13 @@
+s = "  Hello, World  "
+print(s.strip(), s.lstrip(), s.rstrip(), sep="|")
+t = s.strip()
+print(t.lower(), t.upper(), t.swapcase(), t.title())
+print(t.startswith("Hell"), t.endswith("d"), t.find("o"), t.rfind("o"))
+print(t.replace("l", "L", 2), t.count("l"))
+print(t.partition(", "), t.rpartition("o"))
+print(",".join(["a", "b", "c"]), "a b  c".split(), "a,b,c".split(",", 1))
+print("42".zfill(5), "x".center(5, "*"), "ab".ljust(4, ".") + "|")
+print("abc123".isalnum(), "123".isdigit(), "abc".isalpha(), " ".isspace())
+print("line1\nline2\r\n".splitlines())
+print("hello".removeprefix("he"), "hello".removesuffix("lo"))
+print("abc".translate(str.maketrans("abc", "xyz")))

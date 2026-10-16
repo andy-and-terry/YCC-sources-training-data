@@ -1,0 +1,5 @@
+(def desc (sorted-map-by > 3 :c 1 :a 2 :b))
+(println desc)
+(println (first desc))
+(println (subseq (sorted-map 1 :a 2 :b 3 :c 4 :d) >= 2 < 4))
+(println (rsubseq (sorted-set 1 2 3 4 5) > 2))

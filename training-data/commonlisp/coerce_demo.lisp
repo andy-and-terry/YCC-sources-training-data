@@ -1,0 +1,7 @@
+(format t "~s~%" (coerce '(1 2 3) 'vector))
+(format t "~s~%" (coerce #(a b c) 'list))
+(format t "~s~%" (coerce "abc" 'list))
+(format t "~s~%" (coerce '(#\h #\i) 'string))
+(format t "~s~%" (coerce 3 'double-float))
+(format t "~s~%" (coerce 1/4 'float))
+(format t "~s~%" (coerce 65 'character))

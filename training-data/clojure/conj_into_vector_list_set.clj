@@ -1,0 +1,8 @@
+(println (conj [1 2] 3))
+(println (conj '(1 2) 3))
+(println (conj #{1 2} 2 3))
+(println (conj {:a 1} [:b 2]))
+(println (into [] '(1 2 3)))
+(println (into () [1 2 3]))
+(println (peek [1 2 3]) (peek '(1 2 3)))
+(println (pop [1 2 3]) (pop '(1 2 3)))

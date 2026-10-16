@@ -1,0 +1,14 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. ORDCHR.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 CHR     PIC X VALUE "A".
+       01 CODE-N PIC 999.
+       01 NEXT-CHR PIC X.
+
+       PROCEDURE DIVISION.
+           COMPUTE CODE-N = FUNCTION ORD(CHR) - 1
+           DISPLAY CHR " has ASCII code " CODE-N
+           MOVE FUNCTION CHAR(CODE-N + 2) TO NEXT-CHR
+           DISPLAY "next character: " NEXT-CHR
+           STOP RUN.

@@ -1,0 +1,6 @@
+(println (bit-and 12 10) (bit-or 12 10) (bit-xor 12 10))
+(println (bit-shift-left 1 10) (bit-shift-right 1024 3))
+(println (bit-test 5 0) (bit-test 5 1))
+(println (Long/toBinaryString 42))
+(println (Long/bitCount 255))
+(println (bit-flip 8 0) (bit-set 0 4) (bit-clear 15 0))

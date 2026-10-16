@@ -1,0 +1,6 @@
+(format t "~{~a~^, ~}~%" '(1 2 3 4))
+(format t "~{(~a . ~a)~^ ~}~%" '(a 1 b 2 c 3))
+(format t "~{~{~a ~}~%~}" '((1 2 3) (4 5 6)))
+(format t "~@{~a~^-~}~%" 'x 'y 'z)
+(format t "~:{~a=~a ~}~%" '((a 1) (b 2)))
+(format t "~#[none~;one: ~a~:;many~]~%" 'only)

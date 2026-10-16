@@ -1,0 +1,6 @@
+(format t "~a~%" (substitute #\- #\space "a b c d"))
+(format t "~a~%" (substitute-if 0 #'minusp '(3 -1 4 -1 5)))
+(format t "~a~%" (substitute 'x 'a '(a b a c a) :count 2))
+(format t "~a~%" (nsubstitute 9 1 (list 1 2 1)))
+(format t "~a~%" (remove-if-not #'alpha-char-p "a1b2c3"))
+(format t "~a~%" (replace (make-string 5 :initial-element #\.) "ab" :start1 1))
