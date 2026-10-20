@@ -1,0 +1,12 @@
+name = "Ada"
+IO.puts("Hello #{name}, #{1 + 2}")
+IO.inspect(~w(a b c))
+IO.inspect(~w(a b)a)
+IO.inspect(~r/(\d+)-(\d+)/ |> Regex.run("10-20"))
+IO.inspect(Regex.replace(~r/\s+/, "a  b   c", " "))
+IO.inspect(~s(with "quotes" and #{name}))
+IO.inspect(~S(no #{interp}))
+IO.puts(String.pad_leading("7", 3, "0") <> String.pad_trailing("x", 3, ".") <> "|")
+IO.inspect(String.split("a,b;c", [",", ";"]))
+IO.inspect({String.upcase("ab"), String.reverse("abc"), String.slice("hello", 1..3), String.contains?("abc", "bc")})
+IO.puts(:io_lib.format("~5.2f|~-6s|~b", [3.14159, "ab", 5]) |> IO.iodata_to_binary())
