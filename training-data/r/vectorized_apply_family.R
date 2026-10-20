@@ -1,0 +1,6 @@
+x <- c(3, 8, 1, 9)
+print(sapply(x, function(v) v^2))
+print(vapply(list(1:3, 4:9), length, integer(1)))
+m <- matrix(1:6, nrow = 2)
+print(apply(m, 1, sum))
+print(Reduce(`+`, x, accumulate = TRUE))
