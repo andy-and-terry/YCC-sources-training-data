@@ -1,0 +1,16 @@
+t = linspace(0, 2 * pi, 8);
+y = sin(t);
+tbl = [t(:), y(:)];
+disp(size(tbl));
+[~, imax] = max(y); [~, imin] = min(y);
+fprintf('max at %.2f, min at %.2f\n', t(imax), t(imin));
+smooth = conv(y, ones(1, 3) / 3, 'same');
+disp(round(smooth * 100) / 100);
+[X, Y] = meshgrid(1:3, 1:2);
+disp(X); disp(Y); disp(X .* Y);
+Z = X + 1i * Y; disp(abs(Z));
+edges = 0:2:10; counts = histc([1 3 3 5 7 9 9 9], edges); disp(counts);
+data = randn(1000, 1); disp(abs(mean(data)) < 0.2);
+norm_data = (data - mean(data)) / std(data); disp(abs(std(norm_data) - 1) < 1e-10);
+disp(floor(linspace(1, 10, 4))); disp(logspace(0, 2, 3)); disp(fliplr(1:4)); disp(flipud([1; 2]));
+disp(numel(unique(round(rand(1, 100) * 10))) <= 11);

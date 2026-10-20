@@ -1,0 +1,10 @@
+disp(bitand(12, 10)); disp(bitor(12, 10)); disp(bitxor(12, 10)); disp(bitshift(1, 4)); disp(bitshift(16, -2));
+disp(dec2bin(10)); disp(bin2dec('1010')); disp(dec2hex(255)); disp(hex2dec('FF'));
+disp(xor(true, false)); disp(true & false | true); disp(~[1 0 1]);
+a = uint8(250); b = a + 10; disp(b); disp(class(b));
+disp(int32(7) / int32(2)); disp(idivide(int32(7), int32(2))); disp(double(int16(5)) / 2);
+disp(realmax > 1e308); disp(eps); disp(1 / 0); disp(-1 / 0); disp(isinf(1 / 0)); disp(NaN == NaN);
+disp(abs(0.1 + 0.2 - 0.3) < eps);
+disp(isequal([1 2], [1 2])); disp(isreal(1 + 2i)); disp(abs(3 + 4i)); disp(conj(1 + 2i)); disp(angle(1i));
+disp(floor(log2(1024))); disp(nchoosek(5, 2)); disp(factorial(5)); disp(isprime(7)); disp(primes(20));
+disp(cast(3.7, 'int8')); disp(typecast(single(1), 'uint32'));
