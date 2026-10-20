@@ -1,0 +1,4 @@
+function groupBy<T, K extends PropertyKey>(xs: T[], f: (x: T) => K): Record<K, T[]> {
+  return xs.reduce((acc, x) => { (acc[f(x)] ??= []).push(x); return acc; }, {} as Record<K, T[]>);
+}
+console.log(groupBy([1, 2, 3, 4, 5], (n) => (n % 2 ? "odd" : "even")));
