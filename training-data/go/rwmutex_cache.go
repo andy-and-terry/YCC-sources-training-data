@@ -5,39 +5,35 @@ import (
 	"sync"
 )
 
-type rwCache struct {
-	mu   sync.RWMutex
-	data map[string]int
+type Cache struct {
+	mu sync.RWMutex
+	m  map[string]int
 }
 
-func newRWCache() *rwCache {
-	return &rwCache{data: make(map[string]int)}
-}
-
-func (c *rwCache) Get(key string) (int, bool) {
+func (c *Cache) Get(k string) (int, bool) {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	v, ok := c.data[key]
+	v, ok := c.m[k]
 	return v, ok
 }
 
-func (c *rwCache) Set(key string, value int) {
+func (c *Cache) Set(k string, v int) {
 	c.mu.Lock()
-	defer c.mu.Unlock()
-	c.data[key] = value
+	c.m[k] = v
+	c.mu.Unlock()
 }
 
 func main() {
-	cache := newRWCache()
+	c := &Cache{m: map[string]int{}}
 	var wg sync.WaitGroup
-	for i := 0; i < 10; i++ {
+	for i := 0; i < 20; i++ {
 		wg.Add(1)
-		go func(n int) {
+		go func(i int) {
 			defer wg.Done()
-			cache.Set(fmt.Sprintf("key%d", n), n)
+			c.Set(fmt.Sprint(i%5), i)
+			c.Get("0")
 		}(i)
 	}
 	wg.Wait()
-	v, ok := cache.Get("key5")
-	fmt.Println(v, ok)
+	fmt.Println(len(c.m))
 }
