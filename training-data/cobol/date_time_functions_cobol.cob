@@ -1,0 +1,22 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DATES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 D1        PIC 9(8) VALUE 20240228.
+       01 D2        PIC 9(8).
+       01 INT-DATE  PIC 9(7).
+       01 DIFF      PIC S9(5).
+       01 CUR       PIC X(21).
+       PROCEDURE DIVISION.
+           COMPUTE INT-DATE = FUNCTION INTEGER-OF-DATE(D1)
+           ADD 2 TO INT-DATE
+           COMPUTE D2 = FUNCTION DATE-OF-INTEGER(INT-DATE)
+           DISPLAY D1 " + 2 days = " D2
+           COMPUTE DIFF = FUNCTION INTEGER-OF-DATE(20241225)
+                        - FUNCTION INTEGER-OF-DATE(D1)
+           DISPLAY "days to christmas: " DIFF
+           MOVE FUNCTION CURRENT-DATE TO CUR
+           IF CUR(1:4) >= "2024" DISPLAY "year ok" END-IF
+           DISPLAY FUNCTION MOD(INT-DATE, 7) " "
+                   FUNCTION TEST-DATE-YYYYMMDD(20240230)
+           STOP RUN.

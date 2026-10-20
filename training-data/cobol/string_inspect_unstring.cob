@@ -1,0 +1,24 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. STRINGOPS.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 TEXT-IN     PIC X(30) VALUE "the quick brown fox".
+       01 CNT         PIC 99 VALUE 0.
+       01 W1          PIC X(10).
+       01 W2          PIC X(10).
+       01 W3          PIC X(10).
+       01 JOINED      PIC X(40).
+       01 PTR         PIC 99 VALUE 1.
+       PROCEDURE DIVISION.
+           INSPECT TEXT-IN TALLYING CNT FOR ALL "o"
+           DISPLAY "o count: " CNT
+           INSPECT TEXT-IN REPLACING ALL "quick" BY "slow "
+           DISPLAY TEXT-IN
+           UNSTRING TEXT-IN DELIMITED BY SPACE INTO W1 W2 W3
+           DISPLAY W1 "|" W2 "|" W3
+           STRING W3 DELIMITED BY SPACE "-" DELIMITED BY SIZE
+                  W1 DELIMITED BY SPACE INTO JOINED WITH POINTER PTR
+           DISPLAY JOINED(1:PTR)
+           DISPLAY FUNCTION UPPER-CASE(W1) " " FUNCTION LENGTH(TEXT-IN)
+           DISPLAY FUNCTION REVERSE(W2)
+           STOP RUN.

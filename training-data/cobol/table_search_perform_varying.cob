@@ -1,0 +1,28 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. TABLES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 PRICE-TABLE.
+          05 ITEM OCCURS 4 TIMES INDEXED BY IX.
+             10 ITEM-NAME  PIC X(8).
+             10 ITEM-PRICE PIC 9(3)V99.
+       01 WANT      PIC X(8) VALUE "WIDGET".
+       01 TOTAL     PIC 9(5)V99 VALUE 0.
+       01 FOUND-FLG PIC X VALUE "N".
+       PROCEDURE DIVISION.
+           MOVE "GADGET"  TO ITEM-NAME(1) MOVE 12.50 TO ITEM-PRICE(1)
+           MOVE "WIDGET"  TO ITEM-NAME(2) MOVE 7.25  TO ITEM-PRICE(2)
+           MOVE "GIZMO"   TO ITEM-NAME(3) MOVE 30.00 TO ITEM-PRICE(3)
+           MOVE "DOOHICK" TO ITEM-NAME(4) MOVE 1.99  TO ITEM-PRICE(4)
+           SET IX TO 1
+           SEARCH ITEM
+               AT END DISPLAY "not found"
+               WHEN ITEM-NAME(IX) = WANT
+                   MOVE "Y" TO FOUND-FLG
+                   DISPLAY WANT " costs " ITEM-PRICE(IX)
+           END-SEARCH
+           PERFORM VARYING IX FROM 1 BY 1 UNTIL IX > 4
+               ADD ITEM-PRICE(IX) TO TOTAL
+           END-PERFORM
+           DISPLAY "total " TOTAL
+           STOP RUN.

@@ -1853,3 +1853,14 @@ Each subdirectory groups files by language category (`cat`) for easy filtering d
 > c, clojure, cobol, cpp, go, java, javascript, nix, perl, php, prolog,
 > python, ruby, rust, typescript, vimscript, assembly, awk); the rest are
 > unverified hand-written code. The 500-per-folder target was not reached.
+
+> **Scheduled batch (custom_coding run, single agent, no workers):** 1,105
+> new single-concept files were added across all 60 language folders
+> (9–50 per language, e.g. JavaScript 50, Python 41, Rust 42, TypeScript 40;
+> most others 10–35). The "150 per folder" target (about 9,000 files) was
+> not reached. Syntax/compile checks were run where a toolchain existed in
+> the sandbox: Python (py_compile), JavaScript (node --check), TypeScript
+> (tsc), Go (go vet), Rust (rustc), Java (javac), C (gcc), C++ (g++), Ruby,
+> PHP, Perl, Bash, Awk (mawk), NASM assembly (assembled, linked, and exit
+> codes checked), and Vimscript (sourced in vim). Everything else was
+> proofread by hand only and may contain compile errors.
