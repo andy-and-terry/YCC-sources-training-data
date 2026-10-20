@@ -1,0 +1,10 @@
+(println (Math/sqrt 16) Math/PI (Integer/MAX_VALUE) (.toUpperCase "abc") (.length "hello"))
+(def sb (StringBuilder.))
+(doto sb (.append "a") (.append 1) (.append \c))
+(println (str sb) (.indexOf "hello" "l"))
+(println (java.util.UUID/randomUUID) (class 1) (class "s") (class [1]) (instance? String "x"))
+(let [l (java.util.ArrayList. [3 1 2])]
+  (java.util.Collections/sort l)
+  (println (vec l) (.size l)))
+(println (into-array String ["a" "b"]) (seq (into-array Integer/TYPE [1 2])) (bigint 10) (bigdec "1.5"))
+(println (System/getProperty "user.dir") (System/currentTimeMillis))

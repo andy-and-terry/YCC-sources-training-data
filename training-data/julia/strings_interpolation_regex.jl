@@ -1,0 +1,15 @@
+name, n = "Ada", 3
+println("Hello $name, $(n * 2) items, \$escaped")
+println(uppercase("abc"), lowercase("ABC"), titlecase("hello world"), reverse("abc"))
+println(split("a,b,,c", ","), " ", join([1, 2, 3], "-"), " ", strip("  pad  "))
+println(replace("hello", "l" => "L"), " ", replace("a1b2", r"\d" => "#"))
+println(occursin("ell", "hello"), startswith("hello", "he"), endswith("hello", "lo"))
+m = match(r"(\d+)-(\d+)", "tel 555-1234")
+println(m.captures, " ", m.match, " ", m.offset)
+println(collect(eachmatch(r"\d", "a1b2c3")) .|> x -> x.match)
+println(length("héllo"), " ", sizeof("héllo"), " ", "abc"[2], " ", "héllo"[1:3])
+println(string(1, "a", :b), " ", repeat("ab", 3), " ", "x" * "y", " ", parse(Int, "42"), " ", tryparse(Int, "x"))
+println(lpad("7", 3, '0'), rpad("x", 3, '.'), "|", chomp("line\n"), chop("abc"), first("abc", 2), last("abc", 2))
+println(sprint(show, "q"), " ", repr(:sym), " ", string(3.5), " ", Char(65), " ", Int('a'))
+using Printf
+@printf("%5.2f|%-5s|%05d|%x\n", 3.14159, "ab", 42, 255)

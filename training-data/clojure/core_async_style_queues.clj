@@ -1,0 +1,12 @@
+(import '(java.util.concurrent LinkedBlockingQueue Executors TimeUnit))
+(def q (LinkedBlockingQueue.))
+(def pool (Executors/newFixedThreadPool 2))
+(.submit pool ^Runnable (fn [] (doseq [i (range 3)] (.put q i)) (.put q :done)))
+(println (loop [acc []] (let [v (.take q)] (if (= v :done) acc (recur (conj acc v))))))
+(.shutdown pool)
+(println (.awaitTermination pool 1 TimeUnit/SECONDS))
+(def results (atom []))
+(let [ts (doall (map (fn [i] (Thread. #(swap! results conj (* i i)))) (range 4)))]
+  (doseq [t ts] (.start t))
+  (doseq [t ts] (.join t)))
+(println (sort @results))

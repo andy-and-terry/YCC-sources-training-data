@@ -1,0 +1,11 @@
+(define (fold-left f init lst) (if (null? lst) init (fold-left f (f init (car lst)) (cdr lst))))
+(define (fold-right f init lst) (if (null? lst) init (f (car lst) (fold-right f init (cdr lst)))))
+(define (filter pred lst) (cond ((null? lst) '()) ((pred (car lst)) (cons (car lst) (filter pred (cdr lst)))) (else (filter pred (cdr lst)))))
+
+(display (map (lambda (x) (* x x)) '(1 2 3 4))) (newline)
+(display (filter odd? '(1 2 3 4 5))) (newline)
+(display (fold-left + 0 '(1 2 3 4))) (newline)
+(display (fold-right cons '() '(1 2 3))) (newline)
+(display (map + '(1 2 3) '(10 20 30))) (newline)
+(for-each (lambda (x) (display x) (display " ")) '(a b c)) (newline)
+(display (apply max '(3 9 2))) (newline)

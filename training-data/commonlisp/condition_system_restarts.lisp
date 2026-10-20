@@ -1,0 +1,17 @@
+(define-condition bad-input (error)
+  ((value :initarg :value :reader bad-value))
+  (:report (lambda (c s) (format s "bad input: ~a" (bad-value c)))))
+
+(defun parse (x)
+  (restart-case (if (numberp x) x (error 'bad-input :value x))
+    (use-value (v) v)
+    (use-zero () 0)))
+
+(handler-case (parse "z") (bad-input (e) (format t "caught ~a~%" e)))
+(handler-bind ((bad-input (lambda (c) (invoke-restart 'use-value 99))))
+  (format t "~a~%" (parse "q")))
+(handler-bind ((bad-input (lambda (c) (invoke-restart 'use-zero))))
+  (format t "~a~%" (parse :x)))
+(format t "~a~%" (handler-case (/ 1 0) (division-by-zero () :div0)))
+(unwind-protect (format t "body~%") (format t "cleanup~%"))
+(format t "~a~%" (ignore-errors (error "x") 1))

@@ -1,0 +1,8 @@
+(def sm (sorted-map :b 2 :a 1 :c 3))
+(println sm (first sm) (rsubseq sm > :a) (subseq sm >= :b))
+(def ss (sorted-set 5 1 3))
+(println ss (conj ss 2) (first ss))
+(println (sort > [3 1 2]) (sort-by :age [{:age 30} {:age 20}]) (sort-by (juxt :a :b) [{:a 1 :b 2} {:a 1 :b 1}]))
+(println (sorted-map-by > 1 :a 2 :b))
+(println (compare "a" "b") (compare [1 2] [1 3]) (max-key count "a" "bbb" "cc") (min-key :x {:x 3} {:x 1}))
+(println (into (sorted-map) {3 :c 1 :a 2 :b}))

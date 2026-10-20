@@ -1,0 +1,13 @@
+#lang racket
+(displayln (regexp-match #rx"([a-z]+)@([a-z]+)\\.com" "mail ada@math.com now"))
+(displayln (regexp-match* #px"\\d+" "a1b22c333"))
+(displayln (regexp-replace* #px"\\s+" "a   b \t c" " "))
+(displayln (regexp-split #rx"," "x,y,,z"))
+(displayln (string-split "  the quick  fox " ))
+(displayln (string-join '("a" "b" "c") "-"))
+(displayln (string-trim "  pad  "))
+(displayln (list (string-upcase "abc") (string-replace "a-b-c" "-" "+") (string-contains? "hello" "ell") (string-prefix? "hello" "he")))
+(displayln (with-output-to-string (λ () (display "captured") (display 42))))
+(displayln (port->lines (open-input-string "l1\nl2\nl3")))
+(displayln (format "~a|~s|~v|~e" "x" "x" 'sym 12345.678))
+(printf "~a ~a\n" (~a 3.14159 #:width 8 #:align 'right) (~r 3.14159 #:precision 2))

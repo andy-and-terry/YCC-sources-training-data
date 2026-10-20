@@ -1,0 +1,12 @@
+(println (->> (range 20)
+              (filter even?)
+              (map #(* % %))
+              (take 5)
+              (reduce +)))
+(println (-> {:a 1}
+             (assoc :b 2)
+             (update :a inc)
+             (dissoc :b)))
+(println (as-> 5 x (* x 2) (+ x 1) (str "v" x)))
+(println (some-> {:a {:b 1}} :a :b inc))
+(println (cond-> 1 true inc false (* 100) true (* 3)))
