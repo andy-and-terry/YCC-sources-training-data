@@ -1,0 +1,20 @@
+new_account <- function(owner, balance = 0) structure(list(owner = owner, balance = balance), class = "account")
+print.account <- function(x, ...) { cat("Account<", x$owner, ":", format(x$balance, nsmall = 2), ">\n"); invisible(x) }
+deposit <- function(acc, amt) UseMethod("deposit")
+deposit.account <- function(acc, amt) { acc$balance <- acc$balance + amt; acc }
+deposit.default <- function(acc, amt) stop("not an account")
+summary.account <- function(object, ...) cat("Owner", object$owner, "\n")
+format.account <- function(x, ...) paste0("[", x$owner, "]")
+"+.account" <- function(e1, e2) new_account(paste(e1$owner, e2$owner, sep = "&"), e1$balance + e2$balance)
+a <- new_account("ann", 100)
+a <- deposit(a, 50)
+print(a)
+summary(a)
+cat(format(a), "\n")
+print(a + new_account("bob", 10))
+print(inherits(a, "account")); print(class(a)); print(unclass(a)$balance)
+savings <- structure(list(owner = "s", balance = 5, rate = 0.1), class = c("savings", "account"))
+print.savings <- function(x, ...) { cat("Savings -> "); NextMethod() }
+print(savings)
+print(tryCatch(deposit(1, 2), error = function(e) conditionMessage(e)))
+print(methods(deposit))

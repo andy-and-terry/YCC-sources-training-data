@@ -1,0 +1,13 @@
+#lang racket
+(displayln (for/list ([i (in-range 5)]) (* i i)))
+(displayln (for/sum ([i (in-range 1 101)]) i))
+(displayln (for/fold ([acc 1]) ([i (in-range 1 6)]) (* acc i)))
+(displayln (for/hash ([k '(a b c)] [v (in-naturals)]) (values k v)))
+(displayln (for/vector ([c "abc"]) (char-upcase c)))
+(displayln (for/list ([i (in-range 10)] #:when (even? i) #:unless (= i 4)) i))
+(displayln (for*/list ([i 3] [j 3] #:when (< i j)) (cons i j)))
+(displayln (for/first ([i (in-naturals 1)] #:when (> (* i i) 50)) i))
+(displayln (for/and ([x '(1 2 3)]) (> x 0)))
+(displayln (for/or ([x '(1 2 3)]) (and (> x 2) x)))
+(for ([(k v) (in-hash (hash 'a 1))] [i (in-naturals)]) (printf "~a ~a ~a\n" i k v))
+(displayln (for/list ([x '(1 2 3)] [y "abc"]) (list x y)))

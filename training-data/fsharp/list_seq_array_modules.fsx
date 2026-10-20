@@ -1,0 +1,12 @@
+let xs = [ 5; 3; 8; 1; 9; 2 ]
+printfn "%A" (List.sort xs)
+printfn "%A" (List.partition (fun x -> x > 4) xs)
+printfn "%A" (List.fold (fun acc x -> acc + x) 0 xs)
+printfn "%A" (List.zip [ 1; 2; 3 ] [ "a"; "b"; "c" ])
+printfn "%A" (List.chunkBySize 4 xs)
+printfn "%A" (List.windowed 2 xs |> List.map (fun w -> w.[1] - w.[0]))
+printfn "%A" (xs |> List.groupBy (fun x -> x % 3) |> List.map (fun (k, v) -> k, List.length v))
+printfn "%A" (Seq.initInfinite (fun i -> i * i) |> Seq.takeWhile (fun x -> x < 50) |> Seq.toList)
+printfn "%A" (Array.init 5 (fun i -> i * 2) |> Array.rev)
+printfn "%A" (List.tryFind (fun x -> x > 8) xs, List.tryHead [], List.max xs, List.sumBy float xs)
+printfn "%A" (xs |> List.sortByDescending id |> List.take 3)

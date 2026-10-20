@@ -1,0 +1,10 @@
+(module
+  (func (export "hypot") (param $a f64) (param $b f64) (result f64)
+    (f64.sqrt (f64.add (f64.mul (local.get $a) (local.get $a)) (f64.mul (local.get $b) (local.get $b)))))
+  (func (export "clamp") (param $x f64) (param $lo f64) (param $hi f64) (result f64)
+    (f64.min (f64.max (local.get $x) (local.get $lo)) (local.get $hi)))
+  (func (export "lerp") (param $a f32) (param $b f32) (param $t f32) (result f32)
+    (f32.add (local.get $a) (f32.mul (f32.sub (local.get $b) (local.get $a)) (local.get $t))))
+  (func (export "round_half_up") (param f64) (result f64) (f64.floor (f64.add (local.get 0) (f64.const 0.5))))
+  (func (export "to_int_sat") (param f64) (result i32) (i32.trunc_sat_f64_s (local.get 0)))
+  (func (export "abs_f") (param f64) (result f64) (f64.abs (local.get 0))))

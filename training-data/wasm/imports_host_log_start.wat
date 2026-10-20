@@ -1,0 +1,12 @@
+(module
+  (import "env" "log" (func $log (param i32)))
+  (import "env" "now" (func $now (result f64)))
+  (memory (export "memory") 1)
+  (global $calls (mut i32) (i32.const 0))
+  (func $start (call $log (i32.const 42)))
+  (start $start)
+  (func (export "work") (param $n i32) (result f64)
+    (global.set $calls (i32.add (global.get $calls) (i32.const 1)))
+    (call $log (local.get $n))
+    (f64.mul (call $now) (f64.convert_i32_s (local.get $n))))
+  (func (export "calls") (result i32) (global.get $calls)))

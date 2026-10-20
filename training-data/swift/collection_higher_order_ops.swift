@@ -1,0 +1,10 @@
+let nums = Array(1...10)
+print(nums.filter { $0 % 2 == 0 }.map { $0 * $0 }.reduce(0, +))
+print(Dictionary(grouping: nums, by: { $0 % 3 }).mapValues(\.count).sorted { $0.key < $1.key })
+print(nums.split(whereSeparator: { $0 % 4 == 0 }).map(Array.init))
+print(nums.enumerated().filter { $0.offset % 3 == 0 }.map(\.element))
+print(nums.first(where: { $0 > 6 }) ?? 0, nums.contains(where: { $0 > 9 }), nums.allSatisfy { $0 > 0 })
+print(nums.min(by: { abs($0 - 5) < abs($1 - 5) })!, nums.sorted(by: >).prefix(3))
+print(Set([1, 2, 2, 3]).union([5]).sorted(), ["b": 1, "a": 2].sorted { $0.value > $1.value }.map(\.key))
+print(nums.chunked(3))
+extension Array { func chunked(_ n: Int) -> [[Element]] { stride(from: 0, to: count, by: n).map { Array(self[$0..<Swift.min($0 + n, count)]) } } }

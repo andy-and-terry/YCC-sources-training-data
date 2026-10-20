@@ -1,0 +1,12 @@
+#lang racket
+(require racket/generator)
+(define g (generator () (for ([i 3]) (yield i)) 'done))
+(displayln (list (g) (g) (g) (g)))
+(define (naturals) (in-generator (let loop ([n 0]) (yield n) (loop (add1 n)))))
+(displayln (for/list ([n (naturals)] [_ 5]) n))
+(define s (stream-cons 1 (stream-map add1 s)))
+(displayln (stream->list (stream-take s 5)))
+(displayln (for/list ([x (in-cycle '(a b))] [_ 5]) x))
+(displayln (sequence->list (in-parallel '(1 2) '(a b))))
+(displayln (for/list ([(a b) (in-parallel '(1 2) '(x y))]) (list a b)))
+(displayln (sequence->list (sequence-map add1 (in-range 3))))

@@ -1,0 +1,11 @@
+(def f (future (Thread/sleep 20) (+ 1 2)))
+(println @f (future-done? f) (realized? f))
+(def p (promise))
+(future (deliver p :hello))
+(println @p)
+(def d (delay (println "computing") 42))
+(println @d @d)
+(let [fs (doall (map #(future (* % %)) (range 5)))]
+  (println (map deref fs)))
+(println (deref (future (Thread/sleep 500) :slow) 10 :timeout))
+(println (pmap #(* 2 %) (range 5)))

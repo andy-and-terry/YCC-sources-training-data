@@ -1,0 +1,15 @@
+(defun make-counter (&optional (start 0))
+  (let ((n start))
+    (list (lambda () (incf n)) (lambda () (decf n)) (lambda () n))))
+
+(let ((c (make-counter 10)))
+  (funcall (first c)) (funcall (first c)) (funcall (second c))
+  (format t "~a~%" (funcall (third c))))
+
+(defun compose (&rest fns)
+  (reduce (lambda (f g) (lambda (x) (funcall f (funcall g x)))) fns))
+(format t "~a~%" (funcall (compose #'1+ (lambda (x) (* 2 x))) 5))
+(let ((fs (loop for i from 1 to 3 collect (let ((j i)) (lambda () (* j j))))))
+  (format t "~a~%" (mapcar #'funcall fs)))
+(defun curry (f &rest args) (lambda (&rest more) (apply f (append args more))))
+(format t "~a~%" (funcall (curry #'+ 1 2) 3))

@@ -1,0 +1,24 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GRADES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 SCORE   PIC 999 VALUE 0.
+       01 GRADE   PIC X VALUE SPACE.
+       01 IDX     PIC 9 VALUE 0.
+       01 TABLE-OF-SCORES.
+          05 S-ENTRY PIC 999 OCCURS 5 TIMES.
+       PROCEDURE DIVISION.
+           MOVE 95 TO S-ENTRY(1) MOVE 82 TO S-ENTRY(2) MOVE 71 TO S-ENTRY(3)
+           MOVE 64 TO S-ENTRY(4) MOVE 30 TO S-ENTRY(5)
+           PERFORM VARYING IDX FROM 1 BY 1 UNTIL IDX > 5
+               MOVE S-ENTRY(IDX) TO SCORE
+               EVALUATE TRUE
+                   WHEN SCORE >= 90 MOVE "A" TO GRADE
+                   WHEN SCORE >= 80 MOVE "B" TO GRADE
+                   WHEN SCORE >= 70 MOVE "C" TO GRADE
+                   WHEN SCORE >= 60 MOVE "D" TO GRADE
+                   WHEN OTHER       MOVE "F" TO GRADE
+               END-EVALUATE
+               DISPLAY SCORE " -> " GRADE
+           END-PERFORM
+           STOP RUN.

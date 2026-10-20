@@ -1,0 +1,15 @@
+local function risky(n) if n < 0 then error("negative: " .. n) elseif n == 0 then error({ code = 42 }) end return n end
+print(pcall(risky, 5))
+print(pcall(risky, -1))
+local ok, e = pcall(risky, 0)
+print(ok, type(e), e.code)
+print(xpcall(risky, function(m) return "handled: " .. tostring(m) end, -2))
+print(select(2, pcall(error, "msg", 0)))
+print(pcall(function() local x = nil; return x.field end))
+print(pcall(function() return 1 + {} end))
+local ok2, err = pcall(assert, false, "assertion text")
+print(ok2, err)
+print(select("#", assert(1, 2, 3)))
+print(tostring(nil), tostring(true), tonumber("abc"), tonumber("  12  "))
+local function try(f, catch, finally) local ok, e = pcall(f); if not ok then catch(e) end; if finally then finally() end end
+try(function() error("boom") end, function(e) print("caught", e) end, function() print("finally") end)

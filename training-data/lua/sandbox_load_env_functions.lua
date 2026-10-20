@@ -1,0 +1,16 @@
+local env = { print = print, tostring = tostring }
+local chunk = load("x = 10; y = x * 2; print('inside', y); return y + 1", "chunk", "t", env)
+print(chunk())
+print(env.x, env.y, x)
+print(load("syntax error here"))
+local f = load("return ...")
+print(f(1, 2, 3))
+local add = load("local a, b = ...; return a + b")
+print(add(3, 4))
+setmetatable(env, { __index = _G })
+print(load("return math.floor(2.7)", "c", "t", env)())
+local calls = 0
+local fn = setmetatable({}, { __call = function(self, a) calls = calls + 1; return a * 2 end })
+print(fn(5), fn(6), calls)
+print(type(_G), _VERSION:match("%d+%.%d+") ~= nil, #arg)
+print(string.dump and "dump exists" or "no dump")

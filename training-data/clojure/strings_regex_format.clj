@@ -1,0 +1,7 @@
+(require '[clojure.string :as str])
+(println (str/upper-case "abc") (str/join "," [1 2 3]) (str/split "a b  c" #"\s+") (str/trim "  x "))
+(println (str/replace "hello" "l" "L") (str/replace "a1b2" #"\d" #(str "<" % ">")) (str/starts-with? "abc" "ab"))
+(println (re-find #"(\d+)-(\d+)" "tel 555-1234") (re-matches #"[a-z]+" "abc") (re-seq #"\d" "a1b2c3"))
+(println (format "%05.1f|%-5s|%d|%x" 3.14159 "ab" 42 255) (str "a" 1 :b nil 'c))
+(println (str/reverse "abc") (str/capitalize "hello") (str/blank? "  ") (subs "hello" 1 3) (str/index-of "hello" "l"))
+(println (pr-str {:a "x"}) (read-string "[1 2 {:a 3}]") (name :kw) (keyword "z") (symbol "s"))

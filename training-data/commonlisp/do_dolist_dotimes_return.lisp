@@ -1,0 +1,12 @@
+(dotimes (i 3) (format t "~a " i)) (terpri)
+(dolist (x '(a b c) :done) (format t "~a " x)) (terpri)
+(format t "~a~%" (do ((i 0 (1+ i)) (acc nil (cons i acc))) ((= i 4) (nreverse acc))))
+(format t "~a~%" (block found (dolist (x '(1 2 3 4)) (when (> x 2) (return-from found x)))))
+(format t "~a~%" (prog1 1 (format t "side~%")))
+(tagbody
+  (setq n 0)
+ top (when (< n 3) (format t "t~a " n) (incf n) (go top)))
+(terpri)
+(format t "~a~%" (case 3 ((1 2) :low) ((3 4) :mid) (otherwise :high)))
+(format t "~a~%" (cond ((> 1 2) :a) ((< 1 2) :b) (t :c)))
+(format t "~a~%" (typecase "s" (integer :int) (string :str) (t :other)))

@@ -1,0 +1,12 @@
+#lang racket
+(define current-indent (make-parameter 0))
+(define (show s) (printf "~a~a\n" (make-string (current-indent) #\space) s))
+(show "top")
+(parameterize ([current-indent 4]) (show "nested") (parameterize ([current-indent 8]) (show "deeper")))
+(show "back")
+(struct my-error exn:fail (code))
+(define (fail) (raise (my-error "custom" (current-continuation-marks) 42)))
+(with-handlers ([my-error? (λ (e) (printf "code ~a msg ~a\n" (my-error-code e) (exn-message e)))]) (fail))
+(with-handlers ([exn:fail:contract:divide-by-zero? (λ (_) (displayln "div0"))]) (/ 1 0))
+(with-handlers ([exn:fail? (λ (e) (displayln (exn-message e)))]) (error 'myfn "bad value: ~a" 7))
+(displayln (with-handlers ([void (λ (e) 'handled)]) (vector-ref (vector 1) 5)))

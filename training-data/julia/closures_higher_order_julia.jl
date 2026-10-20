@@ -1,0 +1,18 @@
+make_counter() = (n = 0; () -> n += 1)
+c = make_counter()
+println(c(), c(), c())
+compose(fs...) = x -> foldr((f, acc) -> f(acc), fs; init=x)
+println(compose(x -> x + 1, x -> x * 2)(5))
+println((sin ∘ cos)(0.0), " ", (x -> x^2) ∘ (x -> x + 1) |> f -> f(2))
+adders = [x -> x + i for i in 1:3]
+println([f(10) for f in adders])
+apply_n(f, n, x) = n == 0 ? x : apply_n(f, n - 1, f(x))
+println(apply_n(x -> 2x, 10, 1))
+println(map((x, y) -> x * y, 1:3, 4:6))
+println(sort(["bb", "a", "ccc"], by=length, rev=true))
+curry(f, a) = (args...) -> f(a, args...)
+println(curry(+, 10)(5))
+f(x; scale=1, offset=0) = x * scale + offset
+println(f(2), f(2, scale=3), f(2; offset=1, scale=5))
+g(a, b=2, c...) = (a, b, c)
+println(g(1), g(1, 3), g(1, 3, 4, 5))

@@ -1,0 +1,8 @@
+(define x 5)
+(define lst '(1 2 3))
+(display `(x is ,x)) (newline)
+(display `(sum ,(+ 1 2) list ,@lst end)) (newline)
+(display `(nested (a ,(* 2 x)) ,@(map (lambda (n) (* n n)) lst))) (newline)
+(define (make-adder-expr n) `(lambda (y) (+ y ,n)))
+(display (make-adder-expr 10)) (newline)
+(display (eval (make-adder-expr 3) (the-environment))) (newline)

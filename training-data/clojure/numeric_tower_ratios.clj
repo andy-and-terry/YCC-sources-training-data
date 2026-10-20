@@ -1,0 +1,7 @@
+(println (/ 1 3) (/ 6 3) (double (/ 1 3)) (+ 1/2 1/3) (quot 7 2) (rem -7 3) (mod -7 3))
+(println (+ 1N 2N) (* 99999999999 99999999999) (class (+ 1 2.0)) (float? 1.5) (ratio? 1/2))
+(println (inc' Long/MAX_VALUE) (bit-and 12 10) (bit-or 12 10) (bit-xor 12 10) (bit-shift-left 1 10))
+(println (Math/floor 2.7) (Math/round 2.5) (Math/pow 2 0.5) (long 3.99) (int \a) (char 98))
+(println (rationalize 0.75) (numerator 3/4) (min 3 1 2) (max 3 1 2) (abs -5) (compare 1 2))
+(println (bigdec 0.1) (+ 0.1M 0.2M) (with-precision 5 (/ 1M 3)))
+(println (range 5) (range 2 10 3) (take 3 (range 1 0 -1)) (even? 4) (zero? 0.0))

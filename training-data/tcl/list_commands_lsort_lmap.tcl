@@ -1,0 +1,22 @@
+set l {5 3 8 1 9 2}
+puts [lsort -integer $l]
+puts [lsort -integer -decreasing $l]
+puts [lmap x $l {expr {$x * $x}}]
+puts [lsearch -exact $l 8]
+puts [lrange $l 1 3]
+puts [lreplace $l 0 1 a b c]
+puts [linsert $l 2 X]
+puts [lindex $l end]
+puts [llength $l]
+puts [join $l ,]
+puts [split "a,b,,c" ,]
+puts [lreverse $l]
+puts [concat $l {10 11}]
+lappend l 7
+puts [lsort -unique {b a b c a}]
+puts [lsort -index 1 {{a 3} {b 1} {c 2}}]
+puts [lsearch -all -inline $l {[5-9]}]
+puts [lassign {1 2 3} a b rest]; puts "$a $b $rest"
+puts [foreach {k v} {x 1 y 2} {lappend out $k=$v}; set out]
+puts [lrepeat 3 ab]
+puts [lsort -command {apply {{a b} {expr {[string length $a] - [string length $b]}}}} {ccc a bb}]
