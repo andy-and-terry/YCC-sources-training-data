@@ -6,9 +6,9 @@ impl Drop for Noisy {
     }
 }
 
-struct Pair {
-    _first: Noisy,
-    _second: Noisy,
+fn make() -> Noisy {
+    let _tmp = Noisy("temp in make");
+    Noisy("returned")
 }
 
 fn main() {
@@ -16,14 +16,12 @@ fn main() {
     let _b = Noisy("b");
     {
         let _inner = Noisy("inner");
-        println!("inner scope ending");
+        println!("leaving block");
     }
-    let _ = Noisy("ignored-immediately");
-    let _kept = Noisy("kept");
+    let r = make();
+    println!("got {}", r.0);
     let moved = Noisy("moved");
     std::mem::drop(moved);
-    let _pair = Pair { _first: Noisy("field1"), _second: Noisy("field2") };
-    let forgotten = Noisy("forgotten");
-    std::mem::forget(forgotten);
+    let _ = Noisy("ignored immediately");
     println!("end of main");
 }

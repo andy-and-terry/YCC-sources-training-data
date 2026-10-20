@@ -1,33 +1,30 @@
-const fn fib(n: u32) -> u64 {
-    let (mut a, mut b) = (0u64, 1u64);
-    let mut i = 0;
-    while i < n {
-        let t = a + b;
-        a = b;
-        b = t;
+const fn factorial(n: u64) -> u64 {
+    let mut acc = 1;
+    let mut i = 2;
+    while i <= n {
+        acc *= i;
         i += 1;
     }
-    a
+    acc
 }
 
-const FIB_30: u64 = fib(30);
-const TABLE: [u64; 10] = {
-    let mut t = [0; 10];
-    let mut i = 0;
-    while i < 10 {
-        t[i] = fib(i as u32);
+const fn fib_table<const N: usize>() -> [u64; N] {
+    let mut t = [0u64; N];
+    if N > 1 {
+        t[1] = 1;
+    }
+    let mut i = 2;
+    while i < N {
+        t[i] = t[i - 1] + t[i - 2];
         i += 1;
     }
     t
-};
-
-const fn is_pow2(n: usize) -> bool {
-    n != 0 && n & (n - 1) == 0
 }
 
-const _: () = assert!(is_pow2(64), "buffer must be a power of two");
+const FACT_10: u64 = factorial(10);
+static FIBS: [u64; 12] = fib_table::<12>();
 
 fn main() {
-    println!("{FIB_30} {:?}", TABLE);
-    println!("{}", is_pow2(48));
+    println!("10! = {}", FACT_10);
+    println!("{:?}", FIBS);
 }

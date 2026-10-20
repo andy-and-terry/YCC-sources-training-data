@@ -1,40 +1,48 @@
+// Implementing Deref (and DerefMut) lets a wrapper type transparently
+// behave like the value it wraps -- the same mechanism `Box<T>` itself
+// relies on. Here a `Logged<T>` wrapper prints on every access while
+// still letting callers use it as if it were a plain `T`.
 use std::ops::{Deref, DerefMut};
 
-struct Wrapper<T> {
-    inner: T,
-    reads: std::cell::Cell<u32>,
+struct Logged<T> {
+    value: T,
 }
 
-impl<T> Wrapper<T> {
-    fn new(inner: T) -> Self {
-        Wrapper { inner, reads: std::cell::Cell::new(0) }
+impl<T> Logged<T> {
+    fn new(value: T) -> Self {
+        Logged { value }
     }
 }
 
-impl<T> Deref for Wrapper<T> {
+impl<T> Deref for Logged<T> {
     type Target = T;
     fn deref(&self) -> &T {
-        self.reads.set(self.reads.get() + 1);
-        &self.inner
+        println!("(read access)");
+        &self.value
     }
 }
 
-impl<T> DerefMut for Wrapper<T> {
+impl<T> DerefMut for Logged<T> {
     fn deref_mut(&mut self) -> &mut T {
-        &mut self.inner
+        println!("(write access)");
+        &mut self.value
     }
 }
 
-fn takes_str(s: &str) -> usize {
-    s.len()
+fn shout(s: &str) -> String {
+    format!("{}!", s.to_uppercase())
 }
 
 fn main() {
-    let mut w = Wrapper::new(String::from("hello"));
-    println!("{}", takes_str(&w)); // deref coercion: &Wrapper<String> -> &str
-    w.push_str(" world");
-    println!("{} {}", w.len(), w.reads.get());
-    let mut v = Wrapper::new(vec![3, 1, 2]);
-    v.sort();
-    println!("{:?}", *v);
+    let mut logged = Logged::new(String::from("hello"));
+
+    // Deref coercion: `&Logged<String>` -> `&str` for the function call.
+    println!("{}", shout(&logged));
+
+    // Deref again for reading its length.
+    println!("length: {}", logged.len());
+
+    // DerefMut for a mutating method call.
+    logged.push_str(" world");
+    println!("{}", *logged);
 }
