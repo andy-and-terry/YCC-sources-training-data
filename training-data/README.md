@@ -1864,3 +1864,10 @@ Each subdirectory groups files by language category (`cat`) for easy filtering d
 > PHP, Perl, Bash, Awk (mawk), NASM assembly (assembled, linked, and exit
 > codes checked), and Vimscript (sourced in vim). Everything else was
 > proofread by hand only and may contain compile errors.
+
+> **Scheduled batch (custom_coding run, single agent, no workers):** 35 new
+> files were added: five concepts (ugly numbers, Egyptian fractions,
+> balanced ternary, Bell numbers, Stern-Brocot tree paths) in each of
+> Python, Go, Rust, C, JavaScript, Ruby, and Bash (5 per language). Each
+> was run locally and produced correct output. The "150 per folder" target
+> was not reached; the other 53 language folders received nothing this run.
