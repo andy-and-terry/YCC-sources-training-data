@@ -1871,3 +1871,5 @@ Each subdirectory groups files by language category (`cat`) for easy filtering d
 > Python, Go, Rust, C, JavaScript, Ruby, and Bash (5 per language). Each
 > was run locally and produced correct output. The "150 per folder" target
 > was not reached; the other 53 language folders received nothing this run.
+
+> **Combinatorial-sequence batch (40 files):** Motzkin numbers, derangements, integer partitions, Stirling numbers of the second kind, and Lucas numbers added for python, javascript, ruby, perl, bash, go, rust, and c (5 each). Outputs were run and checked against known values; other language folders were not touched in this run.
