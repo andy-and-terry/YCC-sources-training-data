@@ -1875,3 +1875,5 @@ Each subdirectory groups files by language category (`cat`) for easy filtering d
 > **Combinatorial-sequence batch (40 files):** Motzkin numbers, derangements, integer partitions, Stirling numbers of the second kind, and Lucas numbers added for python, javascript, ruby, perl, bash, go, rust, and c (5 each). Outputs were run and checked against known values; other language folders were not touched in this run.
 
 > **Special-number batch (50 files):** Harshad numbers, Kaprekar routine, pronic numbers, abundant numbers, and automorphic numbers added for python, javascript, typescript, go, rust, c, ruby, bash, perl, and lua (5 each). All but lua (no interpreter available) were run and checked against known values. The "200 per folder" target was not reached; the other 48 language folders received nothing this run.
+
+> Another batch added Padovan, Pell, Jacobsthal and Tribonacci number samples across the language folders (mostly not compiled; a handful were run).
