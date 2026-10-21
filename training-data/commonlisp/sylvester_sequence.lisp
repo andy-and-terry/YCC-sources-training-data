@@ -1,0 +1,5 @@
+;;; Sylvester's sequence: s(0) = 2, s(n+1) = s(n)^2 - s(n) + 1 (Lisp integers are arbitrary precision)
+(let ((s 2))
+  (dotimes (i 8)
+    (format t "s(~d) = ~d~%" i s)
+    (setf s (+ (- (* s s) s) 1))))
