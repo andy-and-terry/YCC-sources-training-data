@@ -1,0 +1,34 @@
+CREATE NUMS 32 CELLS ALLOT
+VARIABLE LEN
+VARIABLE KEPT
+
+: NUM@ ( i -- n )  CELLS NUMS + @ ;
+: NUM! ( n i -- )  CELLS NUMS + ! ;
+
+: FILL-ODDS ( -- )
+  0 LEN !
+  51 1 DO I LEN @ NUM! 1 LEN +! 2 +LOOP ;
+
+: DELETE-EVERY ( step -- )
+  0 KEPT !
+  LEN @ 0 DO
+    I 1+ OVER MOD IF I NUM@ KEPT @ NUM! 1 KEPT +! THEN
+  LOOP
+  DROP KEPT @ LEN ! ;
+
+: SIEVE ( -- )
+  1
+  BEGIN
+    DUP LEN @ <
+    IF DUP NUM@ LEN @ <= ELSE FALSE THEN
+  WHILE
+    DUP NUM@ DELETE-EVERY
+    1+
+  REPEAT
+  DROP ;
+
+: LUCKY ( -- )
+  FILL-ODDS SIEVE
+  LEN @ 0 DO I NUM@ . LOOP CR ;
+
+LUCKY
