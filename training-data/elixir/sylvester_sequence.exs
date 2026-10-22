@@ -1,0 +1,5 @@
+# Sylvester's sequence: s(0) = 2, s(n+1) = s(n)^2 - s(n) + 1 (Elixir integers are arbitrary precision)
+Stream.iterate(2, fn s -> s * s - s + 1 end)
+|> Enum.take(8)
+|> Enum.with_index()
+|> Enum.each(fn {s, i} -> IO.puts("s(#{i}) = #{s}") end)

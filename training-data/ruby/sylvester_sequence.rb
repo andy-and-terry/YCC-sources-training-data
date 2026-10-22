@@ -1,0 +1,6 @@
+# Sylvester's sequence: s(0) = 2, s(n+1) = s(n)**2 - s(n) + 1 (Integer is arbitrary precision)
+s = 2
+8.times do |i|
+  puts "s(#{i}) = #{s}"
+  s = s * s - s + 1
+end
