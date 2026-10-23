@@ -1,0 +1,50 @@
+\ Conway's Game of Life on a small 5x5 board (cells outside are dead).
+
+5 CONSTANT SIZE
+SIZE SIZE * CONSTANT CELLS
+CREATE GRID  CELLS ALLOT
+CREATE NXT   CELLS ALLOT
+VARIABLE ROW
+VARIABLE COL
+VARIABLE CNT
+
+: IN-BOUNDS? ( r c -- flag ) SWAP 0 SIZE WITHIN SWAP 0 SIZE WITHIN AND ;
+: IDX ( r c -- addr ) SWAP SIZE * + GRID + ;
+: NXT-IDX ( r c -- addr ) SWAP SIZE * + NXT + ;
+: AT ( r c -- n ) 2DUP IN-BOUNDS? IF IDX C@ ELSE 2DROP 0 THEN ;
+: CELL-ON ( r c -- ) IDX 1 SWAP C! ;
+
+: NEIGHBORS ( r c -- n )
+  COL ! ROW ! 0 CNT !
+  2 -1 DO
+    2 -1 DO
+      I 0<> J 0<> OR IF
+        ROW @ J + COL @ I + AT CNT +!
+      THEN
+    LOOP
+  LOOP
+  CNT @ ;
+
+: STEP-CELL ( r c -- )
+  2DUP NEIGHBORS >R 2DUP AT R> SWAP
+  IF DUP 2 = SWAP 3 = OR ELSE 3 = THEN
+  1 AND >R NXT-IDX R> SWAP C! ;
+
+: STEP ( -- )
+  SIZE 0 DO SIZE 0 DO J I STEP-CELL LOOP LOOP
+  NXT GRID CELLS CMOVE ;
+
+: SHOW ( -- )
+  SIZE 0 DO
+    SIZE 0 DO J I AT IF [CHAR] # ELSE [CHAR] . THEN EMIT LOOP
+    CR
+  LOOP ;
+
+: INIT ( -- )
+  GRID CELLS ERASE
+  0 1 CELL-ON  1 2 CELL-ON  2 0 CELL-ON  2 1 CELL-ON  2 2 CELL-ON ;
+
+: GENERATIONS ( n -- )
+  0 DO ." Generation " I . CR SHOW STEP CR LOOP ;
+
+INIT 3 GENERATIONS
