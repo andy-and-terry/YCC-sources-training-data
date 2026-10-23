@@ -5,7 +5,7 @@
 0 COUNT-UP
 
 : SUM-RANGE ( lo hi -- sum )
-  0 -ROT ?DO I + LOOP ;
+  0 -ROT SWAP ?DO I + LOOP ;
 
 1 6 SUM-RANGE . CR
 5 5 SUM-RANGE . CR

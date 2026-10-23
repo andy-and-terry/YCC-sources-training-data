@@ -9,7 +9,7 @@ VARIABLE seed
   DUP 17 LSHIFT XOR
   DUP seed ! ;
 
-: RANDOM ( n -- 0..n-1 )  NEXT-RAND SWAP MOD ;
+: RANDOM ( n -- 0..n-1 )  >R NEXT-RAND 0 R> UM/MOD DROP ;
 
 : ROLL-DIE ( -- 1..6 )  6 RANDOM 1+ ;
 
