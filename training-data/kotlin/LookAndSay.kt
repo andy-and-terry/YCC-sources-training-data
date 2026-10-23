@@ -1,4 +1,4 @@
-fun lookAndSay(s: String): String = buildString {
+fun nextTerm(s: String): String = buildString {
     var i = 0
     while (i < s.length) {
         var j = i
@@ -9,7 +9,5 @@ fun lookAndSay(s: String): String = buildString {
 }
 
 fun main() {
-    generateSequence("1") { lookAndSay(it) }
-        .take(7)
-        .forEach(::println)
+    generateSequence("1", ::nextTerm).take(8).forEach(::println)
 }
