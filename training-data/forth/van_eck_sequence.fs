@@ -1,0 +1,19 @@
+CREATE TERMS 20 CELLS ALLOT
+VARIABLE DIST
+
+: TERM@ ( i -- n )  CELLS TERMS + @ ;
+: TERM! ( n i -- )  CELLS TERMS + ! ;
+
+: NEXT-TERM ( i -- next )
+  0 DIST !
+  DUP 0 ?DO
+    I TERM@ OVER TERM@ = IF DUP I - DIST ! THEN
+  LOOP
+  DROP DIST @ ;
+
+: VAN-ECK ( -- )
+  0 0 TERM!
+  19 0 DO I NEXT-TERM I 1+ TERM! LOOP
+  20 0 DO I TERM@ . LOOP CR ;
+
+VAN-ECK

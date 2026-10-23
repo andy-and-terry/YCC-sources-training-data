@@ -1,33 +1,28 @@
 #!/usr/bin/env bash
-set -euo pipefail
+# Extended globbing: ?(p) *(p) +(p) @(p) !(p) patterns
+shopt -s extglob nullglob
 
-# Extended globs add regex-like operators to [[ == ]] and case patterns:
-#   ?(a|b) zero or one   *(a|b) zero or more   +(a|b) one or more
-#   @(a|b) exactly one   !(a|b) anything except
-shopt -s extglob
+dir=$(mktemp -d)
+trap 'rm -rf "$dir"' EXIT
+touch "$dir"/{a.txt,b.txt,c.log,d.tmp,notes.md,backup.txt.bak}
 
-classify() {
-  case $1 in
-    +([0-9]))            echo "$1: integer" ;;
-    ?(-)+([0-9]).+([0-9])) echo "$1: decimal" ;;
-    @(yes|no|maybe))     echo "$1: answer word" ;;
-    *.@(jpg|png|gif))    echo "$1: image file" ;;
-    !(*.*))              echo "$1: no extension" ;;
-    *)                   echo "$1: other" ;;
-  esac
-}
+cd "$dir"
+echo "everything except .txt:"
+printf '  %s\n' !(*.txt)
 
-for item in 42 -3.14 maybe photo.png README notes.txt; do
-  classify "$item"
+echo "only .txt or .log:"
+printf '  %s\n' *.@(txt|log)
+
+echo "one or more letters then .txt:"
+printf '  %s\n' +([a-z]).txt
+
+# Same patterns work inside [[ ]] and case
+for name in report.pdf report.PDF image.png; do
+    case $name in
+        *.@(pdf|PDF)) echo "$name: document" ;;
+        !(*.pdf|*.PDF)) echo "$name: other" ;;
+    esac
 done
 
-# Match everything except one suffix, using the same operators in [[ ]].
-for f in a.c b.h c.o d.c; do
-  if [[ $f == !(*.o) ]]; then
-    echo "$f is a source or header"
-  fi
-done
-
-# Strip trailing slashes with an extglob parameter expansion.
-path="/usr/local///"
-echo "${path%%+(/)}"
+[[ "aaa" == +(a) ]] && echo "aaa matches +(a)"
+[[ "" == *(a) ]] && echo "empty matches *(a)"

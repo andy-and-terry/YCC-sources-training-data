@@ -1,29 +1,31 @@
-import scala.util.{Failure, Success, Try, Using}
+import scala.util.{Failure, Success, Using}
+
+class Resource(val name: String) extends AutoCloseable {
+  println(s"open $name")
+  def read(): String = s"data from $name"
+  def fail(): Nothing = throw new RuntimeException(s"$name failed")
+  override def close(): Unit = println(s"close $name")
+}
 
 object UsingResourceDemo {
-  class Res(name: String) extends AutoCloseable {
-    println(s"open $name")
-    def read(): Int = name.length
-    def fail(): Int = throw new IllegalStateException(s"$name failed")
-    override def close(): Unit = println(s"close $name")
-  }
-
   def main(args: Array[String]): Unit = {
-    val ok: Try[Int] = Using(new Res("alpha")) { r => r.read() * 2 }
-    println(ok)
+    val result = Using(new Resource("A")) { r => r.read().toUpperCase }
+    println(result)
 
-    val bad: Try[Int] = Using(new Res("beta")) { r => r.fail() }
-    bad match {
-      case Success(v)  => println(s"value $v")
-      case Failure(ex) => println(s"error: ${ex.getMessage}")
+    val failed = Using(new Resource("B")) { r => r.fail() }
+    failed match {
+      case Success(v)  => println(s"ok $v")
+      case Failure(ex) => println(s"caught: ${ex.getMessage}")
     }
 
-    // Several resources are closed in reverse order of opening
+    // Several resources are closed in reverse order of opening.
     val both = Using.Manager { use =>
-      val first = use(new Res("first"))
-      val second = use(new Res("second"))
-      first.read() + second.read()
+      val first = use(new Resource("first"))
+      val second = use(new Resource("second"))
+      first.read() + " + " + second.read()
     }
-    println(both)
+    println(both.get)
+
+    println(Using.resource(new Resource("C"))(_.read().length))
   }
 }
