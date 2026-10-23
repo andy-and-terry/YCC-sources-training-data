@@ -1,0 +1,10 @@
+list = Enum.to_list(1..8)
+
+IO.inspect(Enum.take(list, 3))
+IO.inspect(Enum.take(list, -2))
+IO.inspect(Enum.drop(list, 5))
+IO.inspect(Enum.take_while(list, &(&1 < 4)))
+IO.inspect(Enum.drop_while(list, &(&1 < 6)))
+IO.inspect(Enum.split(list, 2))
+IO.inspect(Enum.split_while(list, &(&1 <= 3)))
+IO.inspect(Enum.take_every(list, 3))

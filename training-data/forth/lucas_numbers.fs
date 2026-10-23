@@ -1,0 +1,12 @@
+: LUCAS ( n -- L(n) )
+  DUP 0= IF DROP 2 EXIT THEN
+  DUP 1 = IF DROP 1 EXIT THEN
+  2 1 ROT 1 DO
+    TUCK +
+  LOOP
+  NIP ;
+
+: .LUCAS ( n -- )
+  0 DO I LUCAS . LOOP CR ;
+
+10 .LUCAS
