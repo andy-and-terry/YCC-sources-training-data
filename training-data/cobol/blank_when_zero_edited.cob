@@ -1,0 +1,26 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. BLANKWHENZERO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 PLAIN-AMOUNT    PIC ZZ,ZZ9.99.
+       01 BLANK-AMOUNT    PIC ZZ,ZZ9.99 BLANK WHEN ZERO.
+       01 QTY             PIC ZZ9 BLANK WHEN ZERO.
+       01 VALUE-A         PIC 9(5)V99 VALUE 1234.50.
+       01 VALUE-B         PIC 9(5)V99 VALUE 0.
+
+       PROCEDURE DIVISION.
+           MOVE VALUE-A TO PLAIN-AMOUNT
+           DISPLAY "PLAIN A: [" PLAIN-AMOUNT "]"
+           MOVE VALUE-A TO BLANK-AMOUNT
+           DISPLAY "BLANK A: [" BLANK-AMOUNT "]"
+
+           MOVE VALUE-B TO PLAIN-AMOUNT
+           DISPLAY "PLAIN B: [" PLAIN-AMOUNT "]"
+           MOVE VALUE-B TO BLANK-AMOUNT
+           DISPLAY "BLANK B: [" BLANK-AMOUNT "]"
+
+           MOVE 0 TO QTY
+           DISPLAY "QTY 0:   [" QTY "]"
+           MOVE 7 TO QTY
+           DISPLAY "QTY 7:   [" QTY "]"
+           STOP RUN.
