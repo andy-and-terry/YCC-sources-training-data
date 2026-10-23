@@ -1,0 +1,11 @@
+: FIND-FIRST-MULTIPLE ( n limit -- m|0 )
+  SWAP >R
+  1+ 1 DO
+    I R@ MOD 0= IF I UNLOOP R> DROP EXIT THEN
+  LOOP
+  R> DROP 0 ;
+
+: DEMO
+  7 50 FIND-FIRST-MULTIPLE . CR ;
+
+DEMO

@@ -1,0 +1,9 @@
+DEFER GREET
+
+: HELLO ." Hello" CR ;
+: HOLA  ." Hola" CR ;
+
+' HELLO IS GREET
+GREET
+' HOLA IS GREET
+GREET
