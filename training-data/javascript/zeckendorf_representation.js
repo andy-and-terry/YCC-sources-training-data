@@ -1,0 +1,16 @@
+function zeckendorf(n) {
+  const fibs = [1, 2];
+  while (fibs[fibs.length - 1] <= n) {
+    fibs.push(fibs[fibs.length - 1] + fibs[fibs.length - 2]);
+  }
+  const parts = [];
+  for (let i = fibs.length - 1; i >= 0; i--) {
+    if (fibs[i] <= n) {
+      parts.push(fibs[i]);
+      n -= fibs[i];
+    }
+  }
+  return parts;
+}
+
+console.log(zeckendorf(100).join(" "));
