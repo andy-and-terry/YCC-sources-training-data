@@ -1,0 +1,10 @@
+(define (cube-from-odds n)
+  (let ((start (+ (- (* n n) n) 1)))
+    (let loop ((i 0) (sum 0))
+      (if (= i n) sum (loop (+ i 1) (+ sum start (* 2 i)))))))
+
+(do ((n 1 (+ n 1))) ((> n 5))
+  (display n) (display " ")
+  (display (cube-from-odds n)) (display " ")
+  (display (= (cube-from-odds n) (* n n n)))
+  (newline))

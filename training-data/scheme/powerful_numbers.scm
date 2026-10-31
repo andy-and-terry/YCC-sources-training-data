@@ -1,0 +1,15 @@
+(define (strip n p)
+  (if (= (remainder n p) 0) (strip (quotient n p) p) n))
+
+(define (powerful? n)
+  (let loop ((n n) (p 2))
+    (cond ((> (* p p) n) (= n 1))
+          ((= (remainder n p) 0)
+           (if (= (remainder n (* p p)) 0)
+               (loop (strip n p) (+ p 1))
+               #f))
+          (else (loop n (+ p 1))))))
+
+(do ((n 1 (+ n 1))) ((> n 100))
+  (if (powerful? n) (begin (display n) (display " "))))
+(newline)

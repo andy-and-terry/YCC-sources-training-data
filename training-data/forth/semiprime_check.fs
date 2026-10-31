@@ -1,0 +1,17 @@
+VARIABLE N
+VARIABLE P
+VARIABLE COUNT
+
+: PRIME-FACTOR-COUNT ( n -- count )
+  N !  2 P !  0 COUNT !
+  BEGIN P @ DUP * N @ <= WHILE
+    BEGIN N @ P @ MOD 0= WHILE
+      N @ P @ / N !  1 COUNT +!
+    REPEAT
+    1 P +!
+  REPEAT
+  N @ 1 > IF 1 COUNT +! THEN
+  COUNT @ ;
+
+: MAIN  30 2 DO  I PRIME-FACTOR-COUNT 2 = IF I . THEN  LOOP CR ;
+MAIN
