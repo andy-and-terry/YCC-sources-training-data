@@ -1,0 +1,5 @@
+(define (rev lst)
+  (define (iter l acc)
+    (if (null? l) acc (iter (cdr l) (cons (car l) acc))))
+  (iter lst '()))
+(display (rev '(1 2 3 4))) (newline)

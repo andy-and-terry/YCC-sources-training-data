@@ -1,0 +1,5 @@
+(def words (clojure.string/split "the cat and the hat and the bat" #" "))
+(println (frequencies words))
+(println (reduce (fn [m w] (update m (count w) (fnil inc 0))) {} words))
+(println (group-by count words))
+(println (sort-by val > (frequencies words)))

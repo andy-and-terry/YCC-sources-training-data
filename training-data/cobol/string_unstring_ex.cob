@@ -1,0 +1,18 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. STRING-UNSTRING-EX.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-FIRST  PIC X(10) VALUE "ADA".
+       01 WS-LAST   PIC X(10) VALUE "LOVELACE".
+       01 WS-FULL   PIC X(25).
+       01 WS-A      PIC X(10).
+       01 WS-B      PIC X(10).
+       PROCEDURE DIVISION.
+           STRING WS-FIRST DELIMITED BY SPACE
+                  " " DELIMITED BY SIZE
+                  WS-LAST DELIMITED BY SPACE
+                  INTO WS-FULL.
+           DISPLAY WS-FULL.
+           UNSTRING WS-FULL DELIMITED BY " " INTO WS-A WS-B.
+           DISPLAY WS-B.
+           STOP RUN.

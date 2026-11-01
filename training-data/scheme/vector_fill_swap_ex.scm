@@ -1,0 +1,7 @@
+(define v (make-vector 5 0))
+(do ((i 0 (+ i 1))) ((= i 5)) (vector-set! v i (* i i)))
+(display v) (newline)
+(let ((t (vector-ref v 0)))
+  (vector-set! v 0 (vector-ref v 4))
+  (vector-set! v 4 t))
+(display v) (newline)

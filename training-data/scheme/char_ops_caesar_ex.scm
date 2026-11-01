@@ -1,0 +1,8 @@
+(define (shift-char c n)
+  (if (char-alphabetic? c)
+      (let* ((base (if (char-upper-case? c) 65 97))
+             (off (modulo (+ (- (char->integer c) base) n) 26)))
+        (integer->char (+ base off)))
+      c))
+(define (caesar s n) (list->string (map (lambda (c) (shift-char c n)) (string->list s))))
+(display (caesar "Hello, World" 3)) (newline)

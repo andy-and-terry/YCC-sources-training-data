@@ -1,0 +1,5 @@
+(print (loop for i from 1 to 5 collect (* i i)))
+(print (loop for x in '(1 2 3 4) sum x))
+(print (loop for (k . v) in '((a . 1) (b . 2)) collect (list v k)))
+(print (loop for i below 10 when (evenp i) maximize i))
+(print (loop for x across #(3 1 2) minimize x))

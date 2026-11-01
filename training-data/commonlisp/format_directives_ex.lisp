@@ -1,0 +1,6 @@
+(format t "~a and ~s~%" "plain" "quoted")
+(format t "~5d|~5,'0d|~x|~b~%" 42 42 255 5)
+(format t "~{~a~^, ~}~%" '(1 2 3))
+(format t "~,3f ~e~%" 3.14159 12345.678)
+(format t "~r~%" 42)
+(format t "~:(~a~)~%" "hello world")

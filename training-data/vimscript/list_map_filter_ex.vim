@@ -1,0 +1,5 @@
+let xs = range(1, 10)
+echo filter(copy(xs), 'v:val % 2 == 0')
+echo map(copy(xs), {_, v -> v * v})
+echo sort([3, 1, 2], {a, b -> b - a})
+echo join(reverse(copy(xs)[0:2]), ',')

@@ -1,0 +1,8 @@
+(let ((h (make-hash-table :test 'equal)))
+  (setf (gethash "a" h) 1 (gethash "b" h) 2)
+  (incf (gethash "a" h))
+  (print (gethash "a" h))
+  (print (gethash "zzz" h :missing))
+  (maphash (lambda (k v) (format t "~a=~a~%" k v)) h)
+  (remhash "b" h)
+  (print (hash-table-count h)))

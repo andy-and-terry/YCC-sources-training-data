@@ -1,0 +1,7 @@
+(define (fold f init lst)
+  (if (null? lst) init (fold f (f (car lst) init) (cdr lst))))
+(define (filter pred lst)
+  (cond ((null? lst) '()) ((pred (car lst)) (cons (car lst) (filter pred (cdr lst)))) (else (filter pred (cdr lst)))))
+(display (fold + 0 '(1 2 3 4))) (newline)
+(display (filter odd? '(1 2 3 4 5))) (newline)
+(display (map (lambda (x y) (* x y)) '(1 2 3) '(4 5 6))) (newline)

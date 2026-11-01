@@ -1,0 +1,6 @@
+x <- c("apple123", "banana", "cherry7")
+print(grepl("[0-9]+", x))
+print(sub("[0-9]+", "#", x))
+print(regmatches(x, regexpr("[0-9]+", x)))
+print(sprintf("%-8s|%5.2f", "ab", pi))
+print(toupper(substr(x, 1, 1)))

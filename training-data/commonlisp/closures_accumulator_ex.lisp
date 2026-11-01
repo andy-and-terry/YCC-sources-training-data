@@ -1,0 +1,5 @@
+(defun make-acc (n) (lambda (x) (incf n x)))
+(let ((a (make-acc 100)))
+  (funcall a 10)
+  (print (funcall a 10)))
+(print (mapcar (lambda (f) (funcall f 3)) (list #'1+ #'sqrt (lambda (x) (* x x)))))

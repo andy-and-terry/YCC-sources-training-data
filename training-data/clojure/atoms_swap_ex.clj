@@ -1,0 +1,6 @@
+(def counter (atom 0))
+(dotimes [_ 5] (swap! counter inc))
+(println @counter)
+(swap! counter + 10)
+(reset! counter 0)
+(println (compare-and-set! counter 0 42) @counter)

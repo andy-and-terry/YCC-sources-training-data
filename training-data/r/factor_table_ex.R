@@ -1,0 +1,5 @@
+f <- factor(c("lo", "hi", "mid", "hi", "lo"), levels = c("lo", "mid", "hi"), ordered = TRUE)
+print(table(f))
+print(as.integer(f))
+print(f[1] < f[2])
+print(levels(droplevels(f[f != "mid"])))
