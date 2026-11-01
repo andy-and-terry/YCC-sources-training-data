@@ -1,0 +1,15 @@
+;; Positive n expressible as a*a + b*b with a, b >= 0.
+(define (representable? n)
+  (let outer ((a 0))
+    (cond ((> (* a a) n) #f)
+          ((let inner ((b a))
+             (cond ((> (+ (* a a) (* b b)) n) #f)
+                   ((= (+ (* a a) (* b b)) n) #t)
+                   (else (inner (+ b 1))))) #t)
+          (else (outer (+ a 1))))))
+
+(let loop ((n 1))
+  (when (<= n 30)
+    (when (representable? n) (display n) (display " "))
+    (loop (+ n 1))))
+(newline)
