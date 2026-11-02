@@ -1,0 +1,11 @@
+const std = @import("std");
+
+pub fn main() !void {
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer _ = gpa.deinit();
+    const a = gpa.allocator();
+    const buf = try a.alloc(u8, 16);
+    defer a.free(buf);
+    @memset(buf, 'z');
+    std.debug.print("{s}\n", .{buf});
+}

@@ -1,0 +1,5 @@
+(defun make-counter ()
+  (let ((n 0)) (lambda () (incf n))))
+(let ((c (make-counter)))
+  (funcall c) (funcall c)
+  (print (funcall c)))

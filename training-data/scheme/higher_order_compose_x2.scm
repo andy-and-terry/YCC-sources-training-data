@@ -1,0 +1,5 @@
+(define (compose . fs)
+  (if (null? fs) (lambda (x) x)
+      (lambda (x) ((car fs) ((apply compose (cdr fs)) x)))))
+(display ((compose (lambda (x) (* x 2)) (lambda (x) (+ x 1))) 5))
+(newline)

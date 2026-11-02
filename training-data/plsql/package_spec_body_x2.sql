@@ -1,0 +1,12 @@
+CREATE OR REPLACE PACKAGE math_util AS
+  FUNCTION gcd(a NUMBER, b NUMBER) RETURN NUMBER;
+END math_util;
+/
+CREATE OR REPLACE PACKAGE BODY math_util AS
+  FUNCTION gcd(a NUMBER, b NUMBER) RETURN NUMBER IS
+  BEGIN
+    IF b = 0 THEN RETURN a; END IF;
+    RETURN gcd(b, MOD(a, b));
+  END;
+END math_util;
+/

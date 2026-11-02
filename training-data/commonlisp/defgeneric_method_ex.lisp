@@ -1,0 +1,5 @@
+(defgeneric speak (x))
+(defmethod speak ((x integer)) (format t "int ~a~%" x))
+(defmethod speak ((x string)) (format t "str ~a~%" x))
+(speak 3)
+(speak "hi")

@@ -1,0 +1,7 @@
+DECLARE
+  v_cnt NUMBER;
+BEGIN
+  EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM employees WHERE department_id = :1' INTO v_cnt USING 20;
+  DBMS_OUTPUT.PUT_LINE(v_cnt);
+END;
+/
