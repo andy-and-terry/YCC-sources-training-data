@@ -1,0 +1,10 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. VOWEL-COUNTER.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-TEXT  PIC X(22) VALUE "education is beautiful".
+       01 WS-COUNT PIC 99 VALUE 0.
+       PROCEDURE DIVISION.
+           INSPECT WS-TEXT TALLYING WS-COUNT FOR ALL "a" "e" "i" "o" "u"
+           DISPLAY "VOWELS: " WS-COUNT
+           STOP RUN.

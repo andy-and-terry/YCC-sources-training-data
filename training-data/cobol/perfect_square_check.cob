@@ -1,0 +1,14 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PERFECT-SQUARE-CHECK.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-N PIC 99.
+       01 WS-R PIC 99.
+       PROCEDURE DIVISION.
+           PERFORM VARYING WS-N FROM 0 BY 1 UNTIL WS-N > 29
+               COMPUTE WS-R = FUNCTION INTEGER(FUNCTION SQRT(WS-N) + 0.5)
+               IF WS-R * WS-R = WS-N
+                   DISPLAY WS-N
+               END-IF
+           END-PERFORM
+           STOP RUN.

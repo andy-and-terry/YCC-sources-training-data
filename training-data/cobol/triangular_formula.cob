@@ -1,0 +1,12 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. TRIANGULAR-FORMULA.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-N PIC 99.
+       01 WS-T PIC 999.
+       PROCEDURE DIVISION.
+           PERFORM VARYING WS-N FROM 1 BY 1 UNTIL WS-N > 10
+               COMPUTE WS-T = WS-N * (WS-N + 1) / 2
+               DISPLAY WS-T
+           END-PERFORM
+           STOP RUN.
