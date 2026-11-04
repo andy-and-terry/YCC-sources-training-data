@@ -1,0 +1,15 @@
+(defun ugly (n)
+  (let ((seq (make-array n :initial-element 1))
+        (i2 0) (i3 0) (i5 0))
+    (loop for k from 1 below n do
+      (let* ((c2 (* 2 (aref seq i2)))
+             (c3 (* 3 (aref seq i3)))
+             (c5 (* 5 (aref seq i5)))
+             (next (min c2 c3 c5)))
+        (setf (aref seq k) next)
+        (when (= next c2) (incf i2))
+        (when (= next c3) (incf i3))
+        (when (= next c5) (incf i5))))
+    (aref seq (1- n))))
+
+(format t "~{~a ~}~%" (loop for i from 1 to 12 collect (ugly i)))

@@ -1,0 +1,12 @@
+(define (ordinal n)
+  (let ((r100 (modulo n 100)) (r10 (modulo n 10)))
+    (string-append (number->string n)
+                   (cond ((and (>= r100 11) (<= r100 13)) "th")
+                         ((= r10 1) "st")
+                         ((= r10 2) "nd")
+                         ((= r10 3) "rd")
+                         (else "th")))))
+
+(for-each (lambda (n) (display (ordinal n)) (display " "))
+          '(1 2 3 4 11 12 13 21 101 111))
+(newline)

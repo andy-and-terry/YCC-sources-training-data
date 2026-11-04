@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DIGIT-FREQUENCY-DEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-NUMBER   PIC X(10) VALUE "1122334455".
+       01 WS-FREQ-TBL.
+          05 WS-FREQ  PIC 99 OCCURS 10 TIMES VALUE 0.
+       01 WS-I        PIC 99.
+       01 WS-D        PIC 9.
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10
+               MOVE WS-NUMBER(WS-I:1) TO WS-D
+               ADD 1 TO WS-FREQ(WS-D + 1)
+           END-PERFORM
+           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 10
+               COMPUTE WS-D = WS-I - 1
+               DISPLAY "DIGIT " WS-D " COUNT " WS-FREQ(WS-I)
+           END-PERFORM
+           STOP RUN.

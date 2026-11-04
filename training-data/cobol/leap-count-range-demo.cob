@@ -1,0 +1,17 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. LEAP-COUNT-RANGE-DEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-YEAR    PIC 9(4).
+       01 WS-COUNT   PIC 9(4) VALUE 0.
+       PROCEDURE DIVISION.
+       MAIN-PARA.
+           PERFORM VARYING WS-YEAR FROM 1900 BY 1 UNTIL WS-YEAR > 2000
+               IF (FUNCTION MOD(WS-YEAR, 4) = 0 AND
+                   FUNCTION MOD(WS-YEAR, 100) NOT = 0)
+                  OR FUNCTION MOD(WS-YEAR, 400) = 0
+                   ADD 1 TO WS-COUNT
+               END-IF
+           END-PERFORM
+           DISPLAY "LEAP YEARS 1900-2000: " WS-COUNT
+           STOP RUN.
