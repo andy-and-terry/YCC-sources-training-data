@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SRCHALL.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 TBL.
+          05 ENTRY OCCURS 5 TIMES
+             ASCENDING KEY IS CODE-V INDEXED BY IDX.
+             10 CODE-V PIC 99.
+       01 WANT PIC 99 VALUE 30.
+       PROCEDURE DIVISION.
+           MOVE 10 TO CODE-V(1)
+           MOVE 20 TO CODE-V(2)
+           MOVE 30 TO CODE-V(3)
+           MOVE 40 TO CODE-V(4)
+           MOVE 50 TO CODE-V(5)
+           SEARCH ALL ENTRY
+               AT END DISPLAY "NOT FOUND"
+               WHEN CODE-V(IDX) = WANT DISPLAY "FOUND AT " IDX
+           END-SEARCH
+           STOP RUN.

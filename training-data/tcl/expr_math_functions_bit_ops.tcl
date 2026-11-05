@@ -1,0 +1,7 @@
+puts [expr {2 ** 10}]
+puts [expr {int(7 / 2)}]
+puts [expr {7 % 3}]
+puts [expr {0xF0 & 0x3C}]
+puts [expr {1 << 4}]
+puts [expr {round(2.5)}]
+puts [expr {hypot(3, 4)}]

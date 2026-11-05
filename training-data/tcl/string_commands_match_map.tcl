@@ -1,0 +1,6 @@
+puts [string toupper hello]
+puts [string range "abcdef" 1 3]
+puts [string match "a*c" abc]
+puts [string map {a 1 b 2} "aabbc"]
+puts [string length "four"]
+puts [format "%05.1f|%-4s|%x" 3.14159 ab 255]

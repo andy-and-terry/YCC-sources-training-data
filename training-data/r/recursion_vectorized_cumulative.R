@@ -1,0 +1,5 @@
+fib <- function(n) if (n < 2) n else fib(n - 1) + fib(n - 2)
+print(sapply(0:10, fib))
+print(cumsum(1:10))
+print(rev(cumprod(1:6)))
+print(which(c(F, T, T, F)))

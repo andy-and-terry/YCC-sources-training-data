@@ -1,0 +1,7 @@
+A <- matrix(c(2, 1, 1, 3), 2)
+b <- c(3, 5)
+print(solve(A, b))
+print(A %*% A)
+print(t(A) == A)
+print(diag(2))
+print(det(A))
