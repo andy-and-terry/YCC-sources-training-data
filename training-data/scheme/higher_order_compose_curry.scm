@@ -1,0 +1,6 @@
+(define (compose . fs)
+  (if (null? fs) (lambda (x) x)
+      (lambda (x) ((car fs) ((apply compose (cdr fs)) x)))))
+(define (curry f a) (lambda (b) (f a b)))
+(define inc-then-double (compose (curry * 2) (curry + 1)))
+(display (inc-then-double 5)) (newline)

@@ -1,0 +1,15 @@
+DECLARE
+  e_too_big EXCEPTION;
+  PRAGMA EXCEPTION_INIT(e_too_big, -20001);
+  v_n NUMBER := 150;
+BEGIN
+  IF v_n > 100 THEN
+    RAISE_APPLICATION_ERROR(-20001, 'value too big: ' || v_n);
+  END IF;
+EXCEPTION
+  WHEN e_too_big THEN
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+  WHEN OTHERS THEN
+    RAISE;
+END;
+/

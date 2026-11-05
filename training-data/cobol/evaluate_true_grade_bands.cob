@@ -1,0 +1,13 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. GRADES.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 SCORE PIC 999 VALUE 83.
+       PROCEDURE DIVISION.
+           EVALUATE TRUE
+               WHEN SCORE >= 90 DISPLAY "A"
+               WHEN SCORE >= 80 DISPLAY "B"
+               WHEN SCORE >= 70 DISPLAY "C"
+               WHEN OTHER       DISPLAY "F"
+           END-EVALUATE
+           STOP RUN.

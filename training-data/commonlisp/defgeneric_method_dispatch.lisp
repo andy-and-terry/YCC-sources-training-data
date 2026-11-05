@@ -1,0 +1,5 @@
+(defgeneric describe-it (x))
+(defmethod describe-it ((x integer)) (format nil "int ~d" x))
+(defmethod describe-it ((x string)) (format nil "string ~s" x))
+(defmethod describe-it ((x t)) "something")
+(print (mapcar #'describe-it (list 1 "a" 'b)))

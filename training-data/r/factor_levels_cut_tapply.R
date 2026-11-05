@@ -1,0 +1,6 @@
+ages <- c(5, 17, 25, 40, 70)
+grp <- cut(ages, breaks = c(0, 18, 65, Inf), labels = c("child", "adult", "senior"))
+print(grp)
+print(table(grp))
+print(tapply(ages, grp, mean))
+print(levels(factor(c("b", "a", "b"))))

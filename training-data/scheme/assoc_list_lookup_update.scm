@@ -1,0 +1,6 @@
+(define db '((a . 1) (b . 2) (c . 3)))
+(display (cdr (assq 'b db))) (newline)
+(display (map car db)) (newline)
+(define (update k v alist)
+  (cons (cons k v) (filter (lambda (p) (not (eq? (car p) k))) alist)))
+(display (update 'b 20 db)) (newline)

@@ -1,0 +1,15 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. PVSUM.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 TBL.
+          05 ITEM PIC 9(3) OCCURS 5 TIMES.
+       01 I     PIC 9.
+       01 TOTAL PIC 9(4) VALUE 0.
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 5
+               COMPUTE ITEM(I) = I * 10
+               ADD ITEM(I) TO TOTAL
+           END-PERFORM
+           DISPLAY "TOTAL = " TOTAL
+           STOP RUN.

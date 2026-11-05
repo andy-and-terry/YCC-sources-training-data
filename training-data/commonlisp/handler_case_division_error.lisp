@@ -1,0 +1,5 @@
+(defun safe-div (a b)
+  (handler-case (/ a b)
+    (division-by-zero () :undefined)))
+(print (safe-div 10 2))
+(print (safe-div 1 0))

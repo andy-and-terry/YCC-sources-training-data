@@ -1,0 +1,7 @@
+(define (fold-left f init lst)
+  (if (null? lst) init (fold-left f (f init (car lst)) (cdr lst))))
+(define (fold-right f init lst)
+  (if (null? lst) init (f (car lst) (fold-right f init (cdr lst)))))
+(display (fold-left - 0 '(1 2 3))) (newline)
+(display (fold-right - 0 '(1 2 3))) (newline)
+(display (fold-right cons '() '(a b c))) (newline)

@@ -1,0 +1,5 @@
+(defstruct point (x 0) (y 0))
+(let ((p (make-point :x 3)))
+  (setf (point-y p) 4)
+  (print (list (point-x p) (point-y p)))
+  (print (point-p p)))
