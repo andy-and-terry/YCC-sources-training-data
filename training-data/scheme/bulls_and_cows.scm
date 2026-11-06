@@ -1,0 +1,21 @@
+;; Bulls and Cows scoring for equal-length digit strings.
+(define (remove-first x lst)
+  (cond ((null? lst) '())
+        ((char=? x (car lst)) (cdr lst))
+        (else (cons (car lst) (remove-first x (cdr lst))))))
+
+(define (score secret guess)
+  (let loop ((s (string->list secret)) (g (string->list guess))
+             (bulls 0) (pool '()) (gs '()))
+    (cond ((null? s)
+           (let count ((gs gs) (pool pool) (cows 0))
+             (cond ((null? gs) (cons bulls cows))
+                   ((memv (car gs) pool)
+                    (count (cdr gs) (remove-first (car gs) pool) (+ cows 1)))
+                   (else (count (cdr gs) pool cows)))))
+          ((char=? (car s) (car g)) (loop (cdr s) (cdr g) (+ bulls 1) pool gs))
+          (else (loop (cdr s) (cdr g) bulls (cons (car s) pool) (cons (car g) gs))))))
+
+(let ((r (score "1807" "7810")))
+  (display (car r)) (display " bull(s), ")
+  (display (cdr r)) (display " cow(s)") (newline))
