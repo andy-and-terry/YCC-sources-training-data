@@ -1,0 +1,32 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. EQUILIBRIUM-INDEX.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 NUMS-DATA.
+          05 FILLER PIC 9(3) VALUE 1.
+          05 FILLER PIC 9(3) VALUE 7.
+          05 FILLER PIC 9(3) VALUE 3.
+          05 FILLER PIC 9(3) VALUE 6.
+          05 FILLER PIC 9(3) VALUE 5.
+          05 FILLER PIC 9(3) VALUE 6.
+       01 NUMS REDEFINES NUMS-DATA.
+          05 NUM       PIC 9(3) OCCURS 6 TIMES.
+       01 I           PIC 9(2).
+       01 TOTAL-SUM   PIC 9(4) VALUE 0.
+       01 LEFT-SUM    PIC 9(4) VALUE 0.
+       01 RIGHT-SUM   PIC S9(4).
+       01 FOUND       PIC S9(2) VALUE -1.
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
+               ADD NUM(I) TO TOTAL-SUM
+           END-PERFORM
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
+               COMPUTE RIGHT-SUM = TOTAL-SUM - LEFT-SUM - NUM(I)
+               IF FOUND = -1 AND LEFT-SUM = RIGHT-SUM
+                   COMPUTE FOUND = I - 1
+               END-IF
+               ADD NUM(I) TO LEFT-SUM
+           END-PERFORM
+           DISPLAY "EQUILIBRIUM INDEX = " FOUND
+           STOP RUN.

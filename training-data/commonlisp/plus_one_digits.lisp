@@ -1,0 +1,10 @@
+(defun plus-one (digits)
+  (let ((carry 1) (out '()))
+    (dolist (d (reverse digits))
+      (multiple-value-bind (q r) (floor (+ d carry) 10)
+        (setf carry q)
+        (push r out)))
+    (if (> carry 0) (cons carry out) out)))
+
+(print (plus-one '(1 2 9))) ; (1 3 0)
+(print (plus-one '(9 9)))   ; (1 0 0)
