@@ -1,0 +1,12 @@
+(define (hanoi n from via to)
+  (if (= n 0)
+      '()
+      (append (hanoi (- n 1) from to via)
+              (list (list from to))
+              (hanoi (- n 1) via from to))))
+
+(define moves (hanoi 3 'a 'b 'c))
+(display (length moves))
+(newline)
+(display moves)
+(newline)

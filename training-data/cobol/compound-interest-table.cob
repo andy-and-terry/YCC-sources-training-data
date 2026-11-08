@@ -1,0 +1,14 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. COMPOUND.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 BAL  PIC 9(7)V99 VALUE 1000.00.
+       01 YR   PIC 99.
+       01 OUT  PIC Z,ZZZ,ZZ9.99.
+       PROCEDURE DIVISION.
+           PERFORM VARYING YR FROM 1 BY 1 UNTIL YR > 5
+               COMPUTE BAL ROUNDED = BAL * 1.05
+               MOVE BAL TO OUT
+               DISPLAY "YEAR " YR ": " OUT
+           END-PERFORM
+           STOP RUN.
