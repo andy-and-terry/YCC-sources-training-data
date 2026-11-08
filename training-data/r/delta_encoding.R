@@ -1,0 +1,5 @@
+delta_encode <- function(x) c(x[1], diff(x))
+delta_decode <- function(d) cumsum(d)
+d <- delta_encode(c(10, 12, 15, 15, 20))
+print(d)
+print(delta_decode(d))

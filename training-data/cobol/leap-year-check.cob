@@ -1,0 +1,13 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. LEAPYEAR.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 YR PIC 9(4) VALUE 2024.
+       PROCEDURE DIVISION.
+           IF FUNCTION MOD(YR, 400) = 0
+              OR (FUNCTION MOD(YR, 4) = 0 AND FUNCTION MOD(YR, 100) NOT = 0)
+               DISPLAY YR " IS A LEAP YEAR"
+           ELSE
+               DISPLAY YR " IS NOT A LEAP YEAR"
+           END-IF
+           STOP RUN.
