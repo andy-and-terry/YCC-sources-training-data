@@ -1,0 +1,6 @@
+(define (fold-left f init lst)
+  (if (null? lst) init (fold-left f (f init (car lst)) (cdr lst))))
+(display (fold-left + 0 '(1 2 3 4)))
+(newline)
+(display (map (lambda (x y) (* x y)) '(1 2 3) '(4 5 6)))
+(newline)

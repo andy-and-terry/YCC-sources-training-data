@@ -1,0 +1,11 @@
+CREATE OR REPLACE PACKAGE math_pkg AS
+  FUNCTION square(n NUMBER) RETURN NUMBER;
+END math_pkg;
+/
+CREATE OR REPLACE PACKAGE BODY math_pkg AS
+  FUNCTION square(n NUMBER) RETURN NUMBER IS
+  BEGIN
+    RETURN n * n;
+  END;
+END math_pkg;
+/

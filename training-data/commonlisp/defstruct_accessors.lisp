@@ -1,0 +1,5 @@
+(defstruct point (x 0) (y 0))
+(let ((p (make-point :x 3 :y 4)))
+  (setf (point-x p) 10)
+  (format t "~a ~a~%" (point-x p) (point-y p))
+  (print (point-p p)))

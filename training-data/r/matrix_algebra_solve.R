@@ -1,0 +1,6 @@
+A <- matrix(c(2, 1, 1, 3), 2)
+b <- c(3, 5)
+x <- solve(A, b)
+print(x)
+print(A %*% x)
+print(t(A)); print(diag(2))

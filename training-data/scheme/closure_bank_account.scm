@@ -1,0 +1,8 @@
+(define (make-account balance)
+  (lambda (op amt)
+    (cond ((eq? op 'deposit) (set! balance (+ balance amt)) balance)
+          ((eq? op 'withdraw) (set! balance (- balance amt)) balance)
+          (else (error "unknown op" op)))))
+(define acc (make-account 100))
+(display (acc 'deposit 50)) (newline)
+(display (acc 'withdraw 30)) (newline)

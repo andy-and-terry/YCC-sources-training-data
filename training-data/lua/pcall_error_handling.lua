@@ -1,0 +1,5 @@
+local ok, err = pcall(function() error({ code = 42 }) end)
+print(ok, err.code)
+local ok2, msg = pcall(error, "boom")
+print(ok2, msg)
+print(xpcall(function() error("x") end, function(m) return "handled: " .. m end))

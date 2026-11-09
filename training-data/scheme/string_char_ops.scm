@@ -1,0 +1,5 @@
+(define s "Hello")
+(display (string-length s)) (newline)
+(display (string-append s ", " "World")) (newline)
+(display (list->string (reverse (string->list s)))) (newline)
+(display (char-upcase #\a)) (newline)

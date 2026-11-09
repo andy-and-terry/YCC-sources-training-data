@@ -1,0 +1,10 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. DIVREM.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 Q PIC 99.
+       01 R PIC 99.
+       PROCEDURE DIVISION.
+           DIVIDE 47 BY 5 GIVING Q REMAINDER R
+           DISPLAY "Q=" Q " R=" R
+           STOP RUN.

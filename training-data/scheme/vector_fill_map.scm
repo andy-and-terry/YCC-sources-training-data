@@ -1,0 +1,7 @@
+(define v (make-vector 5 0))
+(let loop ((i 0))
+  (when (< i 5)
+    (vector-set! v i (* i i))
+    (loop (+ i 1))))
+(display v) (newline)
+(display (vector->list v)) (newline)

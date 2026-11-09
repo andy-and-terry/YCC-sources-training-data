@@ -1,0 +1,5 @@
+let nums = range(1, 10)
+echo filter(copy(nums), 'v:val % 2 == 0')
+echo map(copy(nums), {_, v -> v * v})
+echo reduce(nums, {acc, v -> acc + v}, 0)
+echo sort([3, 1, 2], 'n')

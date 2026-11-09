@@ -1,0 +1,5 @@
+(define (my-reverse lst)
+  (let loop ((l lst) (acc '()))
+    (if (null? l) acc (loop (cdr l) (cons (car l) acc)))))
+(display (my-reverse '(1 2 3 4)))
+(newline)

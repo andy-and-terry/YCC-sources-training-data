@@ -1,0 +1,8 @@
+(defclass animal () ((name :initarg :name :reader name)))
+(defclass dog (animal) ())
+(defclass cat (animal) ())
+(defgeneric speak (a))
+(defmethod speak ((a dog)) (format nil "~a says woof" (name a)))
+(defmethod speak ((a cat)) (format nil "~a says meow" (name a)))
+(print (speak (make-instance 'dog :name "Rex")))
+(print (speak (make-instance 'cat :name "Tom")))
