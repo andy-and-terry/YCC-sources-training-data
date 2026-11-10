@@ -1,0 +1,8 @@
+SET SERVEROUTPUT ON
+BEGIN
+    FOR n IN 0 .. 9 LOOP
+        DBMS_OUTPUT.PUT(TRUNC((n * n + n + 2) / 2) || ' ');
+    END LOOP;
+    DBMS_OUTPUT.NEW_LINE;  -- 1 2 4 7 11 16 22 29 37 46
+END;
+/

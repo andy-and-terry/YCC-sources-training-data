@@ -1,0 +1,13 @@
+(define (prime? n)
+  (and (>= n 2)
+       (let loop ((d 2))
+         (cond ((> (* d d) n) #t)
+               ((zero? (modulo n d)) #f)
+               (else (loop (+ d 1)))))))
+
+(let loop ((p 3))
+  (when (<= (+ p 2) 80)
+    (when (and (prime? p) (prime? (+ p 2)))
+      (display (list p (+ p 2))) (display " "))
+    (loop (+ p 1))))
+(newline) ; (3 5) (5 7) (11 13) (17 19) (29 31) (41 43) (59 61) (71 73)

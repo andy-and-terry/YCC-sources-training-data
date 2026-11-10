@@ -1,0 +1,2 @@
+pieces = fn cuts -> div(cuts * cuts + cuts + 2, 2) end
+IO.puts(Enum.map_join(0..9, " ", pieces)) # 1 2 4 7 11 16 22 29 37 46
