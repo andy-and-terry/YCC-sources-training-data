@@ -1,0 +1,5 @@
+;;; Square of the sum minus sum of squares for 1..10 (expect 2640)
+(let* ((xs (loop for i from 1 to 10 collect i))
+       (sum (reduce #'+ xs))
+       (squares (reduce #'+ (mapcar (lambda (x) (* x x)) xs))))
+  (format t "~a~%" (- (* sum sum) squares)))
