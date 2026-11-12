@@ -1,0 +1,5 @@
+puts [string toupper hello]
+puts [string match "a*c" abc]
+puts [string map {a 1 b 2} aabbc]
+puts [string range "hello" 1 3]
+puts [format "%05.1f|%-4s|" 3.14159 ab]

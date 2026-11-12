@@ -1,0 +1,5 @@
+(define (make-pt x y) (vector x y))
+(define (pt-x p) (vector-ref p 0))
+(define (pt-y p) (vector-ref p 1))
+(define p (make-pt 3 4))
+(display (sqrt (+ (* (pt-x p) (pt-x p)) (* (pt-y p) (pt-y p))))) (newline)
