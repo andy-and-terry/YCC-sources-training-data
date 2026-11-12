@@ -1,0 +1,7 @@
+(defclass shape () ())
+(defclass circle (shape) ((r :initarg :r :reader r)))
+(defclass sq (shape) ((s :initarg :s :reader s)))
+(defgeneric area (x))
+(defmethod area ((c circle)) (* pi (r c) (r c)))
+(defmethod area ((q sq)) (* (s q) (s q)))
+(print (area (make-instance 'sq :s 3)))

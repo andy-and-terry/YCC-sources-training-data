@@ -1,0 +1,5 @@
+m <- matrix(1:6, nrow = 2)
+print(apply(m, 1, sum))
+print(apply(m, 2, max))
+print(t(m) %*% m)
+print(dim(m))

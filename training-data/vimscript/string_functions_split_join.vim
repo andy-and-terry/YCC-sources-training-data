@@ -1,0 +1,5 @@
+echo toupper('hello') . ' ' . strlen('hello')
+echo split('a,b,c', ',')
+echo join(['x', 'y'], '-')
+echo substitute('foo bar', 'o\+', '0', 'g')
+echo printf('%05.1f|%-4s|', 3.14159, 'ab')

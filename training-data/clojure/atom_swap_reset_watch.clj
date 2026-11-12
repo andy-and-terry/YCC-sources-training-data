@@ -1,0 +1,5 @@
+(def counter (atom 0))
+(add-watch counter :log (fn [_ _ old new] (println old "->" new)))
+(swap! counter inc)
+(swap! counter + 10)
+(reset! counter 0)

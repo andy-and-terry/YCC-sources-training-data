@@ -1,0 +1,8 @@
+DECLARE
+  s NUMBER := 72;
+  g CHAR(1);
+BEGIN
+  g := CASE WHEN s >= 90 THEN 'A' WHEN s >= 70 THEN 'C' ELSE 'F' END;
+  DBMS_OUTPUT.PUT_LINE(g);
+END;
+/
