@@ -1,0 +1,9 @@
+use strict; use warnings;
+our $level = 0;
+
+sub show { print "level=$level\n" }
+sub nested { local $level = $level + 1; show() }
+
+show();
+nested();
+show();

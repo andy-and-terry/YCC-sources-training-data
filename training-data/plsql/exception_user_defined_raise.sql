@@ -1,0 +1,10 @@
+DECLARE
+  e_low_balance EXCEPTION;
+  bal NUMBER := 10;
+BEGIN
+  IF bal < 50 THEN RAISE e_low_balance; END IF;
+EXCEPTION
+  WHEN e_low_balance THEN DBMS_OUTPUT.PUT_LINE('balance too low');
+  WHEN OTHERS THEN DBMS_OUTPUT.PUT_LINE(SQLERRM);
+END;
+/
