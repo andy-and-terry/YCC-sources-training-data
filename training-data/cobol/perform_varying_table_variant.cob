@@ -1,0 +1,15 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. TABLE-DEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 TBL.
+          05 ITEM PIC 99 OCCURS 5 TIMES.
+       01 I PIC 9.
+       01 TOT PIC 999 VALUE 0.
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 5
+               COMPUTE ITEM(I) = I * I
+               ADD ITEM(I) TO TOT
+           END-PERFORM
+           DISPLAY TOT
+           STOP RUN.

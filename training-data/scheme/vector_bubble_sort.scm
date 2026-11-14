@@ -1,0 +1,11 @@
+(define (bubble! v)
+  (let ((n (vector-length v)))
+    (do ((i 0 (+ i 1))) ((= i n) v)
+      (do ((j 0 (+ j 1))) ((= j (- n i 1)))
+        (when (> (vector-ref v j) (vector-ref v (+ j 1)))
+          (let ((t (vector-ref v j)))
+            (vector-set! v j (vector-ref v (+ j 1)))
+            (vector-set! v (+ j 1) t)))))))
+
+(display (bubble! (vector 5 2 9 1)))
+(newline)
