@@ -1,0 +1,7 @@
+// One shoelace cross term: x1*y2 - x2*y1 with signed inputs.
+module shoelace_cross_term (
+    input  wire signed [7:0]  x1, y1, x2, y2,
+    output wire signed [16:0] term
+);
+    assign term = x1 * y2 - x2 * y1;
+endmodule

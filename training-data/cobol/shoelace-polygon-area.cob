@@ -1,0 +1,20 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SHOELACE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 PTS.
+          05 PX PIC S99 OCCURS 4 TIMES.
+          05 PY PIC S99 OCCURS 4 TIMES.
+       01 I PIC 9.
+       01 J PIC 9.
+       01 S PIC S9(4) VALUE 0.
+       PROCEDURE DIVISION.
+           MOVE 0 TO PX(1) MOVE 4 TO PX(2) MOVE 4 TO PX(3) MOVE 0 TO PX(4)
+           MOVE 0 TO PY(1) MOVE 0 TO PY(2) MOVE 3 TO PY(3) MOVE 3 TO PY(4)
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 4
+               COMPUTE J = FUNCTION MOD(I, 4) + 1
+               COMPUTE S = S + PX(I) * PY(J) - PX(J) * PY(I)
+           END-PERFORM
+           COMPUTE S = FUNCTION ABS(S) / 2
+           DISPLAY S
+           STOP RUN.

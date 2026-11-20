@@ -1,0 +1,10 @@
+;; Aliquot sum classification.
+(define (aliquot n)
+  (let loop ((d 1) (s 0))
+    (cond ((>= d n) s) ((zero? (remainder n d)) (loop (+ d 1) (+ s d))) (else (loop (+ d 1) s)))))
+(for-each (lambda (n)
+            (let ((a (aliquot n)))
+              (display n) (display " ") (display a) (display " ")
+              (display (cond ((= a n) "perfect") ((> a n) "abundant") (else "deficient")))
+              (newline)))
+          '(6 12 15 28))

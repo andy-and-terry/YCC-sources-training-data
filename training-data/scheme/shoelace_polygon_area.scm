@@ -1,0 +1,8 @@
+;; Shoelace polygon area.
+(define (area pts)
+  (let loop ((ps pts) (s 0))
+    (if (null? ps)
+        (/ (abs s) 2)
+        (let ((a (car ps)) (b (if (null? (cdr ps)) (car pts) (cadr ps))))
+          (loop (cdr ps) (+ s (- (* (car a) (cadr b)) (* (car b) (cadr a)))))))))
+(display (area '((0 0) (4 0) (4 3) (0 3)))) (newline)
