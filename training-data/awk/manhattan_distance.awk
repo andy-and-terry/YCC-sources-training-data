@@ -1,0 +1,3 @@
+# Manhattan distance reading "x1 y1 x2 y2" lines from stdin: echo "1 2 4 6" | awk -f ...
+function abs(v) { return v < 0 ? -v : v }
+{ print abs($1 - $3) + abs($2 - $4) }
