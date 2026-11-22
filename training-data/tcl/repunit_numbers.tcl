@@ -1,0 +1,8 @@
+# Repunits: R_k = (10^k - 1) / 9, built as r = 10r + 1.
+set r 0
+set out {}
+for {set i 0} {$i < 8} {incr i} {
+    set r [expr {$r * 10 + 1}]
+    lappend out $r
+}
+puts [join $out " "]
