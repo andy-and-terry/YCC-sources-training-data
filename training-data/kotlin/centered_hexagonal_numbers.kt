@@ -1,0 +1,8 @@
+// 3n(n-1)+1
+fun term(n: Long): Long = ((3 * n) * (n - 1)) + 1
+
+fun main() {
+    for (n in 1L..15L) {
+        println("$n -> ${term(n)}")
+    }
+}
