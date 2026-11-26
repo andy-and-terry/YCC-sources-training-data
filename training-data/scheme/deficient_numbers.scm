@@ -1,0 +1,11 @@
+;; Deficient numbers below 100; expect 76.
+(define (proper-sum n)
+  (let loop ((d 1) (t 0))
+    (cond ((>= d n) t)
+          ((zero? (modulo n d)) (loop (+ d 1) (+ t d)))
+          (else (loop (+ d 1) t)))))
+(define (count-deficient limit)
+  (let loop ((n 1) (c 0))
+    (if (>= n limit) c (loop (+ n 1) (if (< (proper-sum n) n) (+ c 1) c)))))
+(display (count-deficient 100))
+(newline)

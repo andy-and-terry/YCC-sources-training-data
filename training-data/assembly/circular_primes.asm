@@ -1,0 +1,62 @@
+; x86-64 NASM: circular primes below 100 (rotation of 1-2 digit numbers)
+; Expected result 13 is returned as the process exit code.
+section .text
+    global _start
+
+; is_prime(rdi = n) -> rax = 1 if prime else 0 (clobbers rcx, rdx, r8)
+is_prime:
+    xor eax, eax
+    cmp rdi, 2
+    jl .ret
+    mov rcx, 2
+.loop:
+    mov r8, rcx
+    imul r8, rcx
+    cmp r8, rdi
+    jg .yes
+    mov rax, rdi
+    xor edx, edx
+    div rcx
+    test rdx, rdx
+    jz .no
+    inc rcx
+    jmp .loop
+.yes:
+    mov eax, 1
+    ret
+.no:
+    xor eax, eax
+.ret:
+    ret
+
+_start:
+    xor r12, r12            ; count
+    mov r13, 2
+.next:
+    cmp r13, 100
+    jge .done
+    mov rdi, r13
+    call is_prime
+    test rax, rax
+    jz .skip
+    cmp r13, 10
+    jl .count
+    mov rax, r13            ; two digits: rotate by swapping tens and units
+    xor edx, edx
+    mov rcx, 10
+    div rcx                 ; rax = tens, rdx = units
+    imul rdx, rcx
+    add rdx, rax
+    mov rdi, rdx
+    call is_prime
+    test rax, rax
+    jz .skip
+.count:
+    inc r12
+.skip:
+    inc r13
+    jmp .next
+.done:
+    mov rdi, r12
+    mov eax, 60
+    syscall

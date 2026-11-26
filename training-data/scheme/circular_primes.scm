@@ -1,0 +1,21 @@
+;; Circular primes below 100; expect 13.
+(define (prime? n)
+  (and (> n 1)
+       (let loop ((d 2))
+         (cond ((> (* d d) n) #t)
+               ((zero? (modulo n d)) #f)
+               (else (loop (+ d 1)))))))
+
+(define (count-range lo hi pred)
+  (let loop ((i lo) (c 0))
+    (if (>= i hi) c (loop (+ i 1) (if (pred i) (+ c 1) c)))))
+
+(define (circular? n)
+  (let* ((s (number->string n)) (len (string-length s)))
+    (let loop ((i 0))
+      (cond ((= i len) #t)
+            ((prime? (string->number (string-append (substring s i len) (substring s 0 i))))
+             (loop (+ i 1)))
+            (else #f)))))
+(display (count-range 2 100 circular?))
+(newline)

@@ -1,0 +1,11 @@
+;; Squarefree numbers up to 100; expect 61.
+(define (squarefree? n)
+  (let loop ((d 2))
+    (cond ((> (* d d) n) #t)
+          ((zero? (modulo n (* d d))) #f)
+          (else (loop (+ d 1))))))
+(define (count-squarefree limit)
+  (let loop ((n 1) (c 0))
+    (if (> n limit) c (loop (+ n 1) (if (squarefree? n) (+ c 1) c)))))
+(display (count-squarefree 100))
+(newline)
