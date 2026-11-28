@@ -1,0 +1,15 @@
+(define (prime? n)
+  (and (> n 1)
+       (let loop ((i 2))
+         (cond ((> (* i i) n) #t)
+               ((= 0 (modulo n i)) #f)
+               (else (loop (+ i 1)))))))
+
+(define (rev n)
+  (let loop ((n n) (r 0))
+    (if (= n 0) r (loop (quotient n 10) (+ (* r 10) (modulo n 10))))))
+
+(do ((p 2 (+ p 1))) ((= p 100))
+  (if (and (prime? p) (not (= p (rev p))) (prime? (rev p)))
+      (begin (display p) (display " "))))
+(newline)

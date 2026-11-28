@@ -1,0 +1,24 @@
+SET SERVEROUTPUT ON;
+DECLARE
+  v_out VARCHAR2(400);
+  FUNCTION is_prime(n PLS_INTEGER) RETURN BOOLEAN IS
+  BEGIN
+    IF n < 2 THEN RETURN FALSE; END IF;
+    FOR i IN 2 .. TRUNC(SQRT(n)) LOOP
+      IF MOD(n, i) = 0 THEN RETURN FALSE; END IF;
+    END LOOP;
+    RETURN TRUE;
+  END;
+  FUNCTION rev(n PLS_INTEGER) RETURN PLS_INTEGER IS
+  BEGIN
+    RETURN TO_NUMBER(REVERSE(TO_CHAR(n)));
+  END;
+BEGIN
+  FOR p IN 2 .. 99 LOOP
+    IF is_prime(p) AND rev(p) <> p AND is_prime(rev(p)) THEN
+      v_out := v_out || p || ' ';
+    END IF;
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE(v_out);
+END;
+/

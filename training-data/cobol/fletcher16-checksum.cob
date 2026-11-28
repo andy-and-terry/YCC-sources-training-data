@@ -1,0 +1,18 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. FLETCHER16-CHECKSUM.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-TEXT   PIC X(5) VALUE "abcde".
+       01 WS-I      PIC 9(2).
+       01 WS-S1     PIC 9(5) VALUE 0.
+       01 WS-S2     PIC 9(5) VALUE 0.
+       01 WS-RESULT PIC 9(6).
+       PROCEDURE DIVISION.
+           PERFORM VARYING WS-I FROM 1 BY 1 UNTIL WS-I > 5
+               COMPUTE WS-S1 = FUNCTION MOD(WS-S1 +
+                   FUNCTION ORD(WS-TEXT(WS-I:1)) - 1, 255)
+               COMPUTE WS-S2 = FUNCTION MOD(WS-S2 + WS-S1, 255)
+           END-PERFORM
+           COMPUTE WS-RESULT = WS-S2 * 256 + WS-S1
+           DISPLAY WS-RESULT
+           STOP RUN.
