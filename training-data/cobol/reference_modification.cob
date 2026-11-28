@@ -1,0 +1,10 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. REFMOD.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 S PIC X(10) VALUE "ABCDEFGHIJ".
+       PROCEDURE DIVISION.
+           DISPLAY S(3:4)
+           MOVE "xx" TO S(1:2)
+           DISPLAY S
+           STOP RUN.

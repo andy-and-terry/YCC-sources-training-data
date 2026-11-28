@@ -1,0 +1,11 @@
+CREATE OR REPLACE PACKAGE counter_pkg AS
+  PROCEDURE inc;
+  FUNCTION get RETURN NUMBER;
+END counter_pkg;
+/
+CREATE OR REPLACE PACKAGE BODY counter_pkg AS
+  n NUMBER := 0;
+  PROCEDURE inc IS BEGIN n := n + 1; END;
+  FUNCTION get RETURN NUMBER IS BEGIN RETURN n; END;
+END counter_pkg;
+/

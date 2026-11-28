@@ -1,0 +1,12 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. SPLIT-DEMO.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 LINE-IN PIC X(20) VALUE "ann,30,nyc".
+       01 NM PIC X(5). 
+       01 AGE PIC X(3).
+       01 CITY PIC X(5).
+       PROCEDURE DIVISION.
+           UNSTRING LINE-IN DELIMITED BY "," INTO NM AGE CITY
+           DISPLAY NM " " AGE " " CITY
+           STOP RUN.
