@@ -1,0 +1,13 @@
+(define (sigma n)
+  (let loop ((d 1) (s 0))
+    (cond ((> d n) s)
+          ((= 0 (modulo n d)) (loop (+ d 1) (+ s d)))
+          (else (loop (+ d 1) s)))))
+
+(let loop ((n 1))
+  (when (<= n 20)
+    (when (< (sigma n) (* 2 n))
+      (display n)
+      (display " "))
+    (loop (+ n 1))))
+(newline)

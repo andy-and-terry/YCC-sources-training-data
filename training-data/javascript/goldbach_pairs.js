@@ -1,0 +1,11 @@
+const isPrime = (n) => {
+  if (n < 2) return false;
+  for (let d = 2; d * d <= n; d++) if (n % d === 0) return false;
+  return true;
+};
+function goldbach(n) {
+  const out = [];
+  for (let p = 2; p <= n / 2; p++) if (isPrime(p) && isPrime(n - p)) out.push([p, n - p]);
+  return out;
+}
+console.log(goldbach(28));

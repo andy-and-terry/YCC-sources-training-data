@@ -1,0 +1,19 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. AFFINE.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 MSG     PIC X(6) VALUE "AFFINE".
+       01 OUT-MSG PIC X(6) VALUE SPACES.
+       01 I       PIC 9.
+       01 X       PIC 99.
+       01 Y       PIC 99.
+       01 ALPHA   PIC X(26) VALUE "ABCDEFGHIJKLMNOPQRSTUVWXYZ".
+
+       PROCEDURE DIVISION.
+           PERFORM VARYING I FROM 1 BY 1 UNTIL I > 6
+               COMPUTE X = FUNCTION ORD(MSG (I:1)) - FUNCTION ORD("A")
+               COMPUTE Y = FUNCTION MOD(5 * X + 8, 26)
+               MOVE ALPHA (Y + 1:1) TO OUT-MSG (I:1)
+           END-PERFORM
+           DISPLAY OUT-MSG
+           STOP RUN.

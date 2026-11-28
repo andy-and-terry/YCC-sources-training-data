@@ -1,0 +1,15 @@
+(define (prime? n)
+  (and (> n 1)
+       (let loop ((d 2))
+         (cond ((> (* d d) n) #t)
+               ((= 0 (modulo n d)) #f)
+               (else (loop (+ d 1)))))))
+
+(define (goldbach n)
+  (let loop ((p 2) (acc '()))
+    (cond ((> p (quotient n 2)) (reverse acc))
+          ((and (prime? p) (prime? (- n p))) (loop (+ p 1) (cons (list p (- n p)) acc)))
+          (else (loop (+ p 1) acc)))))
+
+(display (goldbach 28))
+(newline)
