@@ -1,0 +1,10 @@
+(define (escape cr ci)
+  (let loop ((zr 0.0) (zi 0.0) (n 0))
+    (cond ((= n 30) 30)
+          ((>= (+ (* zr zr) (* zi zi)) 4.0) n)
+          (else (loop (+ (- (* zr zr) (* zi zi)) cr) (+ (* 2 zr zi) ci) (+ n 1))))))
+
+(do ((yi -5 (+ yi 1))) ((> yi 5))
+  (do ((xi -40 (+ xi 1))) ((> xi 12))
+    (display (if (= 30 (escape (/ xi 20.0) (/ yi 5.0))) "#" ".")))
+  (newline))

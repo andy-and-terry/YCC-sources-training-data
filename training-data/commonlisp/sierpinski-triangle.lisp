@@ -1,0 +1,6 @@
+(let ((n 8))
+  (dotimes (r n)
+    (format t "~v@{ ~}" (- n r 1) nil)
+    (dotimes (c (1+ r))
+      (format t "~a" (if (= (logand r c) c) "* " "  ")))
+    (terpri)))

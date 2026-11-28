@@ -1,0 +1,12 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. INSPECT-TALLY.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 WS-TEXT  PIC X(20) VALUE "banana bandana".
+       01 WS-COUNT PIC 99 VALUE 0.
+       PROCEDURE DIVISION.
+           INSPECT WS-TEXT TALLYING WS-COUNT FOR ALL "an"
+           DISPLAY "an occurs " WS-COUNT " times"
+           INSPECT WS-TEXT REPLACING ALL "a" BY "A"
+           DISPLAY WS-TEXT
+           STOP RUN.

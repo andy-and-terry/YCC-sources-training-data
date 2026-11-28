@@ -1,0 +1,6 @@
+(define n 8)
+(do ((r 0 (+ r 1))) ((= r n))
+  (display (make-string (- n r 1) #\space))
+  (do ((c 0 (+ c 1))) ((> c r))
+    (display (if (= (bitwise-and r c) c) "* " "  ")))
+  (newline))
