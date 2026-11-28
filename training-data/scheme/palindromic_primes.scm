@@ -1,0 +1,15 @@
+(define (prime? n)
+  (and (> n 1)
+       (let loop ((i 2))
+         (cond ((> (* i i) n) #t)
+               ((= 0 (remainder n i)) #f)
+               (else (loop (+ i 1)))))))
+
+(define (palindrome? n)
+  (let ((s (number->string n)))
+    (equal? s (list->string (reverse (string->list s))))))
+
+(let loop ((n 2) (acc '()))
+  (if (= n 200)
+      (begin (display (reverse acc)) (newline)) ; (2 3 5 7 11 101 131 151 181 191)
+      (loop (+ n 1) (if (and (palindrome? n) (prime? n)) (cons n acc) acc))))
