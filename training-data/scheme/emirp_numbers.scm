@@ -1,0 +1,16 @@
+(define (prime? n)
+  (and (> n 1)
+       (let loop ((i 2))
+         (cond ((> (* i i) n) #t)
+               ((= 0 (remainder n i)) #f)
+               (else (loop (+ i 1)))))))
+
+(define (rev n)
+  (let loop ((n n) (r 0))
+    (if (= n 0) r (loop (quotient n 10) (+ (* r 10) (remainder n 10))))))
+
+(let loop ((p 2) (acc '()))
+  (if (= p 200)
+      (begin (display (reverse acc)) (newline)) ; (13 17 31 37 71 73 79 97 107 ...)
+      (loop (+ p 1)
+            (if (and (not (= p (rev p))) (prime? p) (prime? (rev p))) (cons p acc) acc))))
