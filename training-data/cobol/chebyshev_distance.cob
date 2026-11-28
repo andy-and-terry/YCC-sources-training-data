@@ -1,0 +1,14 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. CHEBYSHEV.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 DX   PIC 9(3).
+       01 DY   PIC 9(3).
+       01 BEST PIC 9(3).
+
+       PROCEDURE DIVISION.
+           COMPUTE DX = FUNCTION ABS(1 - 4)
+           COMPUTE DY = FUNCTION ABS(2 - 6)
+           COMPUTE BEST = FUNCTION MAX(DX, DY)
+           DISPLAY "CHEBYSHEV = " BEST
+           STOP RUN.
