@@ -2,42 +2,28 @@ package main
 
 import (
 	"fmt"
-	"sort"
+	"strings"
 )
 
-func order(n, k int) []int {
-	pat := []int{}
-	for i := 0; i < k; i++ {
-		pat = append(pat, i)
+func encode(text string, rails int) string {
+	rows := make([][]rune, rails)
+	r, step := 0, 1
+	for _, ch := range text {
+		rows[r] = append(rows[r], ch)
+		if r == 0 {
+			step = 1
+		} else if r == rails-1 {
+			step = -1
+		}
+		r += step
 	}
-	for i := k - 2; i > 0; i-- {
-		pat = append(pat, i)
+	var b strings.Builder
+	for _, row := range rows {
+		b.WriteString(string(row))
 	}
-	idx := make([]int, n)
-	for i := range idx {
-		idx[i] = i
-	}
-	sort.SliceStable(idx, func(a, b int) bool { return pat[idx[a]%len(pat)] < pat[idx[b]%len(pat)] })
-	return idx
-}
-
-func encrypt(t string, k int) string {
-	out := []byte{}
-	for _, i := range order(len(t), k) {
-		out = append(out, t[i])
-	}
-	return string(out)
-}
-
-func decrypt(c string, k int) string {
-	out := make([]byte, len(c))
-	for pos, i := range order(len(c), k) {
-		out[i] = c[pos]
-	}
-	return string(out)
+	return b.String()
 }
 
 func main() {
-	c := encrypt("WEAREDISCOVERED", 3)
-	fmt.Println(c, decrypt(c, 3))
+	fmt.Println(encode("WEAREDISCOVERED", 3))
 }

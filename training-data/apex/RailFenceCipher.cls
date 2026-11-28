@@ -1,19 +1,18 @@
 public class RailFenceCipher {
-    public static String encrypt(String text, Integer k) {
-        Integer cycle = 2 * (k - 1);
-        List<String> rails = new List<String>();
-        for (Integer r = 0; r < k; r++) {
-            rails.add('');
-        }
+    public static String encode(String text, Integer rails) {
+        List<String> rows = new List<String>();
+        for (Integer i = 0; i < rails; i++) rows.add('');
+        Integer r = 0, step = 1;
         for (Integer i = 0; i < text.length(); i++) {
-            Integer r = Math.mod(i, cycle);
-            Integer rail = r < k ? r : cycle - r;
-            rails[rail] += text.substring(i, i + 1);
+            rows[r] += text.substring(i, i + 1);
+            if (r == 0) step = 1;
+            else if (r == rails - 1) step = -1;
+            r += step;
         }
-        return String.join(rails, '');
+        return String.join(rows, '');
     }
 
     public static void demo() {
-        System.debug(encrypt('WEAREDISCOVERED', 3));
+        System.debug(encode('WEAREDISCOVERED', 3));
     }
 }

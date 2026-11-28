@@ -1,26 +1,18 @@
-fn order(n: usize, k: usize) -> Vec<usize> {
-    let mut pat: Vec<usize> = (0..k).collect();
-    pat.extend((1..k - 1).rev());
-    let mut idx: Vec<usize> = (0..n).collect();
-    idx.sort_by_key(|&i| (pat[i % pat.len()], i));
-    idx
-}
-
-fn encrypt(t: &str, k: usize) -> String {
-    let b = t.as_bytes();
-    order(b.len(), k).into_iter().map(|i| b[i] as char).collect()
-}
-
-fn decrypt(c: &str, k: usize) -> String {
-    let b = c.as_bytes();
-    let mut out = vec![b' '; b.len()];
-    for (pos, i) in order(b.len(), k).into_iter().enumerate() {
-        out[i] = b[pos];
+fn encode(text: &str, rails: usize) -> String {
+    let mut rows: Vec<String> = vec![String::new(); rails];
+    let (mut r, mut down) = (0usize, true);
+    for ch in text.chars() {
+        rows[r].push(ch);
+        if r == 0 {
+            down = true;
+        } else if r == rails - 1 {
+            down = false;
+        }
+        r = if down { r + 1 } else { r - 1 };
     }
-    String::from_utf8(out).unwrap()
+    rows.concat()
 }
 
 fn main() {
-    let c = encrypt("WEAREDISCOVERED", 3);
-    println!("{} {}", c, decrypt(&c, 3));
+    println!("{}", encode("WEAREDISCOVERED", 3));
 }

@@ -1,26 +1,25 @@
-module RailFenceCipher exposing (encrypt)
+module RailFenceCipher exposing (encode)
 
 
-rail : Int -> Int -> Int
-rail k i =
+encode : Int -> String -> String
+encode rails text =
     let
-        cycle =
-            2 * (k - 1)
+        period =
+            2 * (rails - 1)
 
-        r =
-            modBy cycle i
+        railOf i =
+            let
+                m =
+                    modBy period i
+            in
+            if m < rails then
+                m
+
+            else
+                period - m
     in
-    if r < k then
-        r
-
-    else
-        cycle - r
-
-
-encrypt : String -> Int -> String
-encrypt text k =
     String.toList text
-        |> List.indexedMap (\i c -> ( rail k i, i, c ))
-        |> List.sortBy (\( r, i, _ ) -> ( r, i ))
-        |> List.map (\( _, _, c ) -> c)
+        |> List.indexedMap (\i c -> ( ( railOf i, i ), c ))
+        |> List.sortBy Tuple.first
+        |> List.map Tuple.second
         |> String.fromList

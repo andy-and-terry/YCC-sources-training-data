@@ -1,19 +1,13 @@
-fun rail (i, k) =
+fun encode text rails =
   let
-    val cycle = 2 * (k - 1)
-    val r = i mod cycle
+    val period = 2 * (rails - 1)
+    fun railOf i = let val m = i mod period in if m < rails then m else period - m end
+    val keyed = ListPair.zip (List.tabulate (size text, fn i => (railOf i, i)), String.explode text)
+    val sorted = ListSort.sort
+      (fn (((r1, i1), _), ((r2, i2), _)) =>
+         if r1 <> r2 then Int.compare (r1, r2) else Int.compare (i1, i2)) keyed
   in
-    if r < k then r else cycle - r
+    String.implode (map #2 sorted)
   end
 
-fun encrypt (text, k) =
-  let
-    val chars = String.explode text
-    val indexed = ListPair.zip (List.tabulate (length chars, fn i => i), chars)
-    fun forRail r = List.filter (fn (i, _) => rail (i, k) = r) indexed
-    val all = List.concat (List.tabulate (k, forRail))
-  in
-    String.implode (map #2 all)
-  end
-
-val () = print (encrypt ("WEAREDISCOVERED", 3) ^ "\n")
+val () = print (encode "WEAREDISCOVERED" 3 ^ "\n")

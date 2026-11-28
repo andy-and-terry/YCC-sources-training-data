@@ -1,21 +1,10 @@
-rail_order <- function(n, k) {
-  cycle <- 2 * (k - 1)
-  r <- (0:(n - 1)) %% cycle
-  rail <- ifelse(r < k, r, cycle - r)
-  order(rail)  # order() is stable for ties
-}
-
-encrypt <- function(text, k) {
+encode <- function(text, rails) {
   chars <- strsplit(text, "")[[1]]
-  paste(chars[rail_order(length(chars), k)], collapse = "")
+  period <- 2 * (rails - 1)
+  idx <- seq_along(chars) - 1
+  m <- idx %% period
+  rail <- ifelse(m < rails, m, period - m)
+  paste(chars[order(rail, idx)], collapse = "")
 }
 
-decrypt <- function(cipher, k) {
-  chars <- strsplit(cipher, "")[[1]]
-  out <- character(length(chars))
-  out[rail_order(length(chars), k)] <- chars
-  paste(out, collapse = "")
-}
-
-c <- encrypt("WEAREDISCOVERED", 3)
-cat(c, decrypt(c, 3), "\n")
+cat(encode("WEAREDISCOVERED", 3), "\n")

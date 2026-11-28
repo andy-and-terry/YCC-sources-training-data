@@ -1,17 +1,19 @@
-(define (rail i k)
-  (let* ((cycle (* 2 (- k 1))) (r (modulo i cycle)))
-    (if (< r k) r (- cycle r))))
+;; Build each rail's characters by walking the zig-zag pattern.
+(define (rail-of i rails)
+  (let* ((period (* 2 (- rails 1))) (m (modulo i period)))
+    (if (< m rails) m (- period m))))
 
-(define (encrypt text k)
+(define (encode text rails)
   (let ((chars (string->list text)))
-    (list->string
-     (apply append
-            (map (lambda (r)
-                   (let loop ((cs chars) (i 0) (acc '()))
-                     (cond ((null? cs) (reverse acc))
-                           ((= (rail i k) r) (loop (cdr cs) (+ i 1) (cons (car cs) acc)))
-                           (else (loop (cdr cs) (+ i 1) acc)))))
-                 (iota k))))))
+    (let loop ((r 0) (acc '()))
+      (if (= r rails)
+          (list->string (apply append (reverse acc)))
+          (loop (+ r 1)
+                (cons (let walk ((cs chars) (i 0) (out '()))
+                        (cond ((null? cs) (reverse out))
+                              ((= (rail-of i rails) r) (walk (cdr cs) (+ i 1) (cons (car cs) out)))
+                              (else (walk (cdr cs) (+ i 1) out))))
+                      acc))))))
 
-(display (encrypt "WEAREDISCOVERED" 3))
+(display (encode "WEAREDISCOVERED" 3))
 (newline)

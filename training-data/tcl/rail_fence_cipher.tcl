@@ -1,13 +1,12 @@
-proc encrypt {text k} {
-    set cycle [expr {2 * ($k - 1)}]
-    for {set r 0} {$r < $k} {incr r} { set rails($r) "" }
-    for {set i 0} {$i < [string length $text]} {incr i} {
-        set r [expr {$i % $cycle}]
-        if {$r >= $k} { set r [expr {$cycle - $r}] }
-        append rails($r) [string index $text $i]
+proc encode {text rails} {
+    set rows [lrepeat $rails ""]
+    set r 0; set step 1
+    foreach ch [split $text ""] {
+        lset rows $r [lindex $rows $r]$ch
+        if {$r == 0} {set step 1} elseif {$r == $rails - 1} {set step -1}
+        incr r $step
     }
-    set out ""
-    for {set r 0} {$r < $k} {incr r} { append out $rails($r) }
-    return $out
+    join $rows ""
 }
-puts [encrypt WEAREDISCOVERED 3]
+
+puts [encode WEAREDISCOVERED 3]

@@ -1,18 +1,13 @@
-function railIndex(n, k) {
-  const pat = [];
-  for (let i = 0; i < k; i++) pat.push(i);
-  for (let i = k - 2; i > 0; i--) pat.push(i);
-  return Array.from({ length: n }, (_, i) => pat[i % pat.length]);
+function encode(text, rails) {
+  const rows = Array.from({ length: rails }, () => []);
+  let r = 0, step = 1;
+  for (const ch of text) {
+    rows[r].push(ch);
+    if (r === 0) step = 1;
+    else if (r === rails - 1) step = -1;
+    r += step;
+  }
+  return rows.map((x) => x.join("")).join("");
 }
-function order(n, k) {
-  const r = railIndex(n, k);
-  return [...r.keys()].sort((a, b) => r[a] - r[b] || a - b);
-}
-const encrypt = (t, k) => order(t.length, k).map((i) => t[i]).join("");
-function decrypt(c, k) {
-  const out = [];
-  order(c.length, k).forEach((i, pos) => (out[i] = c[pos]));
-  return out.join("");
-}
-const c = encrypt("WEAREDISCOVERED", 3);
-console.log(c, decrypt(c, 3));
+
+console.log(encode("WEAREDISCOVERED", 3)); // WECRERDSOEEAIVD

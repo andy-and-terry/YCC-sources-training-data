@@ -1,19 +1,20 @@
--- Rail fence encryption with 3 rails
 SET SERVEROUTPUT ON;
 DECLARE
-  text   VARCHAR2(30) := 'WEAREDISCOVERED';
-  k      CONSTANT PLS_INTEGER := 3;
-  cycle  CONSTANT PLS_INTEGER := 4;
-  out_s  VARCHAR2(30);
-  r      PLS_INTEGER;
+  TYPE t_rows IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
+  v_rows  t_rows;
+  v_text  VARCHAR2(50) := 'WEAREDISCOVERED';
+  v_rails PLS_INTEGER := 3;
+  v_r     PLS_INTEGER := 1;
+  v_step  PLS_INTEGER := 1;
+  v_out   VARCHAR2(50);
 BEGIN
-  FOR rail_no IN 0 .. k - 1 LOOP
-    FOR i IN 0 .. LENGTH(text) - 1 LOOP
-      r := MOD(i, cycle);
-      IF r >= k THEN r := cycle - r; END IF;
-      IF r = rail_no THEN out_s := out_s || SUBSTR(text, i + 1, 1); END IF;
-    END LOOP;
+  FOR i IN 1 .. v_rails LOOP v_rows(i) := NULL; END LOOP;
+  FOR i IN 1 .. LENGTH(v_text) LOOP
+    v_rows(v_r) := v_rows(v_r) || SUBSTR(v_text, i, 1);
+    IF v_r = 1 THEN v_step := 1; ELSIF v_r = v_rails THEN v_step := -1; END IF;
+    v_r := v_r + v_step;
   END LOOP;
-  DBMS_OUTPUT.PUT_LINE(out_s);
+  FOR i IN 1 .. v_rails LOOP v_out := v_out || v_rows(i); END LOOP;
+  DBMS_OUTPUT.PUT_LINE(v_out);
 END;
 /

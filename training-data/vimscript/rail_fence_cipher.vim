@@ -1,14 +1,17 @@
-function! RailFence(text, k) abort
-  let l:cycle = 2 * (a:k - 1)
-  let l:rails = map(range(a:k), '""')
-  for l:i in range(len(a:text))
-    let l:r = l:i % l:cycle
-    if l:r >= a:k
-      let l:r = l:cycle - l:r
+function! Encode(text, rails) abort
+  let rows = map(range(a:rails), '""')
+  let r = 0
+  let step = 1
+  for ch in split(a:text, '\zs')
+    let rows[r] .= ch
+    if r == 0
+      let step = 1
+    elseif r == a:rails - 1
+      let step = -1
     endif
-    let l:rails[l:r] .= a:text[l:i]
+    let r += step
   endfor
-  return join(l:rails, '')
+  return join(rows, '')
 endfunction
 
-echo RailFence('WEAREDISCOVERED', 3)
+echo Encode('WEAREDISCOVERED', 3)

@@ -1,20 +1,14 @@
 -module(rail_fence_cipher).
--export([main/0]).
+-export([main/0, encode/2]).
 
-rail(I, K) ->
-    Cycle = 2 * (K - 1),
-    R = I rem Cycle,
-    if R < K -> R; true -> Cycle - R end.
+encode(Text, Rails) ->
+    Period = 2 * (Rails - 1),
+    Keyed = [{rail(I, Rails, Period), I, C} || {I, C} <- lists:zip(lists:seq(0, length(Text) - 1), Text)],
+    [C || {_, _, C} <- lists:sort(Keyed)].
 
-order(N, K) ->
-    [I || {_, I} <- lists:sort([{rail(I, K), I} || I <- lists:seq(0, N - 1)])].
-
-encrypt(T, K) -> [lists:nth(I + 1, T) || I <- order(length(T), K)].
-
-decrypt(C, K) ->
-    Pairs = lists:zip(order(length(C), K), C),
-    [Ch || {_, Ch} <- lists:sort(Pairs)].
+rail(I, Rails, Period) ->
+    M = I rem Period,
+    if M < Rails -> M; true -> Period - M end.
 
 main() ->
-    C = encrypt("WEAREDISCOVERED", 3),
-    io:format("~s ~s~n", [C, decrypt(C, 3)]).
+    io:format("~s~n", [encode("WEAREDISCOVERED", 3)]).

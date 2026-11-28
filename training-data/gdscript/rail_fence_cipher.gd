@@ -1,16 +1,18 @@
-extends Node
+extends SceneTree
 
-func encrypt(text: String, k: int) -> String:
-	var cycle := 2 * (k - 1)
-	var rails: Array = []
-	for r in k:
-		rails.append("")
-	for i in text.length():
-		var r := i % cycle
-		if r >= k:
-			r = cycle - r
-		rails[r] += text[i]
-	return "".join(rails)
+func encode(text: String, rails: int) -> String:
+	var rows: Array[String] = []
+	rows.resize(rails)
+	rows.fill("")
+	var r := 0
+	var step := 1
+	for ch in text:
+		rows[r] += ch
+		if r == 0: step = 1
+		elif r == rails - 1: step = -1
+		r += step
+	return "".join(rows)
 
-func _ready() -> void:
-	print(encrypt("WEAREDISCOVERED", 3))
+func _init() -> void:
+	print(encode("WEAREDISCOVERED", 3))
+	quit()

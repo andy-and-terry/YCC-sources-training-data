@@ -1,12 +1,9 @@
-(defn order [n k]
-  (let [cycle (* 2 (dec k))
-        rail  (fn [i] (let [r (mod i cycle)] (if (< r k) r (- cycle r))))]
-    (sort-by (juxt rail identity) (range n))))
+(defn encode [text rails]
+  (let [period (* 2 (dec rails))
+        rail (fn [i] (let [m (mod i period)] (if (< m rails) m (- period m))))]
+    (->> (map-indexed (fn [i c] [(rail i) i c]) text)
+         (sort-by (juxt first second))
+         (map #(nth % 2))
+         (apply str))))
 
-(defn encrypt [t k] (apply str (map #(nth t %) (order (count t) k))))
-
-(defn decrypt [c k]
-  (apply str (map second (sort-by first (map vector (order (count c) k) c)))))
-
-(let [c (encrypt "WEAREDISCOVERED" 3)]
-  (println c (decrypt c 3)))
+(println (encode "WEAREDISCOVERED" 3))

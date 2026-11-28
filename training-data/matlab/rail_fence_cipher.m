@@ -1,6 +1,11 @@
-text = 'WEAREDISCOVERED'; k = 3; cycle = 2 * (k - 1);
-i = 0:numel(text)-1;
-r = mod(i, cycle);
-rail = r .* (r < k) + (cycle - r) .* (r >= k);
-[~, order] = sort(rail);        % sort is stable for ties
-disp(text(order));
+function rail_fence_cipher()
+  text = 'WEAREDISCOVERED';
+  rails = 3;
+  period = 2 * (rails - 1);
+  idx = 0:numel(text) - 1;
+  m = mod(idx, period);
+  rail = m;
+  rail(m >= rails) = period - m(m >= rails);
+  [~, order] = sortrows([rail(:), idx(:)]);
+  disp(text(order));
+end

@@ -1,0 +1,12 @@
+       IDENTIFICATION DIVISION.
+       PROGRAM-ID. LEVEL88.
+       DATA DIVISION.
+       WORKING-STORAGE SECTION.
+       01 STATUS-CD PIC X VALUE "A".
+          88 ACTIVE VALUE "A".
+          88 CLOSED VALUE "C" "X".
+       PROCEDURE DIVISION.
+           IF ACTIVE DISPLAY "active" END-IF
+           MOVE "X" TO STATUS-CD
+           IF CLOSED DISPLAY "closed" END-IF
+           STOP RUN.

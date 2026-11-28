@@ -1,22 +1,21 @@
 const std = @import("std");
 
-fn rail(i: usize, k: usize) usize {
-    const cycle = 2 * (k - 1);
-    const r = i % cycle;
-    return if (r < k) r else cycle - r;
-}
-
 pub fn main() void {
     const text = "WEAREDISCOVERED";
-    const k = 3;
+    const rails: usize = 3;
     var out: [text.len]u8 = undefined;
-    var p: usize = 0;
-    for (0..k) |r| {
-        for (text, 0..) |ch, i| {
-            if (rail(i, k) == r) {
-                out[p] = ch;
-                p += 1;
+    var k: usize = 0;
+    var row: usize = 0;
+    while (row < rails) : (row += 1) {
+        var r: usize = 0;
+        var down = true;
+        for (text) |ch| {
+            if (r == row) {
+                out[k] = ch;
+                k += 1;
             }
+            if (r == 0) down = true else if (r == rails - 1) down = false;
+            r = if (down) r + 1 else r - 1;
         }
     }
     std.debug.print("{s}\n", .{out});

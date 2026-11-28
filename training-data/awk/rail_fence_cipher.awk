@@ -1,10 +1,12 @@
-#!/usr/bin/awk -f
-BEGIN {
-    text = "WEAREDISCOVERED"; k = 3; cycle = 2 * (k - 1)
-    for (i = 0; i < length(text); i++) {
-        r = i % cycle; rail = (r < k) ? r : cycle - r
-        rails[rail] = rails[rail] substr(text, i + 1, 1)
+function encode(text, rails,    i, r, step, rows, out) {
+    r = 1; step = 1
+    for (i = 1; i <= length(text); i++) {
+        rows[r] = rows[r] substr(text, i, 1)
+        if (r == 1) step = 1
+        else if (r == rails) step = -1
+        r += step
     }
-    for (r = 0; r < k; r++) out = out rails[r]
-    print out
+    for (r = 1; r <= rails; r++) out = out rows[r]
+    return out
 }
+BEGIN { print encode("WEAREDISCOVERED", 3) }

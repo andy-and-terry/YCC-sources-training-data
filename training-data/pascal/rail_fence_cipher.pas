@@ -1,23 +1,23 @@
 program RailFenceCipher;
-
 const
-  K = 3;
-  Cycle = 4;
-
-function Rail(i: Integer): Integer;
-begin
-  Result := i mod Cycle;
-  if Result >= K then Result := Cycle - Result;
-end;
-
+  Text = 'WEAREDISCOVERED';
+  Rails = 3;
 var
-  text, outStr: string;
-  r, i: Integer;
+  row, i, r, step: Integer;
+  res: string;
 begin
-  text := 'WEAREDISCOVERED';
-  outStr := '';
-  for r := 0 to K - 1 do
-    for i := 0 to Length(text) - 1 do
-      if Rail(i) = r then outStr := outStr + text[i + 1];
-  WriteLn(outStr);
+  res := '';
+  for row := 0 to Rails - 1 do
+  begin
+    r := 0;
+    step := 1;
+    for i := 1 to Length(Text) do
+    begin
+      if r = row then res := res + Text[i];
+      if r = 0 then step := 1
+      else if r = Rails - 1 then step := -1;
+      r := r + step;
+    end;
+  end;
+  WriteLn(res);
 end.
